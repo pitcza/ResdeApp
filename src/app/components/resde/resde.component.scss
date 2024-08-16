@@ -1,0 +1,68 @@
+.header {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 60px 30px 60px;
+    height: 100px;
+    width: 100%;
+    background-color: transparent;
+    // background-color: #ede6de52;
+    z-index: 1000;
+    position: fixed;
+
+    .resdeapp {
+        display: flex;
+        background-color: #ede6de52;
+        img {
+            position: absolute;
+            top: 0;
+            margin-top: 18px;
+            width: 60px;
+            height: 60px;
+        }
+        h1 {
+            margin-top: 10px;
+            font-size: 30px;
+            font-weight: 900;
+            align-self: flex-start;
+            color: var(--dark-green);
+            margin-left: 75px;
+        }
+    }
+
+    .pages {
+        display: flex;
+        background-color: #9eb3aa32;
+        border-radius: 50px;
+        align-items: center;
+        text-align-last: center;
+
+        a {
+            font-family: 'Rubik';
+            text-transform: uppercase;
+            border-radius: 50px;
+            padding: 10px 0 10px 0;
+            width: 200px;
+            color: var(--dark-green);
+            transition: all 0.3s ease;
+
+            h2 {
+                font-size: 16px;
+                font-weight: 400;
+            }
+        }
+
+        a.active-link {
+            background-color: var(--primary-green);
+            color: var(--bg-color);
+        }
+
+        a:hover {
+            background-color: var(--secondary-green);
+        }
+    }
+}
+
+.body {
+    height: 100%;
+}

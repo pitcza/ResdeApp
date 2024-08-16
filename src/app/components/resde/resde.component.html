@@ -1,0 +1,23 @@
+<main>
+    <div class="header">
+        <div class="resdeapp">
+            <img src="../../../../assets/images/ResdeLogoTransparent.png">
+            <h1> Resde </h1>
+        </div>
+        <div class="pages">
+            <a routerLink="resde-app" routerLinkActive="active-link">
+                <h2> Home </h2>
+            </a>
+            <a routerLink="signup-to-resde" routerLinkActive="active-link">
+                <h2> Sign up </h2>
+            </a>
+            <a routerLink="/login-to-resde" routerLinkActive="active-link">
+                <h2> Login </h2>
+            </a>
+        </div>
+    </div>
+
+    <div class="body">
+        <router-outlet></router-outlet>
+    </div>
+</main>

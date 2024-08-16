@@ -1,0 +1,338 @@
+/* SPIT SCREEN */
+.spit-screen {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.left, .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* LEFT CONTENT */
+.left {
+    display: flex;
+    width: 60%;
+    height: auto;
+    padding: 50px;
+    background-color: var(--secondary-green);
+    background-size: cover;
+    transition: all 0.5s ease;
+
+    .content {
+        text-align: center;
+        --webkit-font-smoothing: antialiased;
+        --moz-osx-font-smoothing: grayscale;
+
+        img {
+            width: 350px;
+            height: 350px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+            box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.40);
+            margin-bottom: 10%;
+            cursor: pointer;
+        }
+
+        h1 {
+            color: var(--dark-green);
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.40);
+            font-size: 50px;
+            font-weight: 700;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            font-family: 'Josefin Sans';
+        }
+        
+        p {
+            font-weight: 400;
+        }
+    }
+}
+
+.right {
+    display: flex;
+    width: 40%;
+    height: auto;
+    padding: 100px 50px 3px 50px;
+
+    .appname {
+        h2 {
+            text-align: center;
+            color: var(--dark-green);
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.30);
+            font-size: 50px;
+            font-weight: 700;
+            letter-spacing: 3.5px;
+            margin-bottom: 15%;
+            font-family: 'Josefin Sans';
+            cursor: pointer;
+        }
+    
+        /* FOR RESPONSIVE */
+        h3, p {
+            display: none;
+        }
+    }
+
+    /* FORM CONTENT */
+    form {
+        width: 400px;
+
+        .input-container {
+            width: 100%;
+            margin-bottom: 1.2rem;
+
+            input[type="email"],
+            input[type="password"] {
+                font-family: 'Josefin Sans';
+                display: block;
+                width: 100%;
+                height: 60px;
+                box-sizing: border-box;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                background: var(--input-color);
+                padding: 1rem;
+                padding-left: 4rem;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+                font-size: 16px;
+                font-weight: 500;
+                box-shadow: 0px 1px 1px rgb(141, 141, 141);
+                transition: all 0.5s ease;
+            }
+
+            input:focus {
+                outline: none;
+                border: 1px solid var(--secondary-green);
+            }
+
+            i {
+                position: absolute;
+            }
+    
+            .bx {
+                padding: 15px;
+                padding-left: 20px;
+                color: var(--dark-green);
+                min-width: 50px;
+                text-align: center;
+                font-size: 30px;
+            }
+        }
+
+        .forgotpassword p {
+            font-size: 12px;
+            text-align: right;
+        }
+
+        /* LOGIN BUTTON */
+        .loginbtn {
+            .login-btn {
+                display: block;
+                border-radius: 30px;
+                background-color: var(--dark-green);
+                transition: .5s;
+                transform: translate(0px, 0px);
+            }
+    
+            a {
+                text-align: center;
+                color: white;
+                width: 50%;
+                height: 40px;
+                font-size: 16px;
+                text-transform: uppercase;
+                margin-top: 10%;
+                margin-left: 25%;
+                letter-spacing: 0.5px;
+                padding: 15px;
+            }
+            
+            .login-btn:hover {
+                box-shadow: 0px 8px 15px -10px rgb(61, 61, 61);
+                transform: translate(0px, -2px);
+                background: var(--primary-green);
+                cursor: pointer;
+                text-decoration: none;
+            }
+        }
+
+        .signuplink {
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 5rem;
+            letter-spacing: 0.5px;
+            margin-top: 150px;
+        }
+    }
+}
+
+/* LINKS */
+a {
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--primary-green);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 1220px) {
+    .left {
+        width: 50%;
+    }
+    .right {
+        width: 50%;
+    }
+}
+
+
+/* MEDIA SCREEN */
+@media screen and (max-width: 900px) {
+    /* LOGO IMAGE */
+    img {
+        width: 170px;
+        height: 170px;
+        margin-bottom: 140%;
+    }
+
+    .left h1, .left p {
+        display: none;
+    }
+
+    .spit-screen {
+        display: flex;
+        flex-direction: column;
+        height: 850px;
+    }
+
+    /* LEFT SCREEN */
+    .left {
+        height: 450px;
+        width: 100%;
+        padding: 50px;
+        border-bottom-left-radius: 90px;
+        border-bottom-right-radius: 90px;
+    }
+
+    /* RIGHT SCREEN */
+    .right {
+        position: relative;
+        height: 500px;
+        width: 100%;
+    }
+
+    .right form {
+        width: 500px;
+    }
+
+    .loginform {
+        position: absolute;
+        background-color: var(--container-color1);
+        width: 80%;
+        padding: 50px 50px 20px 50px;
+        border-radius: 30px;
+        margin-bottom: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.5s ease;
+    }
+
+    .right .appname h2 {
+        display: none;
+    }
+
+    .right .appname h3 {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        color: var(--dark-green);
+        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.30);
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: .5px;
+        margin-bottom: 10px;
+        font-family: 'Josefin Sans';
+    }
+
+    .right .appname p {
+        display: flex;
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: 400;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .right .appname {
+        margin-bottom: 40px;
+    }
+
+    .login-btn {
+        display: block;
+        border-radius: 20px;
+        background-color: var(--dark-green);
+        transition: .5s;
+        transform: translate(0px, 0px);
+    }
+
+    .login-btn:hover {
+        box-shadow: 0px 8px 15px -10px rgb(61, 61, 61);
+        transform: translate(0px, -2px);
+        background: var(--primary-green);
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .loginbtn a {
+        text-align: center;
+        color: white;
+        width: 70%;
+        height: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: 10%;
+        margin-left: 15%;
+        letter-spacing: 0.5px;
+        padding: 20px;
+    }
+
+    .right .signuplink {
+        font-weight: 600;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 5rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    img {
+        margin-bottom: 100%;
+    }
+
+    .left {
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+
+    .loginform {
+        margin-bottom: 500px;
+        padding: 50px 30px 20px 30px;
+    }
+
+    .right .appname h3 {
+        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.30);
+        font-size: 20px;
+    }
+}

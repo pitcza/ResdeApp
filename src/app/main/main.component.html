@@ -1,0 +1,91 @@
+<div class="content" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay}">
+    <!-- SIDEBAR CONTENT -->
+    <nav class="sidebar" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay}">
+      <div class="user_info">
+        <div class="user_img">
+          <img src="assets/images/user.png">
+        </div>
+        <div class="user_name">
+          <h1> User Name </h1>
+        </div>
+
+        <button class="menu-icon-button" (click)="toggleSidebar()">
+            <i *ngIf="!isSidebarToggled" class='bx bx-chevrons-left'></i>
+            <i *ngIf="isSidebarToggled" class='bx bx-chevrons-right'></i>
+        </button>
+      </div>
+  
+      <div class="sidebar_content">
+        <ul class="sidebar_tabs">
+          <li class="sidebar_tab">
+            <a class="tablink" routerLink="home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
+              <span class="tab-link-icon"> <i class="bx bx-home"></i> </span>
+              <span class="tab-link-name"> Home </span>
+            </a>
+          </li>
+          <!-- <li class="sidebar_tab">
+            <a class="tablink" routerLink="gardening" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bx-leaf'></i> </span>
+              <span class="tab-link-name"> Recyc-ology </span>
+            </a>
+          </li> -->
+          <li class="sidebar_tab">
+            <a class="tablink" routerLink="mygarden" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bx-basket' ></i> </span>
+              <span class="tab-link-name"> Liked Posts </span>
+            </a>
+          </li>
+          <li class="sidebar_tab">
+            <a class="tablink" routerLink="uploads" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bx-folder-plus'></i> </span>
+              <span class="tab-link-name"> Uploads </span>
+            </a>
+          </li>
+          <!-- <li class="sidebar_tab">
+            <a class="tablink" routerLink="greenmodule" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bx-library'></i> </span>
+              <span class="tab-link-name"> GreenModule </span>
+            </a>
+          </li> -->
+          <li class="sidebar_tab">
+            <a class="tablink" routerLink="announcement" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bx-message-alt-error'></i> </span>
+              <span class="tab-link-name"> Announcement </span>
+            </a>
+          </li>
+          <li class="sidebar_tab">
+            <a class="tablink" routerLink="profile" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bx-user-circle'></i> </span>
+              <span class="tab-link-name"> Profile </span>
+            </a>
+          </li>
+        </ul>
+  
+        <div class="logoutbtn">
+          <div class="logout" (click)="logoutPopup()">
+            <span> <i class='bx bx-log-out-circle'></i> 
+                <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
+            </span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  
+</div>
+
+<div class="sidebar-overlay" [ngClass]="{'visible': !isSidebarCollapsed}" (click)="toggleSidebar()"></div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay, 'blurred': isSidebarOverlay}">
+    <!-- HEADER -->
+    <nav class="header">
+        <div class="appname">
+          Resde
+        </div>
+      </nav>
+    
+      <!-- MAIN BODY CONTENT -->
+      <div class="body-content">
+        <div class="admin-container"> <router-outlet></router-outlet> </div>
+      </div>
+</div>
