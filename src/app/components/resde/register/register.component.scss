@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
 
-    .content {
+    .container2 {
         position: relative;
         padding: 40px 150px 40px 150px;
         margin-top: 130px;
@@ -15,23 +15,6 @@
         background: #D6CABC;
         box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.40);
         animation: bouncePopIn 0.6s forwards;
-    }
-
-    /* EXIT BUTTON */
-    .exit-button {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        background-color: transparent;
-        border: none;
-        font-size: 40px;
-        font-weight: 700;
-        cursor: pointer;
-        color: #555;
-    }
-
-    .exit-button:hover {
-        color: var(--primary-green);
     }
 }
 
@@ -180,7 +163,7 @@ input::-webkit-outer-spin-button {
     width: 100%;
     }
 
-    .content {
+    .container2 {
         padding: 40px 100px 40px 100px;
     }
 

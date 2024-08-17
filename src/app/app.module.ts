@@ -10,6 +10,9 @@ import { ResdeComponent } from './components/resde/resde.component';
 import { ResdeModule } from './components/resde/resde.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './modules/material.module';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { AdminModule } from './admin/admin.module';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +20,16 @@ import { MaterialModule } from './modules/material.module';
     MainComponent,
     LogoutComponent,
     ResdeComponent,
+    AdminLoginComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MainModule,
     ResdeModule,
-    MaterialModule
+    MaterialModule,
+    AdminModule
   ],
   providers: [
     provideClientHydration(),

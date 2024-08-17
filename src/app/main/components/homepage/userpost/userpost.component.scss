@@ -5,66 +5,49 @@
     margin: 30px;
 }
 
-/* EXIT BUTTON */
-.exit-button {
-    position: absolute;
-    top: 30px;
-    right: 65px;
-    background-color: transparent;
-    border: none;
-    font-size: 40px;
-    cursor: pointer;
-    color: #555;
-}
-
-.exit-button:hover {
-    color: var(--primary-green);
-}
-
-h1 {
-    font-family: 'Josefin Sans';
-    font-weight: 700;
-    font-size: 25px;
-    border-bottom: 1px solid var(--secondary-green);
-}
-
 .user-post {
     padding: 40px 70px 40px 70px;
     background: white;
     width: 100%;
     height: auto;
+    border-radius: 3px;
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
     animation: fadeInLeft 0.3s forwards;
-}
 
-.category-time {
-    margin-bottom: 1%;
-}
+    h1 {
+        font-weight: 700;
+        font-size: 25px;
+        border-bottom: 1px solid var(--secondary-green);
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
 
-.category-time span {
-    font-size: 0.8rem;
-}
+    .category-time {
+        margin-bottom: 20px;
+        span { font-size: 0.8rem; }
 
-.blog-category {
-    padding: 3px 5px;
-    color: #9b9b9b;
-    font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.06);
-    border-radius: 10px;
-    margin-right: 1%;
-}
+        .blog-category {
+            padding: 3px 5px;
+            color: #9b9b9b;
+            font-weight: 500;
+            background-color: rgba(0, 0, 0, 0.06);
+            border-radius: 3px;
+            margin-right: 1%;
+        }
 
-.published-time {
-    color: var(--secondary-green);
-    font-weight: 500;
-}
-
-.publisher-name {
-    color: var(--secondary-green);
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-    margin-bottom: 3%;
+        .published-time {
+            color: var(--secondary-green);
+            font-weight: 500;
+        }
+    }
+    
+    .publisher-name {
+        color: var(--secondary-green);
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
 }
 
 .post-content {

@@ -1,0 +1,183 @@
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    margin-bottom: 1rem;
+    opacity: 0; /* Initial opacity for fade-in effect */
+    animation: fadeIn 1s forwards; /* Fade-in animation */
+
+    .card-single {
+        display: flex;
+        justify-content: space-between;
+        background: white;
+        padding: 2rem;
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+        transition: 0.3s ease-in-out;
+        border-radius: 3px;
+        transform: translateY(20px); /* Initial position for pop-up effect */
+        opacity: 0; /* Initial opacity for pop-up effect */
+        animation: popUp 0.6s forwards;
+        animation-delay: var(--delay, 0s); /* Using the --delay custom property */
+    }
+
+    .card-single:hover {
+        background-color: var(--white-hover);
+        transform: scale(1.05); /* scale effect on hover */
+    }
+    
+    .card-single div:last-child .icon {
+        font-size: 3rem;
+        color: var(--primary-green);
+    }
+
+    .card-single div:last-child .decline {
+        font-size: 3rem;
+        color: rgb(189, 55, 55);
+    }
+    
+    .card-single:last-child {
+        background-color: var(--primary-green);
+    }
+    
+    .card-single:last-child h1,
+    .card-single:last-child div:first-child span,
+    .card-single:last-child div:last-child span {
+        color: white;
+    }
+}
+
+
+.recent-grid {
+    margin-top: 3.5rem;
+    // display: grid;
+    // grid-gap: 2rem;
+    // grid-template-columns: 65% auto;
+    transform: translateY(20px); /* Initial position for pop-up effect */
+    opacity: 0; /* Initial opacity for pop-up effect */
+    animation: popUp 0.6s forwards;
+    animation-delay: var(--delay, 0s); /* Using the --delay custom property */
+
+    .card {
+        background: white;
+        border-radius: 3px;
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+
+        .card-header,
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border-bottom: 1px solid var(--dark-green);
+            background-color: var(--primary-green);
+        }
+
+        .card-header {
+            h2 {
+                text-transform: uppercase;
+                font-size: 20px;
+                font-weight: 600;
+                color: white;
+            }
+    
+            a {
+                background: var(--dark-green);
+                border-radius: 10px;
+                color: white;
+                font-size: .8rem;
+                padding: .5rem 1rem;
+                transition: .3s;
+            }
+
+            a:hover {
+                background-color: var(--dark-hover);
+            }
+        }
+    }
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    border: 1px solid var(--input-color2);
+    padding: 5px;
+
+    th {
+        background-color: var(--primary-green);
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-size: 16px;
+        padding-top: 5px;
+    }
+
+    th, td {
+        font-family: 'Poppins';
+        text-align: center;
+    }
+
+    td { font-size: 14px; }
+    tr { transition: all 0.3s ease; } 
+    tr:hover { background-color: var(--white-hover); }
+}
+
+td .status {
+    display: inline-block;
+    color: var(--red-btn);
+}
+
+// .user {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: .5rem .7rem;
+// }
+
+// .user:hover {
+//     background-color: rgb(212, 212, 212);
+// }
+
+// .info {
+//     display: flex;
+//     align-items: center;
+// }
+
+// .info img {
+//     border-radius: 50%;
+//     margin-right: 1rem;
+// }
+
+// .info h4 {
+//     font-size: .8rem;
+//     font-weight: 600;
+// }
+
+@media only screen and (max-width: 960px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .recent-grid {
+        grid-template-columns: 100%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .cards {
+        grid-template-columns: 100%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    main {
+        margin-left: 120px;
+    }
+}

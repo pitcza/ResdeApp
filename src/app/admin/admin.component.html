@@ -3,10 +3,11 @@
     <nav class="sidebar" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay}">
       <div class="userInfo">
         <div class="userImg">
-          <img src="assets/images/user.png">
+          <img src="assets/images/ResdeApp.PNG">
         </div>
         <div class="userName">
-          <h1> User Name </h1>
+          <h1> Admin Name </h1>
+          <p> Admin </p>
         </div>
 
         <button class="menu-icon-button" (click)="toggleSidebar()">
@@ -18,47 +19,35 @@
       <div class="sidebar-content">
         <ul class="sidebarTabs">
           <li class="sidebarTab">
-            <a class="tablink" routerLink="home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
-              <span class="tab-link-icon"> <i class="bx bx-home"></i> </span>
-              <span class="tab-link-name"> Home </span>
-            </a>
-          </li>
-          <!-- <li class="sidebarTab">
-            <a class="tablink" routerLink="gardening" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
-              <span class="tab-link-icon"> <i class='bx bx-leaf'></i> </span>
-              <span class="tab-link-name"> Recyc-ology </span>
-            </a>
-          </li> -->
-          <li class="sidebarTab">
-            <a class="tablink" routerLink="mygarden" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
-              <span class="tab-link-icon"> <i class='bx bx-basket' ></i> </span>
-              <span class="tab-link-name"> Liked Posts </span>
+            <a class="tablink" routerLink="dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
+              <span class="tab-link-icon"> <i class='bx bxs-dashboard'></i> </span>
+              <span class="tab-link-name"> Dashboard </span>
             </a>
           </li>
           <li class="sidebarTab">
-            <a class="tablink" routerLink="uploads" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
-              <span class="tab-link-icon"> <i class='bx bx-folder-plus'></i> </span>
-              <span class="tab-link-name"> Uploads </span>
+            <a class="tablink" routerLink="posts" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+              <span class="tab-link-icon"> <i class='bx bxs-user-rectangle' ></i> </span>
+              <span class="tab-link-name"> User Posts </span>
             </a>
           </li>
-          <!-- <li class="sidebarTab">
-            <a class="tablink" routerLink="greenmodule" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
-              <span class="tab-link-icon"> <i class='bx bx-library'></i> </span>
-              <span class="tab-link-name"> GreenModule </span>
-            </a>
-          </li> -->
           <li class="sidebarTab">
             <a class="tablink" routerLink="announcement" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
-              <span class="tab-link-icon"> <i class='bx bx-message-alt-error'></i> </span>
+              <span class="tab-link-icon"> <i class='bx bx-message-alt-edit' ></i> </span>
               <span class="tab-link-name"> Announcement </span>
             </a>
           </li>
           <li class="sidebarTab">
+            <a class="tablink" routerLink="uploads" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
+              <span class="tab-link-icon"> <i class='bx bxs-user-detail' ></i> </span>
+              <span class="tab-link-name"> Users </span>
+            </a>
+          </li>
+          <!-- <li class="sidebarTab">
             <a class="tablink" routerLink="profile" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
               <span class="tab-link-icon"> <i class='bx bx-user-circle'></i> </span>
               <span class="tab-link-name"> Profile </span>
             </a>
-          </li>
+          </li> -->
         </ul>
   
         <div class="logoutbtn">

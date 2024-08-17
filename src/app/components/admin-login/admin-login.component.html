@@ -1,9 +1,9 @@
 <div class="spit-screen">
     <!-- LEFT SCREEN -->
     <div class="left">
-        <section class="container">
+        <section class="content">
             <img src="../../../assets/images/ResdeApp.PNG" alt="logo" routerLink="/resde">
-            <h1> Welcome! </h1>
+            <h1 routerLink="/resde"> Resde </h1>
             <p> Reduce, reuse, and let's cultivate a greener future together. </p>
         </section>
     </div>
@@ -13,35 +13,25 @@
         <div class="loginform">
             <form action="">
                 <section class="appname">
-                    <h2 routerLink="/resde"> Resde </h2>
+                    <h2> Admin Panel </h2>
                     <!-- FOR RESPONSIVE CONTENT -->
-                    <h3> Welcome to Resdenour </h3>
-                    <p> Reduce, reuse, and let's cultivate a greener future together. </p>
+                    <h3> Resde - Admin </h3>
+                    <p> Recycling and Gardening Platform </p>
                 </section>
 
                 <!-- LOG IN FORM -->
-                <div class="input-container email">
+                <div class="input-container username">
                     <i class='bx bxs-user-circle'></i>
-                    <input id="email" name="email" type="email" placeholder="Email">
+                    <input id="username" name="username" type="text" placeholder="Username">
                 </div>
                 <div class="input-container password">
                     <i class='bx bxs-lock' ></i>
                     <input id="password" name="password" type="password" placeholder="Password">
                 </div>
 
-                <!-- FORGOT PASSWORD LINK -->
-                <div class="forgotpassword">
-                    <p> <a routerLink="/forgotpassword"> <strong> Forgot Password? </strong> </a> </p>
-                </div>
-
                 <!-- LOG IN BUTTON -->
-                <div class="button" routerLink="/main">
+                <div class="button" routerLink="/admin">
                     <a class="btn"> Log In </a>
-                </div>
-
-                <!-- SIGN UP LINK -->
-                <div class="signuplink">
-                    <p> New User? <a routerLink="/resde/signup-to-resde"> <strong> Sign Up </strong> </a> </p>
                 </div>
             </form>
         </div>

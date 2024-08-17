@@ -22,7 +22,7 @@
     background-size: cover;
     animation: fadeInLeft 0.8s forwards;
 
-    .container {
+    .content {
         text-align: center;
         --webkit-font-smoothing: antialiased;
         --moz-osx-font-smoothing: grayscale;
@@ -45,8 +45,8 @@
             font-size: 50px;
             font-weight: 700;
             letter-spacing: 3.5px;
-            text-transform: uppercase;
             font-family: 'Josefin Sans';
+            cursor: pointer;
         }
 
         p {
@@ -58,7 +58,7 @@
 /* RIGHT CONTENT */
 .right {
     width: 40%;
-    padding: 100px 50px 3px 50px;
+    padding: 100px 50px 100px 50px;
     animation: popIn 0.5s forwards 0.5s;
 
     .appname {
@@ -87,7 +87,7 @@
             width: 400px;
             margin-bottom: 1.2rem;
 
-            input[type="email"],
+            input[type="text"],
             input[type="password"] {
                 font-family: 'Josefin Sans';
                 display: block;
@@ -127,11 +127,6 @@
             }
         }
 
-        .forgotpassword p {
-            font-size: 12px;
-            text-align: right;
-        }
-
         .button {
             margin: 30px auto; 
             border-radius: 20px;
@@ -143,15 +138,6 @@
                 font-size: 16px;
                 font-weight: 500;
             }
-        }
-
-        .signuplink {
-            font-weight: 600;
-            font-size: 14px;
-            text-align: center;
-            margin-top: 5rem;
-            letter-spacing: 0.5px;
-            margin-top: 150px;
         }
     }
 }

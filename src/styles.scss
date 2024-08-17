@@ -47,6 +47,7 @@
     --red-hover: #8F0C0C;
     --gray-btn: #777777;
     --gray-hover: #6B6B6B;
+    --white-hover: rgb(242, 242, 242);
 
     --container-color1: #D6CABC;
     --label-color: rgb(74, 74, 74);
@@ -69,6 +70,13 @@ body {
     font-family: 'Josefin Sans';
 }
 
+.content {
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px 10px 30px;
+    font-family: 'Poppins';
+}
+
 a {
     text-decoration: none;
 }
@@ -79,6 +87,23 @@ input {
 
 label {
     font-family: 'Josefin Sans';
+}
+
+/* EXIT BUTTON */
+.exit-button {
+    position: absolute;
+    top: 30px;
+    right: 65px;
+    background-color: transparent;
+    border: none;
+    font-size: 40px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #555;
+}
+
+.exit-button:hover {
+    color: var(--primary-green);
 }
 
 .button {
@@ -245,5 +270,18 @@ tr {
     100% {
         opacity: 1;
         transform: translateY(0); /* End at the element's final position */
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
