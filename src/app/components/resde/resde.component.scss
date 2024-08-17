@@ -10,13 +10,16 @@
     z-index: 1000;
     position: fixed;
 
+    img.hide, h1.hide {
+        display: none;
+    }
+
     .resdeapp {
         display: flex;
-        background-color: #ede6de52;
         img {
             position: absolute;
             top: 0;
-            margin-top: 18px;
+            margin-top: 20px;
             width: 60px;
             height: 60px;
         }

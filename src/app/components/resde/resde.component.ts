@@ -7,13 +7,16 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrl: './resde.component.scss'
 })
 export class ResdeComponent {
-  // showHeader = true;
+  isLoginRoute: boolean = false;
 
-  // constructor(private router: Router) {
-  //   this.router.events.subscribe(event => {
-  //     if (event instanceof NavigationEnd) {
-  //       this.showHeader = this.router.url !== '/login';
-  //     }
-  //   });
-  // }
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    // Listen for navigation end events to determine the current route
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isLoginRoute = this.router.url === '/resde/login-to-resde';
+      }
+    });
+  }
 }

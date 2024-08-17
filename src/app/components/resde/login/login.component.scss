@@ -9,17 +9,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    transform: translateX(-1px);
+    transition: all 0.5s ease;
 }
 
 /* LEFT CONTENT */
 .left {
-    display: flex;
     width: 60%;
-    height: auto;
     padding: 50px;
     background-color: var(--secondary-green);
     background-size: cover;
-    transition: all 0.5s ease;
+    animation: fadeInLeft 0.8s forwards;
 
     .content {
         text-align: center;
@@ -35,6 +36,7 @@
             box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.40);
             margin-bottom: 10%;
             cursor: pointer;
+            // animation: popIn 0.8s forwards 0.5s;
         }
 
         h1 {
@@ -46,18 +48,18 @@
             text-transform: uppercase;
             font-family: 'Josefin Sans';
         }
-        
+
         p {
             font-weight: 400;
         }
     }
 }
 
+/* RIGHT CONTENT */
 .right {
-    display: flex;
     width: 40%;
-    height: auto;
     padding: 100px 50px 3px 50px;
+    animation: popIn 0.5s forwards 0.5s;
 
     .appname {
         h2 {
@@ -71,19 +73,18 @@
             font-family: 'Josefin Sans';
             cursor: pointer;
         }
-    
-        /* FOR RESPONSIVE */
+
         h3, p {
             display: none;
         }
     }
 
-    /* FORM CONTENT */
     form {
-        width: 400px;
+        width: 100%;
+        padding: 0;
 
         .input-container {
-            width: 100%;
+            width: 400px;
             margin-bottom: 1.2rem;
 
             input[type="email"],
@@ -115,7 +116,7 @@
             i {
                 position: absolute;
             }
-    
+
             .bx {
                 padding: 15px;
                 padding-left: 20px;
@@ -131,35 +132,16 @@
             text-align: right;
         }
 
-        /* LOGIN BUTTON */
-        .loginbtn {
-            .login-btn {
-                display: block;
-                border-radius: 30px;
-                background-color: var(--dark-green);
-                transition: .5s;
-                transform: translate(0px, 0px);
-            }
-    
+        .button {
+            margin: 30px auto; 
+            border-radius: 20px;
+            background-color: var(--dark-green);
+
             a {
-                text-align: center;
-                color: white;
-                width: 50%;
-                height: 40px;
-                font-size: 16px;
-                text-transform: uppercase;
-                margin-top: 10%;
-                margin-left: 25%;
-                letter-spacing: 0.5px;
-                padding: 15px;
-            }
-            
-            .login-btn:hover {
-                box-shadow: 0px 8px 15px -10px rgb(61, 61, 61);
-                transform: translate(0px, -2px);
-                background: var(--primary-green);
-                cursor: pointer;
                 text-decoration: none;
+                color: var(--bg-color);
+                font-size: 16px;
+                font-weight: 500;
             }
         }
 
@@ -184,6 +166,7 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
 
 @media screen and (max-width: 1220px) {
     .left {
@@ -231,7 +214,10 @@ a:hover {
     }
 
     .right form {
-        width: 500px;
+        width: 100%;
+        .input-container {
+            width: 100%;
+        }
     }
 
     .loginform {
@@ -277,34 +263,9 @@ a:hover {
         margin-bottom: 40px;
     }
 
-    .login-btn {
-        display: block;
-        border-radius: 20px;
-        background-color: var(--dark-green);
-        transition: .5s;
-        transform: translate(0px, 0px);
-    }
-
-    .login-btn:hover {
-        box-shadow: 0px 8px 15px -10px rgb(61, 61, 61);
-        transform: translate(0px, -2px);
-        background: var(--primary-green);
-        cursor: pointer;
-        text-decoration: none;
-    }
-
-    .loginbtn a {
-        text-align: center;
-        color: white;
-        width: 70%;
-        height: 50px;
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-top: 10%;
-        margin-left: 15%;
-        letter-spacing: 0.5px;
-        padding: 20px;
+    .button {
+        height: 40px;
+        align-content: space-evenly;
     }
 
     .right .signuplink {

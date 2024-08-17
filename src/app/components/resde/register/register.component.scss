@@ -3,69 +3,81 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
 
-.content {
-    position: relative;
-    padding: 40px 160px 40px 160px;
-    margin-top: 150px;
-    width: 60rem;
-    height: auto;
-    border: 1.5px solid var(--primary-color);
-    background: #D6CABC;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.40);
-}
+    .content {
+        position: relative;
+        padding: 40px 150px 40px 150px;
+        margin-top: 130px;
+        margin-bottom: 70px;
+        width: 60rem;
+        height: auto;
+        border: 1.5px solid var(--primary-color);
+        background: #D6CABC;
+        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.40);
+        animation: bouncePopIn 0.6s forwards;
+    }
 
-/* EXIT BUTTON */
-.exit-button {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    background-color: transparent;
-    border: none;
-    font-size: 40px;
-    cursor: pointer;
-    color: #555;
-}
+    /* EXIT BUTTON */
+    .exit-button {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background-color: transparent;
+        border: none;
+        font-size: 40px;
+        font-weight: 700;
+        cursor: pointer;
+        color: #555;
+    }
 
-.exit-button:hover {
-    color: var(--primary-green);
+    .exit-button:hover {
+        color: var(--primary-green);
+    }
 }
 
 .info h1 {
     margin-top: 1%;
+    margin-bottom: 30px;
     color: var(--secondary-500, #1A202C);
-    font-size: 1.5rem;
+    font-size: 30px;
     font-weight: 700;
     line-height: 150%;
     font-family: 'Josefin Sans';
 }
 
 /* SIGN UP FORM */
-label {
-    padding-top: 5%;
-    font-size: 12px;
-}
-
-.info input {
-    width: 100%;
-    height: 2rem;
-    border: none;
-    outline: 1px solid var(--bg-color);
-    font-size: 14px;
-    background-color: var(--input-color2);
-    padding: 5px 10px 3px;
+.input-row .input-group {
+    flex-basis: 100%;
 }
 
 .input-row {
-    gap: 1rem;
+    gap: 15px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+
+    input {
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background-color: var(--input-color2);
+        padding: 20px 10px 3px;
+    }
+
+    input:hover {
+        background-color: var(--input-color);
+    }
 }
 
-.input-row .input-group {
-    flex-basis: 50%;
+label {
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 10px;
+    font-size: 12px;
+    color: var(--label-color);
 }
 
 input::-webkit-inner-spin-button, 
@@ -74,22 +86,31 @@ input::-webkit-outer-spin-button {
     margin: 0;
 }
 
-.input-group input:focus {
-    outline: none;
-    border: 2px solid var(--bg-color);
-    box-shadow: 0px 2px 2px rgb(141, 141, 141);
-}
-
 /* PRIVACY CHECKBOX */
 .privacy-container {
     text-align: center;
-    margin-top: -2rem;
-    margin-bottom: 2rem;
+    margin-top: 20px;
+    margin-bottom: 60px;
+
+    h3 {
+        font-weight: 400;
+
+        input {
+            margin-top: -2px;
+            margin-right: 5px;
+        }
+
+        a { 
+            font-weight: 700; 
+            color: var(--primary-green);
+            cursor: pointer;
+        }
+    }
 }
 
 .privacy-container .privacy-label {
     display: flex;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .privacy-container .privacy-label input {
@@ -101,36 +122,19 @@ input::-webkit-outer-spin-button {
 }
 
 .privacy-container .privacy-label input:checked {
-    background-color: var(--appname-color);
+    background-color: var(--dark-color);
     border-color: var(--primary-color);
     color: white;
 }
 
 /* SIGN UP BUTTON */
-.signup-btn {
-    display: block;
-    border: none;
-    border-radius: 30px;
+.button {
+    margin: 30px auto;
     background-color: var(--dark-green);
-    transition: .5s;
-    transform: translate(0px, 0px);
-    text-align: center;
-    color: white;
-    width: 7rem;
-    height: 2.5rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 13px;
-    text-decoration: none;
 }
 
-.signup-btn:hover {
-    box-shadow: 0px 8px 15px -10px rgb(61, 61, 61);
-    transform: translate(0px, -2px);
-    background: var(--primary-green);
-    cursor: pointer;
-
+.button:hover {
+    background-color: var(--dark-green);
 }
 
 .btns {
@@ -143,7 +147,7 @@ input::-webkit-outer-spin-button {
 /* LOG IN LINK */
 .loginlink {
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .loginlink a {

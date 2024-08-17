@@ -1,6 +1,6 @@
 <div class="container">
     <div class="content"> 
-        <button class="exit-button" routerLink="/login"> &times; </button>
+        <button class="exit-button" routerLink="/resde"> &times; </button>
         <!-- ACCOUNT REGISTRATION FORM -->
         <div class="info">
             <form>
@@ -29,6 +29,17 @@
                     </div>
                 </div>
 
+                <div class="input-row">
+                    <div class="input-group">
+                        <label> City </label>
+                        <input type="email" placeholder="City" value="Olongapo">
+                    </div>
+                    <div class="input-group">
+                        <label> Barangay </label>
+                        <input type="number" id="numberInput" placeholder="Barangay" name="numberInput" min="0" step="1">
+                    </div>
+                </div>
+
                 <!-- PASSWORD -->
                 <div class="input-row">
                     <div class="input-group">
@@ -43,20 +54,20 @@
 
                 <!-- DATA PRIVACY CHECKBOX -->
                 <div class="privacy-container">
-                    <label class="privacy-label">
-                      <input type="checkbox" class="privacy-checkbox">
-                           I accept the terms of privacy
-                    </label>
+                    <h3 class="privacy-label">
+                        <input type="checkbox" class="privacy-checkbox">
+                        <p>  I accept the  <a> terms of privacy </a> </p>
+                    </h3>
                 </div>
 
                 <!-- SIGN UP BUTTON -->
-                <div class="btns">
-                <a class="signup-btn" routerLink="/login"> Sign Up </a>
+                <div class="button">
+                    <a routerLink="/login"> Sign Up </a>
                 </div>
                 <br>
                 <!-- LOG IN LINK -->
                 <div class="loginlink">
-                    Already have an account? <a routerLink="/login"> Login </a>
+                    Already have an account? <a routerLink="/login-to-resde"> Login </a>
                 </div>
             </form>
         </div>

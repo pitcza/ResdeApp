@@ -10,6 +10,7 @@
     --gray-hover: #6B6B6B;
 
     --container-color1: #D6CABC;
+    --label-color: rgb(74, 74, 74);
     --input-color: #D9D9D9;
     --input-color2: rgb(233, 233, 233);
 }
@@ -27,4 +28,108 @@ body {
     margin: 0;
     background-color: var(--bg-color);
     font-family: 'Josefin Sans';
+}
+
+a {
+    text-decoration: none;
+}
+
+input {
+    font-family: 'Poppins';
+}
+
+label {
+    font-family: 'Josefin Sans';
+}
+
+.button {
+    width: 200px;
+    background-color: var(--primary-green);
+    color: var(--bg-color);
+    margin-top: 30px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: -webkit-center;
+    text-transform: uppercase;
+    transition: .5s;
+    box-shadow: 0px 8px 15px -10px rgb(61, 61, 61);
+    transform: translate(0px, 2px);
+
+    a {
+        text-decoration: none;
+        color: var(--bg-color);
+        font-size: 16px;
+        font-weight: 500;
+    }
+}
+
+.button:hover {
+    transition: .5s;
+    transform: translate(0px, 0px);
+    box-shadow: none;
+    background: var(--primary-green);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* ANIMATION KEYFRAMES */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bouncePopIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.1); /* Slight overshoot */
+    }
+    80% {
+        transform: scale(0.95); /* Slight undershoot */
+    }
+    100% {
+        transform: scale(1); /* Final scale */
+    }
+}
+
+@keyframes slideInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(50px); /* Start below the element's final position */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the element's final position */
+    }
 }
