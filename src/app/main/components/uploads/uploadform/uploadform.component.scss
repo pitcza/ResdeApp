@@ -1,0 +1,151 @@
+.container {
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px 10px 30px;
+}
+
+h1 {
+    font-family: 'Josefin Sans';
+    font-weight: 700;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+
+.upload-box {
+    padding: 50px 70px 40px 70px;
+    background: white;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+    animation: fadeInLeft 0.3s forwards;
+}
+
+.input-row .input-group {
+    flex-basis: 100%;
+}
+
+.input-row {
+    gap: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    input {
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background-color: var(--input-color2);
+        padding: 20px 10px 3px;
+    }
+
+    input:hover, select:hover, textarea:hover {
+        background-color: var(--input-color);
+    }
+}
+
+label {
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 10px;
+    font-size: 13px;
+    color: var(--label-color);
+}
+
+.input-group select {
+    font-family: 'Poppins';
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background-color: var(--input-color2);
+    padding: 20px 10px 3px;
+    // appearance: none;
+}
+
+.input-group select::after {
+    content: '\25BC'; /* Unicode character for down arrow */
+    transform: translateY(-50%);
+}
+
+// input[type="file"]::file-selector-button {
+//     width: 100%;
+//     height: 60px;
+//     border-radius: 5px;
+//     border: none;
+//     outline: none;
+//     font-size: 14px;
+//     background-color: var(--input-color2);
+//     color: var(--white);
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     cursor: pointer;
+//     background-color: var(--primary-green);
+//     box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+//     transition: background-color 200ms;
+// }
+
+.upload-box textarea {
+    font-family: 'Poppins';
+    width: 100%;
+    height: 50px;
+    resize: vertical;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background-color: var(--input-color2);
+    padding: 20px 10px 3px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btn {
+    width: 120px;
+    text-align: center;
+    font-weight: 600;
+    padding: 10px 10px;
+    margin-bottom: 3%;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0px 2px 2px rgba(78, 78, 78, 0.516);
+    margin-top: 5%;
+}
+
+.buttons .upload {
+    color: white;
+    background-color: var(--dark-green);
+    margin-right: 3%;
+    cursor: pointer;
+}
+
+.buttons .upload:hover {
+    background-color: var(--dark-hover);
+}
+
+.buttons .cancel {
+    color: white;
+    background-color: var(--gray-btn);
+    cursor: pointer;
+}
+
+.buttons .cancel:hover {
+    background-color: var(--gray-hover);
+}
+
+@media screen and (max-width: 768px) {
+    .input-row {
+        display: block;
+    }
+}

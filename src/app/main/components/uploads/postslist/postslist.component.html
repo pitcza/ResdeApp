@@ -1,0 +1,68 @@
+<div class="content">
+    <div class="head">
+        <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
+        <h1> Your Posts </h1>
+        <div class="button" routerLink="../create">
+            <a> Upload </a>
+        </div>
+    </div>
+
+    <div class="table-content">
+        <div class="table-head">
+
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">{{element.date}}</td>
+            </ng-container>
+        
+            <!-- Category Column -->
+            <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let element">{{element.category}}</td>
+            </ng-container>
+        
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+            </ng-container>
+        
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element" class="status">{{element.status}}</td>
+            </ng-container>
+        
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element" class="actions">
+                <button class="edit">
+                    <i class='bx bx-edit' ></i>
+                    <span class="tooltiptext"> Edit </span>
+                </button>
+                <button class="delete">
+                    <i class='bx bx-trash'></i>
+                    <span class="tooltiptext"> Delete </span>
+                </button>
+                <button class="view">
+                    <i class='bx bx-detail' ></i>
+                    <span class="tooltiptext"> View </span>
+                </button>
+            </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+        </mat-paginator>
+        
+    </div>
+</div>

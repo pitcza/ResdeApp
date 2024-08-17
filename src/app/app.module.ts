@@ -8,22 +8,26 @@ import { MainModule } from './main/main.module';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ResdeComponent } from './components/resde/resde.component';
 import { ResdeModule } from './components/resde/resde.module';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MaterialModule } from './modules/material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     LogoutComponent,
-    ResdeComponent
+    ResdeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MainModule,
-    ResdeModule
+    ResdeModule,
+    MaterialModule
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
