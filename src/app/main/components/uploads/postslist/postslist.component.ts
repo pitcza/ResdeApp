@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-postslist',
   templateUrl: './postslist.component.html',
@@ -8,6 +10,32 @@ import { Component } from '@angular/core';
 export class PostslistComponent {
   displayedColumns: string[] = ['date', 'category', 'title', 'status', 'action'];
   dataSource = ELEMENT_DATA;
+
+  // REJECT PROCESS
+  deletePost() {
+    Swal.fire({
+      title: 'Delete Post',
+      text: `Are you sure you want to delete your post?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#AB0E0E',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Post Deleted!",
+          text: "The post has been deleted.",
+          icon: "success",
+          confirmButtonText: 'Close',
+          confirmButtonColor: "#777777",
+          timer: 5000,
+          scrollbarPadding: false
+        });
+      }
+    });
+  }
 }
 
 

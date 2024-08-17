@@ -5,16 +5,20 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MaterialModule } from '../modules/material.module';
+import { PendingsComponent } from './components/pendings/pendings.component';
+import { PendingsModule } from './components/pendings/pendings.module';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    PendingsComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    MaterialModule
+    MaterialModule,
+    PendingsModule
   ]
 })
 export class AdminModule { }

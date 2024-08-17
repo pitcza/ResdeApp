@@ -1,10 +1,10 @@
 <div class="content">
     <div class="head">
         <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
-        <h1> Your Posts </h1>
-        <div class="button" routerLink="../create">
+        <h1> Pending Posts </h1>
+        <!-- <div class="button" routerLink="../create">
             <a> Upload </a>
-        </div>
+        </div> -->
     </div>
 
     <div class="table-content">
@@ -17,6 +17,12 @@
             <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let element">{{element.date}}</td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{element.name}}</td>
             </ng-container>
         
             <!-- Category Column -->
@@ -41,16 +47,16 @@
             <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let element" class="actions">
-                <button class="edit">
-                    <i class='bx bx-edit' ></i>
-                    <span class="tooltiptext"> Edit </span>
+                <button class="edit" (click)="approvePost()">
+                    <i class='bx bx-check-square'></i>
+                    <span class="tooltiptext"> Approve </span>
                 </button>
-                <button class="delete">
-                    <i class='bx bx-trash' (click)="deletePost()"></i>
-                    <span class="tooltiptext"> Delete </span>
+                <button class="delete" (click)="rejectPost()">
+                    <i class='bx bx-no-entry'></i>
+                    <span class="tooltiptext"> Reject </span>
                 </button>
                 <button class="view">
-                    <i class='bx bx-detail' ></i>
+                    <i class='bx bx-detail' routerLink="../view-post"></i>
                     <span class="tooltiptext"> View </span>
                 </button>
             </td>

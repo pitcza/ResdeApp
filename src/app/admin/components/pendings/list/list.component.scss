@@ -54,14 +54,14 @@
         tr:hover { background-color: var(--white-hover); }
 
         .status {
-            color: var(--secondary-green);
+            color: var(--red-btn);
         }
     }
 }
 
 table { // fixed width
-    td:nth-child(5) {
-        min-width: 100px;
-        max-width: 100px;
+    td:nth-child(6) {
+        min-width: 130px;
+        max-width: 130px;
     }
 }
