@@ -15,7 +15,7 @@ export class UploadformComponent {
   confirmAction() {
     Swal.fire({
       title: 'Upload Post',
-      text: `You are about to upload your idea?`,
+      text: `Are you sure you want to upload a post?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#404B43',
@@ -25,23 +25,16 @@ export class UploadformComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.router.navigate(['main/uploads/list']); 
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 2500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          }
-        });
-        Toast.fire({
+        Swal.fire({
+          title: "Post Pending",
+          text: "Waiting for the admin approval.",
           icon: "success",
-          title: 'Post Pending',
-          text: `Wait for Approval`,
+          confirmButtonText: 'Close',
+          confirmButtonColor: "#777777",
+          timer: 5000,
+          scrollbarPadding: false
         });
-    }
+      }
     });
   }
 

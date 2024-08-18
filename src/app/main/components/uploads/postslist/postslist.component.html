@@ -9,7 +9,20 @@
 
     <div class="table-content">
         <div class="table-head">
+            <div class="data-filter">
+                <!-- <h2> Filter Category: </h2> -->
+                <select id="filter-category">
+                    <option selected value=""> All Category </option>
+                    <option value=""> Sample </option>
+                </select>
 
+                <select id="filter-category">
+                    <option selected value=""> Select Status </option>
+                    <option value="Uploaded"> Uploaded </option>
+                    <option value="Pending"> Pending </option>
+                    <option value="Denied ba or Rejected"> Denied ba or Rejected </option>
+                </select>
+            </div>
         </div>
 
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -41,7 +54,7 @@
             <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let element" class="actions">
-                <button class="edit">
+                <button class="edit" routerLink="../edit-post">
                     <i class='bx bx-edit' ></i>
                     <span class="tooltiptext"> Edit </span>
                 </button>

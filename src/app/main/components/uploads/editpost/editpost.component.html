@@ -1,0 +1,46 @@
+<main>
+    <div class="container">
+        <div class="content">
+            <div class="upload-box">
+                <h1> Edit Post </h1>
+    
+                <!-- UPLOAD POST BOX -->
+                <form>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label> Category </label>
+                            <select>
+                                <option value="Compost"> Compost </option>
+                                <option value="Plastic"> Plastic </option>
+                                <option value="Rubber"> Rubber </option>
+                                <option value="Wood and Paper"> Wood and Paper </option>
+                                <option value="Miscellaneous Products"> Miscellaneous Products </option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label> Title </label>
+                            <input type="text" placeholder="Post Title">
+                        </div>
+                      </div>
+    
+                      <div class="input-row">
+                        <div class="input-group">
+                            <label> Upload Photo </label>
+                            <input type="file" id="file" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <label> Description </label>
+                            <textarea placeholder="Description of your post idea..."></textarea>
+                        </div>
+                      </div>
+    
+                      <!-- UPLOAD AND CANCEL BUTTON -->
+                      <div class="buttons">
+                        <a id="btn" class="upload" (click)="updatePost()"> Update </a>
+                        <a id="btn" class="cancel" routerLink="../list"> Cancel </a>
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

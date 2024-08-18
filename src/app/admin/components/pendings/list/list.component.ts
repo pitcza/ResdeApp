@@ -74,6 +74,6 @@ export interface TableElement {
 }
 
 const ELEMENT_DATA: TableElement[] = [
-  { date: '2024-08-17', name: 'Sample Name', category: 'Category1', title: 'Title1', status: 'Uploaded' },
+  { date: '2024-08-17', name: 'Sample Name', category: 'Category1', title: 'Title1', status: 'Pending' },
   { date: '2024-08-16', name: 'Sample Name', category: 'Category2', title: 'Title2', status: 'Pending'},
 ];
