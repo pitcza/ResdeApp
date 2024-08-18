@@ -281,7 +281,7 @@ container {
     transform: translateX(-100%);
     }
 
-    container.collapsed .sidebar.collapsed {
+    .container.collapsed .sidebar.collapsed {
     transform: translateX(0);
     width: 70px;
     }

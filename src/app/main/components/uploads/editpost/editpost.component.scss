@@ -38,12 +38,12 @@ h1 {
         border: none;
         outline: none;
         font-size: 14px;
-        background-color: var(--input-color2);
+        background-color: var(--input-hover);
         padding: 20px 10px 3px;
     }
 
     input:hover, select:hover, textarea:hover {
-        background-color: var(--input-color);
+        background-color: var(--input-bg);
     }
 }
 
@@ -63,7 +63,7 @@ label {
     border: none;
     outline: none;
     font-size: 14px;
-    background-color: var(--input-color2);
+    background-color: var(--input-hover);
     padding: 20px 10px 3px;
     // appearance: none;
 }
@@ -80,7 +80,7 @@ label {
 //     border: none;
 //     outline: none;
 //     font-size: 14px;
-//     background-color: var(--input-color2);
+//     background-color: var(--input-hover);
 //     color: var(--white);
 //     position: absolute;
 //     top: 0;
@@ -100,7 +100,7 @@ label {
     border: none;
     outline: none;
     font-size: 14px;
-    background-color: var(--input-color2);
+    background-color: var(--input-hover);
     padding: 20px 10px 3px;
 }
 
