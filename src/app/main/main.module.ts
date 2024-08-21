@@ -6,12 +6,14 @@ import { MainRoutingModule } from './main-routing.module';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { HomepageModule } from './components/homepage/homepage.module';
 import { LikedpostsComponent } from './components/likedposts/likedposts.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
   declarations: [
     HomepageComponent,
-    LikedpostsComponent
+    LikedpostsComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
