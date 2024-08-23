@@ -1,6 +1,6 @@
 <div class="content">
     <div class="container">
-        <button class="exit-button" routerLink="../posts"> &times; <span class="exit-tooltip"> Exit </span> </button>
+        <button class="exit-button" routerLink="../list"> &times; <span class="exit-tooltip"> Exit </span> </button>
         <div class="user-post">
             <!-- POST TITLE -->
             <h1> Build hardware cloth or chicken wire compost bin </h1>
@@ -22,7 +22,12 @@
                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Felis bibendum ut tristique et. Dui faucibus in ornare quam viverra orci sagittis eu. Urna et pharetra pharetra massa. Urna cursus eget nunc scelerisque viverra mauris in. </p>
                 </div>
             </div>
-            <a> <span class="heart-btn"> <i class='bx bx-heart'></i> </span> </a>
+
+            <div class="buttons">
+                <input class="submit-btn" type="button" value="Edit Post" routerLink="../edit-post">
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost()">
+            </div>
+
         </div>
     </div>
 </div>

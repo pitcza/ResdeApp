@@ -1,48 +1,57 @@
-<main>
+<div class="content">
     <div class="container">
-        <div class="content">
-            <div class="upload-box">
-                <button class="exit-button" routerLink="../list"> &times; </button>
-                <h1> Upload your Idea </h1>
-    
-                <!-- UPLOAD POST BOX -->
-                <form>
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label> Category </label>
-                            <select>
-                                <option value="Compost"> Compost </option>
-                                <option value="Plastic"> Plastic </option>
-                                <option value="Rubber"> Rubber </option>
-                                <option value="Wood and Paper"> Wood and Paper </option>
-                                <option value="Miscellaneous Products"> Miscellaneous Products </option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label> Title </label>
-                            <input type="text" placeholder="Post Title">
-                        </div>
-                      </div>
-    
-                      <div class="input-row">
-                        <div class="input-group">
-                            <label> Upload Photo </label>
-                            <input type="file" id="file" accept="image/*">
-                        </div>
-                        <div class="input-group">
-                            <label> Description </label>
-                            <textarea placeholder="Description of your post idea..."></textarea>
-                        </div>
-                      </div>
-    
-                      <!-- UPLOAD AND CANCEL BUTTON -->
-                      <div class="buttons">
-                        <a id="btn" class="upload" (click)="confirmAction()"> Upload </a>
-                        <a id="btn" class="cancel" routerLink="../list"> Cancel </a>
-                      </div>
-                </form>
-            </div>
+        <button class="exit-button" routerLink="../list"> &times; <span class="exit-tooltip"> Exit </span> </button>
+        <div class="head">
+            <h1> Upload Post </h1>
         </div>
+        <form action="">
+            <div class="input-row">
+                <div class="input-field-shorter">
+                    <label class="labelline"> Category </label>
+                    <select class="txt-field">
+                        <option value="Compost"> Compost </option>
+                        <option value="Plastic"> Plastic </option>
+                        <option value="Rubber"> Rubber </option>
+                        <option value="Wood and Paper"> Wood and Paper </option>
+                        <option value="Miscellaneous Products"> Miscellaneous Products </option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label class="labelline"> Title </label>
+                    <input class="txt-field" type="text" name="title">
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="input-field">
+                    <label class="labelline"> Description </label>
+                    <textarea class="txtarea-field" placeholder="Description of your post idea..."></textarea>
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="input-field-short">
+                  <label class="up-labelline"> Upload Photo </label>
+                  <input class="file-field" type="file" id="file" accept="image/*" (change)="onFileSelected($event)">
+                </div>
+                <div class="input-field">
+                    <!-- <div class="preview" *ngIf="!ImagePreview">
+                        <h2> Choose Image File to Preview </h2>
+                    </div>
+                    <div class="preview" *ngIf="ImagePreview">
+                        <h2> Image Preview </h2>
+                    </div>
+                    <div class="image-preview" *ngIf="ImagePreview">
+                        <img [src]="ImagePreview" alt="Image Preview">
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="buttons">
+                <input class="submit-btn" type="submit" value="Upload" (click)="confirmAction()">
+                <input class="cancel-btn" type="button" value="Cancel" routerLink="../list">
+            </div>
+
+        </form>
     </div>
-</main>
-    
+</div>

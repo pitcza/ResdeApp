@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-postslist',
-  templateUrl: './postslist.component.html',
-  styleUrl: './postslist.component.scss'
+  selector: 'app-view',
+  templateUrl: './view.component.html',
+  styleUrl: './view.component.scss'
 })
-export class PostslistComponent {
-  displayedColumns: string[] = ['date', 'category', 'title', 'status', 'action'];
-  dataSource = ELEMENT_DATA;
+export class ViewComponent {
+  constructor(private router: Router) {}
 
-  // DELETE PROCESS
   deletePost() {
     Swal.fire({
       title: 'Delete Post',
@@ -24,6 +23,7 @@ export class PostslistComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.router.navigate(['main/uploads/list']); 
         Swal.fire({
           title: "Post Deleted!",
           text: "The post has been deleted.",
@@ -37,16 +37,3 @@ export class PostslistComponent {
     });
   }
 }
-
-
-export interface TableElement {
-  date: string;
-  category: string;
-  title: string;
-  status: string;
-}
-
-const ELEMENT_DATA: TableElement[] = [
-  { date: '2024-08-17', category: 'Category1', title: 'Title1', status: 'Uploaded' },
-  { date: '2024-08-16', category: 'Category2', title: 'Title2', status: 'Pending'},
-];

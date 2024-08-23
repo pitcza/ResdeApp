@@ -11,6 +11,20 @@ import Swal from 'sweetalert2';
 export class EditpostComponent {
   constructor(private router: Router) {}
 
+  // if trip lagyan hehe nakacomment sa html
+  ImagePreview: string | ArrayBuffer | null = null;
+
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.ImagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   // Confirmation function
   updatePost() {
     Swal.fire({

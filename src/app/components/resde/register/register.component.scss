@@ -39,11 +39,6 @@
     justify-content: space-between;
     margin-bottom: 20px;
 
-    input::placeholder {
-        color: #b1b1b1; /* Lighter shade of gray */
-        opacity: 1; /* Ensures full opacity of the color */
-    }
-
     input, select {
         font-family: 'Poppins';
         width: 100%;

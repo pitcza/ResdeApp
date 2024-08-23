@@ -4,10 +4,12 @@ import { PendingsComponent } from './pendings.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { ApprovedListComponent } from './approved-list/approved-list.component';
+import { ViewPendingComponent } from './view-pending/view-pending.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list-of-posts', pathMatch: 'full' },
   { path: 'list-of-posts', component: ListComponent },
+  { path: 'view-pending', component: ViewPendingComponent },
   { path: 'view-post', component: ViewComponent },
   { path: 'approved-posts', component: ApprovedListComponent },
 ];

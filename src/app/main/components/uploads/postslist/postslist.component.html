@@ -2,7 +2,7 @@
     <div class="head">
         <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
         <h1> Your Posts </h1>
-        <div class="button" routerLink="../create">
+        <div class="button" routerLink="../upload-post">
             <a> Upload </a>
         </div>
     </div>
@@ -66,8 +66,8 @@
                     <i class='bx bx-trash' (click)="deletePost()"></i>
                     <span class="tooltiptext"> Delete </span>
                 </button>
-                <button class="view">
-                    <i class='bx bx-detail' ></i>
+                <button class="view" routerLink="../view-post">
+                    <i class='bx bx-detail'></i>
                     <span class="tooltiptext"> View </span>
                 </button>
             </td>

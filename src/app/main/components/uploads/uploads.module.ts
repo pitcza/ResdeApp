@@ -7,6 +7,7 @@ import { PostslistComponent } from './postslist/postslist.component';
 import { MaterialModule } from '../../../modules/material.module';
 import { UploadformComponent } from './uploadform/uploadform.component';
 import { EditpostComponent } from './editpost/editpost.component';
+import { ViewComponent } from './view/view.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { EditpostComponent } from './editpost/editpost.component';
     UploadsComponent,
     PostslistComponent,
     UploadformComponent,
-    EditpostComponent
+    EditpostComponent,
+    ViewComponent
   ],
   imports: [
     CommonModule,
