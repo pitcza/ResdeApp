@@ -1,6 +1,6 @@
 <div class="content">
     <div class="container">
-        <button class="exit-button" routerLink="../list-of-posts"> &times; <span class="exit-tooltip"> Exit </span> </button>
+        <button class="exit-button" routerLink="../list"> &times; <span class="exit-tooltip"> Exit </span> </button>
         <div class="user-post">
             <!-- POST TITLE -->
             <h1> Build hardware cloth or chicken wire compost bin </h1>
@@ -23,7 +23,9 @@
                 </div>
             </div>
 
-
+            <div class="buttons">
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost()">
+            </div>
 
         </div>
     </div>

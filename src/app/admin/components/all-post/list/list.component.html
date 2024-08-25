@@ -2,9 +2,9 @@
     <div class="head">
         <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
         <h1> Approved Posts </h1>
-        <div class="button" routerLink="../list-of-posts">
+        <!-- <div class="button" routerLink="../list-of-posts">
             <a> Pending Posts </a>
-        </div>
+        </div> -->
     </div>
 
     <div class="table-content">
@@ -61,13 +61,13 @@
                 <!-- <button class="edit" (click)="approvePost()">
                     <i class='bx bx-check-square'></i>
                     <span class="tooltiptext"> Approve </span>
-                </button>
-                <button class="delete" (click)="rejectPost()">
-                    <i class='bx bx-no-entry'></i>
-                    <span class="tooltiptext"> Reject </span>
                 </button> -->
+                <button class="delete" (click)="deletePost()">
+                    <i class='bx bx-trash'></i>
+                    <span class="tooltiptext"> Delete </span>
+                </button>
                 <button class="view">
-                    <i class='bx bx-detail' routerLink="../view-post"></i>
+                    <i class='bx bx-detail' routerLink="../view"></i>
                     <span class="tooltiptext"> View </span>
                 </button>
             </td>

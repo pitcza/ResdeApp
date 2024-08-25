@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApprovedListComponent } from './approved-list.component';
+import { AllPostComponent } from './all-post.component';
 
-describe('ApprovedListComponent', () => {
-  let component: ApprovedListComponent;
-  let fixture: ComponentFixture<ApprovedListComponent>;
+describe('AllPostComponent', () => {
+  let component: AllPostComponent;
+  let fixture: ComponentFixture<AllPostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApprovedListComponent]
+      declarations: [AllPostComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ApprovedListComponent);
+    fixture = TestBed.createComponent(AllPostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

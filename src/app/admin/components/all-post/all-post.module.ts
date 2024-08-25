@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PendingsRoutingModule } from './pendings-routing.module';
-import { PendingsComponent } from './pendings.component';
+import { AllPostRoutingModule } from './all-post-routing.module';
+import { AllPostComponent } from './all-post.component';
 import { ListComponent } from './list/list.component';
+import { ViewComponent } from './view/view.component';
 import { MaterialModule } from '../../../modules/material.module';
-import { ViewPendingComponent } from './view-pending/view-pending.component';
 
 
 @NgModule({
   declarations: [
     ListComponent,
-    ViewPendingComponent
+    ViewComponent
   ],
   imports: [
     CommonModule,
-    PendingsRoutingModule,
+    AllPostRoutingModule,
     MaterialModule
   ]
 })
-export class PendingsModule { }
+export class AllPostModule { }

@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'pendings', loadChildren: () => import('./components/pendings/pendings.module').then(m => m.PendingsModule) },
+  { path: 'all-post', loadChildren: () => import('./components/all-post/all-post.module').then(m => m.AllPostModule) },
 ];
 
 @NgModule({
