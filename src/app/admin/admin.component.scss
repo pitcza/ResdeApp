@@ -1,11 +1,11 @@
-container {
+.container {
     display: flex;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
 
 .main-content {
     width: 100%;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
 
 /* HEADER */
@@ -18,42 +18,69 @@ container {
     padding: 15px 20px;
     background-color: var(--primary-green);
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     z-index: 99;
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.322);
-    transition: all 0.3s ease;
-}
+    transition: all 0.3s ease-in-out;
 
-.header {
-    display: flex;
-    align-items: center;
-}
+    .menu-icon-button {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 30px;
+        padding: 5px 15px 5px 5px;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        color: var(--bg-color);
+        transition: all 0.3s ease-in-out;
+    }
 
-/* MENU */
-.menu-icon-button {
-    position: absolute;
-    background: none;
-    border: none;
-    font-size: 24px;
-    padding: 5px;
-    right: 0;
-    top: 0;
-    cursor: pointer;
-    color: var(--white);
-}
+    .logout {
+        text-decoration: none;
+        font-size: 25px;
+        padding: 10px;
+        justify-content: center;
+        display: none;
+        background: none;
+        border: none;
+        font-size: 30px;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        color: var(--bg-color);
+        transition: all 0.3s ease-in-out;
 
-.menu-icon-button:hover {
-    color: var(--container-color);
+        i {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.5s ease-in-out;
+        }
+    
+        i:hover {
+            background-color: var(--dark-green);
+            color: white;
+            opacity: 100%;
+        }
+    }
+
+    .menu-icon-button:hover {
+        color: var(--secondary-green);
+    }
 }
 
 .appname {
     display: flex;
     align-items: center;
-    color: var(--secondary-green);
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.30);
-    font-size: 40px;
-    font-weight: 700;
+    h2 {
+        color: var(--secondary-green);
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.30);
+        font-size: 40px;
+        font-weight: 700;
+        margin-bottom: -6px;
+    }
 }
 
 .body-content {
@@ -72,11 +99,28 @@ container {
     height: 100%;
     padding: 0px 10px;
     box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.400);
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     z-index: 100;
 
     a {
         color: black;
+    }
+
+    /* MENU */
+    .menu-icon-button {
+        position: absolute;
+        background: none;
+        border: none;
+        font-size: 24px;
+        padding: 5px;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        color: black;
+    }
+
+    .menu-icon-button:hover {
+        color: var(--primary-green);
     }
 }
 
@@ -91,12 +135,12 @@ container {
     margin: 40px 20px 30px 20px;
 
     .userImg img {
-        height: 140px;
-        width: 140px;
+        height: 130px;
+        width: 130px;
         display: flex;
         justify-content: center;
         margin: auto;
-        transition: all 0.3s ease;
+        transition: all 0.3s ease-in-out;
     }
 
     .userName {
@@ -146,7 +190,7 @@ container {
                 border-radius: 10px;
                 text-decoration: none;
                 margin-bottom: 3px;
-                transition: all 0.3s ease;
+                transition: all 0.3s ease-in-out;
             }
             a:hover {
                 color: white;
@@ -166,7 +210,7 @@ container {
     left: 0;
     width: 200px;
     cursor: default;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 
     .logout {
         display: flex;
@@ -183,7 +227,7 @@ container {
         background-color: var(--primary-green);
         opacity: 50%;
         border-radius: 10px;
-        transition: all 0.5s ease;
+        transition: all 0.5s ease-in-out;
     }
 
     i:hover {
@@ -272,37 +316,48 @@ container {
 .sidebar.overlay {
     position: fixed;
     top: 0;
-    left: 0;
     width: 200px;
     height: 100%;
     z-index: 200;
     transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
 }
 
-.main-content.overlay .header, 
-.main-content.overlay .body-content {
-    margin-left: 70px;
-    width: calc(100% - 70px);
+.sidebar.overlay.visible {
+    left: 0; /* Slide in to the visible area */
+    transform: translateX(0);
 }
 
-@media (max-width: 768px) {
-    .sidebar {
-    transform: translateX(-100%);
+@media (max-width: 1024px) {
+    .sidebar .logout { display: none; }
+    .header .menu-icon-button, .header .logout {
+        display: flex;
     }
 
-    .container.collapsed .sidebar.collapsed {
-    transform: translateX(0);
-    width: 70px;
+    .sidebar.collapsed {
+        transform: translateX(-100%);
+    }
+    
+    .main-content.collapsed .header {
+        margin-left: 0;
+        transition: margin-left 0.3s;
+        width: 100%;
+    }
+    
+    .main-content.collapsed .body-content {
+        margin-left: 0;
+        transition: margin-left 0.3s;
+        width: 100%;
     }
 
     .sidebar.overlay {
-    width: 200px;
+        width: 200px;
     }
 
     .main-content.overlay .header, 
     .main-content.overlay .body-content {
-    margin-left: 70px;
-    width: calc(100% - 70px);
+        margin-left: 0;
+        width: 100%;
     }
 
     .sidebar-overlay {
@@ -314,7 +369,7 @@ container {
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 50;
         display: none;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.3s ease-in-out;
     }
 
     .sidebar-overlay.visible {
