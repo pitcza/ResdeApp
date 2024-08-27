@@ -1,6 +1,5 @@
 .head {
-    display: flex;
-    justify-content: space-between;
+    display: block;
 
     h1 {
         text-transform: uppercase;
@@ -8,13 +7,11 @@
         font-weight: 700;
     }
 
-    .button {
-        margin-top: -10px;
-        padding-top: 3px;
-        width: 150px;
-        background-color: var(--dark-green);
-        text-transform: capitalize;
-        a { color: white; }
+    p {
+        margin-top: 5px;
+        font-family: 'Josefin Sans';
+        font-size: 14px;
+        color: var(--primary-green);
     }
 }
 

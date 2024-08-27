@@ -13,7 +13,7 @@
 
     span {
         color: var(--dark-green);
-        padding-bottom: 2%;
+        padding-bottom: 20px;
     }
     
     h3 {
@@ -21,6 +21,7 @@
         font-size: 2.4rem;
         color: #2b2b2b;
         font-weight: 700;
+        text-align: center;
     }
 }
 
@@ -31,13 +32,8 @@
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto;
-    margin: auto;
-}
-
-/* USER POST BOX */
-.post-box:hover {
-    background-color: rgb(244, 244, 244);
-    transform: scale(1.03); /* scale effect on hover */ 
+    gap: 30px;
+    margin: 30px 20px;
 }
 
 /* POST CONTENT */
@@ -45,7 +41,6 @@
     position: relative;
     padding: 20px;
     background-color: white;
-    margin: 20px;
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
     transition: 0.3s ease-in-out;
     cursor: pointer;
@@ -182,28 +177,34 @@
     }
 }
 
+.post-box:hover {
+    background-color: rgb(244, 244, 244);
+    transform: scale(1.03); /* scale effect on hover */ 
+}
+
 /* MEDIA SCREEN */
 @media(max-width:1250px){
-    .post-box{
-        width: 300px;
-    }
     .post-container {
         grid-template-columns: 1fr 1fr;
+
+        .post-box {
+            width: 100%;
+        }
     }
 }
 
-@media(max-width:1100px){
-    .post-container {
-        max-width: 1000px;
-    }
-}
+// @media(max-width:1100px){
+//     .post-container {
+//         max-width: 1000px;
+//     }
+// }
  
 @media(max-width:900px){
     .post-container {
         grid-template-columns: 1fr;
-        padding: 10px;
-    }
-    .post-box {
-        width: 400px;
+
+        .post-box {
+            width: 100%;
+        }
     }
 }

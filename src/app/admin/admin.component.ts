@@ -22,7 +22,7 @@ export class AdminComponent {
 
   toggleSidebar() {
     this.isSidebarToggled = !this.isSidebarToggled;
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1024) {
       if (this.isSidebarOverlay) {
         this.isSidebarOverlay = false;
         this.isSidebarCollapsed = true;
@@ -43,7 +43,7 @@ export class AdminComponent {
 
   checkScreenWidth() {
     const screenWidth = window.innerWidth;
-    if (screenWidth <= 768) {
+    if (screenWidth <= 1024) {
       this.isSidebarCollapsed = true;
       this.isSidebarOverlay = false;
     } else {
