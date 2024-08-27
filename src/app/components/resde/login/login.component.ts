@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthserviceService } from '../../../services/authservice.service';
 
 
 @Component({
@@ -8,8 +9,34 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  constructor(private router: Router) {
+  loginData = { email: '', password: '' };
+  errorMessages: string[] = [];
 
+  constructor(
+    private router: Router,
+    private as: AuthserviceService
+  ) {}
+
+  onLogin() {
+    const formData = new FormData();
+    formData.append('email', this.loginData.email);
+    formData.append('password', this.loginData.password);
+
+    this.as.login(formData).subscribe(
+      (response: any) => {
+        
+        console.log('Login successful:', response);
+        
+        this.router.navigate(['/main']);
+      },
+      (error: any) => {
+        if (error.errors) {
+          this.errorMessages = error.errors;
+        } else {
+          console.error('Login failed:', error);
+        }
+      }
+    );
   }
 
   landingPage() {

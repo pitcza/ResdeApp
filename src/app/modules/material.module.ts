@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const MatModules = [
   CommonModule,
@@ -24,7 +24,8 @@ const MatModules = [
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatSortModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  FormsModule
 ];
 
 @NgModule({

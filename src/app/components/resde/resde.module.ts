@@ -6,6 +6,7 @@ import { ResdeComponent } from './resde.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { MaterialModule } from '../../modules/material.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RegisterComponent } from './register/register.component';
   ],
   imports: [
     CommonModule,
-    ResdeRoutingModule
+    ResdeRoutingModule,
+    MaterialModule
   ]
 })
 export class ResdeModule { }

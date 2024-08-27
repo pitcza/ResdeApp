@@ -13,6 +13,7 @@ import { MaterialModule } from './modules/material.module';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AdminModule } from './admin/admin.module';
 import { AdminComponent } from './admin/admin.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AdminComponent } from './admin/admin.component';
     MainModule,
     ResdeModule,
     MaterialModule,
-    AdminModule
+    AdminModule,
+    HttpClientModule
   ],
   providers: [
     provideClientHydration(),

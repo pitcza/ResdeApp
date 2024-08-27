@@ -11,7 +11,7 @@
     <!-- RIGHT SCREEN -->
     <div class="right">
         <div class="loginform">
-            <form action="">
+            <form (ngSubmit)="onLogin()" #loginForm="ngForm">
                 <section class="appname">
                     <h2 routerLink="/resde"> Resde </h2>
                     <!-- FOR RESPONSIVE CONTENT -->
@@ -20,14 +20,15 @@
                 </section>
 
                 <!-- LOG IN FORM -->
+
                 <div class="input-container email">
                     <i class='bx bxs-user-circle'></i>
-                    <input id="email" name="email" type="email" placeholder="Email">
-                </div>
-                <div class="input-container password">
-                    <i class='bx bxs-lock' ></i>
-                    <input id="password" name="password" type="password" placeholder="Password">
-                </div>
+                    <input id="email" name="email" type="email" placeholder="Email" [(ngModel)]="loginData.email" required>
+                  </div>
+                  <div class="input-container password">
+                    <i class='bx bxs-lock'></i>
+                    <input id="password" name="password" type="password" placeholder="Password" [(ngModel)]="loginData.password" required>
+                  </div>
 
                 <!-- FORGOT PASSWORD LINK -->
                 <div class="forgotpassword">
@@ -35,8 +36,8 @@
                 </div>
 
                 <!-- LOG IN BUTTON -->
-                <div class="button" routerLink="/main">
-                    <a class="btn"> Log In </a>
+                <div class="button">
+                    <button class="btn" type="submit"> Log In </button>
                 </div>
 
                 <!-- SIGN UP LINK -->

@@ -3,91 +3,76 @@
         <button class="exit-button" routerLink="/resde"> &times; </button>
         <!-- ACCOUNT REGISTRATION FORM -->
         <div class="info">
-            <form>
-                <h1> Create Account </h1>
-                
+            <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+                <h1>Create Account</h1>
+              
                 <!-- USER INFORMATION -->
                 <div class="input-row">
-                    <div class="input-group">
-                        <label> First Name </label>
-                        <input type="text" placeholder="Fisrt Name">
-                    </div>
-                    <div class="input-group">
-                        <label> Last Name </label>
-                        <input type="text" placeholder="Last Name">
-                    </div>
+                  <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" placeholder="First Name" [(ngModel)]="registerData.fname" name="fname" required>
+                  </div>
+                  <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Last Name" [(ngModel)]="registerData.lname" name="lname" required>
+                  </div>
                 </div>
-
+              
                 <div class="input-row">
-                    <div class="input-group">
-                        <label> Email </label>
-                        <input type="email" placeholder="Email">
-                    </div>
-                    <div class="input-group">
-                        <label> Phone Number </label>
-                        <input type="number" id="numberInput" name="numberInput" min="0" step="1" placeholder="Phone Number">
-                    </div>
+                  <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Email" [(ngModel)]="registerData.email" name="email" required>
+                  </div>
+                  <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="number" [(ngModel)]="registerData.phone_number" name="phone_number" min="0" step="1" placeholder="Phone Number">
+                  </div>
                 </div>
-
+              
                 <div class="input-row">
-                    <div class="input-group">
-                        <label> City </label>
-                        <input type="text" value="Olongapo" disabled>
-                    </div>
-                    <div class="input-group">
-                        <label> Barangay </label>
-                        <select>
-                            <option value=" "> Select Barangay </option>
-                            <option value="Asinan"> Asinan </option>
-                            <option value="Banicain"> Banicain </option>
-                            <option value="Barreto"> Barreto </option>
-                            <option value="East Bajac-bajac"> East Bajac-bajac </option>
-                            <option value="East Tapinac"> East Tapinac </option>
-                            <option value="Gordon Heights"> Gordon Heights </option>
-                            <option value="Kalaklan"> Kalaklan </option>
-                            <option value="New Kalalake"> New Kalalake </option>
-                            <option value="Mabayuhan"> Mabayuhan </option>
-                            <option value="New Cabalan"> New Cabalan </option>
-                            <option value="New Ilalim"> New Ilalim </option>
-                            <option value="New Kababae"> New Kababae </option>
-                            <option value="Pag-asa"> Pag-asa </option>
-                            <option value="Santa Rita"> Santa Rita </option>
-                            <option value="West Tapinac"> West Tapinac </option>
-                            <option value="Old Cabalan"> Old Cabalan </option>
-                        </select>
-                    </div>
+                  <div class="input-group">
+                    <label>City</label>
+                    <input type="text" placeholder="Olongapo" [(ngModel)]="registerData.city" name="email" required>
+                  </div>
+                  <div class="input-group">
+                    <label>Barangay</label>
+                    <select [(ngModel)]="registerData.barangay" name="barangay">
+                      <option value="">Select Barangay</option>
+                      <option *ngFor="let option of barangays" [value]="option">{{ option }}</option>
+                    </select>
+                  </div>
                 </div>
-
+              
                 <!-- PASSWORD -->
                 <div class="input-row">
-                    <div class="input-group">
-                        <label> Password </label>
-                        <input type="password" placeholder="Password">
-                    </div>
-                    <div class="input-group">
-                        <label> Confirn Password </label>
-                        <input type="password" placeholder="Confirm Password">
-                    </div>
+                  <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Password" [(ngModel)]="registerData.password" name="password" required>
+                  </div>
+                  <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" placeholder="Confirm Password" [(ngModel)]="registerData.password_confirmation" name="password_confirmation" required>
+                  </div>
                 </div>
-
+              
                 <!-- DATA PRIVACY CHECKBOX -->
                 <div class="privacy-container">
-                    <h3 class="privacy-label">
-                        <input type="checkbox" class="privacy-checkbox">
-                        <p>  I accept the  <a> terms of privacy </a> </p>
-                    </h3>
+                  <h3 class="privacy-label">
+                    <input type="checkbox" [(ngModel)]="registerData.privacy" name="privacy" required>
+                    <p>I accept the <a href="#">terms of privacy</a></p>
+                  </h3>
                 </div>
-
+              
                 <!-- SIGN UP BUTTON -->
                 <div class="button">
-                    <a routerLink="/login"> Sign Up </a>
+                  <button type="submit">Sign Up</button>
                 </div>
                 <br>
                 <!-- LOG IN LINK -->
                 <div class="loginlink">
-                    Already have an account? <a routerLink="/login-to-resde"> Login </a>
+                  Already have an account? <a routerLink="/login">Login</a>
                 </div>
-            </form>
+              </form>
         </div>
     </div>
 </div>
