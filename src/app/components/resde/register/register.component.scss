@@ -117,20 +117,16 @@ input::-webkit-outer-spin-button {
 }
 
 /* SIGN UP BUTTON */
-.button {
+.btn:hover {
+    background-color: var(--dark-green);
+}
+
+.btn {
     margin: 30px auto;
     background-color: var(--dark-green);
-}
-
-.button:hover {
-    background-color: var(--dark-green);
-}
-
-.btns {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 1%;
 }
 
 /* LOG IN LINK */

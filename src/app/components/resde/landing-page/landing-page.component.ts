@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-landing-page',
@@ -6,5 +6,32 @@ import { Component } from '@angular/core';
   styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
+  ngOnInit(): void {
+    // Initial setup
+    this.checkElementsInView();
+  }
 
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.checkElementsInView();
+  }
+
+  private checkElementsInView(): void {
+    const rsContainer = document.querySelector('.rs-container') as HTMLElement;
+    const darkContainer = document.querySelector('.dark-container') as HTMLElement;
+
+    this.toggleInView(rsContainer);
+    this.toggleInView(darkContainer);
+  }
+
+  private toggleInView(element: HTMLElement): void {
+    const rect = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    if (rect.top <= windowHeight && rect.bottom >= 0) {
+      element.classList.add('in-view');
+    } else {
+      element.classList.remove('in-view');
+    }
+  }
 }

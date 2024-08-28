@@ -133,11 +133,13 @@
         }
 
         .button {
-            margin: 30px auto; 
-            border-radius: 20px;
-            background-color: var(--dark-green);
-
-            a {
+            .btn {
+                margin: 30px auto; 
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 20px;
+                background-color: var(--dark-green);
                 text-decoration: none;
                 color: var(--bg-color);
                 font-size: 16px;

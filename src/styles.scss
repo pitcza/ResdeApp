@@ -5,6 +5,7 @@
     --dark-green: #404B43;
     --dark-hover: #37413a;
     --bg-color: #EDE6DE;
+    --bg-colorlight: #f0ebe5;
 
     --red-btn: #a93636;
     --red-hover: #860c0c;
@@ -97,6 +98,29 @@ label {
 
 // SINGLE BUTTON
 .button {
+    .btn {
+        border: none;
+        width: 200px;
+        background-color: var(--primary-green);
+        color: var(--bg-color);
+        margin-top: 30px;
+        height: 40px;
+        align-content: space-evenly;
+        border-radius: 4px;
+        text-align: -webkit-center;
+        text-transform: uppercase;
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+        transition: .3s;
+        transform: translate(0px, 0px);
+        text-decoration: none;
+        color: var(--bg-color);
+        font-size: 16px;
+        font-weight: 500;
+    }
+}
+
+.route-btn {
+    border: none;
     width: 200px;
     background-color: var(--primary-green);
     color: var(--bg-color);
@@ -118,7 +142,7 @@ label {
     }
 }
 
-.button:hover {
+.btn:hover, .route-btn:hover {
     transition: .5s;
     transform: translate(0px, -2px);
     box-shadow: 0px 8px 15px -10px rgb(125, 125, 125);
