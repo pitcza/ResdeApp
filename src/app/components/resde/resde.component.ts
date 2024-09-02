@@ -23,14 +23,11 @@ export class ResdeComponent {
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     const bgElement = document.querySelector('.bg') as HTMLElement;
-    const headingElement = document.querySelector('h1') as HTMLElement;
     
     if (window.scrollY > 0) {
       bgElement.style.opacity = '0.9';
-      headingElement.style.color = 'var(--dark-green)';
     } else {
       bgElement.style.opacity = '0.0';
-      headingElement.style.color = 'var(--dark-green)';
     }
   }
 }

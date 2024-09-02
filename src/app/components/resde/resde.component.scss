@@ -9,6 +9,18 @@
     z-index: 1000;
     position: fixed;
 
+    .bg {
+        position: absolute;
+        background-color: var(--bg-color);
+        opacity: 0.0;
+        width: 100%;
+        top: 0;
+        left: 0;
+        height: 100px;
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
+        transition: opacity 0.3s ease;
+    }
+
     img.hide, h1.hide, .bg.hide {
         display: none;
     }
@@ -16,24 +28,24 @@
     .resdeapp {
         display: flex;
 
-        .bg {
-            position: absolute;
-            background-color: var(--bg-color);
-            opacity: 0.0;
-            width: 200px;
-            height: 80px;
-            padding-top: 10px;
-            margin-top: -20px;
-            margin-left: -20px;
-            border-radius: 50px;
-            transition: opacity 0.3s ease;
-        }
+        // .bg {
+        //     position: absolute;
+        //     background-color: var(--bg-color);
+        //     opacity: 0.0;
+        //     width: 200px;
+        //     height: 80px;
+        //     padding-top: 10px;
+        //     margin-top: -20px;
+        //     margin-left: -20px;
+        //     border-radius: 50px;
+        //     transition: opacity 0.3s ease;
+        // }
         img {
             position: absolute;
             top: 0;
-            margin-top: 20px;
-            width: 60px;
-            height: 60px;
+            margin-top: 25px;
+            width: 50px;
+            height: 50px;
         }
         h1 {
             margin-top: 10px;
@@ -41,7 +53,7 @@
             font-weight: 900;
             align-self: flex-start;
             color: var(--dark-green);
-            margin-left: 75px;
+            margin-left: 65px;
             transition: color 0.3s ease;
             z-index: 10;
         }
@@ -53,6 +65,7 @@
         border-radius: 50px;
         align-items: center;
         text-align-last: center;
+        z-index: 999;
 
         a {
             font-family: 'Rubik';
