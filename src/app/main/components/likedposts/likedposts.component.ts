@@ -20,7 +20,7 @@ export class LikedpostsComponent {
       category: 'Science',
       author: 'Jane Smith',
       date: '2024-08-17',
-      image: '../../../../assets/images/ResdeApp.PNG',
+      image: '../../../../assets/images/AppLogo.png',
       description: 'This is the description for another article.'
     },
     {

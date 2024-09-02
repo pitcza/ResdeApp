@@ -14,7 +14,7 @@ export class LogoutComponent {
     this.updateLogoutLink();
   }
 
-  logoutLink: string = '/login-to-resde';
+  logoutLink: string = '/login-to-resIt';
 
   updateLogoutLink(): void {
     const currentRoute = this.router.url;
@@ -22,7 +22,7 @@ export class LogoutComponent {
     if (currentRoute.startsWith('/admin')) {
       this.logoutLink = '/admin-login';
     } else if (currentRoute.startsWith('/main')) {
-      this.logoutLink = '/login-to-resde';
+      this.logoutLink = '/login-to-resIt';
     }
   }
 

@@ -10,10 +10,10 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'resde', pathMatch: 'full' },
+  { path: '', redirectTo: 'resIt', pathMatch: 'full' },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'main', component: MainComponent, children: [{ path: '', loadChildren: ()=>import('./main/main.module').then((m)=>m.MainModule) }] },
-  { path: 'resde', component: ResdeComponent, children: [{ path: '', loadChildren: ()=>import('./components/resde/resde.module').then((m)=>m.ResdeModule) }] },
+  { path: 'resIt', component: ResdeComponent, children: [{ path: '', loadChildren: ()=>import('./components/resde/resde.module').then((m)=>m.ResdeModule) }] },
   { path: 'admin', component: AdminComponent, children: [{ path: '', loadChildren: ()=>import('./admin/admin.module').then((m)=>m.AdminModule) }] },
 ];
 

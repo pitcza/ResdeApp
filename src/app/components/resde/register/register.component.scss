@@ -12,7 +12,7 @@
         width: 60rem;
         height: auto;
         border: 1.5px solid var(--primary-color);
-        background: #D6CABC;
+        background-color: var(--container);
         box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.40);
         animation: bouncePopIn 0.6s forwards;
     }
@@ -21,7 +21,6 @@
 .info h1 {
     margin-top: 1%;
     margin-bottom: 30px;
-    color: var(--secondary-500, #1A202C);
     font-size: 30px;
     font-weight: 700;
     line-height: 150%;
@@ -44,20 +43,21 @@
         width: 100%;
         height: 55px;
         border-radius: 5px;
-        // border-top-left-radius: 5px;
-        // border-top-right-radius: 5px;
-        border: none;
-        // border-bottom: 2px solid var(--secondary-green);
         outline: none;
         font-size: 14px;
-        background-color: var(--bg-color);
+        background-color: var(--cont-input);
         padding: 20px 10px 3px;
-        transition: all 0.5s ease;
+        border: 2px solid transparent;
+        transition: border 0.3s ease-in-out, background-color 0.3s ease-in-out;
     }
 
-    input:hover, select:hover,
+    input:hover, select:hover {
+        background-color: var(--cont-input-hover);
+    }
+
     input:focus, select:focus {
-        background-color: var(--input-hover);
+        background-color: var(--cont-input);
+        border: 2px solid var(--cont-input-border);
     }
 }
 
@@ -83,10 +83,21 @@ input::-webkit-outer-spin-button {
 
     h3 {
         font-weight: 400;
+        display: flex;
+        font-size: 14px;
 
         input {
             margin-top: -2px;
             margin-right: 5px;
+            width: 15px;
+            height: 15px;
+            border: 1px solid #333;
+            cursor: pointer;
+            outline: none;
+        }
+
+        input[type="checkbox"]:checked {
+            accent-color: var(--primary-green);
         }
 
         a { 
@@ -95,38 +106,6 @@ input::-webkit-outer-spin-button {
             cursor: pointer;
         }
     }
-}
-
-.privacy-container .privacy-label {
-    display: flex;
-    font-size: 14px;
-}
-
-.privacy-container .privacy-label input {
-    width: 15px;
-    height: 15px;
-    border: 1px solid #333;
-    cursor: pointer;
-    outline: none;
-}
-
-.privacy-container .privacy-label input:checked {
-    background-color: var(--dark-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
-/* SIGN UP BUTTON */
-.btn:hover {
-    background-color: var(--dark-green);
-}
-
-.btn {
-    margin: 30px auto;
-    background-color: var(--dark-green);
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* LOG IN LINK */

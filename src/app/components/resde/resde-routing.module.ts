@@ -6,10 +6,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'resde-app', pathMatch: 'full' },
-  { path: 'resde-app', component: LandingPageComponent },
-  { path: 'login-to-resde', component: LoginComponent },
-  { path: 'signup-to-resde', component: RegisterComponent },
+  { path: '', redirectTo: 'resIt-app', pathMatch: 'full' },
+  { path: 'resIt-app', component: LandingPageComponent },
+  { path: 'login-to-resIt', component: LoginComponent },
+  { path: 'signup-to-resIt', component: RegisterComponent },
 ];
 
 @NgModule({

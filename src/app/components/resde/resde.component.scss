@@ -6,11 +6,10 @@
     height: 100px;
     width: 100%;
     background-color: transparent;
-    // background-color: #ede6de52;
     z-index: 1000;
     position: fixed;
 
-    img.hide, h1.hide {
+    img.hide, h1.hide, .bg.hide {
         display: none;
     }
 
@@ -76,7 +75,8 @@
         }
 
         a:hover {
-            background-color: var(--secondary-green);
+            background-color: var(--primary-green);
+            color: var(--bg-color);
         }
     }
 }
