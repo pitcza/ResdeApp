@@ -12,7 +12,7 @@ export class ResdeComponent {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Listen for navigation end events to determine the current route
+    // ewan pero to hide yung Re'sIt logo sa header if nasa login page
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.isLoginRoute = this.router.url === '/resIt/login-to-resIt';

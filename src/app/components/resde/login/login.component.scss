@@ -56,7 +56,7 @@
 /* RIGHT CONTENT */
 .right {
     width: 40%;
-    padding: 100px 50px 3px 50px;
+    padding: 150px 50px 3px 50px;
     animation: popIn 0.5s forwards 0.5s;
 
     .appname {
@@ -108,7 +108,7 @@
 
             input:focus {
                 outline: none;
-                border: 1px solid var(--secondary-green);
+                border: 2px solid var(--secondary-green);
             }
 
             i {
@@ -179,7 +179,7 @@ a:hover {
 
 
 /* MEDIA SCREEN */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1024px) {
     /* LOGO IMAGE */
     img {
         width: 170px;
@@ -202,8 +202,8 @@ a:hover {
         height: 450px;
         width: 100%;
         padding: 50px;
-        border-bottom-left-radius: 90px;
-        border-bottom-right-radius: 90px;
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
     }
 
     /* RIGHT SCREEN */
@@ -211,89 +211,74 @@ a:hover {
         position: relative;
         height: 500px;
         width: 100%;
-    }
 
-    .right form {
-        width: 100%;
-        .input-container {
+        form {
             width: 100%;
+            .input-container { width: 100%; 
+                input[type="email"],
+                input[type="password"] {
+                    background-color: var(--cont-input-hover);
+                }
+            }
+            .signuplink { margin-top: 100px; }
         }
-    }
 
-    .loginform {
-        position: absolute;
-        background-color: var(--container);
-        width: 80%;
-        padding: 50px 50px 20px 50px;
-        border-radius: 30px;
-        margin-bottom: 600px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.5s ease;
-    }
+        .loginform {
+            position: absolute;
+            background-color: var(--container);
+            width: 80%;
+            padding: 50px 50px 20px 50px;
+            border-radius: 20px;
+            margin-bottom: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
 
-    .right .appname h2 {
-        display: none;
-    }
-
-    .right .appname h3 {
-        display: flex;
-        text-align: center;
-        justify-content: center;
-        color: var(--dark-green);
-        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.30);
-        font-size: 25px;
-        font-weight: 700;
-        letter-spacing: .5px;
-        margin-bottom: 10px;
-        font-family: 'Josefin Sans';
-    }
-
-    .right .appname p {
-        display: flex;
-        font-size: 14px;
-        line-height: 16px;
-        font-weight: 400;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .right .appname {
-        margin-bottom: 40px;
-    }
-
-    .button {
-        height: 40px;
-        align-content: space-evenly;
-    }
-
-    .right .signuplink {
-        font-weight: 600;
-        font-size: 14px;
-        text-align: center;
-        margin-top: 5rem;
-        letter-spacing: 0.5px;
+        .appname {
+            margin-bottom: 40px;
+            h2 { display: none; }
+        
+            h3 {
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                color: var(--dark-green);
+                text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.30);
+                font-size: 25px;
+                font-weight: 700;
+                letter-spacing: .5px;
+                margin-bottom: 10px;
+                font-family: 'Josefin Sans';
+            }
+            p {
+                display: flex;
+                font-size: 14px;
+                line-height: 16px;
+                font-weight: 400;
+                text-align: center;
+                justify-content: center;
+            }
+        }
     }
 }
 
-@media screen and (max-width: 500px) {
+@media (max-width: 500px) {
     img {
         margin-bottom: 100%;
     }
 
     .left {
-        border-bottom-left-radius: 50px;
-        border-bottom-right-radius: 50px;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
     }
 
-    .loginform {
-        margin-bottom: 500px;
-        padding: 50px 30px 20px 30px;
-    }
-
-    .right .appname h3 {
-        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.30);
-        font-size: 20px;
+    .right {
+        .loginform {
+            width: 90%;
+            margin-bottom: 500px;
+            padding: 50px 30px 20px 30px;
+        }
     }
 }
