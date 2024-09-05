@@ -6,6 +6,10 @@
     border-radius: 5px;
     border-top: 3px solid var(--secondary-green);
     animation: fadeInLeft 0.3s forwards;
+
+    .head {
+        h1 { font-size: 30px; text-transform: uppercase; transition: all 0.3s ease-in-out; }
+    }
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -29,6 +33,7 @@ form {
 
         .txt-field {
             font-family: 'Poppins';
+            color: black;
             width: 100%;
             height: 50px;
             border-radius: 5px;
@@ -63,7 +68,13 @@ form {
 }
 
 // RESPONSIVE EWAN //
-@media screen and (max-width: 1220px) {
+@media (max-width: 1220px) {
+    .container {
+        .head {
+            h1 { font-size: 24px; }
+        }
+    }
+
     form {
         width: 100%;
 
@@ -73,4 +84,23 @@ form {
             column-gap: 20px;
         }
     }
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 30px;
+        .head {
+            h1 { font-size: 20px; }
+        }
+    }
+
+    form {
+        .input-row {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+}
+
+@media (max-width: 400px) {
+
 }

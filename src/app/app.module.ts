@@ -14,6 +14,9 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { AdminModule } from './admin/admin.module';
 import { AdminComponent } from './admin/admin.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AgriExpertLoginComponent } from './components/agri-expert-login/agri-expert-login.component';
+import { AgriExpertComponent } from './agri-expert/agri-expert.component';
+import { AgriExpertModule } from './agri-expert/agri-expert.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,9 @@ import { HttpClientModule } from '@angular/common/http';
     LogoutComponent,
     ResdeComponent,
     AdminLoginComponent,
-    AdminComponent
+    AdminComponent,
+    AgriExpertLoginComponent,
+    AgriExpertComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
     ResdeModule,
     MaterialModule,
     AdminModule,
+    AgriExpertModule,
     HttpClientModule
   ],
   providers: [

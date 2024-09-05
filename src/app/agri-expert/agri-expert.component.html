@@ -1,0 +1,72 @@
+<div class="container" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay}">
+    <!-- SIDEBAR CONTENT -->
+    <nav class="sidebar" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay}">
+      <div class="userInfo">
+        <div class="userImg">
+          <img src="assets/images/AppLogo.png">
+        </div>
+        <div class="userName">
+          <h1> Agricultural Expert </h1>
+          <p> Admin </p>
+        </div>
+
+        <button class="menu-icon-button" (click)="toggleSidebar()">
+            <i *ngIf="!isSidebarToggled" class='bx bx-chevrons-left'></i>
+            <i *ngIf="isSidebarToggled" class='bx bx-chevrons-right'></i>
+        </button>
+      </div>
+  
+      <div class="sidebar-content">
+        <ul class="sidebarTabs">
+          <li class="sidebarTab">
+            <a class="tablink" routerLink="pendings" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
+              <span class="tab-link-icon"> <i class='bx bx-spreadsheet'></i> </span>
+              <span class="tab-link-name"> Posting Approval </span>
+            </a>
+          </li>
+          <li class="sidebarTab">
+            <a class="tablink" routerLink="all-post" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
+              <span class="tab-link-icon"> <i class='bx bx-checkbox-checked'></i> </span>
+              <span class="tab-link-name"> All Post </span>
+            </a>
+          </li>
+        </ul>
+  
+        <!-- <div class="logoutbtn">
+          <div class="logout" (click)="logoutPopup()">
+            <span> <i class='bx bx-log-out-circle'></i> 
+                <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
+            </span>
+          </div>
+        </div> -->
+      </div>
+    </nav>
+  
+</div>
+
+<div class="sidebar-overlay" [ngClass]="{'visible': !isSidebarCollapsed}" (click)="toggleSidebar()"></div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay, 'blurred': isSidebarOverlay}">
+    <!-- HEADER -->
+    <nav class="header">
+      <div class="appname">
+        <button class="menu-icon-button" (click)="toggleSidebar()">
+          <i class='bx bx-menu'></i>
+        </button>
+        <h2> Re’sIt </h2>
+      </div>
+
+      <!-- <div class="logout" (click)="logoutPopup()">
+        <span> <i class='bx bx-log-out-circle'></i> <span class="logout-tooltip"> Logout </span>
+            <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
+        </span>
+      </div> -->
+    </nav>
+  
+    <!-- MAIN BODY CONTENT -->
+    <div class="body-content">
+      <!-- <div class="admin-container"> <router-outlet></router-outlet> </div> -->
+      <div class="admin-container"> hehe wait </div>
+    </div>
+</div>
