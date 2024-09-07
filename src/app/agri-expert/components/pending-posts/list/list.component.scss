@@ -8,19 +8,19 @@
         font-weight: 700;
     }
 
-    .route-btn {
-        margin-top: -2px;
-        padding-top: 2px;
-        width: 140px;
+    .button {
+        margin-top: -10px;
+        padding-top: 3px;
+        width: 150px;
+        background-color: var(--dark-green);
         text-transform: capitalize;
-        i { font-weight: 700; padding-right: 5px; color: white; }
         a { color: white; }
     }
 }
 
 table {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.207);
     margin: 10px 0;
     padding: 5px;
     border-radius: 4px;
@@ -44,12 +44,12 @@ table {
     tr:hover { background-color: var(--white-hover); }
 
     .status {
-        color: var(--secondary-green);
+        color: var(--red-btn);
     }
 }
 
 table { // fixed width
-    td:nth-child(5) {
+    td:nth-child(6) {
         min-width: 130px;
         max-width: 130px;
     }

@@ -149,7 +149,6 @@ select {
     .btn:hover {
         transform: translate(0px, -2px);
         box-shadow: 0px 8px 15px -10px rgb(125, 125, 125);
-        box-shadow: none;
         background: var(--dark-hover);
         cursor: pointer;
         text-decoration: none;
@@ -169,7 +168,7 @@ select {
     justify-content: center;
     border-radius: 4px;
     text-transform: uppercase;
-    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     transform: translate(0px, 0px);
 
@@ -182,10 +181,9 @@ select {
 }
 
 .route-btn:hover {
-    transform: translate(0px, -2px);
+    transform: translate(0px, -1px);
     box-shadow: 0px 8px 15px -10px rgb(125, 125, 125);
-    box-shadow: none;
-    background: var(--primary-green);
+    background: var(--primary-hover);
     cursor: pointer;
     text-decoration: none;
 }
@@ -269,6 +267,8 @@ select {
 }
 
 .table-head {
+    display: flex;
+    justify-content: space-between;
     margin: 5px 0 15px 0;
 
     // FILTERS
@@ -320,6 +320,20 @@ select {
             color: black;
         }
     }
+
+    .route-btn {
+        margin-top: 0;
+        padding-top: 2px;
+        width: 140px;
+        text-transform: capitalize;
+        box-shadow: none;
+        i { font-weight: 700; padding-right: 5px; color: white; }
+        a { color: white; }
+    }
+
+    .route-btn:hover {
+        transform: none;
+    }
 }
 
 .table-content {
@@ -341,7 +355,6 @@ select {
 
 // SCROLLBAR //
 .overflow::-webkit-scrollbar {
-    width: 5px;
     height: 5px;
 }
 
@@ -542,5 +555,11 @@ tr {
             flex-direction: column;
             align-items: start;
         }
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 40px 16px;
     }
 }

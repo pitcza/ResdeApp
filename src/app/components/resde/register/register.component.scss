@@ -7,13 +7,13 @@
     .container2 {
         position: relative;
         padding: 40px 100px 40px 100px;
-        margin-top: 130px;
-        margin-bottom: 70px;
-        width: 60rem;
+        margin: 130px 300px 70px 300px;
+        width: 100%;
         height: auto;
         border: 1.5px solid var(--primary-color);
         background-color: var(--container);
         box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.40);
+        transition: all 0.3s ease-in-out;
         animation: bouncePopIn 0.6s forwards;
     }
 }
@@ -23,7 +23,6 @@
     margin-bottom: 30px;
     font-size: 30px;
     font-weight: 700;
-    line-height: 150%;
     font-family: 'Josefin Sans';
 }
 
@@ -46,6 +45,7 @@
         outline: none;
         font-size: 14px;
         background-color: var(--cont-input);
+        color: black;
         padding: 20px 10px 3px;
         border: 2px solid transparent;
         transition: border 0.3s ease-in-out, background-color 0.3s ease-in-out;
@@ -124,32 +124,79 @@ input::-webkit-outer-spin-button {
 }
 
 /* MEDIA SCREEN */
-@media screen and (max-width:768px) {
-    form {
-    width: 100%;
-    }
-
-    .input-row {
-        display: block;
-    }
-
-    .privacy-container {
-        margin-top: -1rem;
-        margin-bottom: 2rem;
+@media (max-width: 1440px) {
+    .container {
+        .container2 {
+            margin: 130px 250px 70px 250px;
+        }
     }
 }
 
-@media screen and (max-width:990px) {
-    form {
-    width: 100%;
+@media (max-width: 1280px) {
+    .container {
+        .container2 {
+            padding: 40px 70px 40px 70px;
+            margin: 130px 200px 70px 200px;
+        }
+    }
+}
+ 
+@media (max-width: 1024px) {
+    .container {
+        .container2 {
+            padding: 40px 70px 40px 70px;
+            margin: 130px 150px 70px 150px;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        .container2 {
+            margin: 130px 100px 70px 100px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        .container2 {
+            padding: 40px;
+            margin: 130px 50px 70px 50px;
+        }
+    }
+}
+
+@media (max-width: 630px) {
+    .container {
+        .container2 {
+            margin: 130px 30px 70px 30px;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        .container2 {
+            padding: 30px 20px;
+            margin: 100px 30px 70px 30px;
+        }
     }
 
-    .container2 {
-        padding: 40px 100px 40px 100px;
+    .info h1 {
+        margin-top: 1%;
+        margin-bottom: 20px;
+        font-size: 24px;
     }
 
-    .privacy-container {
-        margin-top: -1.5rem;
-        margin-bottom: 2rem;
+    .input-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        width: 100%;
+
+        .inputtxt {
+            width: 100%;
+        }
     }
 }

@@ -53,6 +53,35 @@ export class MainComponent {
     }
   }
 
+  // Visibility states
+  isHeaderHidden = false;
+  isBottomNavHidden = false;
+
+  lastScrollTop = 0;
+  scrollThreshold = 10;
+
+  // Scroll detection
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event) {
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (Math.abs(this.lastScrollTop - currentScrollTop) <= this.scrollThreshold) {
+      return; // Ignore small scrolls
+    }
+
+    if (currentScrollTop > this.lastScrollTop) {
+      // Scrolling down
+      this.isHeaderHidden = true;
+      this.isBottomNavHidden = true;
+    } else {
+      // Scrolling up
+      this.isHeaderHidden = false;
+      this.isBottomNavHidden = false;
+    }
+
+    this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+  }
+
   // LOGOUT
   showPopup: boolean = false;
 

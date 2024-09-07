@@ -24,6 +24,7 @@
 
 .left-container {
     width: 100%;
+    height: 100%;
     background-color: white;
     padding: 30px;
     border-radius: 5px;
@@ -144,4 +145,48 @@
 
 .heart-btn:hover {
     color: darkred;
+}
+
+/* Responsive styles for mobile screens (max width 480px) */
+@media (max-width: 480px) {
+    .slit-screen {
+        flex-direction: column;
+    }
+
+    .left-container {
+        padding: 20px;
+    
+        h2 {
+            width: 100%;
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+    
+        p { font-size: 14px; }
+    
+        .info {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 25px;
+            p { font-size: 12px; }
+        }
+    
+        img {
+            margin-top: 10px;
+        }
+    }
+    
+
+    .right-container {
+        width: 100%;
+
+        .data-container {
+            p { font-size: 14px; }
+    
+            .title {
+                font-size: 16px;
+                line-height: 18px;
+            }
+        }
+    }
 }

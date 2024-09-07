@@ -42,6 +42,12 @@ export class LikedpostsComponent {
 
   selectItem(item: Item): void {
     this.selectedItem = item;
+
+    // Scroll to the top of the page with smooth scrolling
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling effect
+    });
   }
 
 }
