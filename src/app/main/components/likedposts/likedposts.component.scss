@@ -35,7 +35,7 @@
     animation-delay: var(--delay, 0);
 
     border-top: 3px solid var(--secondary-green);
-    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1);
     transition: 0.3s ease-in-out;
 
     h2 {
@@ -86,7 +86,7 @@
         animation: fadeIn 1s forwards, popUp 1s forwards;
         animation-delay: var(--delay, 0);
 
-        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1);
         transition: 0.3s ease-in-out;
 
         .post-image {

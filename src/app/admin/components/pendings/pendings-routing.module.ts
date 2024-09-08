@@ -5,8 +5,8 @@ import { ListComponent } from './list/list.component';
 import { ViewPendingComponent } from './view-pending/view-pending.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'list-of-posts', pathMatch: 'full' },
-  { path: 'list-of-posts', component: ListComponent },
+  { path: '', redirectTo: 'list', pathMatch: 'full' },
+  { path: 'list', component: ListComponent },
   { path: 'view', component: ViewPendingComponent },
 ];
 

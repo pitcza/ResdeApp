@@ -1,7 +1,7 @@
 .container {
     background-color: white;
     padding: 40px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     box-shadow: var(--main-shadow);
     border-radius: 5px;
     border-top: 3px solid var(--secondary-green);
@@ -26,7 +26,7 @@
             font-weight: 500;
             background-color: rgba(0, 0, 0, 0.06);
             border-radius: 3px;
-            margin-right: 1%;
+            margin-right: 5px;
         }
 
         .published-time {
@@ -42,13 +42,112 @@
         font-weight: 500;
         margin-bottom: 5px;
     }
+
+    .post-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+    
+        .post-image {
+            flex-basis: 50%;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        .postcontent {
+            flex-basis: 60%;
+
+            p { font-size: 16px; }
+        }
+    }
+
+    .heart-btn {
+        position: absolute;
+        bottom: 30px;
+        right: 40px;
+        background: none;
+        border: none;
+        font-size: 25px;
+        color: var(--red-btn);
+        cursor: pointer;
+        outline: none;
+    }
+    
+    .heart-btn:hover {
+        color: var(--red-hover);
+    }
 }
 
-.post-content {
-    display: flex;
-    justify-content: space-between;
+@media (max-width: 768px) {
+    .container { padding: 30px; }
+
+    .user-post {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center; 
+
+        .publisher-name {
+            margin-right: 10px;
+        }
+        
+        .category-time {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            flex-basis: 50%;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .post-content {
+            margin: 20px 0px;
+            flex-basis: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 20px;
+    
+            .postcontent {
+                p { font-size: 15px; }
+            }
+        }
+
+        .buttons {
+            margin: 10px auto;
+        }
+    }
 }
 
-.post-content .postcontent {
-    flex-basis: 50%;
+@media (max-width: 480px) {
+    .container { padding: 20px; }
+
+    .user-post {
+        h1 {
+            font-size: 20px;
+            line-height: 30px;
+        }
+
+        .category-time {
+            flex-basis: 100%;
+        }
+        
+        .post-content {
+            margin-top: 20px;
+            flex-basis: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 20px;
+    
+            .postcontent {
+                p { font-size: 15px; }
+            }
+        }
+
+        .heart-btn {
+            bottom: 20px;
+            right: 30px;
+        }
+    }
 }

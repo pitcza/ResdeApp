@@ -41,7 +41,7 @@
     position: relative;
     padding: 20px;
     background-color: white;
-    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1);
     transition: 0.3s ease-in-out;
     cursor: pointer;
     // border-radius: 3px;
@@ -221,7 +221,7 @@
 
 @media (max-width: 400px) {
     .container {
-        padding: 20px;
+        padding: 30px 20px;
     }
 
     .post-heading {
@@ -232,5 +232,15 @@
         h3 {
             font-size: 26px;
         }
+    }
+
+    .post-box {
+        background-color: white; /* Remove background change on hover */
+        transform: unset; /* Remove scale effect */
+    }
+
+    .post-box:hover {
+        background-color: white; /* Remove background change on hover */
+        transform: unset; /* Remove scale effect */
     }
 }

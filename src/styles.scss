@@ -24,7 +24,7 @@
     --cont-input-border: #C9B9A8;
 
     --main-shadow: 0px 3px 2px rgba(0, 0, 0, 0.3);
-    --formBtn-shadow: 0px 2px 2px rgba(67, 67, 67, 0.615);
+    --formBtn-shadow: 0px 2px 2px rgba(79, 79, 79, 0.478);
 
     --label-color: rgb(60, 60, 60);
     --input-color: rgba(242, 242, 242, 0.421);
@@ -52,6 +52,10 @@ body {
     justify-content: center;
     align-items: center;
     padding: 40px;
+    font-family: 'Poppins';
+}
+
+.swal-font {
     font-family: 'Poppins';
 }
 
@@ -119,6 +123,63 @@ select {
 .exit-button:hover {
     color: var(--primary-green);
 }
+
+// BACK BUTTON
+.back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    width: 80px;
+    height: 30px;
+    border-radius: 4px;
+    background-position: center;
+    background-color: transparent;
+    transition: background 0.3s ease-in-out;
+
+    i {
+        position: absolute;
+        font-size: 24px;
+    }
+
+    h3 {
+        margin-left: 24px;
+        font-size: 16px;
+        font-weight: 500;
+        // font-family: 'Josefin Sans';
+    }
+}
+
+.back:hover {
+    background-color: var(--bg-light);
+}
+
+.back:active {
+    background-color: var(--secondary-green);
+    background-size: 100%;
+    transition: background 0s;
+}
+
+// PAGE CONTENT
+.head-page {
+    position: relative;  // Ensure this container is the reference for absolute positioning
+  
+    .page-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);  // Center horizontally and vertically
+      text-align: center;  // Center text within the div
+      z-index: 1;  // Ensure it appears above other content if needed
+
+      h2 {
+        font-size: 24px;
+        font-weight: 700;
+        font-family: 'Josefin Sans';
+      }
+    }
+}
+
 
 // SINGLE BUTTON (LOGIN, SIGNUP)
 .button {
@@ -560,6 +621,18 @@ tr {
 
 @media (max-width: 480px) {
     .content {
-        padding: 40px 16px;
+        padding: 30px 16px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .buttons {
+        .submit-btn, .cancel-btn, .danger-btn {
+            width: 120px;
+        }
     }
 }

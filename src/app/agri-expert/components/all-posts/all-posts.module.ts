@@ -7,13 +7,15 @@ import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { MaterialModule } from '../../../modules/material.module';
 import { MyPostsComponent } from './my-posts/my-posts.component';
+import { UploadComponent } from './upload/upload.component';
 
 
 @NgModule({
   declarations: [
     ListComponent,
     ViewComponent,
-    MyPostsComponent
+    MyPostsComponent,
+    UploadComponent
   ],
   imports: [
     CommonModule,
