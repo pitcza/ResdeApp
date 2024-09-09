@@ -108,7 +108,7 @@
 }
 
 table {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--table-shadow);
     border: 1px solid rgba(0, 0, 0, 0.207);
     border-radius: 4px;
     padding: 5px;

@@ -37,7 +37,11 @@
 
                 <!-- LOG IN BUTTON -->
                 <div class="button">
-                    <button class="btn" type="submit"> Log In </button>
+                    <button class="btn" type="submit" [disabled]="isLoading">
+                        <span *ngIf="!isLoading">Log In</span>
+                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="loading" *ngIf="isLoading">Logging In...</span>
+                    </button>
                 </div>
 
                 <!-- SIGN UP LINK -->

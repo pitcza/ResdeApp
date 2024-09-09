@@ -19,7 +19,7 @@
 }
 
 table {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--table-shadow);
     border: 1px solid rgba(0, 0, 0, 0.2);
     margin: 10px 0;
     padding: 5px;

@@ -5,17 +5,17 @@ import { MainRoutingModule } from './main-routing.module';
 
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { HomepageModule } from './components/homepage/homepage.module';
+
 import { LikedpostsComponent } from './components/likedposts/likedposts.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { GreenmoduleComponent } from './components/greenmodule/greenmodule.component';
-
 
 @NgModule({
   declarations: [
     HomepageComponent,
     LikedpostsComponent,
     ProfileComponent,
-    GreenmoduleComponent
+    GreenmoduleComponent,
   ],
   imports: [
     CommonModule,

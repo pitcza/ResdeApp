@@ -1,65 +1,161 @@
-<div class="content">
-    <div class="container">
-        <button class="exit-button" routerLink="../home"> &times; <span class="exit-tooltip"> Exit </span> </button>
-        <div class="head">
-            <h1> Personal Information </h1>
+<main>
+    <div class="content">
+        <div class="spit-screen">
+            <!-- LEFT SCREEN -->
+            <div class="left">
+                <!-- USER INFORMATION -->
+                <div class="container" id="content1" *ngIf="currentContent === 'content1'">
+                    <div class="head">
+                        <h1> Sample User Name </h1>
+                    </div>
+                    <div class="infos">
+                        <span class="email"> <i class='bx bxl-gmail'></i> <p> sample&#64;email.com </p> </span>
+                        <span class="address"> <i class='bx bxs-map-pin' ></i> Lives at <p> East Bajac-Bajac, Olongapo </p> </span>
+                    </div>
+
+                    <div class="logo-bg">
+                    </div>
+                </div>
+
+                <!-- EDIT PROFILE-->
+                <div class="container" id="content2" *ngIf="currentContent === 'content2'">
+                    <div class="head">
+                        <h1> Edit Profile </h1>
+                    </div>
+                    <form action="" class="form-field">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label class="labelline"> Firstname </label>
+                                <input class="txt-field" type="text" name="firstname">
+                            </div>
+                            <div class="input-field">
+                                <label class="labelline"> Lastname </label>
+                                <input class="txt-field" type="text" name="lastname">
+                            </div>
+                        </div>
+            
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label class="labelline"> Email </label>
+                                <input class="txt-field" type="email" name="email">
+                            </div>
+                            <div class="input-field">
+                                <label class="labelline"> Phone Number </label>
+                                <input class="txt-field" type="number" name="phonenum" min="0" step="1" id="numberInput">
+                            </div>
+                        </div>
+            
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label class="labelline"> City </label>
+                                <input class="txt-field" type="text" name="city" value="Olongapo">
+                            </div>
+                            <div class="input-field">
+                                <label class="labelline"> Barangay </label>
+                                <select class="txt-field">
+                                    <option value=""> Select Barangay </option>
+                                    <option value="Asinan"> Asinan </option>
+                                    <option value="Banicain"> Banicain </option>
+                                    <option value="Barreto"> Barreto </option>
+                                    <option value="East Bajac-bajac"> East Bajac-bajac </option>
+                                    <option value="East Tapinac"> East Tapinac </option>
+                                    <option value="Gordon Heights"> Gordon Heights </option>
+                                    <option value="Kalaklan"> Kalaklan </option>
+                                    <option value="New Kalalake"> New Kalalake </option>
+                                    <option value="Mabayuhan"> Mabayuhan </option>
+                                    <option value="New Cabalan"> New Cabalan </option>
+                                    <option value="New Ilalim"> New Ilalim </option>
+                                    <option value="New Kababae"> New Kababae </option>
+                                    <option value="Pag-asa"> Pag-asa </option>
+                                    <option value="Santa Rita"> Santa Rita </option>
+                                    <option value="West Tapinac"> West Tapinac </option>
+                                    <option value="Old Cabalan"> Old Cabalan </option>
+                                </select>
+                            </div>
+                        </div>
+            
+                        <div class="buttons">
+                            <input class="submit-btn" type="submit" value="Update Info">
+                        </div>
+            
+                    </form>
+                </div>
+
+                <!-- CHANGE PASSWORD -->
+                <div class="container" id="content3" *ngIf="currentContent === 'content3'">
+                    <div class="head">
+                        <h1> Change Password </h1>
+                    </div>
+                    <form action="" class="form-field">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label class="labelline"> Current Password </label>
+                                <input class="txt-field" type="password" name="password">
+                            </div>
+                            <div class="input-field">
+                                <!-- <label class="labelline"> Current Password </label>
+                                <input class="txt-field" type="password" name="password"> -->
+                            </div>
+                        </div>
+            
+                        <div class="title">
+                            <h2> Enter your New Password </h2>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label class="labelline"> New Password </label>
+                                <input class="txt-field" type="password" name="password">
+                            </div>
+                            <div class="input-field">
+                                <label class="labelline"> Confirm Password </label>
+                                <input class="txt-field" type="password" name="password">
+                            </div>
+                        </div>
+            
+                        <div class="buttons">
+                            <input class="submit-btn" type="submit" value="Change Password">
+                        </div>
+            
+                    </form>
+                </div>
+            </div>
+        
+            <!-- RIGHT SCREEN -->
+            <div class="right">
+                <div class="card" (click)="showContent1()" *ngIf="!(isMobile && currentContent === 'content1')" [ngClass]="{'active': currentContent === 'content1'}" style="--delay: 0.1s;">
+                    <div class="icon">
+                        <i class='bx bx-id-card'></i>
+                    </div>
+                    <div class="title">
+                      <h2> Personal Info </h2>
+                    </div>
+                </div>
+        
+                <div class="card" (click)="showContent2()" *ngIf="!(isMobile && currentContent === 'content2')" [ngClass]="{'active': currentContent === 'content2'}" style="--delay: 0.2s;">
+                    <div class="icon">
+                        <i class='bx bxs-edit'></i>
+                    </div>
+                    <div class="title">
+                        <h2> Edit Profile </h2>
+                    </div>
+                </div>
+    
+                <div class="card" (click)="showContent3()" *ngIf="!(isMobile && currentContent === 'content3')" [ngClass]="{'active': currentContent === 'content3'}" style="--delay: 0.3s;">
+                    <div class="icon">
+                        <i class='bx bx-reset' ></i>
+                    </div>
+                    <div class="title">
+                        <h2> Change Password </h2>
+                    </div>
+                </div>
+
+                <!-- <div class="buttons" (click)="logoutPopup()" *ngIf="isMobile">
+                    <span> <i class='bx bx-log-out-circle'></i> 
+                        <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
+                    </span>
+                    <input class="danger-btn" type="button" value="Log Out">
+                </div> -->
+            </div>
         </div>
-        <form action="" class="form-field">
-            <div class="input-row">
-                <div class="input-field">
-                    <label class="labelline"> Firstname </label>
-                    <input class="txt-field" type="text" name="firstname">
-                </div>
-                <div class="input-field">
-                    <label class="labelline"> Lastname </label>
-                    <input class="txt-field" type="text" name="lastname">
-                </div>
-            </div>
-
-            <div class="input-row">
-                <div class="input-field">
-                    <label class="labelline"> Email </label>
-                    <input class="txt-field" type="email" name="email">
-                </div>
-                <div class="input-field">
-                    <label class="labelline"> Phone Number </label>
-                    <input class="txt-field" type="number" name="phonenum" min="0" step="1" id="numberInput">
-                </div>
-            </div>
-
-            <div class="input-row">
-                <div class="input-field">
-                    <label class="labelline"> City </label>
-                    <input class="txt-field" type="text" name="city" value="Olongapo">
-                </div>
-                <div class="input-field">
-                    <label class="labelline"> Barangay </label>
-                    <select class="txt-field">
-                        <option value=""> Select Barangay </option>
-                        <option value="Asinan"> Asinan </option>
-                        <option value="Banicain"> Banicain </option>
-                        <option value="Barreto"> Barreto </option>
-                        <option value="East Bajac-bajac"> East Bajac-bajac </option>
-                        <option value="East Tapinac"> East Tapinac </option>
-                        <option value="Gordon Heights"> Gordon Heights </option>
-                        <option value="Kalaklan"> Kalaklan </option>
-                        <option value="New Kalalake"> New Kalalake </option>
-                        <option value="Mabayuhan"> Mabayuhan </option>
-                        <option value="New Cabalan"> New Cabalan </option>
-                        <option value="New Ilalim"> New Ilalim </option>
-                        <option value="New Kababae"> New Kababae </option>
-                        <option value="Pag-asa"> Pag-asa </option>
-                        <option value="Santa Rita"> Santa Rita </option>
-                        <option value="West Tapinac"> West Tapinac </option>
-                        <option value="Old Cabalan"> Old Cabalan </option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="buttons">
-                <input class="submit-btn" type="submit" value="Update Info">
-            </div>
-
-        </form>
     </div>
-</div>
+</main>

@@ -18,10 +18,10 @@ export class LandingPageComponent {
 
   private checkElementsInView(): void {
     const rsContainer = document.querySelector('.rs-container') as HTMLElement;
-    const darkContainer = document.querySelector('.dark-container') as HTMLElement;
+    const headContent = document.querySelector('.head') as HTMLElement;
 
     this.toggleInView(rsContainer);
-    this.toggleInView(darkContainer);
+    this.toggleInView(headContent);
   }
 
   private toggleInView(element: HTMLElement): void {

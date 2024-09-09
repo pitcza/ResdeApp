@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthserviceService } from '../../../services/authservice.service';
 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { AuthserviceService } from '../../../services/authservice.service';
 export class LoginComponent {
   loginData = { email: '', password: '' };
   errorMessages: string[] = [];
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -18,16 +20,31 @@ export class LoginComponent {
   ) {}
 
   onLogin() {
+    this.isLoading = true;
     const formData = new FormData();
     formData.append('email', this.loginData.email);
     formData.append('password', this.loginData.password);
 
     this.as.login(formData).subscribe(
       (response: any) => {
+        this.isLoading = false;
         
         console.log('Login successful:', response);
         
         this.router.navigate(['/main']);
+
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          iconColor: '#9EB3AA',
+          title: 'Login Successfully',
+          customClass: { popup: 'swal-font' },
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+        });
+
       },
       (error: any) => {
         if (error.errors) {

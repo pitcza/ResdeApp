@@ -71,6 +71,10 @@
     align-items: center;
     font-family: 'Josefin Sans';
 
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.3s ease;
+
     h1 {
         padding: 0 20px;
         text-align: center;
@@ -99,7 +103,7 @@
     align-items: stretch;
     opacity: 0;
     transform: translateY(50px);
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
 
     .card-box {
         width: 100%;
@@ -159,7 +163,7 @@
     }
 }
 
-.rs-container.in-view, .dark-container.in-view {
+.rs-container.in-view, .head.in-view {
     opacity: 1;
     transform: translateY(0);
     animation: fadeInUp 0.7s forwards;
