@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthserviceService } from '../../../services/authservice.service';
 
+import Swal from 'sweetalert2';
+
 // Define an interface for the registration data
 interface RegisterData {
   fname: string;
@@ -58,7 +60,19 @@ export class RegisterComponent {
         (response: any) => {
           // Handle successful registration
           console.log('Registration successful:', response);
-          this.router.navigate(['/login-to-resde']); // Redirect after successful registration
+          this.router.navigate(['/login-to-resIt']); // Redirect after successful registration
+
+          Swal.fire({
+            title: "Registration Successful!",
+            text: "You can now login your Re'sIt account.",
+            customClass: { popup: 'swal-font' },
+            icon: "success",
+            iconColor: '#9EB3AA',
+            confirmButtonText: 'Close',
+            confirmButtonColor: "#777777",
+            timer: 5000,
+            scrollbarPadding: false
+          });
         },
         (error: any) => {
           // Handle error response
