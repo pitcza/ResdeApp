@@ -19,6 +19,43 @@ export class LoginComponent {
     private as: AuthserviceService
   ) {}
 
+  // onLogin() {
+  //   this.isLoading = true;
+  //   const formData = new FormData();
+  //   formData.append('email', this.loginData.email);
+  //   formData.append('password', this.loginData.password);
+
+  //   this.as.login(formData).subscribe(
+  //     (response: any) => {
+  //       this.isLoading = false;
+        
+  //       console.log('Login successful:', response);
+        
+  //       this.router.navigate(['/main']);
+
+  //       Swal.fire({
+  //         toast: true,
+  //         position: 'top-end',
+  //         icon: 'success',
+  //         iconColor: '#9EB3AA',
+  //         title: 'Login Successfully',
+  //         customClass: { popup: 'swal-font' },
+  //         showConfirmButton: false,
+  //         timer: 5000,
+  //         timerProgressBar: true,
+  //       });
+
+  //     },
+  //     (error: any) => {
+  //       if (error.errors) {
+  //         this.errorMessages = error.errors;
+  //       } else {
+  //         console.error('Login failed:', error);
+  //       }
+  //     }
+  //   );
+  // }
+
   onLogin() {
     this.isLoading = true;
     const formData = new FormData();
@@ -28,34 +65,31 @@ export class LoginComponent {
     this.as.login(formData).subscribe(
       (response: any) => {
         this.isLoading = false;
-        
         console.log('Login successful:', response);
-        
-        this.router.navigate(['/main']);
+        localStorage.setItem('authToken', response.token);
 
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
-          iconColor: '#9EB3AA',
-          title: 'Login Successfully',
-          customClass: { popup: 'swal-font' },
-          showConfirmButton: false,
-          timer: 5000,
-          timerProgressBar: true,
-        });
-
-      },
-      (error: any) => {
-        if (error.errors) {
-          this.errorMessages = error.errors;
-        } else {
-          console.error('Login failed:', error);
+        switch (response.role) {
+          case 'admin':
+            console.log('Navigating to /admin');
+            this.router.navigate(['/admin']);
+            break;
+          case 'agri':
+            console.log('Navigating to /agri-admin');
+            this.router.navigate(['/agri-admin']);
+            break;
+          default:
+            console.log('Navigating to /main');
+            this.router.navigate(['/main']);
+            break;
         }
+      },
+      (error) => {
+        this.isLoading = false;
+        console.error('Login failed:', error);
       }
     );
-  }
-
+}
+  
   landingPage() {
     this.router.navigate(['app/resde/resde-app']);
   }
