@@ -14,7 +14,6 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { AdminModule } from './admin/admin.module';
 import { AdminComponent } from './admin/admin.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AgriExpertLoginComponent } from './components/agri-expert-login/agri-expert-login.component';
 import { AgriExpertComponent } from './agri-expert/agri-expert.component';
 import { AgriExpertModule } from './agri-expert/agri-expert.module';
 
@@ -26,7 +25,6 @@ import { AgriExpertModule } from './agri-expert/agri-expert.module';
     ResdeComponent,
     AdminLoginComponent,
     AdminComponent,
-    AgriExpertLoginComponent,
     AgriExpertComponent
   ],
   imports: [

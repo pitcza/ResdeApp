@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agri-expert',
@@ -49,4 +50,37 @@ export class AgriExpertComponent {
       this.isSidebarOverlay = false;
     }
   }
+
+  // LOGOUT
+  showPopup: boolean = false;
+
+  logoutPopup() {
+    this.showPopup = !this.showPopup;
+  }
+
+  closePopup() {
+    this.showPopup = this.showPopup;
+  }
+
+ protected logout() {
+      next: (res: any) => {
+        sessionStorage.clear();
+        this.router.navigate(['login']); 
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Logged out successfully"
+        });
+      }
+  } 
 }

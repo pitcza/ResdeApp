@@ -17,13 +17,13 @@ export class LogoutComponent {
   logoutLink: string = '/login-to-resIt';
 
   updateLogoutLink(): void {
-    const currentRoute = this.router.url;
+    // const currentRoute = this.router.url;
 
-    if (currentRoute.startsWith('/admin')) {
-      this.logoutLink = '/admin-login';
-    } else if (currentRoute.startsWith('/main')) {
-      this.logoutLink = '/login-to-resIt';
-    }
+    // if (currentRoute.startsWith('/admin')) {
+    //   this.logoutLink = '/admin-login';
+    // } else if (currentRoute.startsWith('/main')) {
+    //   this.logoutLink = '/login-to-resIt';
+    // }
   }
 
   close() {
