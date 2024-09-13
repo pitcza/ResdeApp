@@ -3,11 +3,13 @@ import { HeaderService } from './header.service';
 import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { User } from '../main/components/profile/profile.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthserviceService {
+  private userData: any = null;
 
   constructor(
     private http: HttpClient,
@@ -55,4 +57,17 @@ export class AuthserviceService {
   public register(formData: FormData): Observable<any> {
     return this.http.post(this.url + 'register', formData);
   }
+
+  // Example of storing user data after login
+  saveUserData(data: any) {
+    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('token', data.token);
+  }
+
+
+  getUserData(): User | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+  
 }

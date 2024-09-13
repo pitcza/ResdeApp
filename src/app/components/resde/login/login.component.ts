@@ -24,8 +24,12 @@ export class LoginComponent {
 
     this.as.login(formData).subscribe(
       (response: any) => {
-        
         console.log('Login successful:', response);
+
+        const userName = response.userName; // or any other identifier from the response
+
+      // Store user information in sessionStorage
+        sessionStorage.setItem('name', userName);
         
         this.router.navigate(['/main']);
       },
