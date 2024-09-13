@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { HeaderService } from './header.service';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthserviceService {
+export class AuthserviceService{
 
   constructor(
     private http: HttpClient,
@@ -20,10 +20,11 @@ export class AuthserviceService {
   public login(formData: FormData) {
     return this.http.post(this.url + 'login', formData).pipe(
       tap((res: any) => {
+        console.log(res);
         if (res.token) {
           sessionStorage.setItem('auth-token', res.token);
-          sessionStorage.setItem('name', res.displayName);
-          sessionStorage.setItem('role', res.position);
+          sessionStorage.setItem('name', `${res.user.fname} ${res.user.lname}`);
+          sessionStorage.setItem('role', res.role); 
 
           let time = new Date();
           time.setMinutes(time.getMinutes() + 55);

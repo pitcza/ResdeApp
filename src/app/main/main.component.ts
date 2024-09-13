@@ -1,21 +1,29 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
+import { AuthserviceService } from '../services/authservice.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
-export class MainComponent {
+export class MainComponent implements OnInit{
+
+  name: string = '';
 
   constructor(
     private router: Router,
+    private authService: AuthserviceService
   ) {
     this.checkScreenWidth();
   }
 
+  ngOnInit(): void {
+    this.name = sessionStorage.getItem('name') || '';
+  }
+  
   // SIDEBAR
   isSidebarCollapsed = false;
   isSidebarOverlay = false;
