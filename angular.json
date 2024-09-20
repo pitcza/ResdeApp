@@ -33,7 +33,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/AppLogo.ico",
+              "src/ResItLogo.ico",
               "src/assets"
             ],
             "styles": [
@@ -99,7 +99,7 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/AppLogo.ico",
+              "src/ResItLogo.ico",
               "src/assets"
             ],
             "styles": [

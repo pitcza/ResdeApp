@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-view',
+  selector: 'app-view-pending2',
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss'
 })

@@ -60,7 +60,7 @@ export class RegisterComponent {
         (response: any) => {
           // Handle successful registration
           console.log('Registration successful:', response);
-          this.router.navigate(['/login-to-resIt']); // Redirect after successful registration
+          this.router.navigate(['/resIt/login-to-resIt']); // Redirect after successful registration
 
           Swal.fire({
             title: "Registration Successful!",

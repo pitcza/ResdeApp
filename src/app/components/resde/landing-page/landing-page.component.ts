@@ -1,27 +1,36 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
 })
+
 export class LandingPageComponent {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   ngOnInit(): void {
-    // Initial setup
-    this.checkElementsInView();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkElementsInView();
+    }
   }
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
-    this.checkElementsInView();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkElementsInView();
+    }
   }
 
   private checkElementsInView(): void {
-    const rsContainer = document.querySelector('.rs-container') as HTMLElement;
-    const headContent = document.querySelector('.head') as HTMLElement;
+    if (isPlatformBrowser(this.platformId)) {
+      const elementsToAnimate = document.querySelectorAll('.rs-container, .head, .left, .right') as NodeListOf<HTMLElement>;
 
-    this.toggleInView(rsContainer);
-    this.toggleInView(headContent);
+      elementsToAnimate.forEach((element) => {
+        this.toggleInView(element);
+      });
+    }
   }
 
   private toggleInView(element: HTMLElement): void {

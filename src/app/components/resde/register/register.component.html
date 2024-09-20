@@ -1,6 +1,7 @@
 <div class="container">
     <div class="container2"> 
         <button class="exit-button" routerLink="/resIt"> &times; </button>
+        <div class="back-btn" routerLink="/resIt"> <i class='bx bx-chevron-left' ></i> </div>
         <!-- ACCOUNT REGISTRATION FORM -->
         <div class="info">
             <form (ngSubmit)="onRegister()" #registerForm="ngForm">
@@ -70,7 +71,7 @@
                 <br>
                 <!-- LOG IN LINK -->
                 <div class="loginlink">
-                  Already have an account? <a routerLink="/login-to-resIt">Login</a>
+                  Already have an account? <a routerLink="/resIt/login-to-resIt">Login</a>
                 </div>
               </form>
         </div>

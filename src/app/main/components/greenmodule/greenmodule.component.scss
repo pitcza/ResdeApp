@@ -9,7 +9,7 @@
         padding: 0 20px;
         text-align: center;
         font-size: 36px;
-        color: #2b2b2b;
+        color: var(--dark-green);
         font-weight: 700;
         transition: all 0.3s ease-in-out;
     }
@@ -20,8 +20,13 @@
         margin-top: 20px;
         font-size: 16px;
         line-height: 20px;
-        color: var(--dark-green);
+        color: var(--primary-green);
         transition: all 0.3s ease-in-out;
+
+        .highlight {
+            color: var(--secondary-green);
+            font-weight: 600;
+        }
     }
 }
 
@@ -29,24 +34,31 @@
 .rs-container {
     display: flex;
     gap: 30px;
-    height: 100%;
-    margin: 10px 0;
+    padding: 40px 30px;
     align-items: stretch;
+    transition: all 0.3s ease-in-out; 
 
     .card-box {
         width: 100%;
         flex: 1;
-        padding: 20px;
-        background-color: white;
-        border-top: 3px solid var(--secondary-green);
-        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.322);
-        transition: all 0.3s ease-in-out;
+        padding: 20px 20px 30px 20px;
+        background-color: var(--bg-color);
+        // border-top: 3px solid var(--secondary-green);
+        box-shadow:  10px 10px 20px #d5cfc8,
+             -10px -10px 20px #fffdf4;
         display: flex;
+        justify-content: center;
         flex-direction: column;
 
+        opacity: 0;
+        transform: scale(0.9);
+        animation: popIn 0.3s ease forwards;
+
         .card-img {
-            width: 100%;
-            height: auto;
+            height: 300px;
+            width: 300px;
+            margin: 0 auto;
+            transition: all 0.3s ease-in-out;
 
             img {
                 width: 100%;
@@ -55,6 +67,7 @@
         }
         
         .card-text {
+            text-align: center;
             strong {
                 display: flex;
                 text-align: center;
@@ -65,56 +78,51 @@
                 font-weight: 700;
                 margin: 10px 0px;
                 line-height: 25px;
+                transition: all 0.3s ease-in-out;
             }
     
             p {
-                display: flex;
-                text-align: center;
+                font-family: 'Poppins';
+                display: inline;
                 align-items: center;
                 justify-content: center;
-                transition: all 0.3s ease-in-out;
                 font-size: 15px;
+                transition: all 0.3s ease-in-out;
+
+                .highlight {
+                    color: var(--secondary-green); /* or any color you want */
+                    font-weight: 700;
+                }
             }
     
-            a {
-                text-decoration: none;
-            }
+            a { text-decoration: none; }
         }
     }
 
-    .card-box:hover {
-        background-color: var(--white-hover);
-        transform: scale(1.03); /* scale effect on hover */
+    .card-box:nth-child(1) { animation-delay: 0.1s; }
+    .card-box:nth-child(2) { animation-delay: 0.2s; }
+    .card-box:nth-child(3) { animation-delay: 0.3s; }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .head {
+        h1 { font-size: 30px; }
+        p { font-size: 14px; }
     }
-}
 
-.dark-container {
-    background-color: var(--dark-green);
-    position: absolute;
-    top: 70%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-
-/* MEDIA SCREEN */
-@media (max-width:1024px) {
     .rs-container {
-       .card-box {
-            .card-text {
-                flex: 1;
-                text-align: left;
-                padding: 0 20px;
-
-                p { font-size: 14px; }
+        .card-box {
+            .card-img {
+                height: auto;
+                width: 100%;
+                margin: 0 auto;
             }
-       }
+        }
     }
 }
 
-@media (max-width:1000px) {
+// IPADS
+@media (max-width: 1024px) {
     .rs-container {
         display: flex;
         flex-direction: column;
@@ -136,34 +144,23 @@
                     width: 100%;
                 }
             }
-
             .card-text {
                 flex: 1;
-                text-align: left;
+                text-align: center;
                 padding: 0 20px;
+                strong { font-size: 2rem; }
+                p { font-size: 14px; }
             }
-
        }
     }
 }
 
-@media (max-width:860px) {
-    .head {
-        h1 {
-            font-size: 26px;
-            font-weight: 700;
-        }
-    
-        p {
-            padding: 0 20px;
-            font-size: 14px;
-            line-height: 16px;
-        }
-    }
-}
-
-@media (max-width:700px) {
+@media (max-width: 630px) {
     .rs-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
        .card-box {
             display: flex;
             flex-direction: column;
@@ -172,8 +169,8 @@
             max-width: 100%;
 
             .card-img {
-                height: 200px;
-                width: 200px;
+                height: 300px;
+                width: 300px;
 
                 img {
                     height: 100%;
@@ -182,44 +179,33 @@
             }
 
             .card-text {
-                flex: 1;
-                text-align: left;
+                strong { font-size: 1.2rem; }
+                text-align: center;
             }
-
        }
     }
 }
 
-@media (max-width: 480px) {
-    .head {
-        h1 {
-            padding: 0;
-            font-size: 22px;
-        }
-    
+// FIT DIN FOR MOBILE BROWSER
+@media (max-width: 500px) {
+    .head {    
         p {
-            padding: 0 10px;
-            font-size: 12px;
-            line-height: 14px;
-        }
-    }
-}
-
-@media (max-width: 450px) {
-    .head {
-        h1 {
-            font-size: 18px;
+            padding: 0 20px;
+            font-size: 14px;
+            line-height: 16px;
         }
     }
 
     .rs-container {
-        .card-box {
-            padding: 20px 10px;
-            
+        padding: 30px;
+       .card-box {
+            .card-img {
+                height: 200px;
+                width: 200px;
+            }
+
             .card-text {
-                p {
-                    font-size: 14px;
-                }
+                padding: 0;
             }
         }
     }

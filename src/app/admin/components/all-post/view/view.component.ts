@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-view',
+  selector: 'app-view-post',
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss'
 })

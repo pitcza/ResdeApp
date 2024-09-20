@@ -21,7 +21,7 @@
     justify-content: space-between;
     align-items: center;
     z-index: 99;
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.322);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
 
     .menu-icon-button {
@@ -60,14 +60,14 @@
         }
     
         i:hover {
-            background-color: var(--dark-green);
+            background-color: var(--primary-hover);
             color: white;
             opacity: 100%;
         }
     }
 
     .menu-icon-button:hover {
-        color: var(--secondary-green);
+        color: var(--bg-dark);
     }
 }
 
@@ -75,8 +75,7 @@
     display: flex;
     align-items: center;
     h2 {
-        color: var(--secondary-green);
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.30);
+        color: var(--bg-color);
         font-size: 36px;
         font-weight: 700;
         margin-bottom: -6px;
@@ -193,11 +192,14 @@
                 transition: all 0.3s ease-in-out;
             }
             a:hover {
-                color: white;
-                background-color: var(--primary-green);
+                color: rgba(255, 255, 255, 0.805);
+                background-color: var(--secondary-hover);
             }
             a.active-link {
                 color: white;
+                background-color: var(--primary-green);
+            }
+            a.active-link:hover {
                 background-color: var(--primary-green);
             }
         }

@@ -22,11 +22,11 @@
         transition: all 0.3s ease-in-out;
 
         .head {
-            h1 { font-size: 30px; text-transform: uppercase; transition: all 0.3s ease-in-out; }
+            h1 { font-size: 28px; text-transform: uppercase; transition: all 0.3s ease-in-out; }
         }
 
         .title {
-            h2 { font-size: 16px; font-weight: 500; transition: all 0.3s ease-in-out; margin-bottom: 10px; opacity: 80%;}
+            h2 { font-size: 14px; font-weight: 500; transition: all 0.3s ease-in-out; margin-bottom: 7px; opacity: 60%;}
         }
     }
 
@@ -41,12 +41,12 @@
                 margin-bottom: 5px;
                 font-size: 16px;
 
-                i { font-size: 22px; color: var(--primary-green); }
+                i { font-size: 22px; color: var(--secondary-green); }
                 
                 p {
                     font-size: 16px;
                     font-weight: 500;
-                    color: var(--primary-green);
+                    color: var(--secondary-green);
                 }
             }
         }
@@ -62,7 +62,7 @@
             margin: 10px;
             width: 205px;
             height: 200px;
-            background: url('../../../../assets/images/ResdeLogoTransparent.png') no-repeat;
+            background: url('../../../../assets/logo/ResIt.png') no-repeat;
             background-size: cover;
             background-position: bottom right;
             opacity: 0.1;
@@ -258,9 +258,6 @@
             padding: 30px 20px;
             .head {
                 h1 { font-size: 20px; }
-            }
-            .title {
-                h2 { font-size: 14px; }
             }
         }
 

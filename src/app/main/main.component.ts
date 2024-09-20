@@ -51,13 +51,15 @@ export class MainComponent implements OnInit{
   }
 
   checkScreenWidth() {
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 1024) {
-      this.isSidebarCollapsed = true;
-      this.isSidebarOverlay = false;
-    } else {
-      this.isSidebarCollapsed = screenWidth <= 1320;
-      this.isSidebarOverlay = false;
+    if (typeof window !== 'undefined') {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 1024) {
+        this.isSidebarCollapsed = true;
+        this.isSidebarOverlay = false;
+      } else {
+        this.isSidebarCollapsed = screenWidth <= 1320;
+        this.isSidebarOverlay = false;
+      }
     }
   }
 

@@ -3,8 +3,8 @@
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 2rem;
     margin-bottom: 1rem;
-    opacity: 0; /* Initial opacity for fade-in effect */
-    animation: fadeIn 1s forwards; /* Fade-in animation */
+    opacity: 0;
+    animation: fadeIn 1s forwards;
 
     .card-single {
         display: flex;
@@ -15,15 +15,15 @@
         transition: 0.3s ease-in-out;
         border-radius: 3px;
         border-top: 3px solid var(--secondary-green);
-        transform: translateY(20px); /* Initial position for pop-up effect */
-        opacity: 0; /* Initial opacity for pop-up effect */
+        transform: translateY(20px);
+        opacity: 0;
         animation: popUp 0.6s forwards;
-        animation-delay: var(--delay, 0s); /* Using the --delay custom property */
+        animation-delay: var(--delay, 0s);
     }
 
     .card-single:hover {
         background-color: var(--white-hover);
-        transform: scale(1.05); /* scale effect on hover */
+        transform: scale(1.05);
     }
     
     .card-single div:last-child .icon {
@@ -51,13 +51,10 @@
 
 .recent-grid {
     margin-top: 40px;
-    // display: grid;
-    // grid-gap: 2rem;
-    // grid-template-columns: 65% auto;
-    transform: translateY(20px); /* Initial position for pop-up effect */
-    opacity: 0; /* Initial opacity for pop-up effect */
+    transform: translateY(20px);
+    opacity: 0;
     animation: popUp 0.6s forwards;
-    animation-delay: var(--delay, 0s); /* Using the --delay custom property */
+    animation-delay: var(--delay, 0s);
 
     .card {
         background: white;
@@ -72,18 +69,21 @@
             align-items: center;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
-            // border-bottom: 1px solid var(--primary-green);
-            // background-color: var(--secondary-green);
             background-color: white;
             margin-bottom: 20px;
         }
 
         .card-header {
             h2 {
-                text-transform: uppercase;
+                font-family: 'Poppins';
                 font-size: 20px;
-                font-weight: 600;
+                font-weight: 700;
                 color: black;
+                p {
+                    font-size: 12px;
+                    font-weight: 400;
+                    opacity: 50%;
+                }
             }
     
             a {
@@ -108,10 +108,8 @@
 }
 
 table {
-    box-shadow: var(--table-shadow);
-    border: 1px solid rgba(0, 0, 0, 0.207);
-    border-radius: 4px;
-    padding: 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
     th {
         background-color: var(--primary-green);
@@ -124,6 +122,7 @@ table {
     th, td {
         font-family: 'Poppins';
         text-align: center;
+        border-bottom-style: dashed;
     }
 
     td { font-size: 14px; }

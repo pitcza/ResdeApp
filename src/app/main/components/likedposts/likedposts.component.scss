@@ -92,9 +92,12 @@
         .post-image {
             height: 120px;
             width: 120px;
+            background-color: #929292;
 
             img {
                 height: 100%;
+                object-fit: cover;
+                object-position: center;
             }
         }
 

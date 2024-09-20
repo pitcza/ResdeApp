@@ -1,3 +1,7 @@
+.hide-header {
+    transform: translateY(-100%);
+}
+
 .header {
     position: absolute;
     display: flex;
@@ -71,13 +75,18 @@
             }
         }
 
-        a.active-link {
-            background-color: var(--primary-green);
-            color: var(--bg-color);
+        a:hover {
+            background-color: var(--bg-dark);
         }
 
-        a:hover {
-            background-color: var(--primary-green);
+        a.active-link {
+            background-color: var(--secondary-green);
+            color: var(--bg-color);
+            transition: all 0.3s ease-out;
+            font-weight: 500;
+        }
+        a.active-link:hover {
+            background-color: var(--secondary-green);
             color: var(--bg-color);
         }
     }
@@ -98,6 +107,7 @@
     }
 }
 
+// sakto for mobile browser
 @media (max-width: 500px) {
     .header {
         padding: 30px 20px 30px 20px;

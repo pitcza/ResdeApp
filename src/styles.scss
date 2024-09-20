@@ -1,11 +1,10 @@
 :root {
-    --primary-green: #60716A;
-    --primary-hover: #4A5752;
-    --primary-active: #3D4844;
-    --secondary-green: #9EB3AA;
-    --secondary-hover: #738E83;
-    --dark-green: #404B43;
-    --dark-hover: #374039;
+    --primary-green: #4d745a;
+    --primary-hover: #446750;
+    --secondary-green: #689f7a;
+    --secondary-hover: #568b67;
+    --dark-green: #2a523b;
+    --dark-hover: #214430;
 
     --bg-color: #EDE6DE;
     --bg-light: #F9F6F3;
@@ -13,9 +12,9 @@
 
     --red-btn: #C14141;
     --red-hover: #A93636;
-    --gray-btn: #7C7C7C;
-    --gray-hover: #656565;
-    // --white: #FBFCF8;
+    --gray-btn: #7f7f7f;
+    --gray-hover: #6d6d6d;
+    --white: #FBFCF8;
     --white-hover: #EFEFEF;
 
     --container: #D6CABC;
@@ -24,7 +23,6 @@
     --cont-input-border: #C9B9A8;
 
     --main-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
-    --table-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
     --formBtn-shadow: 0px 2px 2px rgba(79, 79, 79, 0.478);
 
     --label-color: rgb(60, 60, 60);
@@ -102,23 +100,7 @@ select {
     cursor: pointer;
     color: #555;
     transition: all 0.3s ease-in-out;
-}
-
-.exit-button .exit-tooltip {
-    font-family: 'Poppins';
-    font-size: 14px;
-    visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    position: absolute;
-    font-weight: normal;
-    width: 70px;
-    top: 100%;
-    right: -25px;
-    z-index: 1;
+    span { font-weight: 400; }
 }
 
 .exit-button:hover {
@@ -147,7 +129,6 @@ select {
         margin-left: 24px;
         font-size: 16px;
         font-weight: 500;
-        // font-family: 'Josefin Sans';
     }
 }
 
@@ -163,15 +144,15 @@ select {
 
 // PAGE CONTENT
 .head-page {
-    position: relative;  // Ensure this container is the reference for absolute positioning
+    position: relative;
   
     .page-content {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);  // Center horizontally and vertically
-      text-align: center;  // Center text within the div
-      z-index: 1;  // Ensure it appears above other content if needed
+      transform: translate(-50%, -50%);
+      text-align: center; 
+      z-index: 1;
 
       h2 {
         font-size: 24px;
@@ -180,7 +161,6 @@ select {
       }
     }
 }
-
 
 // SINGLE BUTTON (LOGIN, SIGNUP)
 .button {
@@ -195,9 +175,8 @@ select {
         align-content: space-evenly;
         text-align: -webkit-center;
         text-transform: uppercase;
-        box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease-in-out;
-        transform: translate(0px, 0px);
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.4);
+        transition: .1s ease-in-out, .4s color;
         text-decoration: none;
         color: var(--bg-color);
         font-size: 16px;
@@ -206,6 +185,7 @@ select {
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
 
         .loading {
             text-transform: capitalize;
@@ -213,12 +193,13 @@ select {
     }
 
     .btn:hover {
-        transform: translate(0px, -2px);
-        box-shadow: var(--main-shadow);
-        background: var(--dark-hover);
-        cursor: pointer;
-        text-decoration: none;
+        background-color: var(--dark-hover);
     }
+
+    button:active {
+        transform: translateY(0.1em);
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+      }
 }
 
 // BUTTON FOR ROUTES
@@ -234,8 +215,7 @@ select {
     justify-content: center;
     border-radius: 4px;
     text-transform: uppercase;
-    // box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-out;
     transform: translate(0px, 0px);
     background: var(--primary-green);
     cursor: pointer;
@@ -253,19 +233,55 @@ select {
     }
 }
 
-.route-btn::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background-color: var(--primary-hover);
-    transition: all 0.3s ease-in-out;
+.route-btn:active {
+    transform: translateY(0.1em);
 }
 
-.route-btn:hover::before {
-    left: 0;
+.route-btn:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.25);
+    top: 100%;
+    width: 140%;
+    height: 180%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+}
+
+.route-btn:after {
+    content: "";
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.45);
+    top: 180%;
+    width: 160%;
+    height: 190%;
+    background-color: var(--primary-hover);
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+}
+
+.route-btn:hover {
+    color: #ffffff;
+    border: 1px solid var(--primary-hover);
+}
+
+.route-btn:hover:before {
+    top: -35%;
+    background-color: var(--primary-hover);
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.route-btn:hover:after {
+    top: -45%;
+    background-color: var(--primary-hover);
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
 
@@ -350,7 +366,7 @@ select {
 .table-head {
     display: flex;
     justify-content: space-between;
-    margin: 5px 0 15px 0;
+    padding: 15px 0;
 
     // FILTERS
     .data-filter {
@@ -418,13 +434,19 @@ select {
 }
 
 .table-content {
-    background-color: white;
-    padding: 20px 20px 10px 20px;
-    margin: 30px 0;
-    box-shadow: var(--main-shadow);
-    border-radius: 5px;
+    overflow: visible;
     border-top: 3px solid var(--secondary-green);
+    box-shadow: var(--main-shadow);
+    background-color: white;
+    margin: 20px 0;
+    padding: 0 15px;
+    border-radius: 10px;
     animation: slideInBottom 0.3s ease-in-out;
+}
+
+mat-paginator {
+    padding: 5px 0;
+    margin: 0;
 }
 
 // ACTION BUTTONS
@@ -444,7 +466,7 @@ select {
 }
 
 .actions {
-    // edit button
+    // EDIT button
     .edit {
         color: var(--primary-green);
     }
@@ -452,7 +474,7 @@ select {
         background-color: var(--primary-green);
         color: white;
     }
-    // delete button
+    // DELETE button
     .delete {
         color: var(--red-btn);
     }
@@ -460,7 +482,7 @@ select {
         background-color:var(--red-btn);
         color: white;
     }
-    // view button
+    // VIEW button
     .view {
         color: var(--gray-btn);
     }
@@ -471,25 +493,37 @@ select {
 }
 
 // ACTIONS TOOLTIP
-tr {
+.mat-row, .mat-cell {
+    overflow: visible;
     position: relative;
 }
 
-.actions .tooltiptext {
+table tr td:last-child {
+    overflow: visible;
+}
+
+.actions .edit, .actions .delete, .actions .view {
+    position: relative;
+    overflow: visible;
+}
+
+.actions .tooltiptext,
+.exit-button .exit-tooltip {
     font-family: 'Poppins';
-    font-size: 14px;
-    visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
     position: absolute;
-    font-weight: normal;
-    width: 120px;
-    top: 100%;
-    right: 5%;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    background: var(--primary-green);
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: opacity 0.3s, visibility 0.3s, top 0.3s, background 0.3s;
     z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .logout .logout-tooltip {
@@ -514,7 +548,18 @@ tr {
 .view:hover .tooltiptext,
 .exit-button:hover .exit-tooltip,
 .logout:hover .logout-tooltip {
+    top: 130%;
+    opacity: 1;
     visibility: visible;
+    transform: translate(-50%, -5px);
+}
+
+.delete:hover .tooltiptext {
+    background-color: var(--red-btn);
+}
+
+.view:hover .tooltiptext {
+    background-color: var(--gray-btn);
 }
 
 /* ANIMATION KEYFRAMES */
@@ -551,31 +596,14 @@ tr {
     }
 }
 
-@keyframes bouncePopIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    60% {
-        opacity: 1;
-        transform: scale(1.1); /* Slight overshoot */
-    }
-    80% {
-        transform: scale(0.95); /* Slight undershoot */
-    }
-    100% {
-        transform: scale(1); /* Final scale */
-    }
-}
-
 @keyframes slideInBottom {
     0% {
         opacity: 0;
-        transform: translateY(50px); /* Start below the element's final position */
+        transform: translateY(50px);
     }
     100% {
         opacity: 1;
-        transform: translateY(0); /* End at the element's final position */
+        transform: translateY(0);
     }
 }
 
@@ -592,6 +620,7 @@ tr {
     }
 }
 
+// MOBILE MEDIA SCREEN
 @media (max-width: 500px) {
     .content {
         padding: 40px 20px;

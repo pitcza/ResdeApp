@@ -8,22 +8,19 @@
         font-weight: 700;
     }
 
-    .button {
-        margin-top: -10px;
-        padding-top: 3px;
-        width: 150px;
-        background-color: var(--dark-green);
+    .route-btn {
+        margin-top: -5px;
+        padding-top: 2px;
+        width: 140px;
         text-transform: capitalize;
+        i { font-weight: 700; padding-right: 5px; color: white; }
         a { color: white; }
     }
 }
 
 table {
-    box-shadow: var(--table-shadow);
-    border: 1px solid rgba(0, 0, 0, 0.207);
-    margin: 10px 0;
-    padding: 5px;
-    border-radius: 4px;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
     th {
         background-color: var(--primary-green);
@@ -37,6 +34,7 @@ table {
     th, td {
         font-family: 'Poppins';
         text-align: center;
+        border-bottom-style: dashed;
     }
 
     td { font-size: 14px; }

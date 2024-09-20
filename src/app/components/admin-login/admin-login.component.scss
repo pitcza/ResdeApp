@@ -71,9 +71,7 @@
             cursor: pointer;
         }
 
-        h3, p {
-            display: none;
-        }
+        h3, p { display: none; }
     }
 
     form {
@@ -83,6 +81,7 @@
         .input-container {
             width: 400px;
             margin-bottom: 1.2rem;
+            transition: all 0.3s ease-out;
 
             input[type="text"],
             input[type="password"] {
@@ -102,7 +101,7 @@
                 font-size: 16px;
                 font-weight: 500;
                 box-shadow: 0px 1px 1px rgb(141, 141, 141);
-                transition: all 0.3s ease;
+                transition: all 0.3s ease-in-out;
             }
 
             input:focus {
@@ -110,9 +109,7 @@
                 border: 2px solid var(--secondary-green);
             }
 
-            i {
-                position: absolute;
-            }
+            i { position: absolute; }
 
             .bx {
                 padding: 15px;
@@ -166,7 +163,7 @@ a:hover {
     text-decoration: underline;
 }
 
-
+/* MEDIA SCREEN */
 @media screen and (max-width: 1220px) {
     .left {
         width: 50%;
@@ -176,19 +173,8 @@ a:hover {
     }
 }
 
-
-/* MEDIA SCREEN */
 @media screen and (max-width: 1024px) {
-    /* LOGO IMAGE */
-    img {
-        width: 170px;
-        height: 170px;
-        margin-bottom: 140%;
-    }
-
-    .left h1, .left p {
-        display: none;
-    }
+    .left h1, .left p { display: none; }
 
     .spit-screen {
         display: flex;
@@ -213,8 +199,11 @@ a:hover {
 
         form {
             width: 100%;
-            .input-container { width: 100%; 
-                input[type="email"],
+            .input-container { 
+                width: 100%;
+                padding: 0 150px; 
+
+                input[type="text"],
                 input[type="password"] {
                     background-color: var(--cont-input-hover);
                 }
@@ -232,7 +221,7 @@ a:hover {
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.5s ease;
+            transition: all 0.5s ease-in-out;
         }
 
         .appname {
@@ -263,11 +252,19 @@ a:hover {
     }
 }
 
-@media (max-width: 500px) {
-    img {
-        margin-bottom: 100%;
-    }
+@media (max-width: 850px) {
+    .right { form { .input-container { padding: 0 100px; } } }
+}
 
+@media (max-width: 750px) {
+    .right { form { .input-container { padding: 0 50px; } } }
+}
+
+@media (max-width: 650px) {
+    .right { form { .input-container { padding: 0; } } }
+}
+
+@media (max-width: 500px) {
     .left {
         border-bottom-left-radius: 30px;
         border-bottom-right-radius: 30px;

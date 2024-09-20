@@ -1,8 +1,8 @@
 <main>
-    <div class="header">
+    <div class="header" [ngClass]="{'hide-header': isHeaderHidden}">
         <div class="bg" [ngClass]="{'hide': isLoginRoute}"></div>
         <div class="resdeapp">
-            <img src="../../../../assets/images/ResdeLogoTransparent.png" [ngClass]="{'hide': isLoginRoute}">
+            <img src="../../../../assets/logo/ResIt.png" [ngClass]="{'hide': isLoginRoute}">
             <h1 [ngClass]="{'hide': isLoginRoute}"> Re’sIt </h1>
         </div>
         <div class="pages">
