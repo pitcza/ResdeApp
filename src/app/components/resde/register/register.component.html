@@ -12,6 +12,9 @@
                   <div class="input-group">
                     <label for="inputfield">First Name</label>
                     <input type="text" id="inputfield" placeholder="First Name" [(ngModel)]="registerData.fname" name="fname" required>
+                    <span class="errorMessage" *ngIf="registerForm.controls['fname']?.invalid && registerForm.controls['fname']?.touched">
+                        First Name is required.
+                    </span>
                   </div>
                   <div class="input-group">
                     <label for="inputfield">Last Name</label>
@@ -22,18 +25,24 @@
                 <div class="input-row">
                   <div class="input-group">
                     <label for="inputfield">Email</label>
-                    <input type="email" id="inputfield" placeholder="Email" [(ngModel)]="registerData.email" name="email" required>
+                    <input type="email" id="inputfield" placeholder="example@email.com" [(ngModel)]="registerData.email" name="email" required>
+                    <span class="errorMessage" *ngIf="registerForm.controls['email']?.invalid && registerForm.controls['email']?.touched">
+                        Email is required.
+                    </span>
+                    <!-- <span *ngIf="registerForm.controls['email']?.errors?.email && registerForm.controls['email']?.touched">
+                        Please enter a valid email address.
+                    </span> -->
                   </div>
                   <div class="input-group">
                     <label for="inputfield">Phone Number</label>
-                    <input type="number" id="inputfield" [(ngModel)]="registerData.phone_number" name="phone_number" min="0" step="1" placeholder="Phone Number">
+                    <input type="number" id="inputfield" [(ngModel)]="registerData.phone_number" name="phone_number" min="0" maxlength="11" placeholder="XXXX-XXX-XXXX">
                   </div>
                 </div>
               
                 <div class="input-row">
                   <div class="input-group">
                     <label for="inputfield">City</label>
-                    <input type="text" id="inputfield" placeholder="Olongapo" [(ngModel)]="registerData.city" name="email" required>
+                    <input type="text" id="inputfield" placeholder="City" value="Olongapo" [(ngModel)]="registerData.city" name="email" required>
                   </div>
                   <div class="input-group">
                     <label for="inputfield">Barangay</label>
@@ -49,10 +58,16 @@
                   <div class="input-group">
                     <label for="inputfield">Password</label>
                     <input type="password" id="inputfield" placeholder="Password" [(ngModel)]="registerData.password" name="password" required>
+                    <span class="errorMessage" *ngIf="registerForm.controls['password']?.invalid && registerForm.controls['password']?.touched">
+                        Password is required.
+                    </span>
                   </div>
                   <div class="input-group">
                     <label for="inputfield">Confirm Password</label>
                     <input type="password" id="inputfield" placeholder="Confirm Password" [(ngModel)]="registerData.password_confirmation" name="password_confirmation" required>
+                    <span *ngIf="registerData.password !== registerData.password_confirmation && registerForm.controls['password_confirmation']?.touched" class="errorMessage">
+                        Passwords do not match.
+                    </span>
                   </div>
                 </div>
               

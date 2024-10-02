@@ -1,18 +1,14 @@
-.container {
-    display: flex;
-    transition: all 0.3s ease-in-out;
-}
-
 .main-content {
     width: 100%;
     transition: all 0.3s ease-in-out;
 }
 
+// FOR MOBILE BROWSER
 .bottom-nav {
     display: none;
 }
 
-/* HEADER */
+// HEADER CONTENT
 .hide-header {
     transform: translateY(-100%);
 }
@@ -31,7 +27,7 @@
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
 
-    .menu-icon-button {
+    .menu-icon-button { // MENU ICON FOR 1024px MAX WIDTH
         display: none;
         background: none;
         border: none;
@@ -44,7 +40,11 @@
         transition: all 0.3s ease-in-out;
     }
 
-    .logout {
+    .menu-icon-button:hover {
+        color: var(--bg-dark);
+    }
+
+    .logout { // LOGOUT FOR MOBILE BROWSER
         text-decoration: none;
         font-size: 20px;
         padding: 10px;
@@ -77,22 +77,19 @@
         }
     }
 
-    .menu-icon-button:hover {
-        color: var(--bg-dark);
+    .appname { // APP NAME
+        display: flex;
+        align-items: center;
+        h2 {
+            color: var(--bg-color);
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: -6px;
+        }
     }
 }
 
-.appname {
-    display: flex;
-    align-items: center;
-    h2 {
-        color: var(--bg-color);
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: -6px;
-    }
-}
-
+// APP PAGES CONTENT
 .body-content {
     margin-left: 200px;
     margin-top: 70px;
@@ -118,8 +115,7 @@
         color: black;
     }
 
-    /* MENU */
-    .menu-icon-button {
+    .menu-icon-button { // MENU ICON BUTTON
         position: absolute;
         background: none;
         border: none;
@@ -140,7 +136,7 @@
     display: none;
 }
 
-/* USER CONTENT */
+// USER NAME ON SIDEBAR
 .userInfo {
     justify-content: center;
     align-items: center;
@@ -172,6 +168,7 @@
     }
 }
 
+// SIDEBAR TABS
 .sidebar-content {
     position: relative;
     border-top: 1.5px solid var(--primary-green);
@@ -184,15 +181,15 @@
         padding: 0;
         list-style: none;
     
-        .sidebarTab {
-            .tab-link-name {
+        .sidebarTab { // TAB
+            .tab-link-name { // TAB NAME
                 padding-left: 10px;
                 padding-top: 4px;
             }
-            .tab-link-icon {
+            .tab-link-icon { // TAB ICON
                 font-size: 20px;
             }
-            a {
+            a { // TAB STYLE
                 display: flex;
                 font-size: medium;
                 padding: 10px 10px 10px 15px;
@@ -250,7 +247,7 @@
     }
 }
 
-// RESPONSIVE SIDEBAR SIZE 
+// AUTO MINIMIZE SIDEBAR SIZE
 @media (max-width: 1320px) {
     .sidebar.collapsed {
         width: 80px;
@@ -271,66 +268,69 @@
 // FOR MINIMIZING SIDEBAR 
 .sidebar.collapsed {
     width: 70px; 
+
+    .menu-icon-button {
+        position: absolute;
+        font-size: 24px;
+        padding: 5px;
+        align-self: center;
+        margin-top: 5px;
+        left: 0;
+        cursor: pointer;
+        color: var(--white);
+    }
+
+    .userImg img {
+        height: 40px;
+        width: 40px;
+        margin: 50px 0px 30px -13px;
+    }
+
+    .userName {
+        display: none;
+    }
+    
+    .tab-link-icon {
+        padding-left: 10px;
+        display: contents;
+    }
+    
+    .logoutbtn {
+        bottom: 20px;
+        width: 70px;
+    }
 }
 
-.sidebar.collapsed .menu-icon-button {
-    position: absolute;
-    font-size: 24px;
-    padding: 5px;
-    align-self: center;
-    margin-top: 5px;
-    left: 0;
-    cursor: pointer;
-    color: var(--white);
-}
-
-.sidebar.collapsed .userImg img {
-    height: 40px;
-    width: 40px;
-    margin: 50px 0px 30px -13px;
-}
-
-.sidebar.collapsed .tab-link-icon {
-    padding-left: 10px;
-}
-
-.sidebar.collapsed .logoutbtn {
-    bottom: 20px;
-    width: 70px;
-}
-
-.main-content.collapsed .header {
-    transition: padding-left 0.3s;
-    transition: all 0.3s ease-in-out;
-    width: 100%;
-    padding-left: 85px;
-}
-
-.main-content.collapsed .body-content {
-    margin-left: 70px;
-    transition: margin-left 0.3s;
-    width: calc(100% - 70px);
-}
-
-.sidebar.collapsed .tab-link-name,
-.sidebar.collapsed .userName {
+// for smooth something ng tabs name
+.sidebar.collapsed .tab-link-name {
     opacity: 0;
-    visibility: hidden; /* Hides the element while preventing layout shifts */
-    transition: opacity 0.2s ease-in-out, visibility 0s 0.2s; /* Delay visibility change until after fade out */
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0s 0.2s;
 }
 
-.sidebar:not(.collapsed) .tab-link-name,
-.sidebar:not(.collapsed) .userName {
+.sidebar:not(.collapsed) .tab-link-name {
     opacity: 1;
-    visibility: visible; /* Make the element visible */
-    transition: opacity 0.5s ease-in-out; /* Animate the opacity */
+    visibility: visible;
+    transition: opacity 0.5s ease-in-out;
 }
 
-.sidebar.collapsed .tab-link-icon {
-    display: contents;
+// WIDE MAIN CONTENT WHEN SIDEBAR COLLAPSED
+.main-content.collapsed {
+    .header {
+        transition: padding-left 0.3s;
+        transition: all 0.3s ease-in-out;
+        width: 100%;
+        padding-left: 85px;
+    }
+
+    .body-content {
+        margin-left: 70px;
+        transition: margin-left 0.3s;
+        width: calc(100% - 70px);
+    }
 }
 
-/* Overlay sidebar styles */
+// OVERLAY SIDEBAR
 .sidebar.overlay {
     position: fixed;
     top: 0;
@@ -346,11 +346,12 @@
     transform: translateX(0);
 }
 
+// OVERLAY SIDEBAR
 @media (max-width: 1024px) {
     .sidebar .logout { display: none; }
-    .header .menu-icon-button, .header .logout { display: flex; }
 
     .header {
+        .menu-icon-button { display: flex; }
         .logout {
             display: block;
             i { p { display: flex; } }
@@ -361,30 +362,21 @@
         transform: translateX(-100%);
     }
     
-    .main-content.collapsed .header {
-        width: 100%;
-        padding-left: 15px;
-    }
-    
-    .main-content.collapsed .body-content {
-        margin-left: 0;
-        transition: margin-left 0.3s;
-        width: 100%;
+    .main-content.collapsed {
+        .header {
+            width: 100%;
+            padding-left: 15px;
+        }
+        
+        .body-content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+            width: 100%;
+        }
     }
 
     .sidebar.overlay {
         width: 200px;
-    }
-
-    .main-content.overlay .header, 
-    .main-content.overlay .body-content {
-        margin-left: 0;
-        width: 100%;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .main-content.overlay .header {
-        padding-left: 15px;
     }
 
     .sidebar-overlay {
@@ -402,8 +394,20 @@
     .sidebar-overlay.visible {
         display: block;
     }
+
+    .main-content.overlay .header, 
+    .main-content.overlay .body-content {
+        margin-left: 0;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .main-content.overlay .header {
+        padding-left: 15px;
+    }
 }
 
+// MOBILE BROWSER RESPONSIVE
 @media (max-width: 480px) {
     .header {
         height: 60px;
@@ -415,11 +419,11 @@
         .menu-icon-button {
             display: none;
         }
-    }
 
-    .appname {
-        h2 {
-            font-size: 32px;
+        .appname {
+            h2 {
+                font-size: 32px;
+            }
         }
     }
 
@@ -428,12 +432,11 @@
         margin-bottom: 60px;
     }
 
-    /* hide the sidebar */
     .sidebar {
         display: none;
     }
 
-    /* show bottom navigation for 480px width */
+    // SHOW BOTTON NAV FOR MOBILE BROWSER
     .bottom-nav {
         display: flex;
         position: fixed;
