@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -13,16 +13,31 @@ export class MainComponent implements OnInit{
 
   name: string = '';
 
+  ngOnInit(): void {
+    this.updateNameFromSessionStorage();
+  }
+
+  updateNameFromSessionStorage(): void {
+    this.name = sessionStorage.getItem('name') || '';
+  }
+
+  updateUsername(newName: string): void {
+    sessionStorage.setItem('name', newName);
+ 
+    this.updateNameFromSessionStorage();
+  }
+
   constructor(
     private router: Router,
-    private authService: AuthserviceService
+    private authService: AuthserviceService,
+    private cdr: ChangeDetectorRef
   ) {
     this.checkScreenWidth();
   }
 
-  ngOnInit(): void {
-    this.name = sessionStorage.getItem('name') || '';
-  }
+  // ngOnInit(): void {
+  //   this.name = sessionStorage.getItem('name') || '';
+  // }
   
   // SIDEBAR
   isSidebarCollapsed = false;

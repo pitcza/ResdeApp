@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { HeaderService } from './header.service';
 import { Injectable, OnInit } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
@@ -16,6 +16,16 @@ export class AuthserviceService{
 
   // for local
   private url:string = 'http://127.0.0.1:8000/api/';
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+  }
 
   public login(formData: FormData) {
     return this.http.post(this.url + 'login', formData).pipe(
@@ -56,4 +66,32 @@ export class AuthserviceService{
   public register(formData: FormData): Observable<any> {
     return this.http.post(this.url + 'register', formData);
   }
+
+  updateUser(formData: FormData): Observable<any> {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      });
+
+      return this.http.post(this.url + 'update', formData, { headers });
+  }
+
+  public verifyCurrentPassword(currentPassword: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}` 
+    });
+    return this.http.post(this.url + 'verify-current-password', { currentPassword }, { headers });
+  }
+
+  public changePassword(passwordData: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('auth-token')}`
+    });
+
+    return this.http.post<{ message: string }>(this.url + 'change-password', passwordData, { headers })
+      .pipe(
+        catchError(async (error) => this.handleError(error))
+      );
+  }
+  
+
 }

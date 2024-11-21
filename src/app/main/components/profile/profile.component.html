@@ -6,11 +6,11 @@
                 <!-- USER INFORMATION -->
                 <div class="container" id="content1" *ngIf="currentContent === 'content1'">
                     <div class="head">
-                        <h1> Sample User Name </h1>
+                        <h1> {{ user.fname }} {{ user.lname }} </h1>
                     </div>
                     <div class="infos">
-                        <span class="email"> <i class='bx bxl-gmail'></i> <p> sample&#64;email.com </p> </span>
-                        <span class="address"> <i class='bx bxs-map-pin' ></i> Lives at <p> East Bajac-Bajac, Olongapo </p> </span>
+                        <span class="email"> <i class='bx bxl-gmail'></i> <p> {{ user.email }} </p> </span>
+                        <span class="address"> <i class='bx bxs-map-pin' ></i> Lives at <p> {{ user.barangay }}, {{ user.city }} </p> </span>
                     </div>
 
                     <div class="logo-bg">
@@ -22,38 +22,38 @@
                     <div class="head">
                         <h1> Edit Profile </h1>
                     </div>
-                    <form action="" class="form-field">
+                    <form action="" class="form-field" [formGroup]="updateForm" (ngSubmit)="onSubmit()">
                         <div class="input-row">
                             <div class="input-field">
                                 <label class="labelline"> Firstname </label>
-                                <input class="txt-field" type="text" name="firstname">
+                                <input class="txt-field" type="text" name="firstname" formControlName="fname" placeholder="{{ user.fname }}">
                             </div>
                             <div class="input-field">
                                 <label class="labelline"> Lastname </label>
-                                <input class="txt-field" type="text" name="lastname">
+                                <input class="txt-field" type="text" name="lastname" formControlName="lname" placeholder="{{ user.lname }}">
                             </div>
                         </div>
             
                         <div class="input-row">
                             <div class="input-field">
                                 <label class="labelline"> Email </label>
-                                <input class="txt-field" type="email" name="email">
+                                <input class="txt-field" type="email" name="email" formControlName="email" placeholder="{{ user.email }}" >
                             </div>
                             <div class="input-field">
                                 <label class="labelline"> Phone Number </label>
-                                <input class="txt-field" type="number" name="phonenum" min="0" step="1" id="numberInput">
+                                <input class="txt-field" type="number" name="phonenum" min="0" step="1" id="numberInput" formControlName="phone_number" placeholder="{{ user.phone_number }}">
                             </div>
                         </div>
             
                         <div class="input-row">
                             <div class="input-field">
                                 <label class="labelline"> City </label>
-                                <input class="txt-field" type="text" name="city" value="Olongapo">
+                                <input class="txt-field" type="text" name="city" value="Olongapo"  formControlName="city" placeholder="{{ user.city }}">
                             </div>
                             <div class="input-field">
                                 <label class="labelline"> Barangay </label>
-                                <select class="txt-field">
-                                    <option value=""> Select Barangay </option>
+                                <select class="txt-field" formControlName="barangay">
+                                    <option value=""  disabled selected > Select Barangay </option>
                                     <option value="Asinan"> Asinan </option>
                                     <option value="Banicain"> Banicain </option>
                                     <option value="Barreto"> Barreto </option>
@@ -75,7 +75,7 @@
                         </div>
             
                         <div class="buttons">
-                            <input class="submit-btn" type="submit" value="Update Info">
+                            <input class="submit-btn" type="submit" value="Update Info" type="submit" [disabled]="updateForm.invalid">
                         </div>
             
                     </form>
@@ -86,11 +86,11 @@
                     <div class="head">
                         <h1> Change Password </h1>
                     </div>
-                    <form action="" class="form-field">
+                    <form action="" class="form-field" [formGroup]="passForm" (ngSubmit)="onPasswordChange()">
                         <div class="input-row">
                             <div class="input-field">
                                 <label class="labelline"> Current Password </label>
-                                <input class="txt-field" type="password" name="password">
+                                <input class="txt-field" type="password" name="password" formControlName="currentPassword">
                             </div>
                             <div class="input-field">
                                 <!-- <label class="labelline"> Current Password </label>
@@ -104,16 +104,16 @@
                         <div class="input-row">
                             <div class="input-field">
                                 <label class="labelline"> New Password </label>
-                                <input class="txt-field" type="password" name="password">
+                                <input class="txt-field" type="password" name="password" formControlName="new_password">
                             </div>
                             <div class="input-field">
                                 <label class="labelline"> Confirm Password </label>
-                                <input class="txt-field" type="password" name="password">
+                                <input class="txt-field" type="password" name="password" formControlName="new_password_confirmation">
                             </div>
                         </div>
             
                         <div class="buttons">
-                            <input class="submit-btn" type="submit" value="Change Password">
+                            <input class="submit-btn" type="submit" value="Change Password" [disabled]="passForm.invalid">
                         </div>
             
                     </form>
