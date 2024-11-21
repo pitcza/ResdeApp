@@ -53,7 +53,7 @@
 
     .pages {
         display: flex;
-        background-color: #9eb3aa32;
+        background-color: #689f7a2d;
         border-radius: 50px;
         align-items: center;
         text-align-last: center;
@@ -80,14 +80,14 @@
         }
 
         a.active-link {
-            background-color: var(--secondary-green);
-            color: var(--bg-color);
+            background-color: var(--primary-green);
+            color: var(--bg-light);
             transition: all 0.3s ease-out;
             font-weight: 500;
         }
         a.active-link:hover {
-            background-color: var(--secondary-green);
-            color: var(--bg-color);
+            background-color: var(--primary-green);
+            color: var(--bg-light);
         }
     }
 }

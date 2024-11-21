@@ -63,6 +63,19 @@
         background-color: var(--cont-input);
         border: 2px solid var(--cont-input-border);
     }
+
+    input[required].ng-invalid.ng-touched,
+    select[required].ng-invalid.ng-touched {
+        border: 2px solid red; // Set red border for invalid inputs
+    }
+}
+
+/* Error message style */
+.errorMessage {
+    color: red;
+    font-size: 12px;
+    margin-top: 8px;
+    margin-left: 10px;
 }
 
 label {
