@@ -1,18 +1,46 @@
-import { Component } from '@angular/core';
-
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { AdminDataService } from '../../../../services/admin-data.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+  styleUrls: ['./list.component.scss']
 })
-export class ListComponent {
+export class ListComponent implements OnInit {
   displayedColumns: string[] = ['date', 'name', 'category', 'title', 'status', 'action'];
-  dataSource = ELEMENT_DATA;
+  dataSource: TableElement[] = []; // Initialize an empty array for fetched data
 
+  constructor(private AS: AdminDataService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchPosts(); 
+  }
+
+  fetchPosts() {
+    this.AS.getPosts().subscribe(
+      response => {
+        console.log('API Response:', response);
+
+        const posts = response.posts ? Object.values(response.posts) as TableElement[] : [];
+        
+        if (Array.isArray(posts)) {
+          this.dataSource = posts;
+          this.cdr.detectChanges();
+        } else {
+          console.error('Error: posts data is not an array');
+        }
+      },
+      error => {
+        console.error('Error fetching posts:', error);
+      }
+    );
+  }
+  
   // APPROVE PROCESS
-  approvePost() {
+  approvePost(id: number) {
     Swal.fire({
       title: 'Approve Post',
       text: `Are you sure you want to approve this post?`,
@@ -24,21 +52,34 @@ export class ListComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Post Approved!",
-          text: "The post has been approved.",
-          icon: "success",
-          confirmButtonText: 'Close',
-          confirmButtonColor: "#777777",
-          timer: 5000,
-          scrollbarPadding: false
-        });
+        this.AS.approvePost(id).subscribe(
+          response => {
+            Swal.fire({
+              title: "Post Approved!",
+              text: "The post has been approved.",
+              icon: "success",
+              confirmButtonText: 'Close',
+              confirmButtonColor: "#777777",
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          },
+          error => {
+            Swal.fire({
+              title: "Error",
+              text: "There was an error approving the post.",
+              icon: "error",
+              confirmButtonText: 'Close',
+              confirmButtonColor: "#777777"
+            });
+          }
+        );
       }
     });
   }
 
   // REJECT PROCESS
-  rejectPost() {
+  rejectPost(id: number) {
     Swal.fire({
       title: 'Reject Post',
       text: `Are you sure you want to reject this post?`,
@@ -50,6 +91,8 @@ export class ListComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.AS.rejectPost(id).subscribe(
+          response => {
         Swal.fire({
           title: "Post Rejected!",
           text: "The post has been rejected.",
@@ -59,21 +102,30 @@ export class ListComponent {
           timer: 5000,
           scrollbarPadding: false
         });
+      },
+      error => {
+        Swal.fire({
+          title: "Error",
+          text: "There was an error declining the post.",
+          icon: "error",
+          confirmButtonText: 'Close',
+          confirmButtonColor: "#777777"
+        });
       }
-    });
+    );
+  }
+});
   }
 }
 
-
 export interface TableElement {
-  date: string;
-  name: string;
-  category: string;
+  created_at?: string;  
+  fname?: string;    
+  lname?: string;
+  category?: string;
   title: string;
-  status: string;
+  status?: string;
+  id: number; 
 }
 
-const ELEMENT_DATA: TableElement[] = [
-  { date: '2024-08-17', name: 'Sample Name', category: 'Category1', title: 'Title1', status: 'Pending' },
-  { date: '2024-08-16', name: 'Sample Name', category: 'Category2', title: 'Title2', status: 'Pending'},
-];
+

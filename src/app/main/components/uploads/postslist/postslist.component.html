@@ -37,7 +37,7 @@
             <!-- Date Column -->
             <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">{{element.date}}</td>
+            <td mat-cell *matCellDef="let element">{{element.created_at | date: 'longDate' }}</td>
             </ng-container>
         
             <!-- Category Column -->
@@ -62,15 +62,15 @@
             <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let element" class="actions">
-                <button class="edit" routerLink="../edit-post">
-                    <i class='bx bx-edit' ></i>
+                <button class="edit" [routerLink]="['../edit-post', element.id]">
+                    <i class='bx bx-edit'></i>
                     <span class="tooltiptext"> Edit </span>
                 </button>
                 <button class="delete">
-                    <i class='bx bx-trash' (click)="deletePost()"></i>
+                    <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
                     <span class="tooltiptext"> Delete </span>
                 </button>
-                <button class="view" routerLink="../view-post">
+                <button class="view" [routerLink]="['../edit-post']">
                     <i class='bx bx-detail'></i>
                     <span class="tooltiptext"> View </span>
                 </button>

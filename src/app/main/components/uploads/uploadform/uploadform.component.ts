@@ -63,12 +63,11 @@ export class UploadformComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Initialize the form with validators
     this.postForm = this.fb.group({
       category: ['', Validators.required],
       title: ['', Validators.required],
       content: ['', Validators.required],
-      image: [null, Validators.required]  // Make sure image is required
+      image: [null]  // Validation here is handled server-side, so optional in Angular
     });
   }
 
@@ -83,7 +82,7 @@ export class UploadformComponent implements OnInit {
   // Handle form submission
   onSubmit() {
     if (this.postForm.invalid) {
-      return;  // If the form is invalid, do nothing
+      return;
     }
   
     const formData = new FormData();
@@ -91,9 +90,9 @@ export class UploadformComponent implements OnInit {
     formData.append('category', this.postForm.get('category')!.value);
     formData.append('content', this.postForm.get('content')!.value);
     if (this.image) {
-      formData.append('image', this.image);  // Append the image file if selected
+      formData.append('image', this.image);
     }
-  
+
     this.dataService.createPost(formData).subscribe(
       (response) => {
         console.log('Post created successfully', response);
