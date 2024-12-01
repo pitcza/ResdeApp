@@ -1,99 +1,39 @@
 <div class="container">
     <div class="post-heading">
-        <span> Recent Posts </span>
-        <h3> Recycled Garden Gallery </h3>
+      <span> Recent Posts </span>
+      <h3> Recycled Garden Gallery </h3>
     </div>
-
-    <!-- USER POST CONTAINER -->
+  
     <div class="post-container">
-
-        <!-- USER POST BOX -->
-        <div class="post-box">
-            <!-- POST IMAGE -->
-            <div class="post-img">
-                <img alt="uploaded image" src="../../../../../assets/images/NoImage.png">
-                <span class="category"> Compost </span>
-            </div>
-            <!-- POST CONTENT -->
-            <div class="post-text">
-                <a routerLink="../viewpost"> <strong class="title"> "Biostack" and "Home Composter" compost bins </strong> </a>
-                <div class="category-time">
-                    <span class="post-category"> Compost </span>
-                    <span class="published-time"> 16-08-2021 </span>
-                </div>
-                <div class="publisher-name">
-                    <span> Czarina Jane Arellano </span>
-                </div>
-                <a routerLink="../viewpost" class="get">Read more</a>
-                <a> <span class="heart-btn"> <i class='bx bx-heart'></i> </span> </a>
-            </div>
+      <div *ngFor="let post of posts" class="post-box">
+        <div class="post-img">
+          <img alt="uploaded image" [src]="post.image || '../../../../../assets/images/NoImage.png'">
+          <span class="category">{{ post.category }}</span>
         </div>
-
-        <!-- USER POST BOX -->
-        <div class="post-box">
-            <!-- POST IMAGE -->
-            <div class="post-img">
-                <img alt="uploaded item image" src="">
-                <span class="category"> Plastic </span>
-            </div>
-            <!-- POST CONTENT -->
-            <div class="post-text">
-                <a routerLink="../viewpost"> <strong class="title"> Plastic lumber, flower pots </strong> </a>
-                <div class="category-time">
-                    <span class="post-category"> Plastic </span>
-                    <span class="published-time"> 16-08-2021 </span>
-                </div>
-                <div class="publisher-name">
-                    <span> Czarina Jane Arellano </span>
-                </div>
-                <a routerLink="../viewpost" class="get">Read more</a>
-                <a> <span class="heart-btn"> <i class='bx bx-heart'></i> </span> </a>
-            </div>
+  
+        <!-- POST CONTENT -->
+        <div class="post-text">
+          <a routerLink="../viewpost">
+            <strong class="title">{{ post.title }}</strong>
+          </a>
+          <div class="category-time">
+            <span class="post-category">{{ post.category }}</span>
+            <span class="published-time">{{ post.created_at | date:'dd-MM-yyyy' }}</span>
+          </div>
+          
+          <div class="publisher-name">
+            <span> {{ post.user_name }} </span>
+          </div>
+  
+          <a routerLink="../viewpost" class="get">Read more</a>
+          
+          <a (click)="toggleLike(post)">
+            <span class="heart-btn">
+              <i [ngClass]="post.liked_by_user ? 'bx-heart-fill' : 'bx-heart'"></i>
+            </span>
+          </a>
         </div>
-
-        <!-- USER POST BOX -->
-        <div class="post-box">
-            <!-- POST IMAGE -->
-            <div class="post-img">
-                <img alt="post" src="../../../../../assets/images/sample.jpg">
-                <span class="category"> Wood and Papers </span>
-            </div>
-            <!-- POST CONTENT -->
-            <div class="post-text">
-                <a routerLink="../viewpost"> <strong class="title"> Upcycled Milk Carton Baskets </strong> </a>
-                <div class="category-time">
-                    <span class="post-category"> Wood and Papers </span>
-                    <span class="published-time"> 16-08-2021 </span>
-                </div>
-                <div class="publisher-name">
-                    <span> Czarina Jane Arellano </span>
-                </div>
-                <a routerLink="../viewpost" class="get">Read more</a>
-                <a> <span class="heart-btn"> <i class='bx bx-heart'></i> </span> </a>
-            </div>
-        </div>
-
-        <!-- USER POST BOX -->
-        <div class="post-box">
-            <!-- POST IMAGE -->
-            <div class="post-img">
-                <img alt="post" src="../../../../../assets/images/NoImage.png">
-                <span class="category"> Compost </span>
-            </div>
-            <!-- POST CONTENT -->
-            <div class="post-text">
-                <a routerLink="../viewpost"> <strong class="title"> Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit Sed. </strong> </a>
-                <div class="category-time">
-                    <span class="post-category"> Compost </span>
-                    <span class="published-time"> 16-08-2021 </span>
-                </div>
-                <div class="publisher-name">
-                    <span> Czarina Jane Arellano </span>
-                </div>
-                <a routerLink="../viewpost" class="get">Read more</a>
-                <a> <span class="heart-btn"> <i class='bx bx-heart'></i> </span> </a>
-            </div>
-        </div>
+      </div>
     </div>
-
-</div>
+  </div>
+  

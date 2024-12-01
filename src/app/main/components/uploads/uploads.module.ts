@@ -8,6 +8,7 @@ import { MaterialModule } from '../../../modules/material.module';
 import { UploadformComponent } from './uploadform/uploadform.component';
 import { EditpostComponent } from './editpost/editpost.component';
 import { ViewComponent } from './view/view.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +22,9 @@ import { ViewComponent } from './view/view.component';
   imports: [
     CommonModule,
     UploadsRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class UploadsModule { }

@@ -1,62 +1,93 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataserviceService } from '../../../services/dataservice.service';
 
 @Component({
   selector: 'app-likedposts',
   templateUrl: './likedposts.component.html',
-  styleUrl: './likedposts.component.scss'
+  styleUrls: ['./likedposts.component.scss'],
 })
-export class LikedpostsComponent {
-  items: Item[] = [
-    {
-      title: 'Newest Article',
-      category: 'Technology',
-      author: 'John Doe',
-      date: '2024-08-18',
-      image: '../../../../assets/images/NoImage.png',
-      description: 'This is the description for the newest article. This is the description for the newest article. This is the description for the newest article. This is the description for the newest article. This is the description for the newest article. This is the description for the newest article.'
-    },
-    {
-      title: 'Sample Title of Posted Idea One Two Three Four',
-      category: 'Science',
-      author: 'Jane Smith',
-      date: '2024-08-17',
-      image: '../../../../assets/images/AppLogo.png',
-      description: 'This is the description for another article.'
-    },
-    {
-      title: 'Sample Title of Posted Idea One Two Three Four Five Six Seven',
-      category: 'Science',
-      author: 'Jane Smith',
-      date: '2024-08-17',
-      image: '../../../../assets/images/clipart.png',
-      description: 'This is the description for another article.'
-    },
-    // Add more items as needed
-  ];
+export class LikedpostsComponent implements OnInit {
+  items: Item[] = [];
+  selectedItem: Item = {
+    title: '',
+    category: '',
+    author: '',
+    date: '',
+    image: '',
+    description: '',
+    id: 0,
+    liked: false
+  };
 
-  selectedItem: Item = this.items[0];
+  constructor(private ds: DataserviceService) {}
 
-  constructor() {}
+  ngOnInit(): void {
+    this.loadLikedPosts();
+  }
 
-  ngOnInit(): void {}
+  loadLikedPosts(): void {
+    this.ds.userLiked().subscribe(
+      (response) => {
+        this.items = response.liked_posts.map((post: any) => ({
+          id: post.id, 
+          title: post.title,
+          category: post.category,
+          author: post.user_name,
+          date: post.created_at,
+          image: post.image,
+          description: post.content,
+          liked: post.liked || false, 
+        }));
+  
+        if (this.items.length > 0) {
+          this.selectedItem = this.items[0];
+        }
+      },
+      (error) => {
+        console.error('Error fetching liked posts:', error);
+      }
+    );
+  }
+  
+
+  likePost(postId: number): void {
+    this.ds.likePost(postId).subscribe(
+      (response) => {
+        console.log('Post liked:', response);
+        
+        const likedItem = this.items.find((item) => item.id === postId);
+        if (likedItem) likedItem.liked = !likedItem.liked;
+  
+        if (this.selectedItem.id === postId) {
+          this.selectedItem.liked = !this.selectedItem.liked;
+        }
+      },
+      (error) => {
+        console.error('Error liking post:', error);
+      }
+    );
+  }
+  
 
   selectItem(item: Item): void {
     this.selectedItem = item;
 
-    // Scroll to the top of the page with smooth scrolling
     window.scrollTo({
       top: 0,
-      behavior: 'smooth' // Smooth scrolling effect
+      behavior: 'smooth',
     });
   }
-
 }
 
 interface Item {
+  id: number;
   title: string;
   category: string;
   author: string;
   date: string;
   image: string;
   description: string;
+  liked: boolean; 
 }
+
+

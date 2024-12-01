@@ -40,6 +40,10 @@ export class DataserviceService {
     return this.User('post', 'POST', formData)
   }
 
+  getAllPosts(): Observable<any> {
+    return this.User('posts')
+  }
+
   getUserPosts(): Observable<any> {
     return this.User('getUserPosts')
   }
@@ -52,28 +56,17 @@ export class DataserviceService {
     return this.User(`post/${id}`);
   }
 
-  update(id: number): Observable<any> {
-    return this.User(`updatepost/${id}`);
+  updatePost(id: number, data: any): Observable<any> {
+    return this.User(`updatepost/${id}`, 'PUT', data);
   }
 
-  
+  likePost(id: number): Observable<any> {
+    return this.User(`post/${id}/like`, 'POST'); 
+  }
 
-  
-
-  // getUser(): Observable<any> {
-  //   const token = localStorage.getItem('authToken');
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  //   return this.http.get<any>(this.url + 'user', { headers });
-  // }
-
-  // createPost(formData: FormData): Observable<any> {
-  //   // Retrieve the JWT token from localStorage or sessionStorage
-  //   const token = localStorage.getItem('authToken'); // Replace with your method of getting the token
-   
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-  //   return this.http.post('/api/post', formData, { headers });
-  // }
+  userLiked(): Observable<any> {
+    return this.User(`user/liked-posts`); 
+  }
 
 
 }

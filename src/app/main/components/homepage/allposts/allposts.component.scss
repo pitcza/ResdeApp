@@ -162,17 +162,25 @@
             background: none;
             border: none;
             font-size: 20px;
-            color: var(--red-btn);
             cursor: pointer;
             outline: none;
-        }
-        
-        .heart-btn:hover {
-            color: var(--red-hover);
-        }
-        
-    }
-}
+          
+            i {
+              color: gray; 
+              transition: color 0.3s ease;
+            }
+          
+            i.bxs-heart {
+              color: red; 
+            }
+          
+            &:hover {
+              i {
+                color: darkred;
+              }
+            }
+          
+
 
 .post-box:hover {
     background-color: var(--white-hover);
@@ -241,3 +249,5 @@
         transform: unset;
     }
 }
+
+        }}}

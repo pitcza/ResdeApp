@@ -93,11 +93,13 @@
             height: 120px;
             width: 120px;
             background-color: #929292;
-
+        
             img {
                 height: 100%;
+                width: 100%;
                 object-fit: cover;
                 object-position: center;
+                border-radius: 8px;
             }
         }
 
@@ -141,14 +143,24 @@
     background: none;
     border: none;
     font-size: 20px;
-    color: red;
     cursor: pointer;
     outline: none;
-}
-
-.heart-btn:hover {
-    color: darkred;
-}
+  
+    i {
+      color: gray; 
+      transition: color 0.3s ease;
+    }
+  
+    i.bxs-heart {
+      color: red; 
+    }
+  
+    &:hover {
+      i {
+        color: darkred; 
+      }
+    }
+  }
 
 /* Responsive styles for mobile screens (max width 480px) */
 @media (max-width: 480px) {

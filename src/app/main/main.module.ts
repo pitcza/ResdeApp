@@ -10,6 +10,7 @@ import { LikedpostsComponent } from './components/likedposts/likedposts.componen
 import { ProfileComponent } from './components/profile/profile.component';
 import { GreenmoduleComponent } from './components/greenmodule/greenmodule.component';
 import { MaterialModule } from '../modules/material.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MaterialModule } from '../modules/material.module';
     CommonModule,
     MainRoutingModule,
     HomepageModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ]
 })
 export class MainModule { }

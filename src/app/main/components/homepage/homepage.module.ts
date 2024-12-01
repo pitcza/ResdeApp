@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomepageRoutingModule } from './homepage-routing.module';
 import { AllpostsComponent } from './allposts/allposts.component';
 import { UserpostComponent } from './userpost/userpost.component';
+import { MaterialModule } from '../../../modules/material.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { UserpostComponent } from './userpost/userpost.component';
   ],
   imports: [
     CommonModule,
-    HomepageRoutingModule
+    HomepageRoutingModule,
+    MaterialModule,
   ]
 })
 export class HomepageModule { }
