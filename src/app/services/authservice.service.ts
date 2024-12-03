@@ -16,6 +16,8 @@ export class AuthserviceService{
 
   // for local
   private url:string = 'http://127.0.0.1:8000/api/';
+    //for development
+  // private url:string = 'https://api.resit.site/api/';
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';

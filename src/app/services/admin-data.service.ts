@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 export class AdminDataService {
 
   private url:string = 'http://127.0.0.1:8000/api/';
+  //for development
+  // private url:string = 'https://api.resit.site/api/';
 
   constructor(private http: HttpClient) { }
 
