@@ -2,40 +2,105 @@
     <div class="container2">
         <div class="head">
             <h1> The 3Rs </h1>
-            <p> At Re’sIt, we believe in the power of the 3Rs to make a difference in our communities. Our platform encourages residents to actively <span class="highlight">reduce</span> waste by sharing their creative <span class="highlight">recycling</span> ideas to <span class="highlight">reuse</span> it. Your ideas help the community <span class="highlight">think twice before discarding</span> something, <span class="highlight">leading to less waste</span> overall.  </p>
+            <p>
+                At Re’sIt, we believe in the power of the 3Rs to make a difference in our communities.
+                Our platform encourages residents to actively <span class="highlight">reduce</span> waste by sharing
+                their creative <span class="highlight">recycling</span> ideas to <span class="highlight">reuse</span> it.
+                Your ideas help the community <span class="highlight">think twice before discarding</span> something,
+                <span class="highlight">leading to less waste</span> overall.
+            </p>
         </div>
-    
+
         <div class="rs-container">
             <div class="card-box">
                 <div class="card-img">
-                    <img alt="reduce image" src="../../../../assets/images/R1.png">
+                    <img alt="reduce image" src="../../../../assets/images/R1.png" />
                 </div>
                 <div class="card-text">
                     <a> <strong> REDUCE </strong> </a>
-                    <p> Encourage others to <span class="highlight">minimize the amount of waste</span> produce by showcasing <span class="highlight">creative ways to repurpose or upcycle items</span>. </p>
+                    <p>
+                        Encourage others to <span class="highlight">minimize the amount of waste</span>
+                        produce by showcasing <span class="highlight">creative ways to repurpose or upcycle items</span>.
+                    </p>
                 </div>
             </div>
-    
+
             <div class="card-box">
                 <div class="card-img">
-                    <img alt="reuse image" src="../../../../assets/images/R2.png">
+                    <img alt="reuse image" src="../../../../assets/images/R2.png" />
                 </div>
                 <div class="card-text">
                     <a> <strong> REUSE </strong> </a>
-                    <p> Browse and discover creative ways to <span class="highlight">give new life to everyday items</span>, turning them into <span class="highlight">something useful</span> for your home or garden. </p>
+                    <p>
+                        Browse and discover creative ways to <span class="highlight">give new life to everyday items</span>,
+                        turning them into <span class="highlight">something useful</span> for your home or garden.
+                    </p>
                 </div>
             </div>
-    
+
             <div class="card-box">
                 <div class="card-img">
-                    <img alt="recycle image" src="../../../../assets/images/R3.png">
+                    <img alt="recycle image" src="../../../../assets/images/R3.png" />
                 </div>
                 <div class="card-text">
                     <a> <strong> RECYCLE </strong> </a>
-                    <p> Participate by sharing ideas that <span class="highlight">transform waste into innovative solutions</span>, making <span class="highlight">sustainable living a part of everyday life</span>. </p>
+                    <p>
+                        Participate by sharing ideas that <span class="highlight">transform waste into innovative solutions</span>,
+                        making <span class="highlight">sustainable living a part of everyday life</span>.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-        
-</div>
+    <div class="content">
+        <div class="trivia-section">
+            <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
+    
+            <!-- Cooldown Message -->
+            <div *ngIf="cooldownActive" class="cooldown-message">
+                <p>
+                    You have reached the maximum number of attempts. Please wait until 
+                    {{ cooldownEndTime | date:'short' }} to try again.
+                </p>
+            </div>
+    
+            <!-- Quiz Form -->
+            <form *ngIf="!cooldownActive && !showResults" (ngSubmit)="submitAnswers()">
+                <div *ngFor="let question of triviaQuestions; let i = index" class="question">
+                    <h3>{{ i + 1 }}. {{ question.title }}</h3>
+                    <div class="options">
+                        <label *ngFor="let option of question.options; let j = index" class="option">
+                            <input
+                                type="radio"
+                                [value]="j"
+                                name="question-{{ i }}"
+                                [(ngModel)]="userAnswers[i]"
+                                required
+                            />
+                            {{ option }}
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Submit</button>
+            </form>
+    
+            <!-- Results Section -->
+            <div *ngIf="!cooldownActive && showResults" class="results">
+                <h3>Your Score: {{ score }}/{{ triviaQuestions.length }}</h3>
+                <ul>
+                    <li *ngFor="let question of triviaQuestions; let i = index">
+                        {{ i + 1 }}. {{ question.title }} -
+                        <span
+                            [ngClass]="{
+                                correct: userAnswers[i] === question.correctAnswer,
+                                incorrect: userAnswers[i] !== question.correctAnswer
+                            }"
+                        >
+                            {{ userAnswers[i] !== null ? question.options[userAnswers[i]] : 'Not Answered' }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    

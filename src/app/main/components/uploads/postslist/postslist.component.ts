@@ -13,6 +13,7 @@ export class PostslistComponent implements OnInit {
   displayedColumns: string[] = ['date', 'category', 'title', 'status', 'action'];
   dataSource: TableElement[] = [];
   id: any|string;
+  isLoading: boolean = true;
 
   constructor (
     private ds: DataserviceService,
@@ -25,6 +26,7 @@ export class PostslistComponent implements OnInit {
   }
 
   fetchUserPost() {
+    this.isLoading = true;
     this.ds.getUserPosts().subscribe(
       response => {
         console.log('API Response:', response);
@@ -34,12 +36,14 @@ export class PostslistComponent implements OnInit {
         if (Array.isArray(posts)) {
           this.dataSource = posts;
           // this.cdr.detectChanges();
+          this.isLoading = false;
         } else {
           console.error('Error: posts data is not an array');
         }
       },
       error => {
         console.error('Error fetching posts:', error);
+        this.isLoading = false;
       }
     )
   }
