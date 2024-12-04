@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
 import { Router } from '@angular/router';
+import { UploadPostComponent } from '../../upload-post/upload-post.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -10,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './postslist.component.scss'
 })
 export class PostslistComponent implements OnInit {
-  displayedColumns: string[] = ['date', 'category', 'title', 'status', 'action'];
+  displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
   dataSource: TableElement[] = [];
   id: any|string;
   isLoading: boolean = true;
@@ -18,11 +20,21 @@ export class PostslistComponent implements OnInit {
   constructor (
     private ds: DataserviceService,
     private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.fetchUserPost();
+  }
+
+  // UPLOADING POPUP
+  uploadIdea() {
+    if (this.dialog) {
+      this.dialog.open(UploadPostComponent)
+    } else {
+      console.error('Uploading form not found');
+    }
   }
 
   fetchUserPost() {
@@ -101,6 +113,7 @@ export class PostslistComponent implements OnInit {
 
 
 export interface TableElement {
+  image: string;
   created_at?: string;
   category?: string;
   title: string;

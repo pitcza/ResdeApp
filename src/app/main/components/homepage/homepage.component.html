@@ -1,3 +1,115 @@
 <div class="main">
-    <router-outlet></router-outlet>
+  <div class="container">
+    <div class="allposts">
+
+      <!-- UPLOAD POST -->
+      <div class="float-icon" (click)="uploadIdea()">
+        <span class="label">Upload Idea</span>
+        <i class='bx bx-pencil' ></i>
+      </div>
+
+      <div class="post-heading">
+        <span> Recent Posts </span>
+        <h3> Recycled Garden Gallery </h3>
+      </div>
+    
+      <div class="post-container">
+        <!-- Show skeleton loaders while posts are loading -->
+        <ng-container *ngIf="isLoading">
+          <div class="post-box skeleton-loader" *ngFor="let loader of loaders">
+            <div class="post-img">
+              <div class="image-placeholder"></div>
+              <span class="category-placeholder"></span>
+            </div>
+            <div class="post-text">
+              <div class="title-placeholder"></div>
+              <div class="category-time-placeholder"></div>
+              <div class="publisher-placeholder"></div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Dynamically render posts once loaded -->
+        <ng-container *ngIf="!isLoading">
+        <div *ngFor="let post of posts" class="post-box">
+          <div class="post-img" (click)="viewPost(post.id)">
+            <img alt="uploaded image" [src]="post.image || '../../../../../assets/images/NoImage.png'">
+            <span class="category">{{ post.category }}</span>
+          </div>
+    
+          <!-- POST CONTENT -->
+          <div class="post-text">
+            <a routerLink="../viewpost">
+              <strong class="title">{{ post.title }}</strong>
+            </a>
+            <div class="category-time">
+              <span class="post-category">{{ post.category }}</span>
+              <span class="published-time">{{ post.created_at | date:'dd-MM-yyyy' }}</span>
+            </div>
+            
+            <div class="publisher-name">
+              <span> {{ post.user_name }} </span>
+            </div>
+    
+            <a (click)="viewPost(post.id)" class="get">Read more</a>
+            
+            <a (click)="toggleLike(post)">
+              <span class="heart-btn">
+                <i [ngClass]="post.liked_by_user ? 'bx bxs-heart' : 'bx bx-heart'"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </div>
+    
+    <div class="events" [ngClass]="{'up-event': upEventContainer}">
+      <div class="head" (click)="toggleCards()">
+        <div class="titlehead">
+          <i class='bx bxs-megaphone'></i>
+          <h2>Announcements</h2>
+        </div>
+        
+        <span class="arrow-icon">
+          <i [ngClass]="isExpanded ? 'bx bxs-chevron-left' : 'bx bxs-chevron-down'"></i>
+        </span>
+      </div>
+    
+      <div class="scroll-cards" [ngClass]="{'hidden': !isExpanded}">
+        <div class="ev-cards">
+
+          <div class="ev-card" (click)="viewAnnouncem()">
+            <div class="ev-img">
+              <img src="../../../../assets/images/NoImage.png">
+            </div>
+            <div class="ev-details">
+              <h4>Event Title</h4>
+              <p>Details of the event for upcoming sample sample sample sample sample.</p>
+              <h6 class="date"> December 04, 2024 </h6>
+            </div>
+          </div>
+
+          <div class="ev-card">
+            <div class="ev-img">
+              <img src="../../../../assets/images/NoImage.png">
+            </div>
+            <div class="ev-details">
+              <h4>Event Title</h4>
+              <p>Details of the event for upcoming sample sample sample sample sample.</p>
+              <h6 class="date"> December 04, 2024 </h6>
+            </div>
+          </div>
+          <div class="ev-card"></div>
+          <div class="ev-card"></div>
+          <div class="ev-card"></div>
+          <div class="ev-card"></div>
+          <div class="ev-card"></div>
+          <div class="ev-card"></div>
+        </div>
+      </div>
+    </div>
+      
+  </div>
+      
 </div>

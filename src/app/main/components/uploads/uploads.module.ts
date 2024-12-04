@@ -5,7 +5,6 @@ import { UploadsRoutingModule } from './uploads-routing.module';
 import { UploadsComponent } from './uploads.component';
 import { PostslistComponent } from './postslist/postslist.component';
 import { MaterialModule } from '../../../modules/material.module';
-import { UploadformComponent } from './uploadform/uploadform.component';
 import { EditpostComponent } from './editpost/editpost.component';
 import { ViewComponent } from './view/view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +14,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     UploadsComponent,
     PostslistComponent,
-    UploadformComponent,
     EditpostComponent,
     ViewComponent
   ],

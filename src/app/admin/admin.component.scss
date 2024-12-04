@@ -57,7 +57,7 @@
             border-radius: 10px;
             opacity: 70%;
             transition: all 0.5s ease-in-out;
-            p { display: none; font-size: 16px; font-family: 'Josefin Sans'; padding-top: 3px; }
+            p { display: none; font-size: 16px; font-family: 'Poppins'; padding-top: 3px; }
         }
     
         i:hover {
@@ -71,10 +71,10 @@
         display: flex;
         align-items: center;
         h2 {
+            font-family: 'Parkinsans';
             color: var(--bg-color);
             font-size: 36px;
             font-weight: 700;
-            margin-bottom: -6px;
         }
     }
 }
@@ -174,7 +174,8 @@
         .sidebarTab { // TAB
             .tab-link-name { // TAB NAME
                 padding-left: 10px;
-                padding-top: 4px;
+                padding-top: 3px;
+                font-size: 14px;
             }
             .tab-link-icon { // TAB ICON
                 font-size: 20px;
@@ -182,7 +183,7 @@
             a { // TAB STYLE
                 display: flex;
                 font-size: medium;
-                padding: 10px 10px 10px 15px;
+                padding: 8px 10px 10px 15px;
                 height: 40px;
                 border-radius: 10px;
                 text-decoration: none;

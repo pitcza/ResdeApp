@@ -1,92 +1,48 @@
 <div class="content">
     <div class="head">
-        <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
         <h1> Your Posts </h1>
-        <div class="route-btn" routerLink="../upload-post">
+        <div class="route-btn" (click)="uploadIdea()">
             <i class='bx bx-plus' ></i> <a> Upload </a>
         </div>
     </div>
 
-    <div class="table-content">
-        <div class="table-head">
-            <div class="data-filter">
-                <!-- <h2> Filter Category: </h2> -->
-                <select id="filter-category">
-                    <option selected value=""> All Category </option>
-                    <option value="Compost"> Compost </option>
-                    <option value="Plastic"> Plastic </option>
-                    <option value="Rubber"> Rubber </option>
-                    <option value="Wood and Paper"> Wood and Paper </option>
-                    <option value="Miscellaneous Products"> Miscellaneous Products </option>
-                </select>
-
-                <select id="filter-category">
-                    <option selected value=""> Select Status </option>
-                    <option value="Uploaded"> Uploaded </option>
-                    <option value="Pending"> Pending </option>
-                    <option value="Denied ba or Rejected"> Denied ba or Rejected </option>
-                </select>
+    <div class="post-container">
+        <mat-card *ngFor="let element of dataSource" class="post-box mat-elevation-z8">
+          <div mat-card-header class="post-img">
+            <img mat-card-avatar alt="uploaded image" [src]="element.image">
+            <span class="status" [ngClass]="{
+                'pending-status': element.status === 'pending',
+                'approved-status': element.status === 'approved',
+                'declined-status': element.status === 'declined',
+              }">{{ element.status }}</span>
+          </div>
+      
+          <!-- POST CONTENT -->
+          <mat-card-content class="post-text">
+            <a routerLink="../viewpost">
+              <strong class="title">{{ element.title }}</strong>
+            </a>
+            <div class="category-time">
+              <span class="post-category">{{ element.category }}</span>
+              <span class="published-time">{{ element.created_at | date: 'mediumDate' }}</span>
             </div>
-
-            <!-- <div class="route-btn" routerLink="../upload-post">
-                <i class='bx bx-plus' ></i> <a> Upload </a>
-            </div> -->
-        </div>
-
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <!-- Date Column -->
-            <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">{{element.created_at | date: 'longDate' }}</td>
-            </ng-container>
-        
-            <!-- Category Column -->
-            <ng-container matColumnDef="category">
-            <th mat-header-cell *matHeaderCellDef>Category</th>
-            <td mat-cell *matCellDef="let element">{{element.category}}</td>
-            </ng-container>
-        
-            <!-- Title Column -->
-            <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>Title</th>
-            <td mat-cell *matCellDef="let element">{{element.title}}</td>
-            </ng-container>
-        
-            <!-- Status Column -->
-            <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let element" class="status">{{element.status}}</td>
-            </ng-container>
-        
-            <!-- Action Column -->
-            <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let element" class="actions">
-                <button class="edit" [routerLink]="['../edit-post', element.id]">
-                    <i class='bx bx-edit'></i>
-                    <span class="tooltiptext"> Edit </span>
-                </button>
-                <button class="delete">
-                    <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
-                    <span class="tooltiptext"> Delete </span>
-                </button>
-                <button class="view" [routerLink]="['../edit-post']">
-                    <i class='bx bx-detail'></i>
-                    <span class="tooltiptext"> View </span>
-                </button>
-            </td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    <!-- Show spinner while loading -->
-    <div class="loading-spinner" *ngIf="isLoading">
-        <div class="spinner"></div>
-    </div>
-        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
-                            aria-label="Select page of periodic elements">
-        </mat-paginator>
-        
-    </div>
+          </mat-card-content>
+      
+          <mat-card-actions class="actions" id="uploads-actions">
+            <button class="edit" [routerLink]="['../edit-post', element.id]">
+                <i class='bx bx-edit'></i>
+                <span class="tooltiptext"> Edit </span>
+            </button>
+            <button class="delete">
+                <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
+                <span class="tooltiptext"> Delete </span>
+            </button>
+            <button class="view" routerLink="../viewpost">
+                <i class='bx bx-detail'></i>
+                <span class="tooltiptext"> View </span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      
 </div>

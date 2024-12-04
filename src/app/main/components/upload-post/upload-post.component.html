@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <h1> Upload Idea </h1>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="form-content">
+            <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+                <div class="input-row">
+                    <div class="input-field-shorter">
+                        <label class="labelline"> Category </label>
+                        <select class="txt-field" formControlName="category">
+                            <option value="Compost">Compost</option>
+                            <option value="Plastic">Plastic</option>
+                            <option value="Rubber">Rubber</option>
+                            <option value="Wood and Paper">Wood and Paper</option>
+                            <option value="Miscellaneous Products">Miscellaneous Products</option>
+                        </select>
+                        <div *ngIf="postForm.get('category')?.invalid && postForm.get('category')?.touched" class="error">
+                            Category is required.
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label class="labelline"> Title </label>
+                        <input class="txt-field" type="text" formControlName="title">
+                        <div *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched" class="error">
+                            Title is required.
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="input-row">
+                    <div class="input-field">
+                        <label class="labelline"> Description </label>
+                        <textarea class="txtarea-field" formControlName="content" placeholder="Description of your post idea..."></textarea>
+                        <div *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched" class="error">
+                            Description is required.
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="input-row">
+                    <div class="input-field-short">
+                        <label class="up-labelline"> Upload Photo </label>
+                        <input class="file-field" type="file" (change)="onFileSelected($event)">
+                        <div *ngIf="(!image && postForm.get('image')?.invalid) && postForm.get('image')?.touched" class="error">
+                            Image is required.
+                          </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <input class="cancel-btn" type="button" value="Cancel" (click)="closePopup()">
+                    <input class="submit-btn" type="submit" value="Upload" [disabled]="postForm.invalid">
+                </div>
+    
+            </form>
+        </div>
+
+    </div>
+</div>

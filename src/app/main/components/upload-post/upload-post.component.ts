@@ -1,39 +1,33 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
-import { DataserviceService } from '../../../../services/dataservice.service';
+import { DataserviceService } from '../../../services/dataservice.service';
+
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-uploadform',
-  templateUrl: './uploadform.component.html',
-  styleUrl: './uploadform.component.scss'
+  selector: 'app-upload-post',
+  templateUrl: './upload-post.component.html',
+  styleUrl: './upload-post.component.scss'
 })
-export class UploadformComponent implements OnInit {
+export class UploadPostComponent {
   postForm!: FormGroup;
   image: File | null = null;  // Allows image to be null
 
   constructor(
+    public dialogRef: MatDialogRef<UploadPostComponent>,
     private fb: FormBuilder, 
     private http: HttpClient, 
     private router: Router,
-    private dataService: DataserviceService) {}
+    private dataService: DataserviceService
+  ) {}
 
-  // if trip lagyan hehe nakacomment sa html
-  ImagePreview: string | ArrayBuffer | null = null;
-
-  // onFileSelected(event: Event): void {
-  //   const file = (event.target as HTMLInputElement).files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.ImagePreview = reader.result;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+  closeDialog() {
+    this.dialogRef.close();
+  }
 
   // Confirmation function
   confirmAction() {
@@ -117,5 +111,25 @@ export class UploadformComponent implements OnInit {
         });
       }
     );
+  }
+
+  closePopup() {
+    // SweetAlert confirmation before closing
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to discard your changes?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4d745a',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Yes, close it!',
+      cancelButtonText: 'No, keep editing',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Logic to close the dialog
+        this.closeDialog(); // Replace with your actual logic for closing the popup
+      }
+    });
   }
 }

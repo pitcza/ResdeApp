@@ -29,7 +29,7 @@ export class RegisterComponent {
       email: '',
       phone_number: '',
       barangay: '',
-      city: '',
+      city: 'Olongapo City',
       password: '',
       password_confirmation: '',
       privacy: false

@@ -9,12 +9,13 @@
 }
 
 // HEADER CONTENT
-.hide-header {
-    transform: translateY(-100%);
-}
+// .hide-header {
+//     transform: translateY(-100%);
+// }
 
 .header {
     position: fixed;
+    font-family: 'Parkinsans';
     top: 0;
     height: 70px;
     width: 100%;
@@ -67,7 +68,7 @@
             border-radius: 10px;
             opacity: 70%;
             transition: all 0.5s ease-in-out;
-            p { display: none; font-size: 16px; font-family: 'Josefin Sans'; padding-top: 3px; }
+            p { display: none; font-size: 16px; font-family: 'Poppins'; padding-top: 3px; }
         }
     
         i:hover {
@@ -84,7 +85,6 @@
             color: var(--bg-color);
             font-size: 36px;
             font-weight: 700;
-            margin-bottom: -6px;
         }
     }
 }
@@ -184,7 +184,8 @@
         .sidebarTab { // TAB
             .tab-link-name { // TAB NAME
                 padding-left: 10px;
-                padding-top: 4px;
+                padding-top: 2px;
+                font-size: 16px;
             }
             .tab-link-icon { // TAB ICON
                 font-size: 20px;
@@ -192,7 +193,7 @@
             a { // TAB STYLE
                 display: flex;
                 font-size: medium;
-                padding: 10px 10px 10px 15px;
+                padding: 7px 10px 10px 15px;
                 height: 40px;
                 border-radius: 10px;
                 text-decoration: none;
@@ -290,9 +291,16 @@
         display: none;
     }
     
-    .tab-link-icon {
-        padding-left: 10px;
-        display: contents;
+    .sidebarTabs {
+        .sidebarTab {
+            .tab-link-icon {
+                display: contents;
+            }
+        
+            a {
+                padding: 11px 15px 10px 15px;
+            }
+        }
     }
     
     .logoutbtn {
@@ -467,6 +475,7 @@
             i {
                 display: block;
                 font-size: 24px;
+                margin-bottom: -6px;
             }
         }
 

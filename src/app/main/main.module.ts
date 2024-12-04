@@ -10,7 +10,8 @@ import { LikedpostsComponent } from './components/likedposts/likedposts.componen
 import { ProfileComponent } from './components/profile/profile.component';
 import { GreenmoduleComponent } from './components/greenmodule/greenmodule.component';
 import { MaterialModule } from '../modules/material.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UploadPostComponent } from './components/upload-post/upload-post.component';
 
 @NgModule({
   declarations: [
@@ -18,13 +19,15 @@ import { FormsModule } from '@angular/forms';
     LikedpostsComponent,
     ProfileComponent,
     GreenmoduleComponent,
+    UploadPostComponent
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
     HomepageModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class MainModule { }

@@ -1,29 +1,24 @@
-<div class="content">
-    <div class="back" routerLink="../posts"> <i class='bx bx-chevron-left' ></i> <h3> Home </h3> </div>
-    <div class="container">
-        <!-- <button class="exit-button" routerLink="../posts"> &times; <span class="exit-tooltip"> Exit </span> </button> -->
-        <div class="user-post">
-            <!-- POST TITLE -->
-            <h1> Build hardware cloth or chicken wire compost bin </h1>
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <h1> {{ data.category }} </h1>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
 
-            <div class="publisher-name">
-                <span> Czarina Jane Arellano </span>
+        <div class="post-content">
+            <h4 class="publisher">{{ data.user_name }}</h4>
+            <span class="date">{{ data.created_at | date: 'longDate' }} at {{ data.created_at | date: 'shortTime' }}</span>
+            <div class="main-post">
+                <h2>{{ data.title }}</h2>
+                <p>{{ data.content }}</p>
+                <div class="post-img">
+                    <img [src]="data.image || '../../../../../assets/images/NoImage.png'" alt="post image">
+                </div>
             </div>
+        </div>
+
+        <div class="post-footer">
             
-            <div class="category-time">
-                <span class="blog-category">Compost Bin</span>
-                <span class="published-time"> 16-08-2021 </span>
-            </div>
-
-            <div class="post-content">
-                <div class="post-image">
-                    <img alt="blog" src="../../../../../assets/images/NoImage.png">
-                </div>
-                <div class="postcontent">
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Felis bibendum ut tristique et. Dui faucibus in ornare quam viverra orci sagittis eu. Urna et pharetra pharetra massa. Urna cursus eget nunc scelerisque viverra mauris in. </p>
-                </div>
-            </div>
-            <a> <span class="heart-btn"> <i class='bx bx-heart'></i> </span> </a>
         </div>
     </div>
 </div>

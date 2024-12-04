@@ -85,7 +85,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Josefin Sans';
+    font-family: 'Poppins';
 
     opacity: 0;
     transform: translateY(50px);
@@ -236,6 +236,7 @@ footer {
     .brgy {
         padding-left: 10px;
         h2 {
+            font-family: 'Parkinsans';
             color: var(--primary-green);
         }
         h3 {
@@ -254,7 +255,7 @@ footer {
             i {
                 position: absolute;
                 margin-left: -23px;
-                padding-bottom: 10px;
+                padding-top: 3px;
             }
             p {
                 margin-left: 23px;
@@ -576,9 +577,7 @@ footer {
 
         .contact {
             display: flex;
-            flex-direction: row;
             align-self: normal;
-            justify-content: space-between;
             margin-left: 8px;
         }
     }
