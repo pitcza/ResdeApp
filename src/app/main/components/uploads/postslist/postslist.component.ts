@@ -4,6 +4,8 @@ import { DataserviceService } from '../../../../services/dataservice.service';
 import { Router } from '@angular/router';
 import { UploadPostComponent } from '../../upload-post/upload-post.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EditpostComponent } from '../editpost/editpost.component';
+import { ViewComponent } from '../view/view.component';
 
 
 @Component({
@@ -15,7 +17,9 @@ export class PostslistComponent implements OnInit {
   displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
   dataSource: TableElement[] = [];
   id: any|string;
-  isLoading: boolean = true;
+  
+  isLoading = true;
+  loaders = Array(5).fill(null);
 
   constructor (
     private ds: DataserviceService,
@@ -34,6 +38,27 @@ export class PostslistComponent implements OnInit {
       this.dialog.open(UploadPostComponent)
     } else {
       console.error('Uploading form not found');
+    }
+  }
+
+  // EDITING POST POPUP
+  editPost(id: number) {
+    if (this.dialog) {
+      this.dialog.open(EditpostComponent)
+    } else {
+      console.error('not found');
+    }
+  }
+
+  // VIEWING POST POPUP
+  viewPost(id: number) {
+    if (this.dialog) {
+      // Open the ViewComponent dialog and pass the post ID
+      this.dialog.open(ViewComponent, {
+        data: { id: id }  // Pass the post ID to ViewComponent
+      });
+    } else {
+      console.error('View popup not found');
     }
   }
 
@@ -60,21 +85,18 @@ export class PostslistComponent implements OnInit {
     )
   }
 
-  viewPost(id: number) {
-    this.router.navigate(['view-post', id]);
-  }
-
   // DELETE PROCESS
   deletePost(id: number) {
     Swal.fire({
-      title: 'Delete Post',
-      text: 'Are you sure you want to delete your post?',
+      title: 'Delete Post?',
+      text: 'This action can\'t be undone.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#AB0E0E',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'Cancel'
+      confirmButtonColor: '#C14141',
+      cancelButtonColor: '#7f7f7f',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
         this.ds.deletePost(id).subscribe(

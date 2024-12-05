@@ -199,6 +199,53 @@
     transform: scale(1.03);
 }
 
+// for loader
+.skeleton-loader {
+    animation: pulse 1.5s infinite;
+
+    .image-placeholder {
+        height: 250px;
+        background: #e0e0e0;
+        border-radius: 5px;
+    }
+
+    .category-placeholder {
+        width: 80px;
+        height: 20px;
+        background: #d0d0d0;
+        margin-top: 8px;
+        margin-left: 8px;
+        border-radius: 5px;
+    }
+
+    .title-placeholder {
+        height: 20px;
+        background: #c0c0c0;
+        margin-top: 15px;
+        border-radius: 5px;
+    }
+
+    .category-time-placeholder,
+    .publisher-placeholder {
+        height: 15px;
+        background: #e0e0e0;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+}
+
+@keyframes pulse {
+    0% {
+    background-color: #f0f0f0;
+    }
+    50% {
+    background-color: #e0e0e0;
+    }
+    100% {
+    background-color: #f0f0f0;
+    }
+}
+
 /* MEDIA SCREEN */
 @media(max-width:1250px){
     .post-container {

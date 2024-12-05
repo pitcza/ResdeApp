@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 1000;
 }
 
 .ev-container {
@@ -120,10 +120,16 @@
     z-index: 1;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
     .container {
         .head {
             h1 { font-size: 20px; }
+        }
+    }
+
+    .ev-header {
+        h1 {
+            font-size: 22px;
         }
     }
 
@@ -135,5 +141,15 @@
     .ev-content {
         display: flex;
         flex-direction: column-reverse;
+
+        .ev-details {
+            h4 { 
+                font-size: 20px; 
+            }
+    
+            p {
+                font-size: 14px;
+            }
+        }
     }
 }

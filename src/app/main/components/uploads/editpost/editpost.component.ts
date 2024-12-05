@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-editpost',
@@ -14,10 +15,15 @@ export class EditpostComponent implements OnInit {
   ImagePreview: string | ArrayBuffer | null = null;
 
   constructor(
+    public dialogRef: MatDialogRef<EditpostComponent>,
     private router: Router,
     private route: ActivatedRoute,
     private ds: DataserviceService
   ) {}
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -130,5 +136,23 @@ export class EditpostComponent implements OnInit {
     }
     
     return new File([u8arr], filename, { type: mime });
+  }
+
+  cancelPopup() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to discard your changes?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4d745a',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Yes, close it!',
+      cancelButtonText: 'No, keep editing',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeDialog();
+      }
+    });
   }
 }

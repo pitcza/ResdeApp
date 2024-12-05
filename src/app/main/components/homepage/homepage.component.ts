@@ -29,6 +29,7 @@ export class HomepageComponent implements OnInit {
   }
 
   upEventContainer = false;
+  downUploadIcon = false
   lastScrollTop = 0;
   scrollThreshold = 10;
 
@@ -43,9 +44,11 @@ export class HomepageComponent implements OnInit {
     if (currentScrollTop > this.lastScrollTop) {
       // Scrolling down
       this.upEventContainer = true;
+      this.downUploadIcon = true;
     } else {
       // Scrolling up
       this.upEventContainer = false;
+      this.downUploadIcon = false;
     }
 
     this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;

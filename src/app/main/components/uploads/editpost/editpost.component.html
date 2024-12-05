@@ -1,11 +1,13 @@
-<div class="content">
-    <div class="container">
-      <button class="exit-button" routerLink="../list"> &times; <span class="exit-tooltip"> Exit </span> </button>
-      <div class="head">
+
+<div class="container">
+  <div class="form-container">
+    <div class="form-header">
         <h1> Edit Post </h1>
-      </div>
-  
-      <!-- Form with validation check -->
+        <button class="exit-button" (click)="closeDialog()"> &times; </button>
+    </div>
+
+    <div class="form-content">
+        <!-- Form with validation check -->
       <form *ngIf="postData" (ngSubmit)="updatePost()">
         <div class="input-row">
           <div class="input-field-shorter">
@@ -47,10 +49,10 @@
         </div>
   
         <div class="buttons">
+          <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
           <input class="submit-btn" type="submit" value="Update">
-          <input class="cancel-btn" type="button" value="Cancel" routerLink="../list">
         </div>
       </form>
     </div>
   </div>
-  
+</div>

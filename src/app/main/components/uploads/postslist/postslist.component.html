@@ -1,48 +1,67 @@
 <div class="content">
-    <div class="head">
-        <h1> Your Posts </h1>
-        <div class="route-btn" (click)="uploadIdea()">
-            <i class='bx bx-plus' ></i> <a> Upload </a>
-        </div>
+  <div class="head">
+    <h1> Your Posts </h1>
+    <div class="route-btn" (click)="uploadIdea()">
+      <i class='bx bx-plus' ></i> <a> Upload </a>
     </div>
+  </div>
 
-    <div class="post-container">
-        <mat-card *ngFor="let element of dataSource" class="post-box mat-elevation-z8">
-          <div mat-card-header class="post-img">
-            <img mat-card-avatar alt="uploaded image" [src]="element.image">
-            <span class="status" [ngClass]="{
-                'pending-status': element.status === 'pending',
-                'approved-status': element.status === 'approved',
-                'declined-status': element.status === 'declined',
-              }">{{ element.status }}</span>
-          </div>
-      
-          <!-- POST CONTENT -->
-          <mat-card-content class="post-text">
-            <a routerLink="../viewpost">
-              <strong class="title">{{ element.title }}</strong>
-            </a>
-            <div class="category-time">
-              <span class="post-category">{{ element.category }}</span>
-              <span class="published-time">{{ element.created_at | date: 'mediumDate' }}</span>
-            </div>
-          </mat-card-content>
-      
-          <mat-card-actions class="actions" id="uploads-actions">
-            <button class="edit" [routerLink]="['../edit-post', element.id]">
-                <i class='bx bx-edit'></i>
-                <span class="tooltiptext"> Edit </span>
-            </button>
-            <button class="delete">
-                <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
-                <span class="tooltiptext"> Delete </span>
-            </button>
-            <button class="view" routerLink="../viewpost">
-                <i class='bx bx-detail'></i>
-                <span class="tooltiptext"> View </span>
-            </button>
-          </mat-card-actions>
-        </mat-card>
+  <div class="post-container">
+    <!-- Show skeleton loaders while posts are loading -->
+    <ng-container *ngIf="isLoading">
+      <div class="post-box skeleton-loader" *ngFor="let loader of loaders">
+        <div class="post-img">
+          <div class="image-placeholder"></div>
+          <span class="category-placeholder"></span>
+        </div>
+        <div class="post-text">
+          <div class="title-placeholder"></div>
+          <div class="category-time-placeholder"></div>
+          <div class="publisher-placeholder"></div>
+        </div>
       </div>
+    </ng-container>
+
+    <!-- Dynamically render posts once loaded -->
+    <ng-container *ngIf="!isLoading">
+      <mat-card *ngFor="let element of dataSource" class="post-box">
+        <div mat-card-header class="post-img">
+          <img alt="uploaded image" [src]="element.image" (click)="viewPost(element.id)">
+          <span class="status" [ngClass]="{
+              'pending-status': element.status === 'pending',
+              'approved-status': element.status === 'approved',
+              'declined-status': element.status === 'declined',
+            }">{{ element.status }}</span>
+        </div>
+    
+        <!-- POST CONTENT -->
+        <mat-card-content class="post-text">
+          <a routerLink="../viewpost">
+            <strong class="title">{{ element.title }}</strong>
+          </a>
+          <div class="category-time">
+            <span class="post-category">{{ element.category }}</span>
+            <span class="published-time">{{ element.created_at | date: 'mediumDate' }}</span>
+          </div>
+        </mat-card-content>
+    
+        <mat-card-actions class="actions" id="uploads-actions">
+          <!-- Only show Edit button if status is pending -->
+          <button *ngIf="element.status === 'pending'" class="edit" (click)="editPost(element.id)">
+            <i class='bx bx-edit'></i>
+            <span class="tooltiptext"> Edit </span>
+        </button>
+          <button class="delete">
+              <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
+              <span class="tooltiptext"> Delete </span>
+          </button>
+          <button class="view" (click)="viewPost(element.id)">
+              <i class='bx bx-detail'></i>
+              <span class="tooltiptext"> View </span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-container>
+  </div>
       
 </div>

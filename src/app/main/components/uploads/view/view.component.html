@@ -1,33 +1,35 @@
-<div class="content">
-    <div class="container">
-        <button class="exit-button" routerLink="../list"> &times; <span class="exit-tooltip"> Exit </span> </button>
-        <div class="user-post">
-            <!-- POST TITLE -->
-            <h1> Build hardware cloth or chicken wire compost bin </h1>
-
-            <div class="publisher-name">
-                <span> Czarina Jane Arellano </span>
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <div class="popup-head">
+                <h1> Your Post </h1>
+                <p class="status" [ngClass]="{
+                    'pending-status': post.status === 'pending',
+                    'approved-status': post.status === 'approved',
+                    'declined-status': post.status === 'declined',
+                  }"> {{ post.status }} </p>
             </div>
-            
-            <div class="category-time">
-                <span class="blog-category">Compost Bin</span>
-                <span class="published-time"> 16-08-2021 </span>
-            </div>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
 
-            <div class="post-content">
-                <div class="post-image">
-                    <img alt="blog" src="../../../../../assets/images/NoImage.png">
+        <div class="post-content">
+            <h4 class="publisher">{{ post.user_name }}</h4>
+            <span class="date">{{ post.created_at | date: 'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
+            <div class="main-post">
+                <h2>{{ post.title }}</h2>
+                <span class="category">{{ post.category }}</span>
+                <p>{{ post.content }}</p>
+                <div class="post-img">
+                    <img [src]="post.image || '../../../../../assets/images/NoImage.png'" alt="post image">
                 </div>
-                <div class="postcontent">
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Felis bibendum ut tristique et. Dui faucibus in ornare quam viverra orci sagittis eu. Urna et pharetra pharetra massa. Urna cursus eget nunc scelerisque viverra mauris in. </p>
-                </div>
             </div>
+        </div>
 
+        <div class="post-footer">
             <div class="buttons">
-                <input class="submit-btn" type="button" value="Edit Post" routerLink="../edit-post">
+                <input class="submit-btn" type="button" value="Edit Post" *ngIf="post.status === 'pending'" (click)="editPost(post.id)">
                 <input class="danger-btn" type="button" value="Delete" (click)="deletePost()">
             </div>
-
         </div>
     </div>
 </div>

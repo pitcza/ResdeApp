@@ -3,7 +3,7 @@
     <div class="allposts">
 
       <!-- UPLOAD POST -->
-      <div class="float-icon" (click)="uploadIdea()">
+      <div class="float-icon" (click)="uploadIdea()" [ngClass]="{'down-icon': downUploadIcon}">
         <span class="label">Upload Idea</span>
         <i class='bx bx-pencil' ></i>
       </div>
@@ -72,7 +72,7 @@
         </div>
         
         <span class="arrow-icon">
-          <i [ngClass]="isExpanded ? 'bx bxs-chevron-left' : 'bx bxs-chevron-down'"></i>
+          <i [ngClass]="isExpanded ? 'bx bxs-chevron-down' : 'bx bxs-chevron-left'"></i>
         </span>
       </div>
     

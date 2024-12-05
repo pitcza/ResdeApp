@@ -113,8 +113,7 @@ export class UploadPostComponent {
     );
   }
 
-  closePopup() {
-    // SweetAlert confirmation before closing
+  cancelPopup() {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to discard your changes?',
@@ -127,8 +126,7 @@ export class UploadPostComponent {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        // Logic to close the dialog
-        this.closeDialog(); // Replace with your actual logic for closing the popup
+        this.closeDialog();
       }
     });
   }
