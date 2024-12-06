@@ -46,6 +46,7 @@ body {
     font-family: 'Poppins';
 }
 
+// FONT FOR RE'SIT APP
 .appname-font {
     font-family: 'Parkinsans';
 }
@@ -65,8 +66,8 @@ a {
     text-decoration: none;
 }
 
-// INPUT FONT
-input {
+// FONT
+input, label {
     font-family: 'Poppins';
 }
 
@@ -82,11 +83,7 @@ input::placeholder, textarea::placeholder {
     opacity: 1;
 }
 
-// LABEL FONT
-label {
-    font-family: 'Poppins';
-}
-
+// SELECT FIELD ARROW ICON
 select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -572,6 +569,65 @@ table tr td:last-child {
     background-color: var(--gray-btn);
 }
 
+// USERSIDE FILTERS
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .selects {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    padding-top: 20px;
+
+    #filter-status {
+        width: 150px;
+    }
+
+    #filter-category {
+        width: 200px;
+    }
+
+    select {
+        background: white;
+        color: black;
+        font-family: 'Poppins';
+        padding: 3px;
+        padding-left: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        height: 35px;
+        border: 2px solid var(--secondary-green);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        outline: none;
+        // changed arrow icon
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url('assets/icons/pagearrow.png');
+        background-size: 16px;
+        background-repeat: no-repeat;
+        background-position: center right 5px;
+    }
+    select:hover {
+        border: 2px solid var(--secondary-hover);
+        background-color: var(--white-hover);
+    }
+    select:focus {
+        border: 2px solid var(--secondary-hover);
+        background-color: var(--secondary-hover);
+        color: white;
+    }
+    option {
+        background-color: white;
+        color: black;
+    }
+}
+
 /* ANIMATION KEYFRAMES */
 @keyframes fadeInLeft {
     from {
@@ -630,10 +686,38 @@ table tr td:last-child {
     }
 }
 
+@media (max-width: 900px) {
+    .filters {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    
+        .selects {
+            width: 450px;
+        }
+        
+        #filter-status {
+            width: 100%;
+        }
+    
+        #filter-category {
+            width: 100%;
+        }
+    }
+}
+
 // MOBILE MEDIA SCREEN
 @media (max-width: 500px) {
     .content {
         padding: 40px 20px;
+    }
+
+    // USERSIDE FILTERS
+    .filters {
+        .selects {
+            width: 100%;
+        }
     }
 
     .exit-button {

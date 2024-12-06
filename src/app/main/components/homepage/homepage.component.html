@@ -39,7 +39,7 @@
     
           <!-- POST CONTENT -->
           <div class="post-text">
-            <a routerLink="../viewpost">
+            <a (click)="viewPost(post.id)">
               <strong class="title">{{ post.title }}</strong>
             </a>
             <div class="category-time">

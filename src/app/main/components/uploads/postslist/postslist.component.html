@@ -6,6 +6,38 @@
     </div>
   </div>
 
+  <div class="filters">
+    <div class="selects">
+      <select id="filter-category">
+        <option selected value=""> All Category </option>
+        <option value="Compost"> Compost </option>
+        <option value="Plastic"> Plastic </option>
+        <option value="Rubber"> Rubber </option>
+        <option value="Wood and Paper"> Wood and Paper </option>
+        <option value="Miscellaneous Products"> Miscellaneous Products </option>
+      </select>
+      <select id="filter-status">
+        <option selected value=""> All Status </option>
+        <option value="Pending"> Pending </option>
+        <option value="Approved"> Approved </option>
+        <option value="Declined"> Declined </option>
+      </select>
+    </div>
+
+    <form>
+      <div class="date-filter">
+          <div class="txt_field">
+              <label for="datepicker"> From: </label>
+              <input type="date" id="datepicker-start" autocomplete="off" >
+          </div>
+          <div class="txt_field">
+              <label for="datepicker"> To: </label>
+              <input type="date" id="datepicker-end" autocomplete="off" >
+          </div>
+      </div>
+    </form>
+  </div>
+
   <div class="post-container">
     <!-- Show skeleton loaders while posts are loading -->
     <ng-container *ngIf="isLoading">
