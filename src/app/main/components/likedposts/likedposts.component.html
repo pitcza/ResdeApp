@@ -4,7 +4,37 @@
     <p>All posts you liked from other users.</p>
   </div>
 
-  <div class="slit-screen">
+  <!-- Skeleton Loader -->
+  <div *ngIf="isLoading" class="slit-screen">
+    <!-- Left skeleton loader -->
+    <div class="left-skeleton skeleton">
+      <div class="skeleton-title"></div>
+      <div class="skeleton-info"></div>
+      <div class="skeleton-info"></div>
+      <div class="skeleton-image"></div>
+    </div>
+
+    <!-- Right skeleton loader -->
+    <div class="right-container">
+      <div class="data-container skeleton" *ngFor="let n of [1,2,3,4]">
+        <div class="post-image skeleton-image"></div>
+        <div class="info">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-info"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display message if no liked posts -->
+  <div *ngIf="!isLoading && items.length === 0" class="no-sign">
+    <div class="no-clipart">
+      <img src="../../../../assets/images/NoLiked.png">
+    </div>
+  </div>
+
+  <!-- Display liked posts when loaded -->
+  <div *ngIf="!isLoading && items.length > 0" class="slit-screen">
     <!-- Left container -->
     <div class="left-container" *ngIf="selectedItem.title" style="--delay: 0.1s;">
       <h2 class="title">{{ selectedItem.title }}</h2>

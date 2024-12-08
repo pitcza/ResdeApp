@@ -16,6 +16,8 @@ export class HomepageComponent implements OnInit {
   isLoading = true;
   loaders = Array(5).fill(null);
 
+  filteredPosts: any[] = [];
+
   constructor(private ds: DataserviceService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -88,6 +90,7 @@ export class HomepageComponent implements OnInit {
     this.ds.getAllPosts().subscribe(
       (response) => {
         this.posts = response.posts || [];
+        this.filteredPosts = this.posts;
         this.isLoading = false; // Turn off loading state
       },
       (error) => {
@@ -95,6 +98,20 @@ export class HomepageComponent implements OnInit {
         this.isLoading = false; // Turn off loading state even on error
       }
     );
+  }
+
+  filterPosts(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+  
+    if (selectElement) {
+      const selectedCategory = selectElement.value;
+  
+      if (selectedCategory === '') {
+        this.filteredPosts = this.posts;  // Show all posts if "All Category" is selected
+      } else {
+        this.filteredPosts = this.posts.filter(post => post.category === selectedCategory);
+      }
+    }
   }
 
   toggleLike(post: any): void {

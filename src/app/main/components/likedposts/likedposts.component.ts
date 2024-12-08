@@ -18,6 +18,7 @@ export class LikedpostsComponent implements OnInit {
     id: 0,
     liked: false
   };
+  isLoading = true;
 
   constructor(private ds: DataserviceService) {}
 
@@ -42,9 +43,11 @@ export class LikedpostsComponent implements OnInit {
         if (this.items.length > 0) {
           this.selectedItem = this.items[0];
         }
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching liked posts:', error);
+        this.isLoading = false;
       }
     );
   }
