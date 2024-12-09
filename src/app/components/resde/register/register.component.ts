@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthserviceService } from '../../../services/authservice.service';
 
 import Swal from 'sweetalert2';
+import { PrivacypolicyComponent } from '../privacypolicy/privacypolicy.component';
+import { MatDialog } from '@angular/material/dialog';
 
 // Define an interface for the registration data
 interface RegisterData {
@@ -43,6 +45,7 @@ export class RegisterComponent {
     ];
 
     constructor(
+      private dialog: MatDialog,
       private router: Router,
       private as: AuthserviceService
     ) {}
@@ -84,4 +87,13 @@ export class RegisterComponent {
         }
       );
     }
+
+  // VIEWING PRIVACY POLICY
+  viewPolicy() {
+    if (this.dialog) {
+      this.dialog.open(PrivacypolicyComponent)
+    } else {
+      console.error('Privacy policy dialog not found');
+    }
+  }
 }
