@@ -252,6 +252,7 @@ footer {
         flex-direction: column;
 
         .email {
+            a { color: var(--primary-green); }
             i {
                 position: absolute;
                 margin-left: -23px;

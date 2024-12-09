@@ -1,7 +1,7 @@
 {
-  "name": "ResdeApp",
-  "short_name": "ResdeApp",
-  "theme_color": "#1976d2",
+  "name": "Re’sIt",
+  "short_name": "Re’sIt",
+  "theme_color": "#4d745a",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

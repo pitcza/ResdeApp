@@ -190,12 +190,19 @@ a:hover { text-decoration: underline; }
         padding: 50px;
         border-bottom-left-radius: 50px;
         border-bottom-right-radius: 50px;
+
+        .container {
+            img {
+                width: 300px;
+                height: 300px;
+            }
+        }
     }
 
     /* RIGHT SCREEN */
     .right {
         position: relative;
-        height: 500px;
+        height: 0;
         width: 100%;
 
         form {
@@ -215,7 +222,7 @@ a:hover { text-decoration: underline; }
             width: 80%;
             padding: 50px 50px 20px 50px;
             border-radius: 20px;
-            margin-bottom: 600px;
+            // margin-bottom: 600px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -251,6 +258,7 @@ a:hover { text-decoration: underline; }
 
 @media (max-width: 500px) {
     .left {
+        height: 500px;
         border-bottom-left-radius: 30px;
         border-bottom-right-radius: 30px;
         .container {
@@ -264,6 +272,7 @@ a:hover { text-decoration: underline; }
     }
 
     .right {
+        height: 500px;
         .loginform {
             width: 90%;
             margin-bottom: 480px;

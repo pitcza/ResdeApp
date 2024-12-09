@@ -31,7 +31,7 @@
 button {
     font-family: 'Poppins';
     color: white;
-    padding: 10px 20px 5px 20px;
+    padding: 10px 20px 10px 20px;
     margin: 0 10px;
     cursor: pointer;
     border: none;
@@ -42,11 +42,12 @@ button {
 }
 
 .cancel-btn {
-    background: var(--gray-btn);
+    border: 1px solid var(--gray-btn);
+    color: black;
 }
 
 .cancel-btn:hover {
-    background-color: var(--gray-hover);
+    background-color: var(--white-hover);
 }
 
 .leave-btn {
@@ -55,4 +56,14 @@ button {
 
 .leave-btn:hover {
     background-color: var(--red-hover);
+}
+
+@media (max-width: 500px) {    
+    .popup-content p {
+        font-size: 18px;
+    }
+    
+    button {
+        font-size: 14px;
+    }
 }
