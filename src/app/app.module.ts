@@ -16,6 +16,8 @@ import { AdminComponent } from './admin/admin.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AgriExpertComponent } from './agri-expert/agri-expert.component';
 import { AgriExpertModule } from './agri-expert/agri-expert.module';
+import { TriviaComponent } from './agri-expert/components/trivia/trivia.component';
+// import { TriviaScore } from './agri-expert/components/trivia-score/trivia-score.component';
 // import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
@@ -26,7 +28,9 @@ import { AgriExpertModule } from './agri-expert/agri-expert.module';
     ResdeComponent,
     AdminLoginComponent,
     AdminComponent,
-    AgriExpertComponent
+    AgriExpertComponent,
+    // TriviaComponent,
+    // TriviaScore,
   ],
   imports: [
     BrowserModule,

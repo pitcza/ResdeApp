@@ -8,12 +8,16 @@ import { PendingPostsModule } from './components/pending-posts/pending-posts.mod
 import { AllPostsModule } from './components/all-posts/all-posts.module';
 import { PendingPostsComponent } from './components/pending-posts/pending-posts.component';
 import { AllPostsComponent } from './components/all-posts/all-posts.component';
+import { TriviaComponent } from './components/trivia/trivia.component';
+import { TriviaScoresComponent } from './components/trivia-scores/trivia-scores.component';
 
 
 @NgModule({
   declarations: [
     PendingPostsComponent,
-    AllPostsComponent
+    AllPostsComponent,
+    TriviaComponent,
+    TriviaScoresComponent
   ],
   imports: [
     CommonModule,

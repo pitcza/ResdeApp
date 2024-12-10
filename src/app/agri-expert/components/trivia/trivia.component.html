@@ -1,0 +1,116 @@
+<div class="content">
+  <div class="head">
+    <h1>Trivia Management</h1>
+    <div class="route-btn" (click)="openTriviaModal()">
+      <i class="bx bx-plus"></i> <a>Add Trivia</a>
+    </div>
+  </div>
+
+  <!-- Trivia Modal -->
+  <div class="modal" [class.show]="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeTriviaModal()">&times;</span>
+      <h2>{{ editingTrivia ? 'Edit Trivia' : 'Add New Trivia' }}</h2>
+  
+      <label>Question:</label>
+      <input type="text" [(ngModel)]="currentTrivia.question" placeholder="Enter question" />
+  
+      <label>Answers:</label>
+      <div *ngFor="let option of currentTrivia.answer; let i = index" class="answer-group">
+        <div class="answer-label">{{ getAnswerLabel(i) }}</div>
+        <input
+          type="text"
+          [(ngModel)]="currentTrivia.answer[i]"
+          placeholder="Option {{ i + 1 }}"
+          (keydown.enter)="focusNextField(i)"
+        />
+      </div>
+      
+      <label>Correct Answer:</label>
+      <select [(ngModel)]="currentTrivia.correctAnswer" class="correct-answer">
+        <option *ngFor="let label of answerLabels; let index = index" [value]="index">
+          {{ label }}
+        </option>
+      </select>
+      
+  
+      <button class="btn-submit" (click)="saveTrivia()">Save Trivia</button>
+    </div>
+  </div>
+  
+  
+
+  <!-- Trivia List -->
+
+  <div class="table-content">
+    <div class="table-head">
+      <form>
+        <div class="date-filter">
+            <div class="txt_field">
+                <label for="datepicker"> From: </label>
+                <input type="date" id="datepicker-start" autocomplete="off" >
+            </div>
+            <div class="txt_field">
+                <label for="datepicker"> To: </label>
+                <input type="date" id="datepicker-end" autocomplete="off" >
+            </div>
+        </div>
+      </form>
+  </div>
+
+    <div class="overflow">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Created at </th>
+            <td mat-cell *matCellDef="let element"> {{ element.created_at }} </td>
+          </ng-container> -->
+          
+          <ng-container matColumnDef="question">
+            <th mat-header-cell *matHeaderCellDef> Question </th>
+            <td mat-cell *matCellDef="let element"> {{ element.question }} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="answer">
+            <th mat-header-cell *matHeaderCellDef> Answers </th>
+            <td mat-cell *matCellDef="let element"> {{ element.answer.join(', ') }} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="correctAnswer">
+            <th mat-header-cell *matHeaderCellDef> Correct Answer </th>
+            <td mat-cell *matCellDef="let element"> {{ element.answer[element.correctAnswer] }} </td>
+          </ng-container>
+          
+        
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let element" class="actions">
+                <button class="edit" (click)="editTrivia(element)">
+                  <i class="bx bx-edit"></i>
+                  <span class="tooltiptext">Edit</span>
+                </button>
+            
+                <button class="delete" (click)="deleteTrivia(element.id)">
+                  <i class="bx bx-trash"></i>
+                  <span class="tooltiptext">Delete</span>
+                </button>
+              </td>
+            </ng-container>
+            
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+    
+</div>
+</div>
