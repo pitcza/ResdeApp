@@ -3,8 +3,8 @@
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 2rem;
     opacity: 0;
+    margin: 0 0 40px 0;
     animation: fadeIn 1s forwards;
-    margin-top: -10px;
 
     .card-single {
         display: flex;
@@ -56,6 +56,10 @@
     opacity: 0;
     animation: popUp 0.6s forwards;
     animation-delay: var(--delay, 0s);
+
+    .posts {
+        margin: 30px 0;
+    }
 
     .card {
         background: white;
@@ -175,7 +179,7 @@ td .status {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
     padding: 20px; 
     text-align: center; 
-    border-top: 3px solid var(--secondary-green);
+    // border-top: 3px solid var(--secondary-green);
     width: 400px;
     height: 400px;
   }
@@ -193,19 +197,14 @@ td .status {
     }
 }
 
-
-
-  .left-card {
+.left-card {
     flex: 2;
-  }
-  
-  .right-card {
-    flex: 3; 
-  }
-  
-  
-  
+}
 
+.right-card {
+    flex: 3; 
+}
+  
 @media only screen and (max-width: 960px) {
     .cards {
         grid-template-columns: repeat(2, 1fr);
@@ -234,7 +233,6 @@ td .status {
 .tabbed {
 	overflow-x: hidden; 
 	padding-bottom: 10px;
-    
 }
 
 .tabbed [type="radio"] {
@@ -246,7 +244,6 @@ td .status {
     align-items: stretch;
     list-style: none;
     max-width: 100%;
-    padding-left: 10px;
 }
 .tab {
     width: 100%; /* Adjust width as needed */
@@ -259,10 +256,6 @@ td .status {
     // width: 1440px;
 }
 
-.content {
-    margin-top: 22px; 
-    padding: 20px; 
-}
 .tab {
     flex: 1; /* Adjust tab width */
 }
@@ -291,9 +284,7 @@ td .status {
 
 .tab-content {
 	display: none;
-    margin-left: 10px;
-    font-family: 'Montserrat', sans-serif;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .tabbed [type="radio"]:nth-of-type(2):checked ~ .tabs .tab:nth-of-type(2) label,
@@ -314,7 +305,7 @@ td .status {
     display: flex;
     justify-content: center;
     column-gap: 10px;
-    padding-top: 3px;
+    padding: 10px 0;
 
     .txt_field {
         flex-basis: 100%;

@@ -38,15 +38,21 @@
                 display: flex;
                 flex-direction: row;
                 gap: 5px;
-                margin-bottom: 5px;
+                margin: 5px;
                 font-size: 16px;
 
-                i { font-size: 22px; color: var(--secondary-green); }
+                i { 
+                    font-size: 22px; 
+                    color: var(--secondary-green); 
+                    display: flex;
+                    align-items: center;
+                }
                 
                 p {
                     font-size: 16px;
                     font-weight: 500;
                     color: var(--secondary-green);
+                    padding-bottom: 2px;
                 }
             }
         }

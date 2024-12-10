@@ -20,7 +20,7 @@ export class ListComponent {
       iconColor: '#FFCE54',
       customClass: { popup: 'swal-font' },
       showCancelButton: true,
-      confirmButtonColor: '#404B43',
+      confirmButtonColor: '#4d745a',
       cancelButtonColor: '#777777',
       confirmButtonText: 'Yes',
       cancelButtonText: 'Cancel'

@@ -73,7 +73,7 @@ export class EditpostComponent implements OnInit {
       text: 'Are you sure you want to update your post?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#404B43',
+      confirmButtonColor: '#4d745a',
       cancelButtonColor: '#777777',
       confirmButtonText: 'Yes',
       cancelButtonText: 'Cancel',

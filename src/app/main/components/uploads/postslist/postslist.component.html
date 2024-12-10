@@ -58,7 +58,7 @@
     <ng-container *ngIf="!isLoading">
       <mat-card *ngFor="let element of dataSource" class="post-box">
         <div mat-card-header class="post-img">
-          <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image">
+          <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
           <span class="status" [ngClass]="{
               'pending-status': element.status === 'pending',
               'approved-status': element.status === 'approved',
@@ -68,12 +68,12 @@
     
         <!-- POST CONTENT -->
         <mat-card-content class="post-text">
-          <a routerLink="../viewpost">
+          <a (click)="viewPost(element.id)">
             <strong class="title">{{ element.title }}</strong>
           </a>
           <div class="category-time">
             <span class="post-category">{{ element.category }}</span>
-            <span class="published-time">{{ element.created_at | date: 'mediumDate' }}</span>
+            <span class="published-time">{{ element.date | date: 'mediumDate' }}</span>
           </div>
         </mat-card-content>
     

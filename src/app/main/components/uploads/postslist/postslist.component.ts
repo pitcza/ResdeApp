@@ -35,11 +35,13 @@ export class PostslistComponent implements OnInit {
 
   // UPLOADING POPUP
   uploadIdea() {
-    if (this.dialog) {
-      this.dialog.open(UploadPostComponent)
-    } else {
-      console.error('Uploading form not found');
-    }
+    const dialogRef = this.dialog.open(UploadPostComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.newPost) {
+        this.dataSource.unshift(result.newPost);
+        this.cdr.detectChanges();  // Ensure the changes are reflected
+      }
+    });
   }
 
   // EDITING POST POPUP
@@ -65,7 +67,8 @@ export class PostslistComponent implements OnInit {
   fetchUserPost(): void {
     this.ds.getUserPosts().subscribe(
       (response) => {
-        this.dataSource = response.posts.map((post: any) => ({
+        this.dataSource = response.posts
+        .map((post: any) => ({
           id: post.id,
           title: post.title,
           category: post.category,
@@ -73,7 +76,12 @@ export class PostslistComponent implements OnInit {
           image: post.image,
           status: post.status,
           description: post.content
-        }));
+        }))
+        .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
+          const dateA = new Date(a.date || 0).getTime();
+          const dateB = new Date(b.date || 0).getTime();
+          return dateB - dateA; // Sort in descending order (newest first)
+        });
         console.log(response)
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -104,7 +112,6 @@ export class PostslistComponent implements OnInit {
       cancelButtonColor: '#7f7f7f',
       confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel',
-      reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
         this.ds.deletePost(id).subscribe(

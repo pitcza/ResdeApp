@@ -92,6 +92,8 @@ export class UploadPostComponent {
     this.dataService.createPost(formData).subscribe(
       (response) => {
         console.log('Post created successfully', response);
+        this.cdr.detectChanges();
+        this.closeDialog();
         Swal.fire({
           title: "Post Pending",
           text: "Waiting for the admin approval.",
@@ -116,20 +118,31 @@ export class UploadPostComponent {
   }
 
   cancelPopup() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to discard your changes?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#4d745a',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes, close it!',
-      cancelButtonText: 'No, keep editing',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.closeDialog();
-      }
-    });
+    // Check if any of the form fields are not empty
+    const categoryValue = this.postForm.get('category')?.value;
+    const titleValue = this.postForm.get('title')?.value;
+    const descriptionValue = this.postForm.get('content')?.value;
+    const imageValue = this.image;
+  
+    if (categoryValue || titleValue || descriptionValue || imageValue) {
+      // Show the confirmation popup only if the form has some data
+      Swal.fire({
+        title: 'Discard post?',
+        text: 'You\'ll lose this post if you discard changes.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C14141',
+        cancelButtonColor: '#777777',
+        confirmButtonText: 'Discard',
+        cancelButtonText: 'Keep editing',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.closeDialog();
+        }
+      });
+    } else { // close agad kasi walang laman inputs
+      this.closeDialog();
+    }
   }
 }

@@ -383,7 +383,7 @@ select {
 }
 
 .table-head {
-    display: inline-flex;
+    display: flex;
     justify-content: space-between;
     padding: 15px 0px;
     padding-right: 15px;

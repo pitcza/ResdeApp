@@ -104,10 +104,12 @@ export class TriviaComponent implements OnInit {
   }
 
   focusNextField(index: number): void {
-    // If the current field is not the last one, focus on the next input
-    if (index + 1 < this.currentTrivia.answer.length) {
-      const nextField = document.querySelectorAll('input[type="text"]')[index + 1] as HTMLElement;
-      nextField?.focus();
+    // Check if the current answer input has more than one character before focusing the next
+    if (this.currentTrivia.answer[index] && this.currentTrivia.answer[index].length > 1) {
+      if (index + 1 < this.currentTrivia.answer.length) {
+        const nextField = document.querySelectorAll('input[type="text"]')[index + 1] as HTMLElement;
+        nextField?.focus();
+      }
     }
   }
 

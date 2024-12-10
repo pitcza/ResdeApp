@@ -99,9 +99,8 @@
       </div>
     
       <div class="scroll-cards" [ngClass]="{'hidden': !isExpanded}">
-        <div class="ev-cards" >
-
-          <div *ngIf="announcements.length > 0">
+        <div class="cards">
+          <div class="ev-cards" *ngIf="announcements.length > 0">
             <div *ngFor="let item of announcements" class="ev-card" (click)="viewAnnouncem(item.id)">
               <div class="ev-img">
                 <img [src]="item.image" (error)="onImageError($event)" alt="uploaded image">
@@ -114,9 +113,8 @@
             </div>
           </div>
           <div *ngIf="announcements.length === 0">No announcements available.</div>
-          
         </div>
       </div>
+    </div>
   </div>
-      
 </div>

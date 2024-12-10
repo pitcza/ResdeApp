@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -9,7 +10,9 @@ import Swal from 'sweetalert2';
   styleUrl: './upload.component.scss'
 })
 export class UploadComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+    public dialogRef: MatDialogRef<UploadComponent>,
+  ) {}
 
   // if trip lagyan hehe nakacomment sa html
   ImagePreview: string | ArrayBuffer | null = null;
@@ -25,6 +28,28 @@ export class UploadComponent {
     }
   }
 
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  cancelPopup() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to discard your changes?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4d745a',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Yes, close it!',
+      cancelButtonText: 'No, keep editing',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeDialog();
+      }
+    });
+  }
+
   // Confirmation function
   confirmAction() {
     Swal.fire({
@@ -34,13 +59,14 @@ export class UploadComponent {
       iconColor: '#FFCE54',
       customClass: { popup: 'swal-font' },
       showCancelButton: true,
-      confirmButtonColor: '#404B43',
+      confirmButtonColor: '#4d745a',
       cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: 'Upload',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.router.navigate(['agri-admin/allposts/list']); 
+        this.closeDialog(); 
         Swal.fire({
           toast: true,
           position: 'top-end',

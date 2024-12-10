@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadComponent } from '../upload/upload.component';
 
 @Component({
   selector: 'app-list',
@@ -10,6 +12,19 @@ import Swal from 'sweetalert2';
 export class ListComponent {
   displayedColumns: string[] = ['date', 'name', 'category', 'title', 'action'];
   dataSource = ELEMENT_DATA;
+
+  constructor (
+    private dialog: MatDialog,
+  ) {}
+
+  // UPLOADING POPUP
+  uploadIdea() {
+    if (this.dialog) {
+      this.dialog.open(UploadComponent)
+    } else {
+      console.error('Uploading form not found');
+    }
+  }
 
   // DELETE PROCESS
   deletePost() {

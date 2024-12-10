@@ -11,6 +11,7 @@
                     <div class="infos">
                         <span class="email"> <i class='bx bxl-gmail'></i> <p> {{ user.email }} </p> </span>
                         <span class="address"> <i class='bx bxs-map-pin' ></i> Lives at <p> {{ user.barangay }}, {{ user.city }} </p> </span>
+                        <span class="badges" *ngIf="user.badge && user.badge.length > 0"> <i class='bx bx-badge'></i> <p> {{ user.badge.replace('[', '').replace(']', '') }} </p> </span>
                     </div>
 
                     <div class="logo-bg">

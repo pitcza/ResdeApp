@@ -88,14 +88,17 @@
         min-height: 100vh;
         max-height: 90vh;
         overflow-X: auto;
+
+        .cards {
+            padding: 20px 30px 130px 30px;
+            margin-bottom: 100px;
+        }
     }
 
     .ev-cards {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        padding: 10px 30px 130px 30px;
-        margin-bottom: 100px;
 
         .ev-card {
             display: flex;

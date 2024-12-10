@@ -124,8 +124,8 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
       (response) => {
         console.log('Post created successfully', response);
         Swal.fire({
-          title: 'Post Pending',
-          text: 'Waiting for the admin approval.',
+          title: 'Announcement Posted',
+          text: 'Users can now view your posted announcement.',
           icon: 'success',
           confirmButtonText: 'Close',
           confirmButtonColor: '#777777',
@@ -146,6 +146,33 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  cancelPopup() {
+    // Check if any of the form fields are not empty
+    const titleValue = this.postForm.get('title')?.value;
+    const descriptionValue = this.postForm.get('description')?.value;
+    const imageValue = this.image;
+  
+    if (titleValue || descriptionValue || imageValue) {
+      // Show the confirmation popup only if the form has some data
+      Swal.fire({
+        title: 'Discard post?',
+        text: 'You\'ll lose this post if you discard changes.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C14141',
+        cancelButtonColor: '#777777',
+        confirmButtonText: 'Discard',
+        cancelButtonText: 'Keep editing',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();  // Refresh the page
+        }
+      });
+    }
+  }
+  
 }
 
 export interface TableElement {

@@ -66,7 +66,6 @@ export class ViewComponent implements OnInit {
       cancelButtonColor: '#7f7f7f',
       confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel',
-      reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
         this.closeDialog();
