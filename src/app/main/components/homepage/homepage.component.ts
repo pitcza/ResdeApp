@@ -78,21 +78,30 @@ export class HomepageComponent implements OnInit {
         (response) => {
             // console.log('Fetched announcements:', response);  
             this.announcements = response || [];
-            console.log(this.announcements.length)
+            console.log(response)
         },
         (error) => {
             console.error('Error fetching announcements:', error);
         }
     );
-}
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../assets/images/NoImage.png';
+  }
 
 
-  viewAnnouncem(id:number) {
-    if (this.dialog) {
-      this.dialog.open(ViewAnnouncemComponent)
-    } else {
-      console.error('Announcement not found');
-    }
+  viewAnnouncem(id: number) {
+      const announcementPost = this.announcements.find(announcement => announcement.id === id); // Correct comparison
+
+      if (announcementPost) {
+          this.dialog.open(ViewAnnouncemComponent, {
+            data: announcementPost
+          });
+      } else {
+          console.error('Announcement not found');
+      }
   }
 
   // UPLOADING POPUP

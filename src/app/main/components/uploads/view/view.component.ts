@@ -29,17 +29,9 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this.data.id;  // Get the post ID passed from dialog
+    this.id = this.data.id;  
     this.fetchPostData();
-    // this.route.paramMap.subscribe(params => {
-    //   const id = params.get('id');  // Capture 'id' parameter
-    //   if (id) {
-    //     this.id = +id;  // Convert to a number
-    //     this.fetchPostData();
-    //   } else {
-    //     console.error('Post ID not found');
-    //   }
-    // });
+   
   }
   
   fetchPostData() {

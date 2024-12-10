@@ -15,8 +15,9 @@ import { ViewComponent } from '../view/view.component';
 })
 export class PostslistComponent implements OnInit {
   displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
-  dataSource: TableElement[] = [];
+  dataSource: any [] = [];
   id: any|string;
+  element: any;
   
   isLoading = true;
   loaders = Array(5).fill(null);
@@ -53,37 +54,44 @@ export class PostslistComponent implements OnInit {
   // VIEWING POST POPUP
   viewPost(id: number) {
     if (this.dialog) {
-      // Open the ViewComponent dialog and pass the post ID
       this.dialog.open(ViewComponent, {
-        data: { id: id }  // Pass the post ID to ViewComponent
+        data: { id: id }  
       });
     } else {
       console.error('View popup not found');
     }
   }
 
-  fetchUserPost() {
-    this.isLoading = true;
+  fetchUserPost(): void {
     this.ds.getUserPosts().subscribe(
-      response => {
-        console.log('API Response:', response);
-
-        const posts = response.posts ? response.posts as TableElement[] : [];
-        
-        if (Array.isArray(posts)) {
-          this.dataSource = posts;
-          // this.cdr.detectChanges();
-          this.isLoading = false;
-        } else {
-          console.error('Error: posts data is not an array');
-        }
+      (response) => {
+        this.dataSource = response.posts.map((post: any) => ({
+          id: post.id,
+          title: post.title,
+          category: post.category,
+          date: post.created_at,
+          image: post.image,
+          status: post.status,
+          description: post.content
+        }));
+        console.log(response)
+        this.isLoading = false;
+        this.cdr.detectChanges();
       },
-      error => {
+      (error) => {
         console.error('Error fetching posts:', error);
         this.isLoading = false;
       }
-    )
+    );
   }
+
+  
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
+  
 
   // DELETE PROCESS
   deletePost(id: number) {

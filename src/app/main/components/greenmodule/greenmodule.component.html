@@ -52,55 +52,66 @@
             </div>
         </div>
     </div>
+
+
     <div class="trivia-content">
         <div class="trivia-section">
-            <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
-    
-            <!-- Cooldown Message -->
-            <div *ngIf="cooldownActive" class="cooldown-message">
-                <p>
-                    You have reached the maximum number of attempts. Please wait until 
-                    {{ cooldownEndTime | date:'short' }} to try again.
-                </p>
+          <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
+      
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="error">
+            <p>{{ errorMessage }}</p>
+          </div>
+      
+          <!-- Loading Placeholder -->
+          <div *ngIf="!errorMessage && triviaQuestions.length === 0 && !showResults" class="loading">
+            <p>Loading questions...</p>
+          </div>
+      
+          <!-- Quiz Form -->
+          <form *ngIf="triviaQuestions.length > 0 && !showResults" (ngSubmit)="submitAnswers()">
+            <div *ngFor="let question of triviaQuestions; let i = index">
+              <p>{{ question.question }}</p>
+              <div *ngFor="let answer of question.answers">
+                <input
+                  type="radio"
+                  [disabled]="userAnswers[i] === 'answered'"
+                  [name]="'question-' + question.id"
+                  [value]="answer"
+                  [(ngModel)]="userAnswers[i]"
+                />
+                {{ answer }}
+              </div>
+              <p *ngIf="userAnswers[i] === 'answered'" style="color: gray;">
+                You have already answered this question.
+              </p>
             </div>
-    
-            <!-- Quiz Form -->
-            <form *ngIf="!cooldownActive && !showResults" (ngSubmit)="submitAnswers()">
-                <div *ngFor="let question of triviaQuestions; let i = index" class="question">
-                    <h3>{{ i + 1 }}. {{ question.title }}</h3>
-                    <div class="options">
-                        <label *ngFor="let option of question.options; let j = index" class="option">
-                            <input
-                                type="radio"
-                                [value]="j"
-                                name="question-{{ i }}"
-                                [(ngModel)]="userAnswers[i]"
-                                required
-                            />
-                            {{ option }}
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Submit</button>
-            </form>
-    
-            <!-- Results Section -->
-            <div *ngIf="!cooldownActive && showResults" class="results">
-                <h3>Your Score: {{ score }}/{{ triviaQuestions.length }}</h3>
-                <ul>
-                    <li *ngFor="let question of triviaQuestions; let i = index">
-                        {{ i + 1 }}. {{ question.title }} -
-                        <span
-                            [ngClass]="{
-                                correct: userAnswers[i] === question.correctAnswer,
-                                incorrect: userAnswers[i] !== question.correctAnswer
-                            }"
-                        >
-                            {{ userAnswers[i] !== null ? question.options[userAnswers[i]] : 'Not Answered' }}
-                        </span>
-                    </li>
-                </ul>
-            </div>
+      
+            <button type="submit" class="btn-submit">Submit</button>
+          </form>
+      
+          <!-- Results Section -->
+          <div *ngIf="showResults" class="results">
+            <h3>Your Score: {{ score }}/{{ triviaQuestions.length }}</h3>
+            <ul>
+              <li *ngFor="let question of triviaQuestions; let i = index">
+                {{ i + 1 }}. {{ question.question }} -
+                <span
+                  [ngClass]="{
+                    correct: userAnswers[i] === question.correct_answer,
+                    incorrect: userAnswers[i] !== question.correct_answer
+                  }"
+                >
+                  Your Answer: {{ userAnswers[i] || 'Not Answered' }}
+                  | Correct Answer: {{ question.correct_answer }}
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
-    </div>
+      </div>
+      
+      
+      
+
     

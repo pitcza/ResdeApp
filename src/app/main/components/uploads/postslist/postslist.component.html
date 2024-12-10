@@ -58,7 +58,7 @@
     <ng-container *ngIf="!isLoading">
       <mat-card *ngFor="let element of dataSource" class="post-box">
         <div mat-card-header class="post-img">
-          <img alt="uploaded image" [src]="element.image" (click)="viewPost(element.id)">
+          <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image">
           <span class="status" [ngClass]="{
               'pending-status': element.status === 'pending',
               'approved-status': element.status === 'approved',

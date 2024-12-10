@@ -51,7 +51,7 @@ export class DataserviceService {
   }
 
   deletePost(id: number): Observable<any> {
-    return this.User(`deletepost/${id}`, 'DELETE');
+    return this.User(`userdeletepost/${id}`, 'DELETE');
   }
 
   getPost(id: number): Observable<any> {
@@ -72,6 +72,20 @@ export class DataserviceService {
 
   getannouncement(): Observable<any> {
     return this.User(`getannouncements`, 'GET'); 
+  }
+
+  // for trivia
+
+  getQuestions(): Observable<any> {
+    return this.User(`trivia/getquestions`); 
+  }
+
+  getUserScore(): Observable<any> {
+    return this.User(`trivia/user/score`); 
+  }
+
+  submitAnswer(id: number, answer: string): Observable<any> {
+    return this.User(`trivia/questions/${id}/answer`, 'POST', { answer: answer }); 
   }
 
 

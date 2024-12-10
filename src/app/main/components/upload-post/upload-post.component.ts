@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,7 +22,8 @@ export class UploadPostComponent {
     private fb: FormBuilder, 
     private http: HttpClient, 
     private router: Router,
-    private dataService: DataserviceService
+    private dataService: DataserviceService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   closeDialog() {
@@ -42,7 +43,8 @@ export class UploadPostComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.router.navigate(['main/uploads/list']); 
+        this.router.navigate(['../../uploads/list']); 
+        this.cdr.detectChanges();
         Swal.fire({
           title: "Post Pending",
           text: "Waiting for the admin approval.",
@@ -54,7 +56,7 @@ export class UploadPostComponent {
         });
       }
     });
-  }
+}
 
   ngOnInit() {
     this.postForm = this.fb.group({

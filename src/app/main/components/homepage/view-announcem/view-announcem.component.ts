@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class ViewAnnouncemComponent {
   constructor(
     public dialogRef: MatDialogRef<ViewAnnouncemComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   closeDialog() {
