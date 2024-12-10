@@ -5,6 +5,7 @@ import { AuthserviceService } from '../../../services/authservice.service';
 import Swal from 'sweetalert2';
 import { PrivacypolicyComponent } from '../privacypolicy/privacypolicy.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
 
 // Define an interface for the registration data
 interface RegisterData {
@@ -87,6 +88,15 @@ export class RegisterComponent {
         }
       );
     }
+
+  // VIEWING TERMS AND CONDITIONS
+  viewTerms() {
+    if (this.dialog) {
+      this.dialog.open(TermsConditionsComponent)
+    } else {
+      console.error('Terms and conditions dialog not found');
+    }
+  }
 
   // VIEWING PRIVACY POLICY
   viewPolicy() {

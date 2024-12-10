@@ -101,6 +101,10 @@ input::-webkit-outer-spin-button {
         display: flex;
         font-size: 14px;
 
+        p {
+            text-align: left;
+        }
+
         input {
             margin-top: 2px;
             margin-right: 5px;
@@ -119,6 +123,10 @@ input::-webkit-outer-spin-button {
             font-weight: 700; 
             color: var(--primary-green);
             cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

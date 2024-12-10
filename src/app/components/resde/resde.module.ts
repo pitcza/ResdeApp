@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { MaterialModule } from '../../modules/material.module';
 import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component'
     LoginComponent,
     RegisterComponent,
     PrivacypolicyComponent,
+    TermsConditionsComponent,
   ],
   imports: [
     CommonModule,
