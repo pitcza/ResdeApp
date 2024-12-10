@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
+import { AdminDataService } from '../../../../services/admin-data.service';
 
 @Component({
   selector: 'app-view-pending',
@@ -9,8 +11,33 @@ import Swal from 'sweetalert2';
   styleUrl: './view-pending.component.scss'
 })
 export class ViewPendingComponent {
-  constructor(private router: Router) {}
 
+  id: number | undefined;
+  post: any; 
+
+  constructor(private route: ActivatedRoute, private router: Router, private as: AdminDataService) {}
+
+  ngOnInit(): void {
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('Viewing post with ID:', this.id);
+
+    if (this.id) {
+      this.fetchPostDetails(this.id);
+    }
+  }
+
+  fetchPostDetails(id: number): void {
+    this.as.getPostById(id).subscribe(
+      (response) => {
+        console.log('Post Details:', response);
+        this.post = response.post; 
+      },
+      (error) => {
+        console.error('Error fetching post details:', error);
+      }
+    );
+  }
+  
   // APPROVE PROCESS
   approvePost() {
     Swal.fire({

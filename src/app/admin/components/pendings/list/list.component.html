@@ -8,10 +8,14 @@
     </div>
 
     <div class="table-content">
-        <div class="table-head">
-            <div class="data-filter">
-                <!-- <h2> Filter Category: </h2> -->
-                <select id="filter-category">
+
+        <div class="card-header">
+            <a routerLink="../../dashboard"> Dashboard <span> <i class='bx bxs-home'></i> </span> </a>
+        </div>
+
+        <div class="filters">
+            <div class="selects">
+                <select id="filter-category" (change)="onCategoryChange($event)">
                     <option selected value=""> All Category </option>
                     <option value="Compost"> Compost </option>
                     <option value="Plastic"> Plastic </option>
@@ -20,14 +24,28 @@
                     <option value="Miscellaneous Products"> Miscellaneous Products </option>
                 </select>
             </div>
+        
+            <form>
+              <div class="date-filter">
+                  <div class="txt_field">
+                    <label for="filter-from-date">From Date</label>
+                    <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
+                  </div>
+                  <div class="txt_field">
+                    <label for="filter-to-date">To Date</label>
+                    <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
+                  </div>
+              </div>
+            </form>
+          </div>
 
-        </div>
+          <br>
 
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
             <!-- Date Column -->
             <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">{{element.created_at}}</td>
+            <td mat-cell *matCellDef="let element">{{element.created_at | date:'dd-MM-yyyy'}}</td>
             </ng-container>
 
             <!-- Name Column -->
@@ -66,8 +84,8 @@
                     <i class='bx bx-no-entry'></i>
                     <span class="tooltiptext"> Decline </span>
                 </button>
-                <button class="view">
-                    <i class='bx bx-detail' routerLink="../view"></i>
+                <button class="view" [routerLink]="['../view', element.id]">
+                    <i class='bx bx-detail'></i>
                     <span class="tooltiptext"> View </span>
                 </button>
             </td>

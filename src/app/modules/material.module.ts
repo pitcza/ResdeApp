@@ -11,6 +11,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOption, MatSelect } from '@angular/material/select';
 
 const MatModules = [
   CommonModule,
@@ -25,7 +26,10 @@ const MatModules = [
   MatProgressSpinnerModule,
   MatSortModule,
   ReactiveFormsModule,
-  FormsModule
+  FormsModule,
+  MatSelect,
+  MatOption,
+  MatDialogModule
 ];
 
 @NgModule({

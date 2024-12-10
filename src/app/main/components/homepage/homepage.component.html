@@ -99,39 +99,24 @@
       </div>
     
       <div class="scroll-cards" [ngClass]="{'hidden': !isExpanded}">
-        <div class="ev-cards">
+        <div class="ev-cards" >
 
-          <div class="ev-card" (click)="viewAnnouncem()">
-            <div class="ev-img">
-              <img src="../../../../assets/images/NoImage.png">
-            </div>
-            <div class="ev-details">
-              <h4>Event Title</h4>
-              <p>Details of the event for upcoming sample sample sample sample sample.</p>
-              <h6 class="date"> December 04, 2024 </h6>
+          <div *ngIf="announcements.length > 0">
+            <div *ngFor="let item of announcements" class="ev-card" (click)="viewAnnouncem(item.id)">
+              <div class="ev-img">
+                <img [src]="item.image ? '../../../../assets/images/' + item.image : '../../../../assets/images/NoImage.png'" alt="Event Image">
+              </div>
+              <div class="ev-details" >
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.description }}</p>
+                <h6 class="date">{{ item.created_at | date: 'MMMM dd, yyyy' }}</h6>
+              </div>
             </div>
           </div>
-
-          <div class="ev-card">
-            <div class="ev-img">
-              <img src="../../../../assets/images/NoImage.png">
-            </div>
-            <div class="ev-details">
-              <h4>Event Title</h4>
-              <p>Details of the event for upcoming sample sample sample sample sample.</p>
-              <h6 class="date"> December 04, 2024 </h6>
-            </div>
-          </div>
-          <div class="ev-card"></div>
-          <div class="ev-card"></div>
-          <div class="ev-card"></div>
-          <div class="ev-card"></div>
-          <div class="ev-card"></div>
-          <div class="ev-card"></div>
+          <div *ngIf="announcements.length === 0">No announcements available.</div>
+          
         </div>
       </div>
-    </div>
-      
   </div>
       
 </div>

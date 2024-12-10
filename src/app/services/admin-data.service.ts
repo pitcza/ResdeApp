@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -43,6 +43,26 @@ export class AdminDataService {
       return this.Admin('totalPosts');
   }
 
+  // allPosts(): Observable<any> {
+  //     return this.Admin('allPost');
+  // }
+
+  allPosts(params: { start_date: string; end_date: string }): Observable<any> {
+    const queryParams = new HttpParams()
+      .set('start_date', params.start_date)
+      .set('end_date', params.end_date);
+  
+    return this.Admin('allPost', 'GET', queryParams);  
+  }
+  
+  getPostById(id: number): Observable<any> {
+      return this.Admin(`userpost/${id}`);
+  }
+
+  deletePost(id: number): Observable<any> {
+      return this.Admin(`deletepost/${id}`, 'DELETE');
+  }
+
   TotalPendingPosts(): Observable<any> {
       return this.Admin('totalPendings');
   }
@@ -59,6 +79,10 @@ export class AdminDataService {
     return this.Admin('allPost');
   }
 
+  getOldest():Observable<any> {
+    return this.Admin('oldestpending')
+  }
+
   approvePost(id: number): Observable<any> {
     return this.Admin(`post/${id}/approve`, 'PATCH');
   }
@@ -67,5 +91,32 @@ export class AdminDataService {
     return this.Admin(`post/${id}/decline`, 'PATCH');
   }
 
+  uploadAnn(formData: FormData): Observable<any> {
+    return this.Admin('announcements', 'POST', formData);
+  }
+
+  getAnn(params: { start_date: string; end_date: string }): Observable<any> {
+    const queryParams = new HttpParams()
+    .set('start_date', params.start_date)
+    .set('end_date', params.end_date);
+
+    return this.Admin('getannouncements', 'GET', queryParams);
+  }
+
+  userTotalPost():Observable<any> {
+    return this.Admin('userTotalPost')
+  }
+
+  userTotalPosts():Observable<any> {
+    return this.Admin('userTotalPosts')
+  }
+
+  likedpost():Observable<any> {
+    return this.Admin('likechart')
+  }
+
+  likedposttable():Observable<any> {
+    return this.Admin('liketable')
+  }
 
 }

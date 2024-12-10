@@ -1,0 +1,126 @@
+<div class="content">
+    <div class="container">
+        <button class="exit-button" routerLink="../list"> &times; <span class="exit-tooltip"> Exit </span> </button>
+        <div class="head">
+            <h1> Upload Announcement </h1>
+        </div>
+        <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+            <div class="input-row">
+                <div class="input-field">
+                    <label class="labelline"> Title </label>
+                    <input class="txt-field" type="text" formControlName="title">
+                    <div *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched" class="error">
+                        Title is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-row2">
+                <div class="input-field">
+                    <label class="labelline"> Description </label>
+                    <textarea class="txtarea-field" formControlName="description" placeholder="Description of your post idea..."></textarea>
+                    <div *ngIf="postForm.get('description')?.invalid && postForm.get('description')?.touched" class="error">
+                        Description is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-row3">
+                <div class="input-field-short">
+                    <label class="up-labelline"> Upload Photo </label>
+                    <input class="file-field" type="file" (change)="onFileSelected($event)">
+                    <div *ngIf="(!image && postForm.get('image')?.invalid) && postForm.get('image')?.touched" class="error">
+                        Image is required.
+                      </div>
+                </div>
+                <!-- <div class="input-field">
+                    <div class="preview" *ngIf="!ImagePreview">
+                        <h2> Choose Image File to Preview </h2>
+                    </div>
+                    <div class="preview" *ngIf="ImagePreview">
+                        <h2> Image Preview </h2>
+                    </div>
+                    <div class="image-preview" *ngIf="ImagePreview">
+                        <img [src]="ImagePreview" alt="Image Preview">
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="announcebuttons">
+                <input class="submit-btn" type="submit" value="Upload" [disabled]="postForm.invalid">
+                <input class="cancel-btn" type="button" value="Cancel" routerLink="../list">
+            </div>
+
+        </form>
+    </div>
+
+    <div class="table-content">
+        <div class="table-head">
+            
+            <form>
+                <div class="date-filter">
+                    <div class="txt_field">
+                      <label for="filter-from-date">From Date</label>
+                      <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
+                    </div>
+                    <div class="txt_field">
+                      <label for="filter-to-date">To Date</label>
+                      <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
+                    </div>
+                </div>
+              </form>
+
+        </div>
+
+        <div class="head1">
+            <h1> Announcements </h1>
+        </div>
+
+        <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">{{element.created_at | date:'dd-MM-yyyy'}}</td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+            </ng-container>
+        
+            <!-- Category Column -->
+            <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Content</th>
+            <td mat-cell *matCellDef="let element">{{element.description}}</td>
+            </ng-container>
+        
+            <!-- Action Column -->
+            <!-- <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element" class="actions">
+                <button class="edit" (click)="approvePost(element.id)">
+                    <i class='bx bx-check-square'></i>
+                    <span class="tooltiptext"> Approve </span>
+                </button>
+                <button class="delete" (click)="rejectPost(element.id)">
+                    <i class='bx bx-no-entry'></i>
+                    <span class="tooltiptext"> Decline </span>
+                </button>
+                <button class="view">
+                    <i class='bx bx-detail' routerLink="../view"></i>
+                    <span class="tooltiptext"> View </span>
+                </button>
+            </td>
+            </ng-container> -->
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSize]="3" [pageSizeOptions]="[3]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+        </mat-paginator>
+        
+    </div>
+</div>

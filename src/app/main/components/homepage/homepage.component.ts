@@ -4,6 +4,7 @@ import { UserpostComponent } from './userpost/userpost.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewAnnouncemComponent } from './view-announcem/view-announcem.component';
 import { UploadPostComponent } from '../upload-post/upload-post.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-homepage',
@@ -15,6 +16,8 @@ export class HomepageComponent implements OnInit {
   posts: any[] = [];
   isLoading = true;
   loaders = Array(5).fill(null);
+  announcements: TableElement[] = [];
+  // announcement: MatTableDataSource<TableElement> = new MatTableDataSource(this.announcements);
 
   filteredPosts: any[] = [];
 
@@ -22,6 +25,7 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPosts();
+    this.loadAnnouncements();
   }
 
   isExpanded = false;
@@ -69,7 +73,21 @@ export class HomepageComponent implements OnInit {
     }
   }
 
-  viewAnnouncem() {
+  loadAnnouncements(): void {
+    this.ds.getannouncement().subscribe(
+        (response) => {
+            // console.log('Fetched announcements:', response);  
+            this.announcements = response || [];
+            console.log(this.announcements.length)
+        },
+        (error) => {
+            console.error('Error fetching announcements:', error);
+        }
+    );
+}
+
+
+  viewAnnouncem(id:number) {
     if (this.dialog) {
       this.dialog.open(ViewAnnouncemComponent)
     } else {
@@ -124,4 +142,13 @@ export class HomepageComponent implements OnInit {
       }
     );
   }
+}
+
+export interface TableElement {
+  image: string;
+  created_at?: string;
+  category?: string;
+  title: string;
+  description: string;
+  id: number;
 }

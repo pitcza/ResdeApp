@@ -70,5 +70,9 @@ export class DataserviceService {
     return this.User(`user/liked-posts`); 
   }
 
+  getannouncement(): Observable<any> {
+    return this.User(`getannouncements`, 'GET'); 
+  }
+
 
 }

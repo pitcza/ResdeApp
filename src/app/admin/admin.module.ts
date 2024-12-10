@@ -9,13 +9,15 @@ import { PendingsComponent } from './components/pendings/pendings.component';
 import { PendingsModule } from './components/pendings/pendings.module';
 import { AllPostComponent } from './components/all-post/all-post.component';
 import { AllPostModule } from './components/all-post/all-post.module';
+import { AnnouncementComponent } from './components/announcement/announcement.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     PendingsComponent,
-    AllPostComponent
+    AllPostComponent,
+    AnnouncementComponent
   ],
   imports: [
     CommonModule,

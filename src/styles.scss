@@ -383,9 +383,10 @@ select {
 }
 
 .table-head {
-    display: flex;
+    display: inline-flex;
     justify-content: space-between;
-    padding: 15px 0;
+    padding: 15px 0px;
+    padding-right: 15px;
 
     // FILTERS
     .data-filter {

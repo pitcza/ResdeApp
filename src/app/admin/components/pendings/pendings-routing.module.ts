@@ -7,7 +7,9 @@ import { ViewPendingComponent } from './view-pending/view-pending.component';
 const routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
   { path: 'list', component: ListComponent },
+  { path: 'view/:id', component: ViewPendingComponent },
   { path: 'view', component: ViewPendingComponent },
+  
 ];
 
 @NgModule({
