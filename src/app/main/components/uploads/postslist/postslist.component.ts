@@ -111,7 +111,7 @@ export class PostslistComponent implements OnInit {
       confirmButtonColor: '#C14141',
       cancelButtonColor: '#7f7f7f',
       confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         this.ds.deletePost(id).subscribe(
@@ -125,7 +125,7 @@ export class PostslistComponent implements OnInit {
               text: 'The post has been deleted.',
               icon: 'success',
               confirmButtonText: 'Close',
-              confirmButtonColor: '#777777',
+              confirmButtonColor: '#7f7f7f',
               timer: 5000,
               scrollbarPadding: false
             });
@@ -137,7 +137,7 @@ export class PostslistComponent implements OnInit {
               text: 'There was an error deleting the post.',
               icon: 'error',
               confirmButtonText: 'Close',
-              confirmButtonColor: '#777777',
+              confirmButtonColor: '#7f7f7f',
               timer: 5000,
               scrollbarPadding: false
             });

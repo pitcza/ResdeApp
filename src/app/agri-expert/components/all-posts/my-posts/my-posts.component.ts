@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
 import Swal from 'sweetalert2';
+import { ViewComponent } from '../../view/view.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-my-posts',
@@ -11,29 +13,40 @@ export class MyPostsComponent {
   displayedColumns: string[] = ['date', 'name', 'category', 'title', 'action'];
   dataSource = ELEMENT_DATA;
 
+  constructor (
+    private dialog: MatDialog,
+  ) {}
+
+  // VIEWING POST POPUP
+  viewPost() {
+    if (this.dialog) {
+      this.dialog.open(ViewComponent, {
+      });
+    } else {
+      console.error('View popup not found');
+    }
+  }
+
   // DELETE PROCESS
   deletePost() {
     Swal.fire({
-      title: 'Delete User Post',
-      text: `Are you sure you want to delete this post?`,
+      title: 'Delete Post?',
+      text: 'This action can\'t be undone.',
       icon: 'warning',
-      iconColor: '#FFCE54',
-      customClass: { popup: 'swal-font' },
       showCancelButton: true,
       confirmButtonColor: '#C14141',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
+      cancelButtonColor: '#7f7f7f',
+      confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: "Post Deleted!",
-          text: "The post has been deleted.",
-          customClass: { popup: 'swal-font' },
+          text: "Your post has been deleted.",
           icon: "success",
-          iconColor: '#9EB3AA',
+          iconColor: '#689f7a',
           confirmButtonText: 'Close',
-          confirmButtonColor: "#777777",
+          confirmButtonColor: "#7f7f7f",
           timer: 5000,
           scrollbarPadding: false
         });

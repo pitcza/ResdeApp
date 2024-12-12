@@ -56,12 +56,12 @@
                 <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element" class="actions">
-                    <button class="delete" (click)="deletePost()">
+                    <button class="delete" (click)="removePost()">
                         <i class='bx bx-trash'></i>
-                        <span class="tooltiptext"> Delete </span>
+                        <span class="tooltiptext"> Remove </span>
                     </button>
                     <button class="view">
-                        <i class='bx bx-detail' routerLink="../view"></i>
+                        <i class='bx bx-detail' (click)="viewPost()"></i>
                         <span class="tooltiptext"> View </span>
                     </button>
                 </td>

@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <div class="popup-head">
+                <h1> Idea Post </h1>
+                <!-- <p class="status" [ngClass]="{
+                    'pending-status': post.status === 'pending',
+                    'approved-status': post.status === 'approved',
+                    'declined-status': post.status === 'declined',
+                  }"> {{ post.status }} </p> -->
+            </div>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="post-content">
+            <h4 class="publisher">Cza Cza Cza</h4>
+            <span class="date">December 12, 2024 at 1:23 AM</span>
+            <div class="main-post">
+                <h2>DAMI BUTTONS ahauahha pacheck na lang nakalagay here sa html, di ko malagyan ngIf kasi wala pa data hehe</h2>
+                <span class="category">Secret</span>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <div class="post-img">
+                    <img src="../../../../../assets/images/NoImage.png" alt="post image">
+                </div>
+            </div>
+        </div>
+
+        <div class="post-footer">
+            <div class="buttons">
+                <!-- IF SI AGRI AD MISMO NAGPOST, MAY EDIT POST? HEHE -->
+                <input class="submit-btn" type="button" value="Edit Post">
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost()">
+
+                <!-- (BY STATUS) IF PENDING POST NG USER -->
+                <input class="submit-btn" type="button" value="Approve Post" (click)="approvePost()">
+                <input class="danger-btn" type="button" value="Decline" (click)="declinePost()">
+
+                <!-- (BY STATUS) IF APPROVED POST NG USER.. PWEDE PA BA IREMOVE NILA ADMIN  OR WALA NA BUTTONS D2 -->
+                <input class="danger-btn" type="button" value="Remove Post" (click)="removePost()">
+            </div>
+        </div>
+    </div>
+</div>

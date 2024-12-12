@@ -33,34 +33,43 @@ export class UploadComponent {
   }
 
   cancelPopup() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to discard your changes?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#4d745a',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes, close it!',
-      cancelButtonText: 'No, keep editing',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.closeDialog();
-      }
-    });
+    // Check if any of the form fields are not empty
+    // const categoryValue = this.postForm.get('category')?.value;
+    // const titleValue = this.postForm.get('title')?.value;
+    // const descriptionValue = this.postForm.get('content')?.value;
+    // const imageValue = this.image;
+  
+    // if (categoryValue || titleValue || descriptionValue || imageValue) {
+      // Show the confirmation popup only if the form has some data
+      Swal.fire({
+        title: 'Discard post?',
+        text: 'You\'ll lose this post if you discard changes.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C14141',
+        cancelButtonColor: '#777777',
+        confirmButtonText: 'Discard',
+        cancelButtonText: 'Keep editing',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.closeDialog();
+        }
+      });
+    // } else { // close agad kasi walang laman inputs
+    //   this.closeDialog();
+    // }
   }
 
   // Confirmation function
   confirmAction() {
     Swal.fire({
       title: 'Upload Post',
-      text: `Are you sure you want to upload a post?`,
+      text: 'Are you sure you want to upload a post?',
       icon: 'warning',
-      iconColor: '#FFCE54',
-      customClass: { popup: 'swal-font' },
       showCancelButton: true,
       confirmButtonColor: '#4d745a',
-      cancelButtonColor: '#777777',
+      cancelButtonColor: '#7f7f7f',
       confirmButtonText: 'Upload',
       cancelButtonText: 'Cancel',
       reverseButtons: true
@@ -71,10 +80,8 @@ export class UploadComponent {
           toast: true,
           position: 'top-end',
           icon: 'success',
-          iconColor: '#9EB3AA',
-          title: 'Uploaded',
-          text: 'Post successfully uploaded.',
-          customClass: { popup: 'swal-font' },
+          iconColor: '#689f7a',
+          title: 'Post Successfully Uploaded',
           showConfirmButton: false,
           timer: 5000,
           timerProgressBar: true,

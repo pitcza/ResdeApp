@@ -127,8 +127,9 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
           title: 'Announcement Posted',
           text: 'Users can now view your posted announcement.',
           icon: 'success',
+          iconColor: '#689f7a',          
           confirmButtonText: 'Close',
-          confirmButtonColor: '#777777',
+          confirmButtonColor: '#7f7f7f',
           timer: 5000,
           scrollbarPadding: false
         });
@@ -161,7 +162,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#C14141',
-        cancelButtonColor: '#777777',
+        cancelButtonColor: '#7f7f7f',
         confirmButtonText: 'Discard',
         cancelButtonText: 'Keep editing',
         reverseButtons: true

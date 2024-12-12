@@ -63,12 +63,12 @@
                         <i class='bx bx-check-square'></i>
                         <span class="tooltiptext"> Approve </span>
                     </button>
-                    <button class="delete" (click)="rejectPost()">
+                    <button class="delete" (click)="declinePost()">
                         <i class='bx bx-no-entry'></i>
                         <span class="tooltiptext"> Decline </span>
                     </button>
                     <button class="view">
-                        <i class='bx bx-detail' routerLink="../view"></i>
+                        <i class='bx bx-detail' (click)="viewPost()"></i>
                         <span class="tooltiptext"> View </span>
                     </button>
                 </td>

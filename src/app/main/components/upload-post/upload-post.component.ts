@@ -30,34 +30,6 @@ export class UploadPostComponent {
     this.dialogRef.close();
   }
 
-  // Confirmation function
-  confirmAction() {
-    Swal.fire({
-      title: 'Upload Post',
-      text: `Are you sure you want to upload a post?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#404B43',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.router.navigate(['../../uploads/list']); 
-        this.cdr.detectChanges();
-        Swal.fire({
-          title: "Post Pending",
-          text: "Waiting for the admin approval.",
-          icon: "success",
-          confirmButtonText: 'Close',
-          confirmButtonColor: "#777777",
-          timer: 5000,
-          scrollbarPadding: false
-        });
-      }
-    });
-}
-
   ngOnInit() {
     this.postForm = this.fb.group({
       category: ['', Validators.required],
@@ -98,8 +70,9 @@ export class UploadPostComponent {
           title: "Post Pending",
           text: "Waiting for the admin approval.",
           icon: "success",
+          iconColor: '#689f7a',
           confirmButtonText: 'Close',
-          confirmButtonColor: "#777777",
+          confirmButtonColor: "#7f7f7f",
           timer: 5000,
           scrollbarPadding: false
         });
@@ -111,7 +84,7 @@ export class UploadPostComponent {
           text: 'An error occurred while creating the post.',
           icon: 'error',
           confirmButtonText: 'Close',
-          confirmButtonColor: "#777777"
+          confirmButtonColor: "#7f7f7f"
         });
       }
     );
@@ -132,7 +105,7 @@ export class UploadPostComponent {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#C14141',
-        cancelButtonColor: '#777777',
+        cancelButtonColor: '#7f7f7f',
         confirmButtonText: 'Discard',
         cancelButtonText: 'Keep editing',
         reverseButtons: true
