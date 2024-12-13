@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { DataserviceService } from '../../../services/dataservice.service';
 import { group } from 'console';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -17,16 +19,27 @@ export class ProfileComponent implements OnInit{
   passForm: FormGroup
   user: any = {};
 
+  initialUser: any = {}; // To store the initial user data
+
   ngOnInit(): void {
-      this.dataservice.getUser().subscribe(
-        (response) => {
-          this.user = response;
-        },
-        (error) => {
-          console.error('Error fetching user data', error); 
-        }
-      );
-    }
+    this.dataservice.getUser().subscribe(
+      (response) => {
+        this.user = response;
+        this.initialUser = { ...response };  // Store the initial data
+        this.updateForm.patchValue({
+          fname: this.user.fname,
+          lname: this.user.lname,
+          email: this.user.email,
+          phone_number: this.user.phone_number,
+          city: this.user.city,
+          barangay: this.user.barangay
+        });
+      },
+      (error) => {
+        console.error('Error fetching user data', error); 
+      }
+    );
+  }
 
   constructor(
       private authservice: AuthserviceService, 
@@ -92,21 +105,55 @@ export class ProfileComponent implements OnInit{
 
   onSubmit() {
     if (this.updateForm.valid) {
-     
       const formData = this.updateForm.value;
       formData.phone_number = formData.phone_number ? formData.phone_number.toString() : '';
-      
 
-      this.authservice.updateUser(this.updateForm.value).subscribe(
-        response => {
-          console.log('Update successful:', response);
-          alert('User information updated successfully!');
-        },
-        error => {
-          console.error('Error updating user information:', error);
-        }
-      );
+      // Compare form values with initial values
+      if (this.hasFormChanged(formData)) {
+        this.authservice.updateUser(formData).subscribe(
+          response => {
+            console.log('Update successful:', response);
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              iconColor: '#689f7a',
+              title: 'Your information updated successfully!',
+              showConfirmButton: false,
+              timer: 8000,
+              timerProgressBar: true,
+            });
+          },
+          error => {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Error updating the information.',
+              showConfirmButton: false,
+              timer: 5000,
+              timerProgressBar: true,
+            });
+          }
+        );
+      } else {
+        console.log('No changes detected, update skipped.');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'warning',
+          title: 'You have no changes.',
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+        });
+      }
     }
+  }
+
+  // Function to compare form values with initial values
+  hasFormChanged(formData: any): boolean {
+    return Object.keys(formData).some(key => formData[key] !== this.initialUser[key]);
   }
 
   onPasswordChange() {
@@ -119,26 +166,66 @@ export class ProfileComponent implements OnInit{
             this.authservice.changePassword(passwordData).subscribe(
               changeResponse => {
                 console.log('Password change successful:', changeResponse);
-                alert('Password changed successfully!');
+                Swal.fire({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'success',
+                  iconColor: '#689f7a',
+                  title: 'Password changed successfully!',
+                  showConfirmButton: false,
+                  timer: 8000,
+                  timerProgressBar: true,
+                });
               },
               error => {
                 console.error('Error changing password:', error);
+                Swal.fire({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Error changing password.',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  timerProgressBar: true,
+                });
               }
             );
           } else {
-            alert('Current password is incorrect.');
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Current password is incorrect.',
+              showConfirmButton: false,
+              timer: 6000,
+              timerProgressBar: true,
+            });
           }
         },
         error => {
           console.error('Error verifying current password:', error);
-          alert('Error verifying current password.');
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error verifying current password.',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+          });
         }
       );
     } else if (this.passForm.hasError('mismatch')) {
-      alert('New password and confirm password do not match.');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'New password and confirm password do not match.',
+        showConfirmButton: false,
+        timer: 6000,
+        timerProgressBar: true,
+      });
     }
   }
-  
-
 }
 

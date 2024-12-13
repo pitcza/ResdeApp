@@ -93,6 +93,26 @@ export class RegisterComponent {
       });
       return; // Stop form submission if privacy is not checked
     }
+
+    // Check if the password is at least 8 characters
+    if (this.registerData.password.length < 8) {
+      Swal.fire({
+        title: "Error",
+        text: "Password must be at least 8 characters long.",
+        icon: "error",
+        confirmButtonText: 'OK',
+        confirmButtonColor: "#7f7f7f",
+        timer: 5000,
+        scrollbarPadding: false,
+        willOpen: () => {
+          document.body.style.overflowY = 'scroll';
+        },
+        willClose: () => {
+          document.body.style.overflowY = 'scroll';
+        }
+      });
+      return; // Stop form submission if password length is less than 8
+    }
   
     const formData = new FormData();
   
@@ -107,7 +127,7 @@ export class RegisterComponent {
         // Handle successful registration
         console.log('Registration successful:', response);
         this.router.navigate(['/resIt/login-to-resIt']); // Redirect after successful registration
-  
+    
         Swal.fire({
           title: "Registration Successful!",
           text: "You can now login to your Re'sIt account.",
@@ -126,14 +146,44 @@ export class RegisterComponent {
         });
       },
       (error: any) => {
-        // Handle error response
-        if (error.errors) {
-          this.errorMessages = error.errors;
+        // Handle validation errors
+        if (error.error && error.error.email) {
+          Swal.fire({
+            title: "Email Error",
+            text: error.error.email[0], // Display the specific error message
+            icon: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#7f7f7f",
+            timer: 5000,
+            scrollbarPadding: false,
+            willOpen: () => {
+              document.body.style.overflowY = 'scroll';
+            },
+            willClose: () => {
+              document.body.style.overflowY = 'scroll';
+            }
+          });
         } else {
-          console.error('Registration failed:', error);
+          Swal.fire({
+            title: "Registration Failed",
+            text: "An unexpected error occurred.",
+            icon: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#7f7f7f",
+            timer: 5000,
+            scrollbarPadding: false,
+            willOpen: () => {
+              document.body.style.overflowY = 'scroll';
+            },
+            willClose: () => {
+              document.body.style.overflowY = 'scroll';
+            }
+          });
         }
+        console.error('Registration failed:', error);
       }
     );
+    
   }
   
 

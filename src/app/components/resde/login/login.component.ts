@@ -65,7 +65,7 @@ export class LoginComponent {
           toast: true,
           position: 'top-end',
           icon: 'warning',
-          title: 'Email and password cannot be blank!',
+          title: 'Enter your email and password!',
           showConfirmButton: false,
           timer: 5000,
           timerProgressBar: true,
@@ -143,9 +143,5 @@ export class LoginComponent {
       timer: 5000,
       timerProgressBar: true,
     });
-  }
-  
-  landingPage() {
-    this.router.navigate(['app/resde/resde-app']);
   }
 }

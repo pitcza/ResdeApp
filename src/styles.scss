@@ -222,7 +222,7 @@ select {
     button:active {
         transform: translateY(0.1em);
         box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
-      }
+    }
 }
 
 // BUTTON FOR ROUTES
@@ -331,6 +331,16 @@ select {
         color: white;
         transition: all 0.3s ease-in-out;
         cursor: pointer;
+
+        // Disabled state styling
+        &[disabled] {
+            background-color: var(--gray-hover);
+            cursor: default;
+            box-shadow: none;
+            &:hover {
+                background-color: var(--gray-hover);
+            }
+        }
     }
 
     .submit-btn:hover {

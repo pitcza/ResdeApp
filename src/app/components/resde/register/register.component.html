@@ -70,6 +70,9 @@
                     <span class="errorMessage" *ngIf="registerForm.controls['password']?.invalid && registerForm.controls['password']?.touched">
                         Password is required.
                     </span>
+                    <span class="errorMessage" *ngIf="registerData.password.length > 0 && registerData.password.length < 8">
+                      Password must be at least 8 characters long.
+                    </span>
                   </div>
                   <div class="input-group">
                     <label for="inputfield">Confirm Password</label>

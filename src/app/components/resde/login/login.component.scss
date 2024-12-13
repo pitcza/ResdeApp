@@ -139,6 +139,19 @@
                 color: var(--bg-color);
                 font-size: 16px;
                 font-weight: 500;
+
+                // Disabled state styling
+                &[disabled] {
+                    background-color: var(--gray-hover); // Change to a neutral color
+                    cursor: default; // Change cursor to show it's disabled
+                    box-shadow: none; // Remove shadow for a disabled look
+
+                    // Prevent the active transform and box-shadow when disabled
+                    &:active {
+                        transform: none;
+                        box-shadow: none;
+                    }
+                }
             }
         }
 

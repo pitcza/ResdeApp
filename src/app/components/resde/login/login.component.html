@@ -27,7 +27,7 @@
                   </div>
                   <div class="input-container password">
                     <i class='bx bxs-lock'></i>
-                    <input id="password" name="password" type="password" placeholder="Password" [(ngModel)]="loginData.password" required>
+                    <input id="password" name="password" type="password" placeholder="Password" [(ngModel)]="loginData.password" required #password="ngModel" minlength="8">
                   </div>
 
                 <!-- FORGOT PASSWORD LINK -->
@@ -37,7 +37,7 @@
 
                 <!-- LOG IN BUTTON -->
                 <div class="button">
-                    <button class="btn" type="submit" [disabled]="isLoading">
+                    <button class="btn" type="submit" [disabled]="password.errors?.['minlength'] || isLoading">
                         <span *ngIf="!isLoading">Log In</span>
                         <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         <span class="loading" *ngIf="isLoading">Logging In...</span>
