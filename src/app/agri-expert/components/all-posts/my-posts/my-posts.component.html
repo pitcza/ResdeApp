@@ -27,13 +27,13 @@
                 <!-- Date Column -->
                 <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date Approved</th>
-                <td mat-cell *matCellDef="let element">{{element.date}}</td>
+                <td mat-cell *matCellDef="let element">{{element.date | date:'dd-MM-yyyy'}}</td>
                 </ng-container>
     
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                <td mat-cell *matCellDef="let element">{{element.name || "Agri-Admin"}}</td>
                 </ng-container>
             
                 <!-- Category Column -->
@@ -52,12 +52,16 @@
                 <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element" class="actions">
-                    <button class="delete" (click)="deletePost()">
+                    <button class="edit" (click)="editPost(element.id)">
+                        <i class='bx bx-edit'></i>
+                        <span class="tooltiptext"> Edit </span>
+                    </button>
+                    <button class="delete" (click)="deletePost(element.id)">
                         <i class='bx bx-trash'></i>
                         <span class="tooltiptext"> Delete </span>
                     </button>
                     <button class="view">
-                        <i class='bx bx-detail' (click)="viewPost()"></i>
+                        <i class='bx bx-detail' (click)="viewPost(element.id, 'componentA')"></i>
                         <span class="tooltiptext"> View </span>
                     </button>
                 </td>

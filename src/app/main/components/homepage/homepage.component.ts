@@ -61,7 +61,6 @@ export class HomepageComponent implements OnInit {
   }
 
   viewPost(postId: number) {
-    // Fetch post data using postId (this could be an API call)
     const selectedPost = this.posts.find(post => post.id === postId);
 
     if (selectedPost) {

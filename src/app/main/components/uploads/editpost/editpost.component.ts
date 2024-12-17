@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-editpost',
@@ -11,11 +11,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class EditpostComponent implements OnInit {
   postData: any = { title: '', content: '', category: '' }; // Default object structure
-  id: string | null = null;
+  id: any;
   ImagePreview: string | ArrayBuffer | null = null;
+  post: any;
 
   constructor(
     public dialogRef: MatDialogRef<EditpostComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
     private route: ActivatedRoute,
     private ds: DataserviceService
@@ -26,21 +28,20 @@ export class EditpostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
-    console.log('Retrieved post ID:', this.id);
+    this.id = this.data.id;  
+    this.fetchPostData();
+  }
 
-    const numericId = this.id ? Number(this.id) : null;
-    if (numericId !== null) {
-      this.ds.getPost(numericId).subscribe(
-        (data) => {
-          this.postData = data;
-          console.log('Fetched post data:', this.postData);
-        },
-        (error) => {
-          console.error('Error fetching post data:', error);
-        }
-      );
-    }
+  fetchPostData() {
+    this.ds.getPost(this.id).subscribe(
+      (data) => {
+        console.log('Fetched Post Data:', data); // Add this line to inspect the data
+        this.post = data.post; // Accessing 'post' within the response
+      },
+      (error) => {
+        console.error('Error fetching post data', error);
+      }
+    );
   }
 
   // Handles the file selection and previews the image

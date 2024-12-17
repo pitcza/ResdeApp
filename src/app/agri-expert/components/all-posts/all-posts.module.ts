@@ -7,13 +7,15 @@ import { ListComponent } from './list/list.component';
 import { MaterialModule } from '../../../modules/material.module';
 import { MyPostsComponent } from './my-posts/my-posts.component';
 import { UploadComponent } from './upload/upload.component';
+import { AgrieditComponent } from './agriedit/agriedit.component';
 
 
 @NgModule({
   declarations: [
     ListComponent,
     MyPostsComponent,
-    UploadComponent
+    UploadComponent,
+    AgrieditComponent
   ],
   imports: [
     CommonModule,

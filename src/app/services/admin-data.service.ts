@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
   providedIn: 'root'
@@ -117,6 +118,14 @@ export class AdminDataService {
 
   likedposttable():Observable<any> {
     return this.Admin('liketable')
+  }
+
+  createQuestions(data: any): Observable<any>{
+    return this.Admin('trivia/questions', 'POST', data)
+  }
+
+  userScores(): Observable<any>{
+    return this.Admin('trivia/alluser/scores')
   }
 
 }

@@ -16,15 +16,18 @@
       <input type="text" [(ngModel)]="currentTrivia.question" placeholder="Enter question" />
   
       <label>Answers:</label>
+
       <div *ngFor="let option of currentTrivia.answer; let i = index" class="answer-group">
         <div class="answer-label">{{ getAnswerLabel(i) }}</div>
         <input
+          #answerInput
           type="text"
-          [(ngModel)]="currentTrivia.answer[i]"
+          [value]="currentTrivia.answer[i]"
+          (input)="updateAnswer(i, answerInput.value)"
           placeholder="Option {{ i + 1 }}"
-          (keydown.enter)="focusNextField(i)"
         />
       </div>
+      
       
       <label>Correct Answer:</label>
       <select [(ngModel)]="currentTrivia.correctAnswer" class="correct-answer">

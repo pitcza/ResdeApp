@@ -1,0 +1,58 @@
+
+<div class="container">
+    <div class="form-container">
+      <div class="form-header">
+          <h1> Edit Post </h1>
+          <button class="exit-button" (click)="closeDialog()"> &times; </button>
+      </div>
+  
+      <div class="form-content">
+          <!-- Form with validation check -->
+        <form *ngIf="postData" (ngSubmit)="updatePost()">
+          <div class="input-row">
+            <div class="input-field-shorter">
+              <label class="labelline"> Category </label>
+              <select class="txt-field" [(ngModel)]="postData.category" name="category" required>
+                <option value="Compost">Compost</option>
+                <option value="Plastic">Plastic</option>
+                <option value="Rubber">Rubber</option>
+                <option value="Wood and Paper">Wood and Paper</option>
+                <option value="Miscellaneous Products">Miscellaneous Products</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <label class="labelline"> Title </label>
+              <input class="txt-field" type="text" [(ngModel)]="postData.title" name="title" required>
+            </div>
+          </div>
+    
+          <div class="input-row">
+            <div class="input-field">
+              <label class="labelline"> Description </label>
+              <textarea class="txtarea-field" [(ngModel)]="postData.content" name="content" placeholder="Description of your post idea..." required></textarea>
+            </div>
+          </div>
+    
+          <div class="input-row">
+            <div class="input-field-short">
+              <label class="up-labelline"> Upload Photo </label>
+              <input class="file-field" type="file" id="file" accept="image/*" (change)="onFileSelected($event)" name="image">
+            </div>
+            <div class="input-field">
+              <div class="preview">
+                <h2>{{ ImagePreview ? 'Image Preview' : 'Choose Image File to Preview' }}</h2>
+              </div>
+              <div class="image-preview" *ngIf="ImagePreview">
+                <img [src]="ImagePreview" alt="Image Preview">
+              </div>
+            </div>
+          </div>
+    
+          <div class="buttons">
+            <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
+            <input class="submit-btn" type="submit" value="Update">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

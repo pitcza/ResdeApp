@@ -3,6 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AdminDataService } from '../../../services/admin-data.service';
+import { CreatetriviaComponent } from '../createtrivia/createtrivia.component';
 
 @Component({
   selector: 'app-trivia',
@@ -16,6 +18,12 @@ export class TriviaComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('answerInputs') answerInputs!: any;
+  dialog: any;
+  cdr: any;
+
+  constructor (
+    private as: AdminDataService
+  ) {}
 
   // Answer labels
   answerLabels: string[] = ['A', 'B', 'C', 'D'];
@@ -43,20 +51,25 @@ export class TriviaComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openTriviaModal() {
-    this.editingTrivia = false;
-    this.currentTrivia = { id: 0, question: '', answer: ['', '', '', ''], correctAnswer: 0 };
+  openTriviaModal(): void {
+    this.dialog.open(CreatetriviaComponent);
+  }
+  
+  editTrivia(trivia: TriviaQuestion) {
+    this.editingTrivia = true;
+    this.currentTrivia = JSON.parse(JSON.stringify(trivia)); // Deep copy
     this.isModalOpen = true;
+  }
+
+  updateAnswer(index: number, value: string) {
+    const updatedAnswers = [...this.currentTrivia.answer];
+    updatedAnswers[index] = value;
+    this.currentTrivia.answer = updatedAnswers;
+    console.log(`Updated answers:`, this.currentTrivia.answer);
   }
 
   closeTriviaModal() {
     this.isModalOpen = false;
-  }
-
-  editTrivia(trivia: TriviaQuestion) {
-    this.editingTrivia = true;
-    this.currentTrivia = { ...trivia };
-    this.isModalOpen = true;
   }
 
   saveTrivia() {
@@ -65,25 +78,32 @@ export class TriviaComponent implements OnInit {
       return;
     }
 
-    if (this.editingTrivia) {
-      const index = this.triviaList.findIndex(trivia => trivia.id === this.currentTrivia.id);
-      if (index !== -1) {
-        this.triviaList[index] = { ...this.currentTrivia };
-        Swal.fire('Success', 'Trivia updated!', 'success');
-      }
-    } else {
-      const newTrivia: TriviaQuestion = {
-        id: this.triviaList.length + 1,
-        question: this.currentTrivia.question.trim(),
-        answer: this.currentTrivia.answer.map(option => option.trim()),
-        correctAnswer: this.currentTrivia.correctAnswer
-      };
-      this.triviaList.push(newTrivia);
-      Swal.fire('Success', 'Trivia added!', 'success');
-    }
+    const newTrivia = {
+      question: this.currentTrivia.question.trim(),
+      correct_answer: this.currentTrivia.answer[this.currentTrivia.correctAnswer],
+      answers: this.currentTrivia.answer.map(option => option.trim()),
+    };
 
-    this.dataSource.data = [...this.triviaList]; // Refresh table data
-    this.closeTriviaModal();
+    if (this.editingTrivia) {
+      Swal.fire('Error', 'Editing existing trivia via API is not yet implemented.', 'error');
+    } else {
+      this.as.createQuestions(newTrivia).subscribe({
+        next: (response) => {
+          this.triviaList.push({
+            id: this.triviaList.length + 1, // Replace with response ID if available
+            question: newTrivia.question,
+            answer: newTrivia.answers,
+            correctAnswer: this.currentTrivia.correctAnswer,
+          });
+          this.dataSource.data = [...this.triviaList]; // Refresh table data
+          Swal.fire('Success', 'Trivia added!', 'success');
+          this.closeTriviaModal();
+        },
+        error: (err) => {
+          Swal.fire('Error', 'Failed to add trivia. Please try again.', 'error');
+        },
+      });
+    }
   }
 
   deleteTrivia(id: number) {

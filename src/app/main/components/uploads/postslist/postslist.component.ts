@@ -47,7 +47,9 @@ export class PostslistComponent implements OnInit {
   // EDITING POST POPUP
   editPost(id: number) {
     if (this.dialog) {
-      this.dialog.open(EditpostComponent)
+      this.dialog.open(EditpostComponent, {
+        data: { id: id }
+      });
     } else {
       console.error('not found');
     }

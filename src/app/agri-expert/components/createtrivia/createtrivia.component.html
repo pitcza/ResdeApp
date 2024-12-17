@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Create Trivia</h1>
+<div mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" [formGroup]="triviaForm">
+    <!-- Same form content as before -->
+    <div>
+      <label for="question">Question</label>
+      <input id="question" formControlName="question" type="text" />
+      <div *ngIf="triviaForm.get('question')?.invalid && triviaForm.get('question')?.touched">
+        Question is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="correct_answer">Correct Answer</label>
+      <input id="correct_answer" formControlName="correct_answer" type="text" />
+      <div *ngIf="triviaForm.get('correct_answer')?.invalid && triviaForm.get('correct_answer')?.touched">
+        Correct Answer is required.
+      </div>
+    </div>
+
+    <div formArrayName="answers">
+      <label>Answers</label>
+      <div *ngFor="let answer of answers.controls; let i = index">
+        <input [formControlName]="i" placeholder="Answer {{ i + 1 }}" type="text" />
+        <button type="button" (click)="removeAnswer(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addAnswer()">Add Answer</button>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+  <button mat-button (click)="onSubmit()" [disabled]="triviaForm.invalid">Submit</button>
+</div>

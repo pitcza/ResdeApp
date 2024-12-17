@@ -6,7 +6,7 @@
   <div class="table-content">
     <div class="table-head">
       <div class="data-filter">
-        <select id="filter-category" (change)="filterScores($event)">
+        <select id="filter-category" >
           <option selected value="">All Users</option>
           <option *ngFor="let user of uniqueUsers" [value]="user">{{ user }}</option>
         </select>
@@ -14,17 +14,17 @@
     </div>
 
     <div class="overflow">
-      <table mat-table [dataSource]="filteredScores" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Username Column -->
         <ng-container matColumnDef="username">
           <th mat-header-cell *matHeaderCellDef>Username</th>
-          <td mat-cell *matCellDef="let score">{{ score.username }}</td>
+          <td mat-cell *matCellDef="let score">{{ score.user_name }}</td>
         </ng-container>
 
         <!-- Trivia ID Column -->
         <ng-container matColumnDef="triviaId">
           <th mat-header-cell *matHeaderCellDef>Trivia ID</th>
-          <td mat-cell *matCellDef="let score">{{ score.triviaId }}</td>
+          <td mat-cell *matCellDef="let score">{{ score.TriviaID || 'N/A' }}</td>
         </ng-container>
 
         <!-- Question Column -->
@@ -36,7 +36,7 @@
         <!-- Score Column -->
         <ng-container matColumnDef="score">
           <th mat-header-cell *matHeaderCellDef>Score</th>
-          <td mat-cell *matCellDef="let score">{{ score.correct ? 'Yes' : 'No' }}</td>
+          <td mat-cell *matCellDef="let score">{{ score.correct }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

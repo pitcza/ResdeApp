@@ -11,7 +11,7 @@
         <div class="table-head">
             <div class="data-filter">
                 <!-- <h2> Filter Category: </h2> -->
-                <select id="filter-category">
+                <select id="filter-category" (change)="onCategoryChange($event)">
                     <option selected value=""> All Category </option>
                     <option value="Compost"> Compost </option>
                     <option value="Plastic"> Plastic </option>
@@ -24,17 +24,17 @@
         </div>
 
         <div class="overflow">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
                 <!-- Date Column -->
                 <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date</th>
-                <td mat-cell *matCellDef="let element">{{element.date}}</td>
+                <td mat-cell *matCellDef="let element">{{element.created_at | date:'dd-MM-yyyy'}}</td>
                 </ng-container>
     
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                <td mat-cell *matCellDef="let element">{{element.fname}} {{element.lname}}</td>
                 </ng-container>
             
                 <!-- Category Column -->
@@ -59,16 +59,16 @@
                 <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element" class="actions">
-                    <button class="edit" (click)="approvePost()">
+                    <button class="edit" (click)="approvePost(element.id)">
                         <i class='bx bx-check-square'></i>
                         <span class="tooltiptext"> Approve </span>
                     </button>
-                    <button class="delete" (click)="declinePost()">
+                    <button class="delete" (click)="rejectPost(element.id)">
                         <i class='bx bx-no-entry'></i>
                         <span class="tooltiptext"> Decline </span>
                     </button>
                     <button class="view">
-                        <i class='bx bx-detail' (click)="viewPost()"></i>
+                        <i class='bx bx-detail' (click)="viewPost(element.id, 'componentB')"></i>
                         <span class="tooltiptext"> View </span>
                     </button>
                 </td>

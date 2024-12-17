@@ -59,7 +59,7 @@ export class DataserviceService {
   }
 
   updatePost(id: number, data: any): Observable<any> {
-    return this.User(`updatepost/${id}`, 'PUT', data);
+    return this.User(`updatepost/${id}`, 'POST', data);
   }
 
   likePost(id: number): Observable<any> {
