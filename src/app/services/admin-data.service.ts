@@ -124,6 +124,14 @@ export class AdminDataService {
     return this.Admin('trivia/questions', 'POST', data)
   }
 
+  getquestions(): Observable<any> {
+    return this.Admin('trivia/getquestions')
+  }
+
+  deletequestion(id: number): Observable<any> {
+    return this.Admin(`trivia/question/${id}`, 'DELETE')
+  }
+
   userScores(): Observable<any>{
     return this.Admin('trivia/alluser/scores')
   }

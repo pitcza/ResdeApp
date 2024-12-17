@@ -1,3 +1,5 @@
+<div class="container">
+  <div class="post-container">
 <h1 mat-dialog-title>Create Trivia</h1>
 <div mat-dialog-content>
   <form (ngSubmit)="onSubmit()" [formGroup]="triviaForm">
@@ -31,4 +33,8 @@
 <div mat-dialog-actions>
   <button mat-button (click)="closeDialog()">Cancel</button>
   <button mat-button (click)="onSubmit()" [disabled]="triviaForm.invalid">Submit</button>
+</div>
+
+</div>
+
 </div>

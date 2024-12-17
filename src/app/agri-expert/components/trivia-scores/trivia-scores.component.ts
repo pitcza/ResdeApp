@@ -23,15 +23,14 @@ export class TriviaScoresComponent implements OnInit {
   fetchUserScore() {
     this.as.userScores().subscribe(
       (response) => {
-        // Transform response to match TriviaScore interface
         this.scores = response?.users?.map((user: any) => ({
           user_name: user.user_name,
-          triviaId: user.user_id, // Using `user_id` as `TriviaID`
-          question: 'N/A', // Placeholder since no `question` data is provided
+          triviaId: user.user_id, 
+          question: 'N/A', 
           correct: user.total_score
         })) || [];
 
-        this.dataSource = this.scores; // Update the table
+        this.dataSource = this.scores;
         this.uniqueUsers = [...new Set(this.scores.map(score => score.user_name))]; // Extract unique usernames
       },
       (error) => {

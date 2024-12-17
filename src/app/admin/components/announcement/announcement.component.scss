@@ -11,16 +11,6 @@
     }
 }
 
-.head1 {
-    h1 { 
-        font-size: 50px; 
-        transition: all 0.3s ease-in-out;
-        opacity: 10%;
-        float: right;
-        margin-top: -6%;
-    }
-}
-
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -345,4 +335,17 @@ table { // fixed width
 
 .table-content {
     margin-top: 2%;
-}
+    
+        .head1 {
+            position: relative;
+        
+            h1 { 
+                font-size: 50px; 
+                transition: all 0.3s ease-in-out;
+                opacity: 30%;
+                position: absolute; /* Or `relative` based on your needs */
+                right: 0; /* Align to the right */
+                margin-top: -70px; /* Avoid negative margins unless necessary */
+            }
+        }
+    }
