@@ -12,6 +12,7 @@ import { TriviaComponent } from './components/trivia/trivia.component';
 import { TriviaScoresComponent } from './components/trivia-scores/trivia-scores.component';
 import { ViewComponent } from './components/view/view.component';
 import { CreatetriviaComponent } from './components/createtrivia/createtrivia.component';
+import { EditTriviaComponent } from './components/edit-trivia/edit-trivia.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { CreatetriviaComponent } from './components/createtrivia/createtrivia.co
     TriviaScoresComponent,
     ViewComponent,
     CreatetriviaComponent,
+    EditTriviaComponent,
   ],
   imports: [
     CommonModule,

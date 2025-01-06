@@ -7,7 +7,9 @@
 
         <div class="ev-content">
             <div class="ev-img">
-                <img [src]="data.image || '../../../../../assets/images/NoImage.png'">
+                <img [src]="data.image || '../../../../../assets/images/NoImage.png'"
+                (click)="openImagePopup(data.image || '../../../../../assets/images/NoImage.png')"
+                alt="Announcement Image" >
             </div>
             <div class="ev-details">
                 <h4>{{data.title}}</h4>
@@ -18,6 +20,13 @@
 
         <div class="ev-footer">
             
+        </div>
+    </div>
+
+    <!-- Full-size image popup -->
+    <div *ngIf="isImagePopupVisible" class="image-popup-overlay" (click)="closeImagePopup()">
+        <div class="image-popup-content">
+            <img [src]="selectedImage" alt="Full Size Image">
         </div>
     </div>
 </div>

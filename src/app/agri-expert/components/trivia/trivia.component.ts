@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AdminDataService } from '../../../services/admin-data.service';
 import { CreatetriviaComponent } from '../createtrivia/createtrivia.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EditTriviaComponent } from '../edit-trivia/edit-trivia.component';
 
 @Component({
   selector: 'app-trivia',
@@ -78,6 +79,12 @@ export class TriviaComponent implements OnInit {
   openTriviaModal(): void {
     this.dialog.open(CreatetriviaComponent, {
       data: { exampleData: 'Some data to pass' }, // Optional data to pass to the component
+    });
+  }
+
+  openEditModal(): void {
+    this.dialog.open(EditTriviaComponent, {
+      
     });
   }
 

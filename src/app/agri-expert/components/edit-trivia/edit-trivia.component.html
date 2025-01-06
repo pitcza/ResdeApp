@@ -2,21 +2,22 @@
   <div class="post-container">
     <div class="post-header">
       <div class="popup-head">
-          <h1> Create Trivia </h1>
+          <h1> Edit Trivia </h1>
+          <h1> nakacomment po ang all kasi idunno paano iconnect </h1>
       </div>
       <button class="exit-button" (click)="closeDialog()"> &times; </button>
     </div>
 
     <div class="post-content">
-      <form (ngSubmit)="onSubmit()" [formGroup]="triviaForm">
+      <form (ngSubmit)="updateTrivia()">
         <!-- Same form content as before -->
         <div class="input-row">
           <div class="input-field">
             <label class="labelline" for="question">Question</label>
             <input class="txt-field" id="question" formControlName="question" type="text" />
-            <div class="error" *ngIf="triviaForm.get('question')?.invalid && triviaForm.get('question')?.touched">
+            <!-- <div class="error" *ngIf="triviaForm.get('question')?.invalid && triviaForm.get('question')?.touched">
               Question is required.
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -24,13 +25,13 @@
           <div class="input-field">
             <label class="labelline" for="correct_answer">Correct Answer</label>
             <input class="txt-field" id="correct_answer" formControlName="correct_answer" type="text" />
-            <div class="error" *ngIf="triviaForm.get('correct_answer')?.invalid && triviaForm.get('correct_answer')?.touched">
+            <!-- <div class="error" *ngIf="triviaForm.get('correct_answer')?.invalid && triviaForm.get('correct_answer')?.touched">
               Correct Answer is required.
-            </div>
+            </div> -->
           </div>
         </div>
 
-        <div class="input-row">
+        <!-- <div class="input-row">
           <div class="input-field" formArrayName="answers">
             <label class="up-labelline" >Choices</label>
             <div class="with-add">
@@ -43,14 +44,14 @@
               <button type="button" class="addbtn" (click)="addAnswer()">Add</button>
             </div>
           </div>
-        </div>
+        </div> -->
       </form>
     </div>
 
     <div class="post-footer">
       <div class="buttons">
         <button class="cancel-btn" (click)="closeDialog()">Cancel</button>
-        <button class="submit-btn" (click)="onSubmit()" [disabled]="triviaForm.invalid">Submit</button>
+        <button class="submit-btn">Update</button>
       </div>
     </div>
 
