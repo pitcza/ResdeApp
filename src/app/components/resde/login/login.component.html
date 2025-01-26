@@ -22,12 +22,13 @@
                 <!-- LOG IN FORM -->
 
                 <div class="input-container email">
-                    <i class='bx bxs-user-circle'></i>
+                    <i id="bx" class='bx bxs-user-circle'></i>
                     <input id="email" name="email" type="email" placeholder="Email" [(ngModel)]="loginData.email" required>
                   </div>
                   <div class="input-container password">
-                    <i class='bx bxs-lock'></i>
-                    <input id="password" name="password" type="password" placeholder="Password" [(ngModel)]="loginData.password" required #password="ngModel" minlength="8">
+                    <i id="bx" class='bx bxs-lock'></i>
+                    <input id="password" name="password" [type]="passwordVisible ? 'text' : 'password'" placeholder="Password" [(ngModel)]="loginData.password" required #password="ngModel" minlength="8">
+                    <i id="show-hide" class="bx" [class.bx-show]="passwordVisible" [class.bx-hide]="!passwordVisible" (click)="togglePasswordVisibility()"></i>
                   </div>
 
                 <!-- FORGOT PASSWORD LINK -->

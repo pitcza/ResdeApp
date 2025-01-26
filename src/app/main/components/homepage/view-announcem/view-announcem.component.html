@@ -13,7 +13,7 @@
             </div>
             <div class="ev-details">
                 <h4>{{data.title}}</h4>
-                <p>{{data.description}}</p>
+                <p [innerHTML]="formatEventContent(data.description)"></p>
                 <h6 class="date"> {{ data.created_at | date: 'longDate' }} </h6>
             </div>
         </div>

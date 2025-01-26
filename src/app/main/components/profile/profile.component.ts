@@ -41,6 +41,35 @@ export class ProfileComponent implements OnInit{
     );
   }
 
+  // phone number validations
+  phoneNumberInvalid: boolean = false;
+
+  onPhoneNumberInput(event: any): void {
+    const allowedKeys = ['+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const input = event.target as HTMLInputElement;
+    const currentValue = input.value;
+  
+    if (!allowedKeys.includes(event.data)) {
+      event.preventDefault();
+    }
+  
+    if (!currentValue.startsWith('+63 ')) {
+      input.value = `+63 ${currentValue.replace(/^(\+63|0)?/, '')}`;
+    }
+  
+    const rawNumber = currentValue.slice(3).replace(/\D/g, ''); // Exclude '+63'
+  
+    // Format the number as XXX-XXX-XXXX
+    let formattedNumber = '';
+    if (rawNumber.length > 0) formattedNumber += rawNumber.slice(0, 3);
+    if (rawNumber.length > 3) formattedNumber += '-' + rawNumber.slice(3, 6);
+    if (rawNumber.length > 6) formattedNumber += '-' + rawNumber.slice(6, 10);
+  
+    input.value = `+63 ${formattedNumber}`;
+  
+    this.phoneNumberInvalid = input.value.length !== 16;
+  }
+
   constructor(
       private authservice: AuthserviceService, 
       private fb: FormBuilder,

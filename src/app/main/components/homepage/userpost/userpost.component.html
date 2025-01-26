@@ -10,7 +10,7 @@
             <span class="date">{{ data.created_at | date: 'longDate' }} at {{ data.created_at | date: 'shortTime' }}</span>
             <div class="main-post">
                 <h2>{{ data.title }}</h2>
-                <p>{{ data.content }}</p>
+                <p [innerHTML]="formatContent(data.content)"></p>
                 <div class="post-img">
                     <img [src]="data.image || '../../../../../assets/images/NoImage.png'" alt="post image">
                 </div>

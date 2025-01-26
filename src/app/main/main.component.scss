@@ -19,7 +19,7 @@
     top: 0;
     height: 70px;
     width: 100%;
-    padding: 15px 20px 15px 215px;
+    padding: 15px 20px 15px 235px;
     background-color: var(--primary-green);
     display: flex;
     justify-content: space-between;
@@ -91,7 +91,7 @@
 
 // APP PAGES CONTENT
 .body-content {
-    margin-left: 200px;
+    margin-left: 220px;
     margin-top: 70px;
     transition: margin-left 0.3s;
 }
@@ -100,7 +100,7 @@
 .sidebar {
     position: relative;
     background-color: var(--secondary-green);
-    width: 200px;
+    width: 220px;
     position: fixed;
     top: 0;
     left: 0;

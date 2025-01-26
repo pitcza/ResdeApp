@@ -1,12 +1,11 @@
 <main>
-    <div class="popup">
-        <div class="popup-content">
-          <!-- popup content goes here -->
-          <p>Logout of your account?</p>
-          <div class="button-container">
-            <button (click)="close()" class="cancel-btn">Cancel</button>
-            <button [routerLink]="logoutLink" class="leave-btn">Log out</button>
-          </div>
-        </div>
+  <div class="popup">
+    <div class="popup-content">
+      <p>Logout of your account?</p>
+      <div class="button-container">
+        <button (click)="close()" class="cancel-btn">Cancel</button>
+        <button [routerLink]="logoutLink" class="leave-btn">Log out</button>
+      </div>
     </div>
+  </div>
 </main>

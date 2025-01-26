@@ -26,6 +26,13 @@ export class LikedpostsComponent implements OnInit {
     this.loadLikedPosts();
   }
 
+  formatContent(content: string | null): string {
+    if (!content) {
+      return 'N/A';
+    }
+    return content.replace(/\n/g, '<br>');
+  }
+
   loadLikedPosts(): void {
     this.ds.userLiked().subscribe(
       (response) => {
@@ -53,23 +60,44 @@ export class LikedpostsComponent implements OnInit {
   }
   
 
-  likePost(postId: number): void {
+  likePost(postId: number, event: Event): void {
+    event.stopPropagation(); // Prevent parent click event
     this.ds.likePost(postId).subscribe(
       (response) => {
-        console.log('Post liked:', response);
-        
-        const likedItem = this.items.find((item) => item.id === postId);
-        if (likedItem) likedItem.liked = !likedItem.liked;
+        console.log('Post like toggled:', response);
   
-        if (this.selectedItem.id === postId) {
-          this.selectedItem.liked = !this.selectedItem.liked;
+        // Toggle like state for the item
+        const index = this.items.findIndex((item) => item.id === postId);
+        if (index > -1) {
+          const likedItem = this.items[index];
+          likedItem.liked = !likedItem.liked;
+  
+          // Remove from list if unliked
+          if (!likedItem.liked) {
+            this.items.splice(index, 1);
+          }
+        }
+  
+        // Update selectedItem if necessary
+        if (this.selectedItem.id === postId && !this.selectedItem.liked) {
+          this.selectedItem = this.items[0] || {
+            id: 0,
+            title: '',
+            category: '',
+            author: '',
+            date: '',
+            image: '',
+            description: '',
+            liked: false,
+          };
         }
       },
       (error) => {
-        console.error('Error liking post:', error);
+        console.error('Error toggling like:', error);
       }
     );
   }
+  
   
 
   selectItem(item: Item): void {

@@ -15,8 +15,7 @@
         border: 1.5px solid var(--primary-color);
         background-color: var(--container);
         border-radius: 30px;
-        box-shadow:  10px 10px 20px #d5cfc8,
-             -10px -10px 20px #fffdf4;
+        box-shadow:  10px 10px 20px #d5cfc8, -10px -10px 20px #fffdf4;
         transition: all 0.3s ease-in-out;
         animation: popIn 0.3s forwards;
     }
@@ -32,6 +31,7 @@
 /* SIGN UP FORM */
 .input-row .input-group {
     flex-basis: 100%;
+    position: relative;
 }
 
 .input-row {
@@ -52,6 +52,18 @@
         padding: 20px 10px 3px;
         border: 2px solid transparent;
         transition: border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+        &:disabled {
+            background-color: var(--input-color);
+            cursor: not-allowed;
+            box-shadow: none;
+
+            &:hover {
+                background-color: var(--input-color);
+                transform: none;
+                box-shadow: none;
+            }
+        }
     }
 
     input:hover, select:hover {
@@ -65,12 +77,28 @@
 
     input[required].ng-invalid.ng-touched,
     select[required].ng-invalid.ng-touched {
-        border: 2px solid var(--red-btn); // Set red border for invalid inputs
+        border: 2px solid var(--red-btn); // red border for invalid inputs
+    }
+
+    #show-hide {
+        position: absolute;
+        margin-top: 30px;
+        transform: translateY(-50%);
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--dark-green);
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--primary-green);
+        }
     }
 }
 
 /* Error message style */
 .errorMessage {
+    display: flex;
     color: var(--red-btn);
     font-size: 12px;
     margin-left: 10px;

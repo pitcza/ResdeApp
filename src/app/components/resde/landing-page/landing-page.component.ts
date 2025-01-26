@@ -21,6 +21,17 @@ export class LandingPageComponent {
     if (isPlatformBrowser(this.platformId)) {
       this.checkElementsInView();
     }
+    
+    const scrollTopButton = document.getElementById('scrollTopButton');
+    if (window.scrollY > 300) {
+      scrollTopButton?.classList.add('show');
+    } else {
+      scrollTopButton?.classList.remove('show');
+    }
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private checkElementsInView(): void {
