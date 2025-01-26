@@ -16,6 +16,13 @@ export class UserpostComponent {
     private ds: DataserviceService
   ) {}
 
+  formatContent(content: string | null): string {
+    if (!content) {
+      return 'N/A';
+    }
+    return content.replace(/\n/g, '<br>');
+  }
+
   closeDialog() {
     this.dialogRef.close();
   }

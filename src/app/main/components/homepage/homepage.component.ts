@@ -16,7 +16,7 @@ export class HomepageComponent implements OnInit {
   posts: any[] = [];
   isLoading = true;
   loaders = Array(5).fill(null);
-  announcements: TableElement[] = [];
+  announcements: any[] = [];
   // announcement: MatTableDataSource<TableElement> = new MatTableDataSource(this.announcements);
 
   filteredPosts: any[] = [];
@@ -77,6 +77,7 @@ export class HomepageComponent implements OnInit {
         (response) => {
             // console.log('Fetched announcements:', response);  
             this.announcements = response || [];
+            this.announcements.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             console.log(response)
         },
         (error) => {
@@ -116,8 +117,9 @@ export class HomepageComponent implements OnInit {
     this.ds.getAllPosts().subscribe(
       (response) => {
         this.posts = response.posts || [];
+        this.posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         this.filteredPosts = this.posts;
-        this.isLoading = false; // Turn off loading state
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts:', error);

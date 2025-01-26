@@ -41,17 +41,16 @@
       <div class="info">
         <p class="author">{{ selectedItem.author }} • </p>
         <p class="category">{{ selectedItem.category }}</p>
-        <p class="date"> • {{ selectedItem.date | date:'dd-MM-yyyy' }}</p>
+        <p class="date"> • {{ selectedItem.date | date:'longDate' }}</p>
       </div>
-      <p class="description">{{ selectedItem.description }}</p>
+      <p class="description" [innerHTML]="formatContent(selectedItem.description)"></p>
       <img [src]="selectedItem.image" alt="Image" class="main-image" />
 
-      <a (click)="likePost(selectedItem.id)">
+      <a (click)="likePost(selectedItem.id, $event)">
         <span class="heart-btn">
-          <i class="bx bx-heart"></i>
+          <i class="bx" [ngClass]="selectedItem.liked ? 'bx-heart' : 'bxs-heart'"></i>
         </span>
       </a>
-      
     </div>
 
     <!-- Right container -->
@@ -69,14 +68,13 @@
           <p class="title">{{ item.title }}</p>
           <p class="category">{{ item.category }}</p>
           <p class="author">{{ item.author }}</p>
-          <p class="date">{{ item.date | date:'dd-MM-yyyy' }}</p>
+          <p class="date">{{ item.date | date:'mediumDate' }}</p>
         </div>
-        <a (click)="likePost(item.id)">
+        <a (click)="likePost(item.id, $event)">
           <span class="heart-btn">
-            <i class="bx" [ngClass]="item.liked ? 'bxs-heart' : 'bx-heart'"></i>
+            <i class="bx" [ngClass]="item.liked ? 'bx-heart' : 'bxs-heart'"></i>
           </span>
         </a>
-        
       </div>
     </div>
   </div>

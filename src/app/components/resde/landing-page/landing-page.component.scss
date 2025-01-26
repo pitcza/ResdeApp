@@ -130,8 +130,7 @@
         padding: 20px 20px 30px 20px;
         background-color: var(--bg-color);
         border-top: 3px solid var(--secondary-green);
-        box-shadow:  10px 10px 20px #254935,
-             -10px -10px 20px #2f5b41;
+        box-shadow:  10px 10px 20px #254935, -10px -10px 20px #2f5b41;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -176,7 +175,7 @@
                 transition: all 0.3s ease-in-out;
 
                 .highlight {
-                    color: var(--secondary-green); /* or any color you want */
+                    color: var(--secondary-green);
                     font-weight: 700;
                 }
             }
@@ -190,8 +189,7 @@
     .card-box:nth-child(3) { transition-delay: 0.4s; }
 }
 
-.head.in-view, 
-.left.in-view, .right.in-view {
+.head.in-view, .left.in-view, .right.in-view {
     opacity: 1;
     transform: translateY(0);
 }
@@ -213,6 +211,11 @@ footer {
         column-gap: 60px;
     }
 
+    .logos {
+        display: flex;
+        flex-direction: row;
+    }
+
     .logo {
         display: flex;
         justify-content: center;
@@ -221,20 +224,40 @@ footer {
 
         .company {
             width: 100%;
-            height: 130px;
+            height: 110px;
             transition: all 0.3s ease-in-out;
         }
 
         .app {
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             margin-left: -20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .GH1 {
+            width: 110px;
+            height: 110px;
+            margin-left: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .GH2 {
+            width: 110px;
+            height: 110px;
+            margin-left: -30px;
+            margin-right: -20px;
             transition: all 0.3s ease-in-out;
         }
     }
 
+    .brgy-info {
+        display: flex;
+        align-items: center;
+        column-gap: 60px;
+    }
+
     .brgy {
-        padding-left: 10px;
         h2 {
             font-family: 'Parkinsans';
             color: var(--primary-green);
@@ -284,7 +307,7 @@ footer {
     }
 }
 
-@media (min-width: 1025px) and (max-width: 1440px) {
+@media (max-width: 1440px) {
     .spit-screen { padding-top: 20px; height: auto; }
 
     .left {
@@ -310,6 +333,31 @@ footer {
                 width: 100%;
                 margin: 0 auto;
             }
+        }
+    }
+
+    footer {
+        .logos {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            column-gap: 40px;
+    
+            .GH1 { margin-left: 0; }
+            .GH2 { margin-left: 0; margin-right: 0; }
+        }
+
+        .brgy-info {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 30px;
         }
     }
 }
@@ -364,16 +412,6 @@ footer {
             }
        }
     }
-
-    footer {
-        .logo {    
-            .company { height: 110px; }
-            .app {
-                width: 110px;
-                height: 110px;
-            }
-        }
-    }
 }
 
 @media (max-width: 900px) {
@@ -392,7 +430,7 @@ footer {
                 width: 110px;
                 height: 80px;
             }
-            .app {
+            .app, .GH1, .GH2 {
                 width: 80px;
                 height: 80px;
             }
@@ -413,10 +451,18 @@ footer {
             padding: 30px 50px;
             margin-left: 0;
             margin-top: -100px;
-            .re { margin-left: -8px;
-                h1 { font-size: 120px; line-height: 120px; }
+
+            .re { 
+                margin-left: -8px;
+
+                h1 { 
+                    font-size: 120px; 
+                    line-height: 120px; 
+                }
+
                 .the3 { h2 { font-size: 25px; } }
             }
+
             p { font-size: 14px; }
         }
 
@@ -435,11 +481,21 @@ footer {
     footer {
         padding: 30px 50px;
 
-        .logo {
+        .company-info {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            width: 150px;
+            gap: 30px;
+        }
+
+        .logos {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .logo {
+            display: flex;
+            column-gap: 10px;
+
             .app { margin-left: 0; }
         }
     }
@@ -454,6 +510,7 @@ footer {
         .right {
             margin-bottom: 0;
             justify-content: center;
+
             .web { display: none; }
             .mobile { display: flex; }
         
@@ -472,6 +529,7 @@ footer {
         flex-direction: column;
         align-items: center;
         padding: 50px;
+
        .card-box {
             display: flex;
             flex-direction: column;
@@ -512,15 +570,14 @@ footer {
         }
 
         .right {
-            img {
-                width: 100%;
-            }
+            img { width: 100%; }
         }
 
         .route-btn {
             width: 150px;
             margin-top: 20px;
             height: 40px;
+
             a {
                 font-size: 14px;
                 font-weight: 400;
@@ -538,6 +595,7 @@ footer {
 
     .rs-container {
         padding: 30px;
+
        .card-box {
             .card-img {
                 height: 200px;
@@ -553,33 +611,32 @@ footer {
     footer {
         padding: 30px;
 
-        .company-info {
+        .logos {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
         }
 
         .logo {
             display: flex;
             flex-direction: row;
             gap: 10px;
-            width: 150px;
 
             .company {
                 width: 100%;
                 height: 80px;
             }
+
             .app {
                 width: 80px;
                 height: 80px;
-                margin-left: 0;
             }
         }
 
         .contact {
             display: flex;
             align-self: normal;
-            margin-left: 8px;
+            margin-left: 0;
         }
     }
 }

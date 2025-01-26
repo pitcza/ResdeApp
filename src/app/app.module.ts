@@ -10,7 +10,6 @@ import { ResdeComponent } from './components/resde/resde.component';
 import { ResdeModule } from './components/resde/resde.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './modules/material.module';
-import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AdminModule } from './admin/admin.module';
 import { AdminComponent } from './admin/admin.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,7 +25,6 @@ import { TriviaComponent } from './agri-expert/components/trivia/trivia.componen
     MainComponent,
     LogoutComponent,
     ResdeComponent,
-    AdminLoginComponent,
     AdminComponent,
     AgriExpertComponent,
     // TriviaComponent,

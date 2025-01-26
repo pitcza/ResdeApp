@@ -13,6 +13,12 @@ export class LoginComponent {
   loginData = { email: '', password: '' };
   errorMessages: string[] = [];
   isLoading = false;
+  passwordVisible = false;
+
+  // method to toggle the password visibility
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
 
   constructor(
     private router: Router,

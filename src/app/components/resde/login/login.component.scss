@@ -83,8 +83,10 @@
         .input-container {
             width: 400px;
             margin-bottom: 1.2rem;
+            position: relative;
 
             input[type="email"],
+            input[type="text"],
             input[type="password"] {
                 font-family: 'Poppins';
                 display: block;
@@ -112,13 +114,27 @@
 
             i { position: absolute; }
 
-            .bx {
-                padding: 15px;
-                padding-left: 20px;
-                color: var(--dark-green);
-                min-width: 50px;
-                text-align: center;
+            #bx {
+                top: 50%;
+                transform: translateY(-50%);
+                left: 15px;
                 font-size: 30px;
+                color: var(--dark-green);
+            }
+
+            #show-hide {
+                position: absolute;
+                top: 53%;
+                transform: translateY(-50%);
+                right: 15px;
+                font-size: 22px;
+                cursor: pointer;
+                color: var(--dark-green);
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: var(--primary-green);
+                }
             }
         }
 
@@ -140,13 +156,11 @@
                 font-size: 16px;
                 font-weight: 500;
 
-                // Disabled state styling
                 &[disabled] {
                     background-color: var(--gray-hover); // Change to a neutral color
                     cursor: default; // Change cursor to show it's disabled
                     box-shadow: none; // Remove shadow for a disabled look
 
-                    // Prevent the active transform and box-shadow when disabled
                     &:active {
                         transform: none;
                         box-shadow: none;
@@ -222,6 +236,7 @@ a:hover { text-decoration: underline; }
             width: 100%;
             .input-container { width: 100%; 
                 input[type="email"],
+                input[type="text"],
                 input[type="password"] {
                     background-color: var(--cont-input-hover);
                 }

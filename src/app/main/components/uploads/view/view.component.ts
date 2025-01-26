@@ -31,7 +31,13 @@ export class ViewComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.data.id;  
     this.fetchPostData();
-   
+  }
+
+  formatContent(content: string | null): string {
+    if (!content) {
+      return 'N/A';
+    }
+    return content.replace(/\n/g, '<br>');
   }
   
   fetchPostData() {

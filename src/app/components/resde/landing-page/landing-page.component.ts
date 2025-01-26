@@ -18,6 +18,10 @@ export class LandingPageComponent {
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkElementsInView();
+    }
+    
     const scrollTopButton = document.getElementById('scrollTopButton');
     if (window.scrollY > 300) {
       scrollTopButton?.classList.add('show');
@@ -29,6 +33,7 @@ export class LandingPageComponent {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
   private checkElementsInView(): void {
     if (isPlatformBrowser(this.platformId)) {
       const elementsToAnimate = document.querySelectorAll('.rs-container, .head, .left, .right') as NodeListOf<HTMLElement>;

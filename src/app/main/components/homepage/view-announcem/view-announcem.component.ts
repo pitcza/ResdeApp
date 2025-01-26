@@ -19,6 +19,13 @@ export class ViewAnnouncemComponent {
   isImagePopupVisible = false;
   selectedImage: string | null = null;
 
+  formatEventContent(description: string | null): string {
+    if (!description) {
+      return 'N/A';
+    }
+    return description.replace(/\n/g, '<br>');
+  }
+
   // Function to open the image in full size
   openImagePopup(imageUrl: string) {
     this.isImagePopupVisible = true;
