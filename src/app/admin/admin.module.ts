@@ -10,6 +10,8 @@ import { PendingsModule } from './components/pendings/pendings.module';
 import { AllPostComponent } from './components/all-post/all-post.component';
 import { AllPostModule } from './components/all-post/all-post.module';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { UsersComponent } from './components/users/users.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { AnnouncementComponent } from './components/announcement/announcement.co
     DashboardComponent,
     PendingsComponent,
     AllPostComponent,
-    AnnouncementComponent
+    AnnouncementComponent,
+    ReportsComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

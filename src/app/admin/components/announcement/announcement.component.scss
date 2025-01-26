@@ -5,6 +5,7 @@
     border-radius: 5px;
     border-top: 3px solid var(--secondary-green);
     animation: fadeInLeft 0.3s forwards;
+    margin-top: -1%;
 
     .head {
         h1 { font-size: 30px; transition: all 0.3s ease-in-out; }
@@ -349,3 +350,11 @@ table { // fixed width
             }
         }
     }
+
+    .input-field input[type="date"] {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+    

@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./announcement.component.scss']
 })
 export class AnnouncementComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['date', 'title', 'content'];
+  displayedColumns: string[] = ['date', 'title', 'content', 'action'];
   postForm!: FormGroup;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ImagePreview: string | ArrayBuffer | null = null;
@@ -45,6 +45,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
     this.postForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
+      expires_at: ['', [Validators.required]],
       image: [null]
     });
   }
@@ -116,6 +117,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
     const formData = new FormData();
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('description', this.postForm.get('description')!.value);
+    formData.append('expires_at', this.postForm.get('expires_at')?.value);
     if (this.image) {
       formData.append('image', this.image);
     }
@@ -172,6 +174,52 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+
+
+  removeannouncement(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this announcement!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#C14141',
+      cancelButtonColor: '#7f7f7f',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteAnnouncement(id); 
+      }
+    });
+  }
+
+  deleteAnnouncement(id: number): void {
+    this.isLoading = true; 
+    this.as.deleteAnn(id).subscribe(
+      (response) => {
+        console.log('Announcement deleted successfully', response);
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'The announcement has been deleted.',
+          icon: 'success',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7f7f7f'
+        });
+        this.fetchAnnouncement(); // Refresh the list after deletion
+      },
+      (error) => {
+        console.error('Error deleting announcement', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'An error occurred while deleting the announcement.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#777777'
+        });
+      }
+    );
   }
   
 }

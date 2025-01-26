@@ -1,112 +1,4 @@
-<div class="content">
-    <div class="cards">
-        <div class="card-single" style="--delay: 0.1s;" routerLink="../all-post">
-            <div>
-                <h1> {{ totalPostsCount }} </h1>
-                <span> Total Posts </span>
-            </div>
-            <div>
-                <span class="icon"> <i class='bx bx-notepad'></i> </span>
-            </div>
-        </div>
-
-        <div class="card-single" style="--delay: 0.2s;" routerLink="../pendings">
-            <div>
-                <h1> {{ pendingPostsCount }} </h1>
-                <span> Pending Posts </span>
-            </div>
-            <div>
-                <span class="icon"> <i class='bx bxs-file-import'></i> </span>
-            </div>
-        </div>
-
-        <div class="card-single" style="--delay: 0.3s;">
-            <div>
-                <h1> {{ DeclinedCount }} </h1>
-                <span > Declined Posts </span>
-            </div>
-            <div>
-                <span class="decline"> <i class='bx bx-error-alt' ></i></span>
-            </div>
-        </div>
-
-        <div class="card-single" style="--delay: 0.4s;" routerLink="../users">
-            <div>
-                <h1> {{ users }} </h1>
-                <span> Total No. of Users </span>
-            </div>
-            <div>
-                <span class="icon"> <i class='bx bx-face'></i> </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="recent-grid" style="--delay: 0.5s;">
-        <div class="posts">
-            <div class="card">
-                <div class="card-header">
-                    <h2> Oldest Pending Posts <p> Preview of users' pending posts </p> </h2>
-                    <a routerLink="../pendings"> See all <span> <i class='bx bx-right-arrow-alt'></i> </span> </a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-                    
-                        <!-- Full Name Column -->
-                        <ng-container matColumnDef="fullName">
-                            <th mat-header-cell *matHeaderCellDef> Full Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.user_name || 'N/A'}} </td>
-                        </ng-container>
-                    
-                        <!-- Title Column -->
-                        <ng-container matColumnDef="title">
-                            <th mat-header-cell *matHeaderCellDef> Title </th>
-                            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-                        </ng-container>
-                    
-                        <!-- Status Column -->
-                        <ng-container matColumnDef="status">
-                            <th mat-header-cell *matHeaderCellDef> Status </th>
-                            <td mat-cell *matCellDef="let element">
-                            <span class="status">{{element.status}}</span>
-                            </td>
-                        </ng-container>
-                    
-                        <!-- Date Column -->
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Date </th>
-                            <td mat-cell *matCellDef="let element"> {{element.created_at | date:'dd-MM-yyyy'}} </td>
-                        </ng-container>
-                    
-                        <tr mat-header-row *matHeaderRowDef="displayedColumnOldest"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumnOldest;"></tr>
-                        </table>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-
-        <div class="report">
-            <div class="reports">
-                <div class="repcards left-card">
-                    <h3>Most Active User</h3>
-                    <div class="chart-canvas">
-                        <canvas id="pieChart1"></canvas>
-                    </div>
-                </div>
-
-                <div class="repcards right-card">
-                    <h3>Most Liked Post</h3>
-                    <div class="chart-canvas">
-                        <canvas id="pieChart2"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-        <!-- <div class="tabbed">
+<div class="tabbed">
             <input type="radio" id="tab1" name="css-tabs" checked="checked">
             <input type="radio" id="tab2" name="css-tabs">
 
@@ -118,20 +10,7 @@
             <div class="tab-content" id="tab1">
                 <div class="tab-pane" id="tab1-content">
                     <div class="reports">
-                        <div class="repcards left-card">
-                            <h3>Report</h3>
-                            <div class="chart-canvas">
-                                <canvas id="pieChart1"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="repcards right-card">
-                            <h3>Report</h3>
-                            <div class="chart-canvas">
-                                <canvas id="pieChart2"></canvas>
-                            </div>
-                        </div>
-        
+                       
                         <div class="repcards right-card">
                             <h3>Report Table</h3>
                             <p>Users Top Posts</p>
@@ -177,7 +56,7 @@
                                     <tr mat-header-row *matHeaderRowDef="displayedColumnReport1"></tr>
                                     <tr mat-row *matRowDef="let row; columns: displayedColumnReport1;"></tr>
                                 </table>
-                                <mat-paginator #paginator [pageSize]="3" [pageSizeOptions]="[3]" showFirstLastButtons
+                                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10]" showFirstLastButtons
                                     aria-label="Select page of periodic elements">
                                 </mat-paginator>
                             </div>
@@ -193,12 +72,6 @@
             <div class="tab-content" id="tab2">
                 <div class="tab-pane" id="tab2-content">
                     <div class="reports">
-                        <div class="repcards left-card">
-                            <h3>Report</h3>
-                            <div class="chart-canvas">
-                                <canvas id="pieChart2"></canvas>
-                            </div>
-                        </div>
         
                         <div class="repcards right-card">
                             <h3>Report Table</h3>
@@ -254,8 +127,5 @@
                 </div>
             </div>
 
-        </div> -->
+        </div>
         
-
-    </div>
-</div>

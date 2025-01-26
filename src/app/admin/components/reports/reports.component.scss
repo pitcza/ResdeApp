@@ -49,64 +49,6 @@
     }
 }
 
-
-.recent-grid {
-    margin-top: 10px;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: popUp 0.6s forwards;
-    animation-delay: var(--delay, 0s);
-
-    .posts {
-        margin: 30px 0;
-    }
-
-    .card {
-        background: white;
-        border-radius: 5px;
-        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1);
-        padding: 20px 20px 25px 20px;
-        border-top: 3px solid var(--secondary-green);
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            background-color: white;
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            h2 {
-                font-family: 'Poppins';
-                font-size: 20px;
-                font-weight: 700;
-                color: black;
-                p {
-                    font-size: 12px;
-                    font-weight: 400;
-                    opacity: 50%;
-                }
-            }
-    
-            a {
-                background: var(--primary-green);
-                border-radius: 5px;
-                color: white;
-                font-size: .8rem;
-                padding: .5rem 1rem;
-                transition: all 0.3s ease-in-out;
-            }
-
-            a:hover {
-                background-color: var(--dark-green);
-            }
-        }
-    }
-}
-
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -169,7 +111,8 @@ td .status {
 .reports {
     display: flex;
     gap: 20px; 
-    width: 100%;
+    width: 95%;
+    margin-left: 2.5%;
   }
   
   .repcards {
@@ -180,8 +123,8 @@ td .status {
     padding: 20px; 
     text-align: center; 
     border-top: 3px solid var(--secondary-green);
-    width: 400px;
-    height: 400px;
+    // width: 400px;
+    height: 800px;
     margin-top: 10px;
   }
 
@@ -244,7 +187,9 @@ td .status {
     display: flex;
     align-items: stretch;
     list-style: none;
-    max-width: 100%;
+    max-width: 95%;
+    margin-left: 2.5%;
+    margin-top: 1.2%;
 }
 .tab {
     width: 100%; /* Adjust width as needed */
@@ -269,7 +214,6 @@ td .status {
     line-height: 30px;
     padding: 10px 10px;
     text-align: center;
-	// background: var(--secondary-color);
 	font-weight: bold;
 	cursor: pointer;	
 	transition: all 0.3s;
@@ -285,7 +229,7 @@ td .status {
 
 .tab-content {
 	display: none;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .tabbed [type="radio"]:nth-of-type(2):checked ~ .tabs .tab:nth-of-type(2) label,

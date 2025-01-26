@@ -32,6 +32,16 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="input-row">
+                    <div class="input-field">
+                        <label class="labelline">Expiration Date</label>
+                        <input class="txt-field" type="datetime-local" formControlName="expires_at">
+                        <div *ngIf="postForm.get('expires_at')?.invalid && postForm.get('expires_at')?.touched" class="error">
+                            Expiration date is required.
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- <div class="input-row3">
@@ -81,42 +91,40 @@
             <td mat-cell *matCellDef="let element">{{element.created_at | date:'dd-MM-yyyy'}}</td>
             </ng-container>
 
-            <!-- Name Column -->
+             <!-- Title Column -->
             <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef>Title</th>
-            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+            <td mat-cell *matCellDef="let element">
+                {{element.title | slice:0:20}} 
+                <span *ngIf="element.title.length > 20">...</span> 
+            </td>
             </ng-container>
-        
-            <!-- Category Column -->
+
+            <!-- Content Column -->
             <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Content</th>
-            <td mat-cell *matCellDef="let element">{{element.description}}</td>
+            <td mat-cell *matCellDef="let element">
+                {{element.description | slice:0:50}}
+                <span *ngIf="element.description.length > 50">...</span> 
+            </td>
             </ng-container>
         
             <!-- Action Column -->
-            <!-- <ng-container matColumnDef="action">
+            <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let element" class="actions">
-                <button class="edit" (click)="approvePost(element.id)">
-                    <i class='bx bx-check-square'></i>
-                    <span class="tooltiptext"> Approve </span>
-                </button>
-                <button class="delete" (click)="rejectPost(element.id)">
+                <button class="delete" (click)="removeannouncement(element.id)">
                     <i class='bx bx-no-entry'></i>
-                    <span class="tooltiptext"> Decline </span>
-                </button>
-                <button class="view">
-                    <i class='bx bx-detail' routerLink="../view"></i>
-                    <span class="tooltiptext"> View </span>
+                    <span class="tooltiptext"> Delete </span>
                 </button>
             </td>
-            </ng-container> -->
+            </ng-container>
         
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <mat-paginator [pageSize]="3" [pageSizeOptions]="[3]" showFirstLastButtons
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5]" showFirstLastButtons
                             aria-label="Select page of periodic elements">
         </mat-paginator>
         

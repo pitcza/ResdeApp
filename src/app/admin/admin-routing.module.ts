@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -9,6 +11,8 @@ const routes: Routes = [
   { path: 'announcement', component: AnnouncementComponent},
   { path: 'pendings', loadChildren: () => import('./components/pendings/pendings.module').then(m => m.PendingsModule) },
   { path: 'all-post', loadChildren: () => import('./components/all-post/all-post.module').then(m => m.AllPostModule) },
+  { path: 'reports', component: ReportsComponent},
+  { path: 'users', component: UsersComponent},
 ];
 
 @NgModule({

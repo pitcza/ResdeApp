@@ -76,6 +76,14 @@ export class AdminDataService {
       return this.Admin('totalusers');
   }
 
+  getUsers(): Observable<any> {
+      return this.Admin('users');
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    return this.Admin(`delete/user?user_id=${userId}`, 'DELETE');
+  }
+
   getPosts(): Observable<any> {
     return this.Admin('allPost');
   }
@@ -102,6 +110,10 @@ export class AdminDataService {
     .set('end_date', params.end_date);
 
     return this.Admin('getannouncements', 'GET', queryParams);
+  }
+
+  deleteAnn(id: number): Observable<any> {
+    return this.Admin(`announcements/${id}`, 'DELETE')
   }
 
   userTotalPost():Observable<any> {
