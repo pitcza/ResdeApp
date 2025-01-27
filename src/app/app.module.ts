@@ -12,10 +12,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MaterialModule } from './modules/material.module';
 import { AdminModule } from './admin/admin.module';
 import { AdminComponent } from './admin/admin.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { AgriExpertComponent } from './agri-expert/agri-expert.component';
 import { AgriExpertModule } from './agri-expert/agri-expert.module';
 import { TriviaComponent } from './agri-expert/components/trivia/trivia.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 // import { TriviaScore } from './agri-expert/components/trivia-score/trivia-score.component';
 // import { ServiceWorkerModule } from '@angular/service-worker';
 
@@ -39,6 +41,8 @@ import { TriviaComponent } from './agri-expert/components/trivia/trivia.componen
     AdminModule,
     AgriExpertModule,
     HttpClientModule,
+    CommonModule,
+    RouterModule,
   //   ServiceWorkerModule.register('ngsw-worker.js', {
   //     enabled: !isDevMode(),
   //     // Register the ServiceWorker as soon as the application is stable
@@ -53,7 +57,8 @@ import { TriviaComponent } from './agri-expert/components/trivia/trivia.componen
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch()),
   ],
   bootstrap: [AppComponent]
 })

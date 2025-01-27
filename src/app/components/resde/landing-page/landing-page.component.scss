@@ -31,24 +31,32 @@
         margin-left: -15px;
 
         h1 {
+            font-family: 'Rubik';
             font-size: 200px;
             line-height: 200px;
             text-transform: uppercase;
             color: var(--dark-green);
             transition: all 0.3s ease-in-out;
+            font-weight: 700;
+            margin-bottom: 0;
         }
 
         .the3 {
             h2 {
+                font-family: 'Rubik';
                 font-size: 45px;
+                font-weight: 600;
+                line-height: 53px;
                 text-transform: uppercase;
                 color: var(--dark-green);
                 transition: all 0.3s ease-in-out;
+                margin-bottom: 0;
             }
         }
     }
 
     p {
+        font-family: 'Rubik';
         font-size: 20px;
         margin-top: 10px;
         text-transform: uppercase;
@@ -261,8 +269,11 @@ footer {
         h2 {
             font-family: 'Parkinsans';
             color: var(--primary-green);
+            font-size: 30px;
+            font-weight: 700;
         }
         h3 {
+            font-family: 'Poppins';
             font-size: 16px;
             padding-top: 5px;
             font-weight: 500;
@@ -275,7 +286,7 @@ footer {
         flex-direction: column;
 
         .email {
-            a { color: var(--primary-green); }
+            a { color: var(--primary-green); font-size: 16px; }
             i {
                 position: absolute;
                 margin-left: -23px;
@@ -288,7 +299,7 @@ footer {
         }
 
         .socials {
-            p { padding-bottom: 5px; }
+            p { padding-bottom: 5px; font-size: 16px; }
             i {
                 font-size: 30px;
                 color: var(--dark-green);
@@ -314,7 +325,7 @@ footer {
         padding: 50px 10px 50px 40px;
         .re {
             h1 { font-size: 180px; line-height: 180px; }
-            .the3 { h2 { font-size: 40px; } }
+            .the3 { h2 { font-size: 40px; line-height: 50px; } }
         }
         p { font-size: 15px; }
     }
@@ -370,7 +381,7 @@ footer {
         padding: 30px 10px 50px 10px;
         .re { margin-left: -10px;
             h1 { font-size: 160px; line-height: 160px; }
-            .the3 { h2 { font-size: 35px; } }
+            .the3 { h2 { font-size: 35px; line-height: 45px; } }
         }
         p { font-size: 14px; }
     }
@@ -418,7 +429,7 @@ footer {
     .left {
         .re {
             h1 { font-size: 130px; line-height: 130px; }
-            .the3 { h2 { font-size: 30px; } }
+            .the3 { h2 { font-size: 30px; line-height: 35px; } }
         }
         p { font-size: 14px; }
     }
@@ -460,7 +471,7 @@ footer {
                     line-height: 120px; 
                 }
 
-                .the3 { h2 { font-size: 25px; } }
+                .the3 { h2 { font-size: 25px; line-height: 32px; } }
             }
 
             p { font-size: 14px; }

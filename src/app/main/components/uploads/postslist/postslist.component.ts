@@ -28,6 +28,12 @@ export class PostslistComponent implements OnInit {
   isLoading = true;
   loaders = Array(5).fill(null);
 
+  filteredPosts: any[] = [];
+  selectedCategory: string = '';
+  selectedStatus: string = '';
+  fromDate: string = '';  // For the "from" date
+  toDate: string = '';    // For the "to" date
+
   constructor (
     private ds: DataserviceService,
     private cdr: ChangeDetectorRef,
@@ -38,6 +44,67 @@ export class PostslistComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserPost();
     this.filteredDataSource.data = this.dataSource;  
+  }
+
+  setDefaultFilter(): void {
+    this.filteredPosts = [...this.dataSource];
+  }
+  
+  filterPosts(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    if (selectElement) {
+      this.selectedCategory = selectElement.value;
+      this.applyFilters();  // Reapply filters whenever category is changed
+    }
+  }
+
+  filterStatus(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    if (selectElement) {
+      this.selectedStatus = selectElement.value;
+      this.applyFilters();  // Reapply filters whenever status is changed
+    }
+  }
+
+  onDateChange(event: Event, type: 'from' | 'to'): void {
+    const inputElement = event.target as HTMLInputElement;
+    const selectedDate = inputElement.value;
+
+    if (type === 'from') {
+      this.fromDate = selectedDate;
+    } else if (type === 'to') {
+      this.toDate = selectedDate;
+    }
+
+    this.applyFilters();  // Reapply filters whenever dates are changed
+  }
+
+  applyFilters(): void {
+    let filteredPosts = this.dataSource;
+
+    // Filter by category
+    if (this.selectedCategory) {
+      filteredPosts = filteredPosts.filter(post => post.category === this.selectedCategory);
+    }
+
+    // Filter by status (applied on already filtered posts)
+    if (this.selectedStatus) {
+      filteredPosts = filteredPosts.filter(post => post.status === this.selectedStatus);
+    }
+
+    // Filter by date range (applied on already filtered posts)
+    if (this.fromDate) {
+      const fromDate = new Date(this.fromDate);
+      filteredPosts = filteredPosts.filter(post => new Date(post.date) >= fromDate);
+    }
+
+    if (this.toDate) {
+      const toDate = new Date(this.toDate);
+      filteredPosts = filteredPosts.filter(post => new Date(post.date) <= toDate);
+    }
+
+    // Update filtered posts
+    this.filteredPosts = filteredPosts;
   }
 
   // UPLOADING POPUP
@@ -98,6 +165,7 @@ export class PostslistComponent implements OnInit {
   
         console.log(response);
         this.isLoading = false;
+        this.applyFilters();
         this.cdr.detectChanges();
       },
       (error) => {

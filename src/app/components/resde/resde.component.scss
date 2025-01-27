@@ -64,7 +64,7 @@
             text-transform: uppercase;
             text-align: center;
             border-radius: 50px;
-            padding: 10px 0 10px 0;
+            padding: 8px 0;
             width: 200px;
             color: var(--dark-green);
             transition: all 0.3s ease;
@@ -107,7 +107,7 @@
     }
 }
 
-// sakto for mobile browser
+// for mobile browser
 @media (max-width: 500px) {
     .header {
         padding: 30px 20px 30px 20px;
@@ -135,7 +135,7 @@
         .pages {
             a {
                 width: 80px;
-                padding: 7px 0 7px 0;
+                padding: 7px 0;
                 h2 {
                     font-size: 12px;
                     font-weight: 400;

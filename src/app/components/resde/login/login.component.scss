@@ -50,6 +50,7 @@
 
         p {
             font-weight: 400;
+            font-size: 16px;
         }
     }
 }
@@ -157,9 +158,9 @@
                 font-weight: 500;
 
                 &[disabled] {
-                    background-color: var(--gray-hover); // Change to a neutral color
-                    cursor: default; // Change cursor to show it's disabled
-                    box-shadow: none; // Remove shadow for a disabled look
+                    background-color: var(--gray-hover);
+                    cursor: default;
+                    box-shadow: none;
 
                     &:active {
                         transform: none;
