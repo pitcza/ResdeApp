@@ -58,10 +58,10 @@
                     </span>
                   </div>
                   <div class="input-group">
-                    <label for="inputfield">Block</label>
-                    <select name="block" id="inputfield" required>
-                      <option value="">Select Block</option>
-                      <!-- <option *ngFor="let option of blocks" [value]="option">{{ option }}</option> -->
+                    <label for="inputfield">Street</label>
+                    <select name="block" id="inputfield" [(ngModel)]="registerData.street" required>
+                      <option value="">Select Street</option>
+                      <option *ngFor="let street of streets" [value]="street">{{ street }}</option>
                     </select>
                   </div>
                 </div>

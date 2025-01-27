@@ -32,7 +32,9 @@ export class ProfileComponent implements OnInit{
           email: this.user.email,
           phone_number: this.user.phone_number,
           city: this.user.city,
-          barangay: this.user.barangay
+          barangay: this.user.barangay,
+          age: this.user.age,
+          street: this.user.street
         });
       },
       (error) => {
@@ -84,7 +86,8 @@ export class ProfileComponent implements OnInit{
         phone_number: ['', [Validators.pattern('^[0-9+()-\s]*$')]],
         city: ['', [Validators.required]],
         barangay: ['', [Validators.required]],
- 
+        age: ['', [Validators.required]],
+        street: ['', [Validators.required]],
       });
 
       this.passForm = this.fb.group({

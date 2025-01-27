@@ -18,7 +18,7 @@
             <div class="main-post">
                 <h2>{{ post.title }}</h2>
                 <span class="category">{{ post.category }}</span>
-                <p [innerHTML]="formatContent(data.content)"></p>
+                <p [innerHTML]="formatContent(post.content)"></p>
                 <div class="post-img">
                     <img [src]="post.image || '../../../../../assets/images/NoImage.png'" alt="post image">
                 </div>

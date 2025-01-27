@@ -96,9 +96,13 @@ export class AdminDataService {
     return this.Admin(`post/${id}/approve`, 'PATCH');
   }
 
-  rejectPost(id: number): Observable<any> {
-    return this.Admin(`post/${id}/decline`, 'PATCH');
+  rejectPost(id: number, remarks: string): Observable<any> {
+    return this.Admin(`post/${id}/decline`, 'PATCH', { remarks });
   }
+
+  // rejectPost(id: number, ): Observable<any> {
+  //   return this.Admin(`post/${id}/decline`, 'PATCH');
+  // }
 
   uploadAnn(formData: FormData): Observable<any> {
     return this.Admin('announcements', 'POST', formData);

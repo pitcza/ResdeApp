@@ -132,24 +132,31 @@ export class ViewComponent implements OnInit {
     });
   }
 
-  declinePost(id: number) { // DECLINE PROCESS
+  declinePost(id: number) {
     Swal.fire({
       title: 'Decline Post',
       text: 'Are you sure you want to decline this post?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#C14141',
-      cancelButtonColor: '#7f7f7f',
-      confirmButtonText: 'Decline Post',
-      cancelButtonText: 'Cancel'
+      confirmButtonColor: '#AB0E0E',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel',
+      input: 'textarea',  
+      inputPlaceholder: 'Enter your remarks...',
+      inputAttributes: {
+        'aria-label': 'Type your remarks here'
+      }
     }).then((result) => {
       if (result.isConfirmed) {
-        this.as.rejectPost(id).subscribe({
+        const remarks = result.value;  
+  
+        this.as.rejectPost(id, remarks).subscribe({
           next: () => {
-            this.dialogRef.close(true); // Notify parent of changes
+      
             Swal.fire({
-              title: "Post Rejected!",
-              text: "The post has been rejected.",
+              title: "Post Declined!",
+              text: "The post has been declined.",
               icon: "success",
               confirmButtonText: 'Close',
               confirmButtonColor: "#777777",
@@ -160,12 +167,11 @@ export class ViewComponent implements OnInit {
           error: (err) => {
             Swal.fire({
               title: "Error",
-              text: "There was an error approving the post.",
+              text: "There was an error.",
               icon: "error",
               confirmButtonText: 'Close',
               confirmButtonColor: "#777777"
             });
-            console.error(err);
           }
         });
       }

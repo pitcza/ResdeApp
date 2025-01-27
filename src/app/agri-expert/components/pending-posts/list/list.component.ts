@@ -165,24 +165,31 @@ export class ListComponent implements OnInit, AfterViewInit {
   // REJECT PROCESS
   rejectPost(id: number) {
     Swal.fire({
-      title: 'Reject Post',
-      text: `Are you sure you want to reject this post?`,
+      title: 'Decline Post',
+      text: 'Are you sure you want to decline this post?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#AB0E0E',
       cancelButtonColor: '#777777',
       confirmButtonText: 'Yes',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
+      input: 'textarea',  
+      inputPlaceholder: 'Enter your remarks...',
+      inputAttributes: {
+        'aria-label': 'Type your remarks here'
+      }
     }).then((result) => {
       if (result.isConfirmed) {
-        this.AS.rejectPost(id).subscribe({
+        const remarks = result.value;  
+  
+        this.AS.rejectPost(id, remarks).subscribe({
           next: () => {
             this.dataSource.data = this.dataSource.data.filter(post => post.id !== id);
             this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
-
+  
             Swal.fire({
-              title: "Post Rejected!",
-              text: "The post has been rejected.",
+              title: "Post Declined!",
+              text: "The post has been declined.",
               icon: "success",
               confirmButtonText: 'Close',
               confirmButtonColor: "#777777",
@@ -193,7 +200,7 @@ export class ListComponent implements OnInit, AfterViewInit {
           error: (err) => {
             Swal.fire({
               title: "Error",
-              text: "There was an error approving the post.",
+              text: "There was an error.",
               icon: "error",
               confirmButtonText: 'Close',
               confirmButtonColor: "#777777"
@@ -203,6 +210,8 @@ export class ListComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  
+
 }
 
 export interface TableElement {
