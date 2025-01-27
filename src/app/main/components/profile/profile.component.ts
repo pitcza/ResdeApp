@@ -1,10 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { AuthserviceService } from '../../../services/authservice.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataserviceService } from '../../../services/dataservice.service';
 import { group } from 'console';
 
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewComponent } from '../uploads/view/view.component';
 
 @Component({
   selector: 'app-profile',
@@ -13,15 +15,114 @@ import Swal from 'sweetalert2';
 })
 export class ProfileComponent implements OnInit{
   // to store which content to show (default to 'content1')
+  displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
+  dataSource: any [] = [];
+  id: any|string;
+  element: any;
+
+  isLoading = true;
+  loaders = Array(5).fill(null);
+
   currentContent: string = 'content1';
   isMobile: boolean = false;
   updateForm: FormGroup;
   passForm: FormGroup
   user: any = {};
 
+  ages: number[] = Array.from({ length: 100 }, (_, i) => i + 1);
+  streets: string[] = [
+    'Acacia St.',
+    'Mercurio St.',
+    'Coral St.',
+    'Simpson St.',
+    'Neptune St.',
+    'Cleopatra St.',
+    'Keith St.',
+    'Dayanan St.',
+    'Ruano St.',
+    'Woodhouse St.',
+    'Arriola St.',
+    'Pacheco St.',
+    'Ramirez St.',
+    'Sander St.',
+    'Kaufman St.',
+    'Ramirez St.',
+    'Cava St.',
+    'Blk #1 Fedrico St. (Long Rd, Upper)',
+    'Blk #1 Fedrico St. (Waterdam Rd, Lower)',
+    'Blk #2 Gomez St. (Long Rd, Upper)',
+    'Blk #2 Gomez St. (Waterdam Rd, Lower)',
+    'Blk #3 Diwa St. (Long Rd, Upper)',
+    'Blk #3 Diwa St. (Waterdam Rd, Lower)',
+    'Blk #4 Adamos St. (Long Rd, Upper)',
+    'Blk #4 Adamos St. (Waterdam Rd, Lower)',
+    'Blk #5 Balete St. (Long Rd, Upper)',
+    'Blk #5 Balete St. (Waterdam Rd, Lower)',
+    'Blk #6 Casoy St. (Long Rd, Upper)',
+    'Blk #6 Casoy St. (Waterdam Rd, Lower)',
+    'Blk #7 Duhat St. (Long Rd, Upper)',
+    'Blk #7 Duhat St. (Waterdam Rd, Lower)',
+    'Blk #8 Eucalyptus St. (Long Rd, Upper)',
+    'Blk #8 Eucalyptus St. (Waterdam Rd, Lower)',
+    'Blk #9 Fire Tree St. (Long Rd, Upper)',
+    'Blk #9 Fire Tree St. (Waterdam Rd, Lower)',
+    'Blk #10 Guava St. (Long Rd, Upper)',
+    'Blk #10 Guava St. (Waterdam Rd, Lower)',
+    'Blk #11 Herbabuena St. (Long Rd, Upper)',
+    'Blk #11 Herbabuena St. (Waterdam Rd, Lower)',
+    'Blk #12 Ipil-Ipil St. (Long Rd, Upper)',
+    'Blk #12 Ipil-Ipil St. (Waterdam Rd, Lower)',
+    'Blk #13 Jacaranda St. (Long Rd, Upper)',
+    'Blk #13 Jacaranda St. (Waterdam Rd, Lower)',
+    'Blk #14 Kalatsuchi St. (Long Rd, Upper)',
+    'Blk #14 Kalatsuchi St. (Waterdam Rd, Lower)',
+    'Blk #15 Latiris St. (Long Rd, Upper)',
+    'Blk #15 Latiris St. (Waterdam Rd, Lower)',
+    'Blk #16 Mangga St. (Long Rd, Upper)',
+    'Blk #16 Mangga St. (Waterdam Rd, Lower)',
+    'Blk #17 Narra St. (Long Rd, Upper)',
+    'Blk #17 Narra St. (Waterdam Rd, Lower)',
+    'Blk #18 Oliva St. (Long Rd, Upper)',
+    'Blk #18 Oliva St. (Waterdam Rd, Lower)',
+    'Blk #19 Palo Santo St. (Long Rd, Upper)',
+    'Blk #19 Palo Santo St. (Waterdam Rd, Lower)',
+    'Blk #20 Rimas St. (Long Rd, Upper)',
+    'Blk #20 Rimas St. (Waterdam Rd, Lower)',
+    'Blk #21 Santol St. (Long Rd, Upper)',
+    'Blk #21 Santol St. (Waterdam Rd, Lower)',
+    'Blk #22 Talisay St. (Long Rd, Upper)',
+    'Blk #22 Talisay St. (Waterdam Rd, Lower)',
+    'Blk #23 Ubas St. (Long Rd, Upper)',
+    'Blk #23 Ubas St. (Waterdam Rd, Lower)',
+    'Blk #24 Verbena St. (Long Rd, Upper)',
+    'Blk #24 Verbena St. (Waterdam Rd, Lower)',
+    'Blk #25 Waling Waling St. (Long Rd, Upper)',
+    'Blk #25 Waling Waling St. (Waterdam Rd, Lower)',
+    'Blk #26 / Long Rd (Taas/Upper)',
+    'Blk #26 / Waterdam Rd (Baba/Lower)',
+    'Blk #27 / Long Rd (Taas/Upper)',
+    'Blk #27 / Waterdam Rd(Baba/Lower)',
+    'Blk #28 / Long Rd (Taas/Upper)',
+    'Blk #28 / Waterdam Rd (Baba/Lower)',
+    'Blk #29 / Waterdam Rd (Baba/Lower)',
+    'Blk #30 / Waterdam Rd (Baba/Lower)',
+    'Blk #31 / Waterdam Rd (Baba/Lower)'
+  ];
+
   initialUser: any = {}; // To store the initial user data
 
+  userPosts: any[] = []; // Define the userPosts array here
+  
   ngOnInit(): void {
+    this.fetchUserPost();
+    this.dataservice.getUserPosts().subscribe(
+      (posts) => {
+        this.userPosts = posts;
+      },
+      (error) => {
+        console.error('Error fetching user posts', error);
+      }
+    );
     this.dataservice.getUser().subscribe(
       (response) => {
         this.user = response;
@@ -75,7 +176,9 @@ export class ProfileComponent implements OnInit{
   constructor(
       private authservice: AuthserviceService, 
       private fb: FormBuilder,
-      private dataservice: DataserviceService
+      private dataservice: DataserviceService,
+      private cdr: ChangeDetectorRef,
+      private dialog: MatDialog,
     ) {
       this.checkIfMobile();
 
@@ -259,5 +362,54 @@ export class ProfileComponent implements OnInit{
       });
     }
   }
+
+  totalLikes: number = 0;
+
+  fetchUserPost(): void {
+    this.dataservice.getUserPosts().subscribe(
+      (response) => {
+        this.dataSource = response.posts
+        .map((post: any) => ({
+          id: post.id,
+          title: post.title,
+          category: post.category,
+          date: post.created_at,
+          image: post.image,
+          status: post.status,
+          description: post.content,
+          total_likes: post.total_likes ?? 0
+        }))
+        .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
+          const dateA = new Date(a.date || 0).getTime();
+          const dateB = new Date(b.date || 0).getTime();
+          return dateB - dateA; // Sort in descending order (newest first)
+        });
+
+        console.log(response)
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching posts:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
+
+  // VIEWING POST POPUP
+    viewPost(id: number) {
+      if (this.dialog) {
+        this.dialog.open(ViewComponent, {
+          data: { id: id }  
+        });
+      } else {
+        console.error('View popup not found');
+      }
+    }
 }
 
