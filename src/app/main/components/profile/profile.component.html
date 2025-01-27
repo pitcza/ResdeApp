@@ -49,11 +49,17 @@
                         <div class="input-row">
                             <div class="input-field">
                                 <label class="labelline"> Age </label>
-                                <input class="txt-field" type="text" name="age" value="Gordon Heights"  formControlName="age" placeholder="{{ user.age}}">
+                                <select class="txt-field" formControlName="age">
+                                    <option value=""  disabled selected > Select your age </option>
+                                    <option *ngFor="let option of ages" [value]="option">{{ option }}</option>
+                                </select>
                             </div>
                             <div class="input-field">
                                 <label class="labelline"> Street </label>
-                                <input class="txt-field" type="text" name="street" value="Olongapo City"  formControlName="street" placeholder="{{ user.street }}">
+                                <select class="txt-field" formControlName="street">
+                                    <option value=""  disabled selected > Select Street </option>
+                                    <option *ngFor="let option of streets" [value]="option">{{ option }}</option>
+                                </select>
                             </div>
                         </div>
             
@@ -151,5 +157,55 @@
                 </div> -->
             </div>
         </div>
+
+        <div class="container" id="posts">
+            <div class="head">
+                <h1> Approved Posts </h1>
+            </div>
+            <div class="post-container">
+                <!-- Show skeleton loaders while posts are loading -->
+                <ng-container *ngIf="isLoading">
+                    <div class="post-box skeleton-loader" *ngFor="let loader of loaders">
+                        <div class="post-img">
+                            <div class="image-placeholder"></div>
+                            <span class="category-placeholder"></span>
+                        </div>
+                        <div class="post-text">
+                            <div class="title-placeholder"></div>
+                            <div class="category-time-placeholder"></div>
+                            <div class="publisher-placeholder"></div>
+                        </div>
+                    </div>
+                </ng-container>
+        
+                <!-- Dynamically render only approved posts -->
+                <ng-container *ngIf="!isLoading">
+                    <ng-container *ngFor="let element of dataSource">
+                    <div class="post-box" *ngIf="element.status === 'approved'">
+                        <div mat-card-header class="post-img">
+                            <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
+                            <span class="status approved-status">{{ element.total_likes }} likes</span>
+                        </div>
+                        <mat-card-content class="post-text">
+                            <a (click)="viewPost(element.id)">
+                                <strong class="title">{{ element.title }}</strong>
+                            </a>
+                            <div class="category-time">
+                                <span class="post-category">{{ element.category }}</span>
+                                <span class="published-time">{{ element.date | date: 'mediumDate' }}</span>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions class="actions" id="uploads-actions">
+                            <button class="view" (click)="viewPost(element.id)">
+                                <i class='bx bx-detail'></i>
+                                <span class="tooltiptext"> View </span>
+                            </button>
+                        </mat-card-actions>
+                    </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        
     </div>
 </main>
