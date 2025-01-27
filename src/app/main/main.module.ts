@@ -12,6 +12,7 @@ import { GreenmoduleComponent } from './components/greenmodule/greenmodule.compo
 import { MaterialModule } from '../modules/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { UploadPostComponent } from './components/upload-post/upload-post.compon
   ],
   imports: [
     CommonModule,
+    RouterModule,
     MainRoutingModule,
     HomepageModule,
     MaterialModule,

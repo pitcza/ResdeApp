@@ -37,11 +37,11 @@
     box-sizing: border-box;
     list-style-type: none;
     text-decoration: none;
+    font-family: 'Poppins';
 }
 
 body {
     padding: 0;
-    margin: 0;
     background-color: var(--bg-color);
     font-family: 'Poppins';
 }
@@ -84,7 +84,7 @@ a {
 }
 
 // FONT
-input, label {
+input, label, a, p, h1, h2, h3, h4 {
     font-family: 'Poppins';
 }
 
@@ -794,3 +794,13 @@ table tr td:last-child {
 }
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-typography {
+    all: unset; /* Resets all inherited and default styles */
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: var(--bg-color);
+}

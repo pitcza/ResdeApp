@@ -18,13 +18,20 @@ export class MainComponent implements OnInit{
   }
 
   updateNameFromSessionStorage(): void {
-    this.name = sessionStorage.getItem('name') || '';
+    if (typeof sessionStorage !== 'undefined') {
+      this.name = sessionStorage.getItem('name') || '';
+    } else {
+      this.name = '';
+    }
   }
-
+  
   updateUsername(newName: string): void {
-    sessionStorage.setItem('name', newName);
- 
-    this.updateNameFromSessionStorage();
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('name', newName);
+      this.updateNameFromSessionStorage();
+    } else {
+      console.warn('sessionStorage is not available.');
+    }
   }
 
   constructor(
