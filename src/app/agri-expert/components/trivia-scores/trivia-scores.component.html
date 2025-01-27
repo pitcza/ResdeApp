@@ -21,22 +21,22 @@
           <td mat-cell *matCellDef="let score">{{ score.user_name }}</td>
         </ng-container>
 
-        <!-- Trivia ID Column -->
-        <ng-container matColumnDef="triviaId">
-          <th mat-header-cell *matHeaderCellDef>Trivia ID</th>
-          <td mat-cell *matCellDef="let score">{{ score.TriviaID || 'N/A' }}</td>
-        </ng-container>
-
-        <!-- Question Column -->
-        <ng-container matColumnDef="question">
-          <th mat-header-cell *matHeaderCellDef>Question</th>
-          <td mat-cell *matCellDef="let score">{{ score.question }}</td>
-        </ng-container>
-
         <!-- Score Column -->
         <ng-container matColumnDef="score">
           <th mat-header-cell *matHeaderCellDef>Score</th>
           <td mat-cell *matCellDef="let score">{{ score.correct }}</td>
+        </ng-container>
+
+        <!-- Trivia ID Column -->
+        <ng-container matColumnDef="Phone Number">
+          <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+          <td mat-cell *matCellDef="let score">{{ score.phone || 'N/A' }}</td>
+        </ng-container>
+
+        <!-- Question Column -->
+        <ng-container matColumnDef="Street">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let score">{{ score.email }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

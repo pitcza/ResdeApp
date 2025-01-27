@@ -6,6 +6,7 @@ import { UploadPostComponent } from '../../upload-post/upload-post.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditpostComponent } from '../editpost/editpost.component';
 import { ViewComponent } from '../view/view.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -15,7 +16,12 @@ import { ViewComponent } from '../view/view.component';
 })
 export class PostslistComponent implements OnInit {
   displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
+  filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   dataSource: any [] = [];
+  categoryFilter: string = '';
+  statusFilter: string = '';
+  fromDate: string = '';  // For the "from" date
+  toDate: string = '';    // For the "to" date
   id: any|string;
   element: any;
   
@@ -31,6 +37,7 @@ export class PostslistComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUserPost();
+    this.filteredDataSource.data = this.dataSource;  
   }
 
   // UPLOADING POPUP
@@ -69,22 +76,27 @@ export class PostslistComponent implements OnInit {
   fetchUserPost(): void {
     this.ds.getUserPosts().subscribe(
       (response) => {
+        // Assign the fetched posts to the dataSource
         this.dataSource = response.posts
-        .map((post: any) => ({
-          id: post.id,
-          title: post.title,
-          category: post.category,
-          date: post.created_at,
-          image: post.image,
-          status: post.status,
-          description: post.content
-        }))
-        .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
-          const dateA = new Date(a.date || 0).getTime();
-          const dateB = new Date(b.date || 0).getTime();
-          return dateB - dateA; // Sort in descending order (newest first)
-        });
-        console.log(response)
+          .map((post: any) => ({
+            id: post.id,
+            title: post.title,
+            category: post.category,
+            date: post.created_at,
+            image: post.image,
+            status: post.status,
+            description: post.content
+          }))
+          .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
+            const dateA = new Date(a.date || 0).getTime();
+            const dateB = new Date(b.date || 0).getTime();
+            return dateB - dateA; // Sort in descending order (newest first)
+          });
+  
+        // Immediately filter the data after fetching
+        this.filterPosts();
+  
+        console.log(response);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -93,6 +105,48 @@ export class PostslistComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+  
+
+  filterPosts() {
+    const selectedCategory = this.categoryFilter;
+    const selectedStatus = this.statusFilter;
+  
+    const filteredData = this.dataSource.filter(post => {  // Use dataSource for filtering
+      const categoryMatch = selectedCategory ? post.category?.toLowerCase() === selectedCategory.toLowerCase() : true;
+      const statusMatch = selectedStatus ? post.status?.toLowerCase() === selectedStatus.toLowerCase() : true;
+  
+      // Date filter logic
+      const postDate = post.created_at ? new Date(post.created_at) : null;
+      const fromDateMatch = this.fromDate ? postDate && postDate >= new Date(this.fromDate) : true;
+      const toDateMatch = this.toDate ? postDate && postDate <= new Date(this.toDate) : true;
+  
+      return categoryMatch && statusMatch && fromDateMatch && toDateMatch;
+    });
+  
+    this.filteredDataSource.data = filteredData;  // Update filteredDataSource
+    this.cdr.detectChanges();  // Ensure UI updates correctly
+  }
+  
+  onCategoryChange(event: any) {
+    this.categoryFilter = event.target.value;
+    this.filterPosts();
+  }
+  
+  onStatusChange(event: any) {
+    this.statusFilter = event.target.value;
+    this.filterPosts();
+  }
+  
+  onDateChange(event: any, type: string) {
+    const selectedDate = event.target.value;
+    if (type === 'from') {
+      this.fromDate = selectedDate;
+    } else if (type === 'to') {
+      this.toDate = selectedDate;
+    }
+  
+    this.filterPosts(); 
   }
 
   
@@ -158,4 +212,5 @@ export interface TableElement {
   title: string;
   status?: string;
   id: number;
+  date: number
 }

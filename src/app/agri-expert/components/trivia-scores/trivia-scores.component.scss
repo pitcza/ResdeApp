@@ -14,7 +14,7 @@ table {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
   th {
-    background-color: #2c6e49;
+    background-color: var(--primary-green);
     color: white;
     font-weight: 600;
     letter-spacing: 0.5px;

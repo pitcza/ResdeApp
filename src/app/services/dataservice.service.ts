@@ -38,6 +38,10 @@ export class DataserviceService {
     return this.User('user')
   }
 
+  getUserLikes(id: number): Observable<any> {
+    return this.User(`/posts/${id}/total-likes`)
+  }
+
   createPost(formData: FormData): Observable<any> {
     return this.User('post', 'POST', formData)
   }

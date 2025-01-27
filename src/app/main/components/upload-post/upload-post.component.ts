@@ -79,9 +79,23 @@ export class UploadPostComponent {
       },
       (error) => {
         console.error('Error creating post', error);
+    
+        let errorMessage = 'Please Fill up all fields.';
+    
+        // Check for specific error conditions
+        if (error && error.error) {
+          if (error.error.missingImage) {
+            errorMessage = 'The image is missing. Please upload an image.';
+          } else if (error.error.missingContent) {
+            errorMessage = 'A description is required.';
+          } else if (error.error.missingCategory) {
+            errorMessage = 'Category is required.';
+          }
+        }
+    
         Swal.fire({
           title: 'Error',
-          text: 'An error occurred while creating the post.',
+          text: errorMessage,
           icon: 'error',
           confirmButtonText: 'Close',
           confirmButtonColor: "#7f7f7f"

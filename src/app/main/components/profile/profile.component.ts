@@ -7,6 +7,7 @@ import { group } from 'console';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewComponent } from '../uploads/view/view.component';
+import { AdminDataService } from '../../../services/admin-data.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,8 +21,14 @@ export class ProfileComponent implements OnInit{
   id: any|string;
   element: any;
 
+  postId!: number; // Holds the post ID
+  totalLikes!: number; // Holds the total likes for the post
+  post: any = {}; // Holds the post data
+
   isLoading = true;
   loaders = Array(5).fill(null);
+
+  likesCount: any;
 
   currentContent: string = 'content1';
   isMobile: boolean = false;
@@ -142,6 +149,7 @@ export class ProfileComponent implements OnInit{
         console.error('Error fetching user data', error); 
       }
     );
+    this.getUserTotalLikes()
   }
 
   // phone number validations
@@ -179,6 +187,7 @@ export class ProfileComponent implements OnInit{
       private dataservice: DataserviceService,
       private cdr: ChangeDetectorRef,
       private dialog: MatDialog,
+      private AS: AdminDataService
     ) {
       this.checkIfMobile();
 
@@ -363,29 +372,33 @@ export class ProfileComponent implements OnInit{
     }
   }
 
-  totalLikes: number = 0;
+  // totalLikes: number = 0;
 
   fetchUserPost(): void {
     this.dataservice.getUserPosts().subscribe(
       (response) => {
+        // Map posts to store in dataSource
         this.dataSource = response.posts
-        .map((post: any) => ({
-          id: post.id,
-          title: post.title,
-          category: post.category,
-          date: post.created_at,
-          image: post.image,
-          status: post.status,
-          description: post.content,
-          total_likes: post.total_likes ?? 0
-        }))
-        .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
-          const dateA = new Date(a.date || 0).getTime();
-          const dateB = new Date(b.date || 0).getTime();
-          return dateB - dateA; // Sort in descending order (newest first)
-        });
+          .map((post: any) => ({
+            id: post.id,
+            title: post.title,
+            category: post.category,
+            date: post.created_at,
+            image: post.image,
+            status: post.status,
+            description: post.content,
+            total_likes: post.total_likes ?? 0  // Default to 0 if no likes
+          }))
+          .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
+            const dateA = new Date(a.date || 0).getTime();
+            const dateB = new Date(b.date || 0).getTime();
+            return dateB - dateA; // Sort in descending order (newest first)
+          });
 
-        console.log(response)
+        // Fetch the likes from the likedposttable API
+        this.getUserTotalLikes();
+
+        console.log(response);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -394,7 +407,29 @@ export class ProfileComponent implements OnInit{
         this.isLoading = false;
       }
     );
-  }
+}
+
+getUserTotalLikes(): void {
+    this.AS.likedposttable().subscribe(
+      (response) => {
+        const likedPosts = response['posts'] || [];
+
+        // Update the likes_count for the posts in dataSource
+        likedPosts.forEach((likedPost: any) => {
+          const post = this.dataSource.find(p => p.id === likedPost.post_id);
+          if (post) {
+            post.total_likes = likedPost.likes_count; // Update the likes_count value
+          }
+        });
+
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching posts for table and chart', error);
+      }
+    );
+}
+
 
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
@@ -411,5 +446,21 @@ export class ProfileComponent implements OnInit{
         console.error('View popup not found');
       }
     }
+
+    fetchPostLikes(postId: number): void {
+      this.dataservice.getUserLikes(postId).subscribe({
+        next: (response) => {
+          this.totalLikes = response.total_likes; 
+          this.post = response;
+        },
+        error: (err) => {
+          console.error('Error fetching likes:', err);
+        },
+      });
+    }
+
+
+
+
 }
 

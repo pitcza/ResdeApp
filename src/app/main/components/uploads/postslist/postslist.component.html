@@ -8,8 +8,9 @@
 
   <div class="filters">
     <div class="selects">
-      <select id="filter-category">
-        <option value="Compost">Compost</option>
+      <select id="filter-category" (change)="onCategoryChange($event)">
+          <option selected value=""> All Category </option>
+          <option value="Compost">Compost</option>
           <option value="Plastic">Plastic</option>
           <option value="Rubber">Rubber</option>
           <option value="Wood and Paper">Wood and Paper</option>
@@ -21,7 +22,7 @@
           <option value="Miscellaneous Products">Miscellaneous Products</option>
           <option value="Tips & tricks">Tips & tricks</option>
       </select>
-      <select id="filter-status">
+      <select id="filter-status" (change)="onStatusChange($event)">
         <option selected value=""> All Status </option>
         <option value="Pending"> Pending </option>
         <option value="Approved"> Approved </option>
@@ -29,18 +30,18 @@
       </select>
     </div>
 
-    <form>
+    <!-- <form>
       <div class="date-filter">
           <div class="txt_field">
-              <label for="datepicker"> From: </label>
-              <input type="date" id="datepicker-start" autocomplete="off" >
+            <label for="filter-from-date">From Date</label>
+            <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
           </div>
           <div class="txt_field">
-              <label for="datepicker"> To: </label>
-              <input type="date" id="datepicker-end" autocomplete="off" >
+            <label for="filter-to-date">To Date</label>
+            <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
           </div>
       </div>
-    </form>
+    </form> -->
   </div>
 
   <div class="post-container">
@@ -61,7 +62,7 @@
 
     <!-- Dynamically render posts once loaded -->
     <ng-container *ngIf="!isLoading">
-      <mat-card *ngFor="let element of dataSource" class="post-box">
+      <mat-card *ngFor="let element of filteredDataSource.data" class="post-box">
         <div mat-card-header class="post-img">
           <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
           <span class="status" [ngClass]="{
@@ -87,18 +88,19 @@
           <button *ngIf="element.status === 'pending'" class="edit" (click)="editPost(element.id)">
             <i class='bx bx-edit'></i>
             <span class="tooltiptext"> Edit </span>
-        </button>
+          </button>
           <button class="delete">
-              <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
-              <span class="tooltiptext"> Delete </span>
+            <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
+            <span class="tooltiptext"> Delete </span>
           </button>
           <button class="view" (click)="viewPost(element.id)">
-              <i class='bx bx-detail'></i>
-              <span class="tooltiptext"> View </span>
+            <i class='bx bx-detail'></i>
+            <span class="tooltiptext"> View </span>
           </button>
         </mat-card-actions>
       </mat-card>
     </ng-container>
+    
   </div>
       
 </div>

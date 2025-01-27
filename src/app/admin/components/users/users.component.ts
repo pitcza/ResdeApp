@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['date', 'name', 'email', 'phone', 'badge', 'action'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'badge', 'age', 'action'];
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -45,6 +45,7 @@ export class UsersComponent implements AfterViewInit, OnInit {
             email: user.email,
             phone: user.phone_number,  // Assuming this field exists in the API
             badge: user.badge,
+            age: user.age,
             created_at: user.created_at
           }));
   

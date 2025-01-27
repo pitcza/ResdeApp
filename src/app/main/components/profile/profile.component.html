@@ -181,27 +181,27 @@
                 <!-- Dynamically render only approved posts -->
                 <ng-container *ngIf="!isLoading">
                     <ng-container *ngFor="let element of dataSource">
-                    <div class="post-box" *ngIf="element.status === 'approved'">
-                        <div mat-card-header class="post-img">
-                            <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
-                            <span class="status approved-status">{{ element.total_likes }} likes</span>
-                        </div>
-                        <mat-card-content class="post-text">
-                            <a (click)="viewPost(element.id)">
-                                <strong class="title">{{ element.title }}</strong>
-                            </a>
-                            <div class="category-time">
-                                <span class="post-category">{{ element.category }}</span>
-                                <span class="published-time">{{ element.date | date: 'mediumDate' }}</span>
+                        <div class="post-box" *ngIf="element.status === 'approved'">
+                            <div mat-card-header class="post-img">
+                                <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
+                                <span class="status approved-status">{{ element.total_likes }} like/s</span>
                             </div>
-                        </mat-card-content>
-                        <mat-card-actions class="actions" id="uploads-actions">
-                            <button class="view" (click)="viewPost(element.id)">
-                                <i class='bx bx-detail'></i>
-                                <span class="tooltiptext"> View </span>
-                            </button>
-                        </mat-card-actions>
-                    </div>
+                            <mat-card-content class="post-text">
+                                <a (click)="viewPost(element.id)">
+                                    <strong class="title">{{ element.title }}</strong>
+                                </a>
+                                <div class="category-time">
+                                    <span class="post-category">{{ element.category }}</span>
+                                    <span class="published-time">{{ element.date | date: 'mediumDate' }}</span>
+                                </div>
+                            </mat-card-content>
+                            <mat-card-actions class="actions" id="uploads-actions">
+                                <button class="view" (click)="viewPost(element.id)">
+                                    <i class='bx bx-detail'></i>
+                                    <span class="tooltiptext"> View </span>
+                                </button>
+                            </mat-card-actions>
+                        </div>
                     </ng-container>
                 </ng-container>
             </div>
