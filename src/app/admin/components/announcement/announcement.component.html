@@ -8,11 +8,22 @@
                 <div class="input-row">
                     <div class="input-field">
                         <label class="labelline"> Title </label>
-                        <input class="txt-field" type="text" formControlName="title">
+                        <input class="txt-field" type="text" formControlName="title" maxlength="50" [disabled]="wordCount >= maxWords">
+                        
+                        <div *ngIf="postForm.get('title')?.hasError('wordLimit') && postForm.get('title')?.touched" class="error">
+                            Title cannot exceed 5 words.
+                        </div>
+                        
                         <div *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched" class="error">
                             Title is required.
                         </div>
+                        
+                        <!-- Word count display always visible below the input -->
+                        <div class="word-count">
+                            Word count: {{ wordCount }} / {{ maxWords }}
+                        </div>
                     </div>
+                    
     
                     <div class="input-field">
                         <label class="up-labelline"> Upload Photo </label>

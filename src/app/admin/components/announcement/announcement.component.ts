@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminDataService } from '../../../services/admin-data.service';
 import Swal from 'sweetalert2';
@@ -23,6 +23,8 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   fromDate: string = '';  // For the "from" date
   toDate: string = '';    // For the "to" date
+  wordCount: number = 0;
+  maxWords: number = 5;
 
   constructor(
     private fb: FormBuilder,
@@ -43,12 +45,29 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
 
   private initForm() {
     this.postForm = this.fb.group({
-      title: ['', Validators.required],
+      title: ['', [Validators.required, wordLimitValidator(5)]],
       description: ['', Validators.required],
       expires_at: ['', [Validators.required]],
       image: [null]
     });
+
+    this.postForm.get('title')?.valueChanges.subscribe(value => {
+      this.wordCount = this.calculateWordCount(value);
+    });
   }
+
+  calculateWordCount(value: string): number {
+    if (!value) return 0;
+    const count = value.trim().split(/\s+/).length;
+    
+    if (count > this.maxWords) {
+      const truncatedValue = value.split(/\s+/).slice(0, this.maxWords).join(' ');
+      this.postForm.get('title')?.setValue(truncatedValue);  
+      return this.maxWords;
+    }
+    return count;
+  }
+  
 
   onFileSelected(event: any) {
     this.image = event.target.files[0];
@@ -113,7 +132,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
     if (this.postForm.invalid) {
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('description', this.postForm.get('description')!.value);
@@ -121,7 +140,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
     if (this.image) {
       formData.append('image', this.image);
     }
-
+  
     this.as.uploadAnn(formData).subscribe(
       (response) => {
         console.log('Post created successfully', response);
@@ -129,13 +148,18 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
           title: 'Announcement Posted',
           text: 'Users can now view your posted announcement.',
           icon: 'success',
-          iconColor: '#689f7a',          
+          iconColor: '#689f7a',
           confirmButtonText: 'Close',
           confirmButtonColor: '#7f7f7f',
           timer: 5000,
           scrollbarPadding: false
         });
-        this.fetchAnnouncement(); // Refresh posts after submission
+        
+        this.postForm.reset(); 
+        this.image = null;    
+        this.ImagePreview = null; 
+  
+        this.fetchAnnouncement(); 
       },
       (error) => {
         console.error('Error creating post', error);
@@ -149,6 +173,8 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
       }
     );
   }
+  
+  
 
   cancelPopup() {
     // Check if any of the form fields are not empty
@@ -221,8 +247,22 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
       }
     );
   }
-  
+
 }
+
+export function wordLimitValidator(maxWords: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (value) {
+      const wordCount = value.trim().split(/\s+/).length;
+      return wordCount > maxWords ? { wordLimit: { value: control.value } } : null;
+    }
+    return null;
+  };
+}
+
+
+
 
 export interface TableElement {
   created_at?: string;

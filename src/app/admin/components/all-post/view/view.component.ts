@@ -1,40 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
 import { AdminDataService } from '../../../../services/admin-data.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-post',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent {
+export class ViewComponent implements OnInit{
   
-  id: number | undefined;
-  post: any; 
+  id!: number;  // To store the post ID
+  post: any;       // To store the post data
 
-  constructor(private route: ActivatedRoute, private router: Router, private as: AdminDataService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private as: AdminDataService,
+    public dialogRef: MatDialogRef<ViewComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
 
   ngOnInit(): void {
-    this.id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Viewing post with ID:', this.id);
+    this.id = this.data.id;
+    this.fetchPostDetails(this.id);
+  }
 
-    if (this.id) {
-      this.fetchPostDetails(this.id);
-    }
+  closeDialog() {
+    this.dialogRef.close();
   }
 
   fetchPostDetails(id: number): void {
     this.as.getPostById(id).subscribe(
-      (response) => {
-        console.log('Post Details:', response);
-        this.post = response.post; 
+      (data) => {
+        console.log('Fetched Post Data:', data); // Add this line to inspect the data
+        this.post = data.post; // Accessing 'post' within the response
       },
       (error) => {
-        console.error('Error fetching post details:', error);
+        console.error('Error fetching post data', error);
       }
     );
+  }
+
+  formatContent(content: string | null): string {
+    if (!content) {
+      return 'N/A';
+    }
+    return content.replace(/\n/g, '<br>');
   }
 
   deletePost(id: number): void {

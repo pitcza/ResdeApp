@@ -4,8 +4,8 @@ import { AdminDataService } from '../../../../services/admin-data.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { ViewPendingComponent } from '../view-pending/view-pending.component';
 import { Router } from '@angular/router';
+import { ViewComponent } from '../../all-post/view/view.component';
 
 @Component({
   selector: 'app-list',
@@ -98,6 +98,16 @@ filterPosts() {
   
     this.filterPosts(); 
   }
+
+  viewPost(id: number) {
+        if (this.dialog) {
+          this.dialog.open(ViewComponent, {
+            data: { id: id }  
+          });
+        } else {
+          console.error('View popup not found');
+        }
+      }
   
   // APPROVE PROCESS
   approvePost(id: number) {

@@ -16,12 +16,18 @@
         <div class="filters">
             <div class="selects">
                 <select id="filter-category" (change)="onCategoryChange($event)">
-                    <option selected value=""> All Category </option>
-                    <option value="Compost"> Compost </option>
-                    <option value="Plastic"> Plastic </option>
-                    <option value="Rubber"> Rubber </option>
-                    <option value="Wood and Paper"> Wood and Paper </option>
-                    <option value="Miscellaneous Products"> Miscellaneous Products </option>
+                    <option value="Compost">Compost</option>
+                    <option value="Compost">Compost</option>
+                    <option value="Plastic">Plastic</option>
+                    <option value="Rubber">Rubber</option>
+                    <option value="Wood and Paper">Wood and Paper</option>
+                    <option value="Glass">Glass</option>
+                    <option value="Boxes">Boxes</option>
+                    <option value="Mixed Waste">Mixed Waste</option>
+                    <option value="Cloth">Cloth</option>
+                    <option value="Issues">Issues</option>
+                    <option value="Miscellaneous Products">Miscellaneous Products</option>
+                    <option value="Tips & tricks">Tips & tricks</option>
                 </select>
             </div>
         
@@ -84,7 +90,7 @@
                     <i class='bx bx-no-entry'></i>
                     <span class="tooltiptext"> Decline </span>
                 </button>
-                <button class="view" [routerLink]="['../view', element.id]">
+                <button class="view" (click)="viewPost(element.id)">
                     <i class='bx bx-detail'></i>
                     <span class="tooltiptext"> View </span>
                 </button>

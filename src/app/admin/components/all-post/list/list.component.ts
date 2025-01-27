@@ -4,6 +4,8 @@ import { AdminDataService } from '../../../../services/admin-data.service';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ViewComponent } from '../view/view.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list',
@@ -25,7 +27,8 @@ export class ListComponent implements OnInit , AfterViewInit{
   constructor(
     private as: AdminDataService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +38,16 @@ export class ListComponent implements OnInit , AfterViewInit{
   ngAfterViewInit(): void {
     this.filteredDataSource.paginator = this.paginator;
   }
+
+  viewPost(id: number) {
+      if (this.dialog) {
+        this.dialog.open(ViewComponent, {
+          data: { id: id }  
+        });
+      } else {
+        console.error('View popup not found');
+      }
+    }
 
   fetchUserPost() {
     this.isLoading = true;
