@@ -53,63 +53,73 @@
         </div>
     </div>
 
+    <div class="content">
+      <div class="trivia-section">
+        <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
+         <!-- Introduction -->
+         <div class="introduction-title" *ngIf="!showResults">
+          <p>
+            Trivia quizzes are a fun way to test your knowledge and learn new facts. 
+            Take this quiz to see how much you know about plants and sustainability and earn a more awesome awards!
+          </p>
+        </div>
 
-    <div class="trivia-content">
-        <div class="trivia-section">
-          <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
-      
-          <!-- Error Message -->
-          <div *ngIf="errorMessage" class="error">
-            <p>{{ errorMessage }}</p>
-          </div>
-      
-          <!-- Loading Placeholder -->
-          <div *ngIf="!errorMessage && triviaQuestions.length === 0 && !showResults" class="loading">
-            <p>Loading questions...</p>
-          </div>
-      
-          <!-- Quiz Form -->
-          <form *ngIf="triviaQuestions.length > 0 && !showResults" (ngSubmit)="submitAnswers()">
-            <div *ngFor="let question of triviaQuestions; let i = index">
-              <p>{{ question.question }}</p>
-              <div *ngFor="let answer of question.answers">
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="error">
+          <p>{{ errorMessage }}</p>
+        </div>
+    
+        <!-- Loading Placeholder -->
+        <div *ngIf="!errorMessage && triviaQuestions.length === 0 && !showResults" class="loading">
+          <p>Loading questions...</p>
+        </div>
+    
+        <!-- Quiz Form -->
+        <form *ngIf="triviaQuestions.length > 0 && !showResults" (ngSubmit)="submitAnswers()">
+          <div *ngFor="let question of triviaQuestions; let i = index" class="question-card">
+            <p class="question-text">{{ i + 1 }}. {{ question.question }}</p>
+            <div class="options">
+              <label
+                *ngFor="let answer of question.answers"
+                class="option"
+                [ngClass]="{ selected: userAnswers[i] === answer }"
+              >
                 <input
                   type="radio"
-                  [disabled]="userAnswers[i] === 'answered'"
                   [name]="'question-' + question.id"
                   [value]="answer"
                   [(ngModel)]="userAnswers[i]"
                 />
                 {{ answer }}
-              </div>
-              <p *ngIf="userAnswers[i] === 'answered'" style="color: gray;">
-                You have already answered this question.
-              </p>
+              </label>
             </div>
-      
-            <button type="submit" class="btn-submit">Submit</button>
-          </form>
-      
-          <!-- Results Section -->
-          <div *ngIf="showResults" class="results">
-            <h3>Your Score: {{ score }}/{{ triviaQuestions.length }}</h3>
-            <ul>
-              <li *ngFor="let question of triviaQuestions; let i = index">
-                {{ i + 1 }}. {{ question.question }} -
-                <span
-                  [ngClass]="{
-                    correct: userAnswers[i] === question.correct_answer,
-                    incorrect: userAnswers[i] !== question.correct_answer
-                  }"
-                >
-                  Your Answer: {{ userAnswers[i] || 'Not Answered' }}
-                  | Correct Answer: {{ question.correct_answer }}
-                </span>
-              </li>
-            </ul>
           </div>
+          <button type="submit" class="btn-submit">Submit</button>
+        </form>
+    
+        <!-- Results Section -->
+        <div *ngIf="showResults" class="results">
+          <p class="feedback">
+            Great job! 🌟 Keep learning and practicing to improve your knowledge about sustainability and plant care.
+          </p>
+          <h3 class="score">Your Score: {{ score }}/{{ triviaQuestions.length }}</h3>
+          <ul class="result-list">
+            <li *ngFor="let question of triviaQuestions; let i = index">
+              <p>
+                <strong>{{ i + 1 }}. {{ question.question }}</strong><br />
+                Your Answer: 
+                <span [ngClass]="{ correct: userAnswers[i] === question.correct_answer, incorrect: userAnswers[i] !== question.correct_answer }">
+                  {{ userAnswers[i] || 'Not Answered' }}
+                </span><br />
+                Correct Answer: <span class="correct-answer">{{ question.correct_answer }}</span>
+              </p>
+            </li>
+          </ul>
+          <!-- <button class="btn-retry" (click)="retryQuiz()">Retry Quiz</button> -->
         </div>
       </div>
+    </div>
+    
       
       
       
