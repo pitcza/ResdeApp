@@ -77,6 +77,10 @@
             font-weight: 700;
         }
     }
+    img {
+        width: 45px;
+        height: 45px;
+    }
 }
 
 // APP PAGES CONTENT
@@ -272,9 +276,9 @@
     }
 
     .userImg img {
-        height: 40px;
-        width: 40px;
-        margin: 50px 0px 30px -13px;
+        height: 50px;
+        width: 50px;
+        margin: 50px 0px 10px -19px;
     }
 
     .userName {
@@ -347,6 +351,8 @@
             display: block;
             i { p { display: flex; } }
         }
+
+        img { display: none; }
     }
 
     .sidebar.collapsed {

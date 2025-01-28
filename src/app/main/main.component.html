@@ -3,7 +3,7 @@
     <nav class="sidebar" [ngClass]="{'collapsed': isSidebarCollapsed, 'overlay': isSidebarOverlay}">
       <div class="userInfo">
         <div class="userImg">
-          <img src="assets/logo/ResItLogo.png">
+          <img src="assets/logo/GordonHeights.png">
         </div>
         <div class="userName">
           <h1> {{ name }} </h1>
@@ -102,6 +102,7 @@
             <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
         </span>
       </div>
+      <img class="resitlogo" src="assets/logo/ResItLogo.png">
     </nav>
     
     <!-- MAIN BODY CONTENT -->
