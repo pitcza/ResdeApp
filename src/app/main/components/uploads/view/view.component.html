@@ -34,7 +34,7 @@
         <div class="post-footer">
             <div class="buttons">
                 <input class="submit-btn" type="button" value="Edit Post" *ngIf="post.status === 'pending'" (click)="editPost(post.id)">
-                <input class="danger-btn" type="button" value="Delete" (click)="deletePost()">
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost(post.id, dialogRef)">
             </div>
         </div>
     </div>

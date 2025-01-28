@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
@@ -21,6 +21,7 @@ export class ViewComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private ds: DataserviceService,
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute  // Inject ActivatedRoute to get route parameters
   ) {}
 
@@ -62,7 +63,7 @@ export class ViewComponent implements OnInit {
     }
   }
 
-  deletePost() {
+  deletePost(id: number, dialogRef: any) {
     Swal.fire({
       title: 'Delete Post?',
       text: 'This action can\'t be undone.',
@@ -71,20 +72,47 @@ export class ViewComponent implements OnInit {
       confirmButtonColor: '#C14141',
       cancelButtonColor: '#7f7f7f',
       confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.closeDialog();
-        Swal.fire({
-          title: "Post Deleted!",
-          text: "The post has been deleted.",
-          icon: "success",
-          confirmButtonText: 'Close',
-          confirmButtonColor: "#777777",
-          timer: 5000,
-          scrollbarPadding: false
-        });
+        this.ds.deletePost(id).subscribe(
+          () => {
+            this.cdr.detectChanges();
+  
+            // Navigate to the post list after deletion
+            this.router.navigate(['main/uploads/postlist']);
+  
+            // Close the dialog after deleting the post
+            if (dialogRef) {
+              dialogRef.close();
+            }
+  
+            Swal.fire({
+              title: 'Post Deleted!',
+              text: 'The post has been deleted.',
+              icon: 'success',
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f',
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          },
+          error => {
+            console.error('Error deleting post:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was an error deleting the post.',
+              icon: 'error',
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f',
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          }
+        );
       }
     });
   }
+  
+  
 }
