@@ -88,6 +88,10 @@
             font-family: 'Parkinsans';
         }
     }
+    img {
+        width: 45px;
+        height: 45px;
+    }
 }
 
 // APP PAGES CONTENT
@@ -256,12 +260,12 @@
     }
   
     .header {
-        padding-left: 215px;
+        padding-left: 235px;
         width: 100%;
     }
 
     .body-content {
-        margin-left: 200px;
+        margin-left: 220px;
         width: calc(100% - 200px);
     }
 
@@ -283,9 +287,9 @@
     }
 
     .userImg img {
-        height: 40px;
-        width: 40px;
-        margin: 50px 0px 30px -13px;
+        height: 50px;
+        width: 50px;
+        margin: 50px 0px 10px -19px;
     }
 
     .userName {
@@ -343,7 +347,7 @@
 .sidebar.overlay {
     position: fixed;
     top: 0;
-    width: 200px;
+    width: 220px;
     height: 100%;
     z-index: 200;
     transform: translateX(0);
@@ -365,6 +369,7 @@
             display: block;
             i { p { display: flex; } }
         }
+        img { display: none; }
     }
 
     .sidebar.collapsed {
@@ -385,7 +390,7 @@
     }
 
     .sidebar.overlay {
-        width: 200px;
+        width: 220px;
     }
 
     .sidebar-overlay {
