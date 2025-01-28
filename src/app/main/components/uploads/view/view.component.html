@@ -14,7 +14,7 @@
 
 
         <div class="post-content">
-            <div class="declined-remarks">
+            <div class="declined-remarks" *ngIf="post.status === 'declined'">
                 <h3> Admin declined your post </h3>
                 <p> <strong>Remarks:</strong> {{ post.remarks }} </p>
             </div>
