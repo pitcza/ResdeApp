@@ -57,10 +57,10 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> Action </th>
           <td mat-cell *matCellDef="let element" class="actions">
-            <button class="edit" (click)="openEditModal()">
+            <!-- <button class="edit" (click)="openEditModal(element.id)">
               <i class="bx bx-edit"></i>
               <span class="tooltiptext">Edit</span>
-            </button>
+            </button> -->
 
             <button class="delete">
               <i class="bx bx-trash" (click)="deletequest(element.id)"></i>

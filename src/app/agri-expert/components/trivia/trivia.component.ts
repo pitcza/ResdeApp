@@ -82,10 +82,14 @@ export class TriviaComponent implements OnInit {
     });
   }
 
-  openEditModal(): void {
+  openEditModal(id : number): void {
+    if (this.dialog) {
     this.dialog.open(EditTriviaComponent, {
-      
+      data: { id: id }
     });
+    }else {
+      console.error('not found');
+    }
   }
 
   deletequest(id: number): void {

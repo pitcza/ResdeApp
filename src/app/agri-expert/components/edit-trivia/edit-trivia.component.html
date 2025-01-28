@@ -2,22 +2,18 @@
   <div class="post-container">
     <div class="post-header">
       <div class="popup-head">
-          <h1> Edit Trivia </h1>
-          <h1> nakacomment po ang all kasi idunno paano iconnect </h1>
+        <h1> Edit Trivia </h1>
+        <h1> nakacomment po ang all kasi idunno paano iconnect </h1>
       </div>
       <button class="exit-button" (click)="closeDialog()"> &times; </button>
     </div>
 
     <div class="post-content">
-      <form (ngSubmit)="updateTrivia()">
-        <!-- Same form content as before -->
+      <form [formGroup]="triviaForm" (ngSubmit)="updateTrivia()">
         <div class="input-row">
           <div class="input-field">
             <label class="labelline" for="question">Question</label>
             <input class="txt-field" id="question" formControlName="question" type="text" />
-            <!-- <div class="error" *ngIf="triviaForm.get('question')?.invalid && triviaForm.get('question')?.touched">
-              Question is required.
-            </div> -->
           </div>
         </div>
 
@@ -25,36 +21,17 @@
           <div class="input-field">
             <label class="labelline" for="correct_answer">Correct Answer</label>
             <input class="txt-field" id="correct_answer" formControlName="correct_answer" type="text" />
-            <!-- <div class="error" *ngIf="triviaForm.get('correct_answer')?.invalid && triviaForm.get('correct_answer')?.touched">
-              Correct Answer is required.
-            </div> -->
           </div>
         </div>
 
-        <!-- <div class="input-row">
-          <div class="input-field" formArrayName="answers">
-            <label class="up-labelline" >Choices</label>
-            <div class="with-add">
-              <div class="another-div">
-                <div class="with-remove" *ngFor="let answer of answers.controls; let i = index">
-                  <input class="fix-txt-field" [formControlName]="i" placeholder="Answer {{ i + 1 }}" type="text" />
-                  <button class="removebtn" type="button" (click)="removeAnswer(i)" [disabled]="answers.length === 1"> <i class='bx bx-x'></i> </button>
-                </div>
-              </div>
-              <button type="button" class="addbtn" (click)="addAnswer()">Add</button>
-            </div>
+        <!-- Submit Button inside the form -->
+        <div class="post-footer">
+          <div class="buttons">
+            <button class="cancel-btn" type="button" (click)="closeDialog()">Cancel</button>
+            <button class="submit-btn" type="submit" >Update</button>
           </div>
-        </div> -->
+        </div>
       </form>
     </div>
-
-    <div class="post-footer">
-      <div class="buttons">
-        <button class="cancel-btn" (click)="closeDialog()">Cancel</button>
-        <button class="submit-btn">Update</button>
-      </div>
-    </div>
-
   </div>
-
 </div>

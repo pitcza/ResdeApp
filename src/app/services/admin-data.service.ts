@@ -144,6 +144,10 @@ export class AdminDataService {
     return this.Admin('trivia/getquestions')
   }
 
+  updatequestions(id: number, updatedTriviaData: any): Observable<any> {
+    return this.Admin(`trivia/questions/${id}`, 'PUT', updatedTriviaData)
+  }
+
   deletequestion(id: number): Observable<any> {
     return this.Admin(`trivia/question/${id}`, 'DELETE')
   }
