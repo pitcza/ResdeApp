@@ -14,7 +14,7 @@
 .dialog-container {
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--container);
     width: 800px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     max-height: 90%;
@@ -25,7 +25,7 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 30px;
-    background-color: white;
+    background-color: var(--primary-green);
     z-index: 1;
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.192);
 
@@ -45,11 +45,12 @@
     }
     
     h1 {
-        color: black;
+        color: white;
         padding-top: 5px;
         font-weight: 700;
         font-size: 25px;
         text-align: left;
+        margin-top: 10px;
     }
 }
 
