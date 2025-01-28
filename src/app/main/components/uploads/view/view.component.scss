@@ -78,6 +78,27 @@
     }
 }
 
+.declined-remarks {
+    position: relative;
+    width: 100;
+    height: auto;
+    background-color: var(--bg-color);
+    padding: 30px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--red-btn);
+    border-radius: 5px;
+
+    h3 {
+        padding-bottom: 5px;
+        color: var(--red-btn);
+        font-style: italic;
+    }
+    P {
+        font-style: italic;
+        color: var(--red-btn);
+    }
+}
+
 // BODY CONTENT //
 .post-content {
     overflow-y: auto;

@@ -8,23 +8,6 @@
 
   <div class="filters">
     <div class="selects">
-<<<<<<< HEAD
-      <select id="filter-category" (change)="onCategoryChange($event)">
-          <option selected value=""> All Category </option>
-          <option value="Compost">Compost</option>
-          <option value="Plastic">Plastic</option>
-          <option value="Rubber">Rubber</option>
-          <option value="Wood and Paper">Wood and Paper</option>
-          <option value="Glass">Glass</option>
-          <option value="Boxes">Boxes</option>
-          <option value="Mixed Waste">Mixed Waste</option>
-          <option value="Cloth">Cloth</option>
-          <option value="Issues">Issues</option>
-          <option value="Miscellaneous Products">Miscellaneous Products</option>
-          <option value="Tips & tricks">Tips & tricks</option>
-      </select>
-      <select id="filter-status" (change)="onStatusChange($event)">
-=======
       <select id="filter-category" [(ngModel)]="selectedCategory" (change)="filterPosts($event)">
         <option value="">All Category</option>
         <option value="Compost">Compost</option>
@@ -40,7 +23,6 @@
         <option value="Tips & tricks">Tips & tricks</option>
       </select>
       <select id="filter-status" (change)="filterStatus($event)">
->>>>>>> 86a9ed7c6b7680603978a5150d855331d67ec3f9
         <option selected value=""> All Status </option>
         <option value="pending"> Pending </option>
         <option value="approved"> Approved </option>
@@ -51,21 +33,12 @@
     <!-- <form>
       <div class="date-filter">
           <div class="txt_field">
-<<<<<<< HEAD
-            <label for="filter-from-date">From Date</label>
-            <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
-          </div>
-          <div class="txt_field">
-            <label for="filter-to-date">To Date</label>
-            <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
-=======
               <label for="datepicker"> From: </label>
               <input type="date" id="datepicker-start" autocomplete="off" (change)="onDateChange($event, 'from')">
           </div>
           <div class="txt_field">
               <label for="datepicker"> To: </label>
               <input type="date" id="datepicker-end" autocomplete="off" (change)="onDateChange($event, 'to')">
->>>>>>> 86a9ed7c6b7680603978a5150d855331d67ec3f9
           </div>
       </div>
     </form> -->
@@ -96,11 +69,7 @@
 
     <!-- Dynamically render posts once loaded -->
     <ng-container *ngIf="!isLoading">
-<<<<<<< HEAD
-      <mat-card *ngFor="let element of filteredDataSource.data" class="post-box">
-=======
       <mat-card *ngFor="let element of filteredPosts" class="post-box">
->>>>>>> 86a9ed7c6b7680603978a5150d855331d67ec3f9
         <div mat-card-header class="post-img">
           <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
           <span class="status" [ngClass]="{
@@ -126,19 +95,18 @@
           <button *ngIf="element.status === 'pending'" class="edit" (click)="editPost(element.id)">
             <i class='bx bx-edit'></i>
             <span class="tooltiptext"> Edit </span>
-          </button>
+        </button>
           <button class="delete">
-            <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
-            <span class="tooltiptext"> Delete </span>
+              <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
+              <span class="tooltiptext"> Delete </span>
           </button>
           <button class="view" (click)="viewPost(element.id)">
-            <i class='bx bx-detail'></i>
-            <span class="tooltiptext"> View </span>
+              <i class='bx bx-detail'></i>
+              <span class="tooltiptext"> View </span>
           </button>
         </mat-card-actions>
       </mat-card>
     </ng-container>
-    
   </div>
       
 </div>
