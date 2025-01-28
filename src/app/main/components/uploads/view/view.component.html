@@ -12,7 +12,13 @@
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
+
         <div class="post-content">
+            <div class="declined-remarks" *ngIf="post.status === 'declined'">
+                <h3> Admin declined your post </h3>
+                <p> <strong>Remarks:</strong> {{ post.remarks }} </p>
+            </div>
+
             <h4 class="publisher">{{ post.user_name }}</h4>
             <span class="date">{{ post.created_at | date: 'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
             <div class="main-post">

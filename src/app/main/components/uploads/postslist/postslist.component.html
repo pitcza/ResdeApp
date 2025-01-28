@@ -95,19 +95,18 @@
           <button *ngIf="element.status === 'pending'" class="edit" (click)="editPost(element.id)">
             <i class='bx bx-edit'></i>
             <span class="tooltiptext"> Edit </span>
-          </button>
+        </button>
           <button class="delete">
-            <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
-            <span class="tooltiptext"> Delete </span>
+              <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
+              <span class="tooltiptext"> Delete </span>
           </button>
           <button class="view" (click)="viewPost(element.id)">
-            <i class='bx bx-detail'></i>
-            <span class="tooltiptext"> View </span>
+              <i class='bx bx-detail'></i>
+              <span class="tooltiptext"> View </span>
           </button>
         </mat-card-actions>
       </mat-card>
     </ng-container>
-    
   </div>
       
 </div>
