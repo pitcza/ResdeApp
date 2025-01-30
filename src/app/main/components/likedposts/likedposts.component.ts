@@ -8,6 +8,7 @@ import { DataserviceService } from '../../../services/dataservice.service';
 })
 export class LikedpostsComponent implements OnInit {
   items: Item[] = [];
+  paginatedItems: Item[] = [];
   selectedItem: Item = {
     title: '',
     category: '',
@@ -19,6 +20,8 @@ export class LikedpostsComponent implements OnInit {
     liked: false
   };
   isLoading = true;
+  pageSize = 5;
+  currentPage = 1;
 
   constructor(private ds: DataserviceService) {}
 
@@ -36,20 +39,21 @@ export class LikedpostsComponent implements OnInit {
   loadLikedPosts(): void {
     this.ds.userLiked().subscribe(
       (response) => {
-        this.items = response.liked_posts.map((post: any) => ({
-          id: post.id, 
+        this.items = response.liked_posts
+        .map((post: any) => ({
+          id: post.id,
           title: post.title,
           category: post.category,
           author: post.user_name,
-          date: post.created_at,
+          date: new Date(post.created_at).toISOString(), // Convert to ISO for sorting
           image: post.image,
           description: post.content,
-          liked: post.liked || false, 
-        }));
-  
-        if (this.items.length > 0) {
-          this.selectedItem = this.items[0];
-        }
+          liked: post.liked || false,
+        }))
+        .sort((a: Item, b: Item) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        this.updatePaginatedItems();
+        this.selectedItem = this.items[0] || this.selectedItem;
         this.isLoading = false;
       },
       (error) => {
@@ -57,6 +61,11 @@ export class LikedpostsComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  updatePaginatedItems(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedItems = this.items.slice(startIndex, startIndex + this.pageSize);
   }
   
 
@@ -107,6 +116,24 @@ export class LikedpostsComponent implements OnInit {
       top: 0,
       behavior: 'smooth',
     });
+  }
+
+  nextPage(): void {
+    if (this.currentPage * this.pageSize < this.items.length) {
+      this.currentPage++;
+      this.updatePaginatedItems();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedItems();
+    }
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.items.length / this.pageSize);
   }
 }
 

@@ -180,6 +180,39 @@
     }
 }
 
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  
+  .paginator-btn {
+    font-family: 'Poppins';
+    padding: 5px 10px;
+    color: white;
+    background-color: var(--primary-green);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    &[disabled] {
+      background-color: var(--gray-hover);
+      cursor: not-allowed;
+      box-shadow: none;
+      
+      &:hover {
+          background-color: var(--gray-hover);
+      }
+    }
+
+    &:hover {
+      background-color: var(--primary-hover);
+    }
+  }
+}
+
 /* Skeleton loader styles */
 .skeleton {
     background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
