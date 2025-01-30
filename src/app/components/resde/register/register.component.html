@@ -22,7 +22,55 @@
                     <input type="text" id="inputfield" placeholder="Last Name" [(ngModel)]="registerData.lname" name="lname" required>
                     <span class="errorMessage" *ngIf="registerForm.controls['lname']?.invalid && registerForm.controls['lname']?.touched">
                       Last Name is required.
-                  </span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="inputfield">Street</label>
+                    <input 
+                      type="text" 
+                      id="streetInput" 
+                      placeholder="Enter your street" 
+                      [(ngModel)]="registerData.street" 
+                      name="street" 
+                      list="streetList"
+                      class="no-spinner"
+                      required
+                    />
+                    <datalist id="streetList">
+                      <option *ngFor="let street of streets" [value]="street"></option>
+                    </datalist>
+                    <span class="errorMessage" *ngIf="registerForm.controls['street']?.invalid && registerForm.controls['street']?.touched">
+                      Street is required.
+                    </span>
+                  </div>
+
+                  <div class="input-group">
+                    <label for="inputfield">Age</label>
+                    <input 
+                      type="text" 
+                      id="ageInput" 
+                      placeholder="Enter your age" 
+                      [(ngModel)]="registerData.age" 
+                      name="age" 
+                      list="ageList"
+                      min="12"
+                      max="100"
+                      (keypress)="validateAgeInput($event)"
+                      class="no-spinner"
+                      required
+                    />
+                    <datalist id="ageList">
+                      <option *ngFor="let age of ages" [value]="age"></option>
+                    </datalist>
+                    <span class="errorMessage" *ngIf="!isAgeValid() && registerData.age">
+                      You must be at least 12 years old to register.
+                    </span>
+                    <span class="errorMessage" *ngIf="registerForm.controls['age']?.invalid && registerForm.controls['age']?.touched">
+                      Age is required.
+                    </span>
                   </div>
                 </div>
               
@@ -43,26 +91,6 @@
                     <div *ngIf="phoneNumberInvalid" class="errorMessage">
                       Phone number is not valid. Please enter a valid phone number (e.g., +63 912-345-6789).
                     </div>
-                  </div>
-                </div>
-
-                <div class="input-row">
-                  <div class="input-group">
-                    <label for="inputfield">Age</label>
-                    <select name="age" id="inputfield" [(ngModel)]="registerData.age" required>
-                      <option value="">Select your age</option>
-                      <option *ngFor="let age of ages" [value]="age">{{ age }}</option>
-                    </select>
-                    <span class="errorMessage" *ngIf="registerForm.controls['age']?.invalid && registerForm.controls['age']?.touched">
-                      Age is required.
-                    </span>
-                  </div>
-                  <div class="input-group">
-                    <label for="inputfield">Street</label>
-                    <select name="block" id="inputfield" [(ngModel)]="registerData.street" required>
-                      <option value="">Select Street</option>
-                      <option *ngFor="let street of streets" [value]="street">{{ street }}</option>
-                    </select>
                   </div>
                 </div>
               

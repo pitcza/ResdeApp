@@ -42,13 +42,22 @@ export class RegisterComponent {
     privacy: false
   };
   errorMessages: string[] = [];
-  barangays: string[] = [
-    'Asinan', 'Banicain', 'Barreto', 'East Bajac-bajac', 'East Tapinac',
-    'Gordon Heights', 'Kalaklan', 'New Kalalake', 'Mabayuhan', 'New Cabalan',
-    'New Ilalim', 'New Kababae', 'Pag-asa', 'Santa Rita', 'West Tapinac',
-    'Old Cabalan'
-  ];
-  ages: number[] = Array.from({ length: 100 }, (_, i) => i + 1);
+  ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
+
+   // Function to validate age
+   isAgeValid(): boolean {
+    const ageNumber = Number(this.registerData.age);
+    return ageNumber >= 12 && ageNumber <= 100;
+  }
+
+  validateAgeInput(event: KeyboardEvent) {
+    const charCode = event.which ? event.which : event.keyCode;
+  
+    // Allow only numbers (0-9) and backspace (8)
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
 
   streets: string[] = [
     'Acacia St.',
@@ -198,15 +207,29 @@ export class RegisterComponent {
   }
 
   onRegister() {
-    // Check if all required fields are filled
-    if (!this.registerData.fname || !this.registerData.lname || !this.registerData.email ||
-        !this.registerData.phone_number || !this.registerData.barangay || 
-        !this.registerData.street || !this.registerData.age ||
-        !this.registerData.password || !this.registerData.password_confirmation) {
-      
+    // Define field labels
+    const fieldLabels: { [key: string]: string } = {
+      fname: "First Name",
+      lname: "Last Name",
+      email: "Email",
+      phone_number: "Phone Number",
+      age: "Age",
+      street: "Street",
+      barangay: "Barangay",
+      city: "City",
+      password: "Password",
+      password_confirmation: "Confirm Password"
+    };
+
+    // Identify missing fields (excluding privacy policy)
+    const emptyFields = Object.keys(this.registerData)
+      .filter(key => key !== 'privacy' && !this.registerData[key as keyof RegisterData])
+      .map(key => fieldLabels[key]);
+
+    if (emptyFields.length > 0) {
       Swal.fire({
-        title: "Error",
-        text: "Please fill in all the required fields.",
+        title: "Missing Required Fields",
+        html: `Please fill in the following fields:<br><strong>${emptyFields.join(", ")}</strong>`,
         icon: "error",
         confirmButtonText: 'OK',
         confirmButtonColor: "#7f7f7f",
@@ -219,14 +242,27 @@ export class RegisterComponent {
           document.body.style.overflowY = 'scroll';
         }
       });
-      return; // Stop form submission if any field is empty
+      return; // Stop form submission
+    }
+
+    // Validate age
+    if (!this.isAgeValid()) {
+      Swal.fire({
+        title: "Invalid Age",
+        text: "You must be at least 12 years old to register.",
+        icon: "error",
+        confirmButtonText: 'OK',
+        confirmButtonColor: "#7f7f7f",
+        timer: 5000
+      });
+      return;
     }
 
     // Check if the phone number is valid
     if (this.registerData.phone_number.length !== 16) {
       Swal.fire({
-        title: "Error",
-        text: "Phone number is not valid. Please enter a valid phone number (e.g., +63 912-345-6789).",
+        title: "Invalid Phone Number",
+        text: "Phone number must be in the format: +63 XXX-XXX-XXXX.",
         icon: "error",
         confirmButtonText: 'OK',
         confirmButtonColor: "#7f7f7f",
@@ -252,16 +288,16 @@ export class RegisterComponent {
       this.passwordErrors.number ||
       this.passwordErrors.special
     ) {
-      let errorMessage = "Password must meet the following requirements:\n";
-      if (this.passwordErrors.length) errorMessage += "- At least 8 characters long.\n";
-      if (this.passwordErrors.capital) errorMessage += "- Include at least one capital letter (A-Z).\n";
-      if (this.passwordErrors.lowercase) errorMessage += "- Include at least one small letter (a-z).\n";
-      if (this.passwordErrors.number) errorMessage += "- Include at least one number (0-9).\n";
-      if (this.passwordErrors.special) errorMessage += "- Include at least one special character (!@#$%^&*).\n";
+      let errorMessage = "Password must meet the following requirements: <br>";
+      if (this.passwordErrors.length) errorMessage += "- At least 8 characters long. <br>";
+      if (this.passwordErrors.capital) errorMessage += "- Include at least one capital letter (A-Z). <br>";
+      if (this.passwordErrors.lowercase) errorMessage += "- Include at least one small letter (a-z). <br>";
+      if (this.passwordErrors.number) errorMessage += "- Include at least one number (0-9). <br>";
+      if (this.passwordErrors.special) errorMessage += "- Include at least one special character (!@#$%^&*). <br>";
 
       Swal.fire({
-        title: "Error",
-        text: errorMessage,
+        title: "Password Requirements Not Met",
+        html: errorMessage,
         icon: "error",
         confirmButtonText: 'OK',
         confirmButtonColor: "#7f7f7f",
@@ -327,41 +363,35 @@ export class RegisterComponent {
         });
       },
       (error: any) => {
-        // Handle validation errors
-        if (error.error && error.error.email) {
+        if (error.status === 0) {
           Swal.fire({
-            title: "Email Error",
-            text: error.error.email[0], // Display the specific error message
+            title: "No Internet Connection",
+            text: "Please check your internet connection and try again.",
             icon: "error",
             confirmButtonText: 'OK',
             confirmButtonColor: "#7f7f7f",
-            timer: 5000,
-            scrollbarPadding: false,
-            willOpen: () => {
-              document.body.style.overflowY = 'scroll';
-            },
-            willClose: () => {
-              document.body.style.overflowY = 'scroll';
-            }
+            timer: 5000
+          });
+        } else if (error.error && error.error.email) {
+          Swal.fire({
+            title: "Email Error",
+            text: error.error.email[0],
+            icon: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#7f7f7f",
+            timer: 5000
           });
         } else {
+          // ❌ Other registration failure
           Swal.fire({
             title: "Registration Failed",
             text: "An unexpected error occurred.",
             icon: "error",
             confirmButtonText: 'OK',
             confirmButtonColor: "#7f7f7f",
-            timer: 5000,
-            scrollbarPadding: false,
-            willOpen: () => {
-              document.body.style.overflowY = 'scroll';
-            },
-            willClose: () => {
-              document.body.style.overflowY = 'scroll';
-            }
+            timer: 5000
           });
         }
-        console.error('Registration failed:', error);
       }
     );
     
