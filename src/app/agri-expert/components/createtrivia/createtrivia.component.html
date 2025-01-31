@@ -36,17 +36,22 @@
             <div class="with-add">
               <div class="another-div">
                 <div class="with-remove" *ngFor="let answer of answers.controls; let i = index">
-                  <input class="fix-txt-field" [formControlName]="i" placeholder="Answer {{ i + 1 }}" type="text" />
+                  <input class="fix-txt-field" [formControlName]="i" placeholder="Answer {{ i + 1 }}" type="text" (keydown)="addAnswerOnEnter($event, i)"/>
                   <button class="removebtn" type="button" (click)="removeAnswer(i)" [disabled]="answers.length === 1"> <i class='bx bx-x'></i> </button>
                 </div>
               </div>
-              <button type="button" class="addbtn" (click)="addAnswer()">Add</button>
+              <button type="button" class="addbtn" (click)="addAnswer()" >Add</button>
             </div>
           </div>
         </div>
+        <p *ngIf="answers.length >= 4" class="warning">
+          You can only add up to 4 answers. 
+          <br> 
+          {{ errorMessage }}
+        </p>
+        
       </form>
     </div>
-
     <div class="post-footer">
       <div class="buttons">
         <button class="cancel-btn" (click)="closeDialog()">Cancel</button>
