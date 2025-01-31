@@ -79,14 +79,15 @@ table {
     td { font-size: 14px; }
     tr { transition: all 0.3s ease; } 
     tr:hover { background-color: var(--white-hover); }
-
-    .status {
-        color: var(--red-btn);
-    }
 }
 
 table { // fixed width
-    td:nth-child(5) {
+    // td:nth-child(5) {
+    //     min-width: 50px;
+    //     max-width: 50px;
+    // }
+
+    td:nth-child(6) {
         min-width: 50px;
         max-width: 50px;
     }

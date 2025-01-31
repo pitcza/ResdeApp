@@ -42,32 +42,32 @@ export class ListComponent implements OnInit, AfterViewInit {
   }
 
   fetchApproved() {
-      this.isLoading = true;
-      const params = {
-        start_date: this.fromDate,
-        end_date: this.toDate
-      };
-  
-      this.as.allPosts(params).subscribe(
-        response => {
-          const posts = response.posts ? Object.values(response.posts).filter((post: any) => post.status === 'approved') as TableElement[] : [];
-          
-          if (Array.isArray(posts)) {
-            this.dataSource.data = posts;
-            this.filteredDataSource.data = posts;
-            this.filteredDataSource.paginator = this.paginator ;
-            this.isLoading = false;
-          } else {
-            console.error('Error: posts data is not an array');
-          }
-          this.cdr.detectChanges();
-        },
-        error => {
-          console.error('Error fetching posts:', error);
+    this.isLoading = true;
+    const params = {
+      start_date: this.fromDate,
+      end_date: this.toDate
+    };
+
+    this.as.allPosts(params).subscribe(
+      response => {
+        const posts = response.posts ? Object.values(response.posts).filter((post: any) => post.status === 'approved') as TableElement[] : [];
+        
+        if (Array.isArray(posts)) {
+          this.dataSource.data = posts;
+          this.filteredDataSource.data = posts;
+          this.filteredDataSource.paginator = this.paginator ;
           this.isLoading = false;
+        } else {
+          console.error('Error: posts data is not an array');
         }
-      );
-    }
+        this.cdr.detectChanges();
+      },
+      error => {
+        console.error('Error fetching posts:', error);
+        this.isLoading = false;
+      }
+    );
+  }
 
     filterPosts() {
       const selectedCategory = this.categoryFilter;

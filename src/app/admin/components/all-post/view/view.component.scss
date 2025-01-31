@@ -89,7 +89,6 @@
     }
 
     .main-post {
-        padding: 20px 0;
         p { padding: 10px 0; }
 
         span {
@@ -113,6 +112,12 @@
             width: 100%;
             height: auto;
         }
+    }
+
+    .user-info {
+        padding: 20px 0;
+
+        h4 { font-weight: 700; }
     }
 }
 
@@ -166,7 +171,7 @@
         }
     
         .main-post {
-            h2 { font-size: 20px; }
+            h1 { font-size: 20px; }
             p { font-size: 14px; }
         }
     }

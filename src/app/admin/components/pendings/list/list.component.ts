@@ -100,14 +100,14 @@ filterPosts() {
   }
 
   viewPost(id: number) {
-        if (this.dialog) {
-          this.dialog.open(ViewComponent, {
-            data: { id: id }  
-          });
-        } else {
-          console.error('View popup not found');
-        }
-      }
+    if (this.dialog) {
+      this.dialog.open(ViewComponent, {
+        data: { id: id }  
+      });
+    } else {
+      console.error('View popup not found');
+    }
+  }
   
   // APPROVE PROCESS
   approvePost(id: number) {
@@ -118,8 +118,9 @@ filterPosts() {
       showCancelButton: true,
       confirmButtonColor: '#4d745a',
       cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: 'Approve Post',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         this.AS.approvePost(id).subscribe({
@@ -151,94 +152,54 @@ filterPosts() {
     });
   }
 
-  // REJECT PROCESS
-//   rejectPost(id: number) {
-//     Swal.fire({
-//       title: 'Reject Post',
-//       text: `Are you sure you want to reject this post?`,
-//       icon: 'warning',
-//       showCancelButton: true,
-//       confirmButtonColor: '#AB0E0E',
-//       cancelButtonColor: '#777777',
-//       confirmButtonText: 'Yes',
-//       cancelButtonText: 'Cancel'
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         this.AS.rejectPost(id).subscribe(
-//           response => {
-//         Swal.fire({
-//           title: "Post Rejected!",
-//           text: "The post has been rejected.",
-//           icon: "success",
-//           confirmButtonText: 'Close',
-//           confirmButtonColor: "#777777",
-//           timer: 5000,
-//           scrollbarPadding: false
-//         });
-//       },
-//       error => {
-//         Swal.fire({
-//           title: "Error",
-//           text: "There was an error declining the post.",
-//           icon: "error",
-//           confirmButtonText: 'Close',
-//           confirmButtonColor: "#777777"
-//         });
-//       }
-//     );
-//   }
-// });
-//   }
+  rejectPost(id: number) {
+    Swal.fire({
+      title: 'Decline Post',
+      text: 'Are you sure you want to decline this post?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#AB0E0E',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Decline',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+      input: 'textarea',
+      inputPlaceholder: 'Enter your remarks...',
+      inputAttributes: {
+        'aria-label': 'Type your remarks here'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const remarks = result.value;  
 
-rejectPost(id: number) {
-  Swal.fire({
-    title: 'Decline Post',
-    text: 'Are you sure you want to decline this post?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#AB0E0E',
-    cancelButtonColor: '#777777',
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'Cancel',
-    input: 'textarea',
-    inputPlaceholder: 'Enter your remarks...',
-    inputAttributes: {
-      'aria-label': 'Type your remarks here'
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const remarks = result.value;  
+        this.AS.rejectPost(id, remarks).subscribe({
+          next: () => {
+            this.dataSource.data = this.dataSource.data.filter(post => post.id !== id);
+            this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
 
-      this.AS.rejectPost(id, remarks).subscribe({
-        next: () => {
-          this.dataSource.data = this.dataSource.data.filter(post => post.id !== id);
-          this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
-
-          Swal.fire({
-            title: "Post Declined!",
-            text: "The post has been declined.",
-            icon: "success",
-            confirmButtonText: 'Close',
-            confirmButtonColor: "#777777",
-            timer: 5000,
-            scrollbarPadding: false
-          });
-        },
-        error: (err) => {
-          Swal.fire({
-            title: "Error",
-            text: "There was an error.",
-            icon: "error",
-            confirmButtonText: 'Close',
-            confirmButtonColor: "#777777"
-          });
-        }
-      });
-    }
-  });
-}
-
-
+            Swal.fire({
+              title: "Post Declined!",
+              text: "The post has been declined.",
+              icon: "success",
+              confirmButtonText: 'Close',
+              confirmButtonColor: "#777777",
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              title: "Error",
+              text: "There was an error.",
+              icon: "error",
+              confirmButtonText: 'Close',
+              confirmButtonColor: "#777777"
+            });
+          }
+        });
+      }
+    });
+  }
 
 }
 

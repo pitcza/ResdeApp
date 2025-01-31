@@ -2,7 +2,7 @@
     <div class="post-container">
         <div class="post-header">
             <div class="popup-head">
-                <h1> Your Post </h1>
+                <h1> {{ post.user_name.split(' ')[0] }}'s Post </h1>
                 <p class="status" [ngClass]="{
                     'pending-status': post.status === 'pending',
                     'approved-status': post.status === 'approved',
@@ -13,22 +13,28 @@
         </div>
 
         <div class="post-content">
-            <h4 class="publisher">{{ post.user_name }}</h4>
-            <span class="date">{{ post.created_at | date: 'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
             <div class="main-post">
-                <h2>{{ post.title }}</h2>
+                <h1>{{ post.title }}</h1>
                 <span class="category">{{ post.category }}</span>
                 <p [innerHTML]="formatContent(post.content)"></p>
+            </div>
+            <div class="user-info">
+                <h4 class="publisher">by {{ post.user_name }}</h4>
+                <span class="date">{{ post.created_at | date: 'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
+            </div>
                 <div class="post-img">
                     <img [src]="post.image || '../../../../../assets/images/NoImage.png'" alt="post image">
                 </div>
-            </div>
         </div>
 
         <div class="post-footer">
-            <div class="buttons">
-                <input class="danger-btn" type="button" value="Delete" >
+            <div class="buttons" *ngIf="post.status === 'approved'"> 
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost(data.id)">
             </div>
+            <div class="buttons" *ngIf="post.status === 'pending'">
+                <input class="submit-btn" type="button" value="Approve Post" (click)="approvePost(data.id)">
+                <input class="danger-btn" type="button" value="Decline" (click)="declinePost(data.id)">
+            </div> 
         </div>
     </div>
 </div>

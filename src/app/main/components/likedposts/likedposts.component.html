@@ -80,9 +80,9 @@
   </div>
 
   <!-- Pagination Controls -->
-  <div class="pagination">
-    <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+  <div class="pagination" *ngIf="items.length > 5">
     <span>Page {{ currentPage }} of {{ getTotalPages() }}</span>
+    <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
     <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage * pageSize >= items.length">Next</button>
   </div>
 </div>

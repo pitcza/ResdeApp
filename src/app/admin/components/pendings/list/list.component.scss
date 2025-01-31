@@ -18,46 +18,42 @@
     }
 }
 
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: white;
+    margin-right: 20px;
+    margin-top: 25px;
+    float: right;
 
- 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            background-color: white;
-            margin-right: 20px;
-            margin-top: 25px;
-            float: right;
+    h2 {
+        font-family: 'Poppins';
+        font-size: 20px;
+        font-weight: 700;
+        color: black;
+        p {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 50%;
         }
+    }
 
-        .card-header {
-            h2 {
-                font-family: 'Poppins';
-                font-size: 20px;
-                font-weight: 700;
-                color: black;
-                p {
-                    font-size: 12px;
-                    font-weight: 400;
-                    opacity: 50%;
-                }
-            }
-    
-            a {
-                background: var(--primary-green);
-                border-radius: 5px;
-                color: white;
-                font-size: .8rem;
-                padding: .5rem 1rem;
-                transition: all 0.3s ease-in-out;
-            }
+    a {
+        background: var(--primary-green);
+        border-radius: 5px;
+        color: white;
+        font-size: .8rem;
+        padding: .5rem 1rem;
+        transition: all 0.3s ease-in-out;
+    }
 
-            a:hover {
-                background-color: var(--dark-green);
-            }
-        }
+    a:hover {
+        background-color: var(--dark-green);
+    }
+}
   
 
 table {
@@ -82,10 +78,6 @@ table {
     td { font-size: 14px; }
     tr { transition: all 0.3s ease; } 
     tr:hover { background-color: var(--white-hover); }
-
-    .status {
-        color: var(--red-btn);
-    }
 }
 
 table { // fixed width

@@ -32,7 +32,7 @@ export class ListComponent implements OnInit , AfterViewInit{
   ) {}
 
   ngOnInit(): void {
-    this.fetchUserPost();
+    this.fetchApproved();
   }
 
   ngAfterViewInit(): void {
@@ -49,26 +49,32 @@ export class ListComponent implements OnInit , AfterViewInit{
       }
     }
 
-  fetchUserPost() {
+  fetchApproved() {
     this.isLoading = true;
     const params = {
       start_date: this.fromDate,
       end_date: this.toDate
     };
-
+  
     this.as.allPosts(params).subscribe(
       response => {
-        console.log('API Response:', response);
-        const posts = response.posts ? Object.values(response.posts) as TableElement[] : [];
+        const posts = response.posts ? Object.values(response.posts)
+          .filter((post: any) => post.status === 'approved' || post.status === 'declined') as TableElement[] : [];
         
         if (Array.isArray(posts)) {
+          // Sort by `created_at` in descending order (latest first)
+          posts.sort((a, b) => {
+            return new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime();
+          });
+  
           this.dataSource.data = posts;
           this.filteredDataSource.data = posts;
-          this.filteredDataSource.paginator = this.paginator ;
+          this.filteredDataSource.paginator = this.paginator;
           this.isLoading = false;
         } else {
           console.error('Error: posts data is not an array');
         }
+        this.cdr.detectChanges();
       },
       error => {
         console.error('Error fetching posts:', error);
@@ -76,6 +82,7 @@ export class ListComponent implements OnInit , AfterViewInit{
       }
     );
   }
+    
 
   filterPosts() {
     const selectedCategory = this.categoryFilter;
@@ -93,6 +100,8 @@ export class ListComponent implements OnInit , AfterViewInit{
       return categoryMatch && statusMatch && fromDateMatch && toDateMatch;
     });
   
+    this.filteredDataSource.data.sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime());
+    
     this.cdr.detectChanges();
   }
   
