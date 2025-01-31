@@ -28,6 +28,8 @@ interface RegisterData {
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+  agreedToTerms = false;
+  agreedToPrivacy = false;
   registerData: RegisterData = {
     fname: '',
     lname: '',
@@ -398,21 +400,60 @@ export class RegisterComponent {
   }
   
 
-  // VIEWING TERMS AND CONDITIONS
-  viewTerms() {
-    if (this.dialog) {
-      this.dialog.open(TermsConditionsComponent)
-    } else {
-      console.error('Terms and conditions dialog not found');
-    }
-  }
+  // // VIEWING TERMS AND CONDITIONS
+  // viewTerms() {
+  //   if (this.dialog) {
+  //     this.dialog.open(TermsConditionsComponent)
+  //   } else {
+  //     console.error('Terms and conditions dialog not found');
+  //   }
+  // }
 
-  // VIEWING PRIVACY POLICY
-  viewPolicy() {
-    if (this.dialog) {
-      this.dialog.open(PrivacypolicyComponent)
-    } else {
-      console.error('Privacy policy dialog not found');
+  // // VIEWING PRIVACY POLICY
+  // viewPolicy() {
+  //   if (this.dialog) {
+  //     this.dialog.open(PrivacypolicyComponent)
+  //   } else {
+  //     console.error('Privacy policy dialog not found');
+  //   }
+  // }
+
+
+      // Open Terms and Conditions modal
+      viewTerms() {
+        const dialogRef = this.dialog.open(TermsConditionsComponent);
+        dialogRef.componentInstance.agreed.subscribe(() => {
+            this.agreedToTerms = true; // Mark terms as agreed
+            this.updatePrivacyCheckbox(); // Update the checkbox state
+        });
+        dialogRef.componentInstance.disagreed.subscribe(() => {
+          this.agreedToTerms = false; // Mark terms as disagreed
+          this.updatePrivacyCheckbox(); // Update the checkbox state
+      });
     }
+
+    // Open Privacy Policy modal
+    viewPolicy() {
+        const dialogRef = this.dialog.open(PrivacypolicyComponent);
+        dialogRef.componentInstance.agreed.subscribe(() => {
+            this.agreedToPrivacy = true; // Mark privacy policy as agreed
+            this.updatePrivacyCheckbox(); // Update the checkbox state
+        });
+        dialogRef.componentInstance.disagreed.subscribe(() => {
+          this.agreedToPrivacy = false; // Mark privacy policy as disagreed
+          this.updatePrivacyCheckbox(); // Update the checkbox state
+        });
+    }
+
+        // Update the privacy checkbox state
+        updatePrivacyCheckbox() {
+          this.registerData.privacy = this.agreedToTerms && this.agreedToPrivacy; // Checkbox is checked only if both are agreed
+      }
+  
+      // Show a notice about the agreement status
+      get agreementNotice(): string {
+          const totalAgreements = 2;
+          const agreedCount = (this.agreedToTerms ? 1 : 0) + (this.agreedToPrivacy ? 1 : 0);
+          return `You have agreed to ${agreedCount}/${totalAgreements} agreements.`;
+      }
   }
-}

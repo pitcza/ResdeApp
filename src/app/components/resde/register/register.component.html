@@ -147,6 +147,7 @@
                     <input type="checkbox" [(ngModel)]="registerData.privacy" name="privacy" required>
                     <p>I agree to the <a (click)="viewTerms()">Terms and Conditions</a> and <a (click)="viewPolicy()">Privacy Policy</a></p>
                   </h3>
+                  <p class="agreement-notice">{{ agreementNotice }}</p> 
                 </div>
               
                 <!-- SIGN UP BUTTON -->

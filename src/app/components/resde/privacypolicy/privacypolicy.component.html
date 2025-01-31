@@ -2,7 +2,7 @@
     <div class="dialog-container">
         <div class="dialog-header">
             <h1> Privacy Policy </h1>
-            <!-- <button class="exit-button" (click)="closeDialog()"> &times; </button> -->
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
         <div class="dialog-content">
@@ -89,7 +89,9 @@
             </div>
 
             <div class="buttons">
-                <input class="submit-btn" type="button" value="Close" (click)="closeDialog()">
+                <!-- <input class="submit-btn" type="button" value="Close" (click)="closeDialog()"> -->
+                <input class="danger-btn" type="button" value="Disagree" (click)="disagree()"> 
+                <input class="submit-btn" type="button" value="Agree" (click)="agree()">
             </div>
         </div>
 
