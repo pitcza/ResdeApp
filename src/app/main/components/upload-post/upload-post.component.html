@@ -59,7 +59,7 @@
 
                 <div class="buttons">
                     <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
-                    <input class="submit-btn" type="submit" value="Post" [disabled]="postForm.invalid">
+                    <input class="submit-btn" type="submit" value="Post" [disabled]="postForm.invalid || isSubmitting">
                 </div>
     
             </form>

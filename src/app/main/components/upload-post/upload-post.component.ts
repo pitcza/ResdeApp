@@ -16,6 +16,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class UploadPostComponent {
   postForm!: FormGroup;
   image: File | null = null;  // Allows image to be null
+  isSubmitting: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<UploadPostComponent>,
@@ -49,10 +50,12 @@ export class UploadPostComponent {
 
   // Handle form submission
   onSubmit() {
-    if (this.postForm.invalid) {
+    if (this.postForm.invalid || this.isSubmitting) {
       return;
     }
   
+    this.isSubmitting = true;
+
     const formData = new FormData();
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('category', this.postForm.get('category')!.value);
@@ -76,6 +79,7 @@ export class UploadPostComponent {
           timer: 5000,
           scrollbarPadding: false
         });
+        this.isSubmitting = false; 
       },
       (error) => {
         console.error('Error creating post', error);
@@ -100,6 +104,8 @@ export class UploadPostComponent {
           confirmButtonText: 'Close',
           confirmButtonColor: "#7f7f7f"
         });
+
+        this.isSubmitting = false;
       }
     );
   }
