@@ -31,12 +31,12 @@ export class UsersComponent implements AfterViewInit, OnInit {
   fetchUsers(): void {
     this.as.getUsers().subscribe(
       (response) => {
-  
-        // Filter out users whose fname is 'User' or 'Agriculural'
+        const excludedEmails = ['admin@gmail.com', 'agri@gmail.com'];  // Emails to exclude intable display
+        //Filter out users whose fname is 'User' or 'Agriculural'
         const users = response
           .filter((user: any) => {
-            const fnameLower = user.fname.toLowerCase().trim();  // Make sure to trim spaces
-            return fnameLower !== 'user' && fnameLower !== 'agriculural';
+            const fnameLower = user.fname.toLowerCase().trim(); //Make sure to trim spaces
+            return fnameLower !== 'user' && fnameLower !== 'agriculural' && !excludedEmails.includes(user.email);
           })
           .map((user: any) => ({
             id: user.id,
@@ -49,15 +49,13 @@ export class UsersComponent implements AfterViewInit, OnInit {
             created_at: user.created_at
           }));
   
-        // Set the data for the table
         this.filteredDataSource.data = users;
-  
       },
       (error) => {
         console.error('Error fetching users:', error);
       }
     );
-  }
+  }  
 
   removeUser(userId: number): void {
     // Show confirmation dialog before deleting
