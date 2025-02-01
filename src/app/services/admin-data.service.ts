@@ -104,6 +104,10 @@ export class AdminDataService {
   //   return this.Admin(`post/${id}/decline`, 'PATCH');
   // }
 
+  inputPhotos(formData: FormData): Observable<any> {
+    return this.Admin('addphotos', 'POST', formData);
+  }
+
   uploadAnn(formData: FormData): Observable<any> {
     return this.Admin('announcements', 'POST', formData);
   }

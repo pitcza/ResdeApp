@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <div class="popup-head">
+                <h1> Customize Landing Page Photos </h1>
+            </div>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="post-content">
+            <input type="file" (change)="onFileSelected($event)" multiple accept="image/*" [attr.max]="5" />
+        </div>
+
+        <div class="post-footer">
+            <div class="buttons">
+                <input class="danger-btn" type="button" value="Remove All">
+                <input class="submit-btn" type="button" value="Upload" (click)="uploadImages()">
+            </div> 
+        </div>
+    </div>
+</div>

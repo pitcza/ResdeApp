@@ -12,6 +12,7 @@ import { AllPostModule } from './components/all-post/all-post.module';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UsersComponent } from './components/users/users.component';
+import { DisplayImagesComponent } from './components/display-images/display-images.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { UsersComponent } from './components/users/users.component';
     AllPostComponent,
     AnnouncementComponent,
     ReportsComponent,
-    UsersComponent
+    UsersComponent,
+    DisplayImagesComponent
   ],
   imports: [
     CommonModule,

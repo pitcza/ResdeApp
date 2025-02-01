@@ -3,6 +3,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdminDataService } from '../../../services/admin-data.service';
 import { Chart } from 'chart.js/auto';
 import { MatPaginator } from '@angular/material/paginator';
+import { DisplayImagesComponent } from '../display-images/display-images.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
@@ -48,10 +50,19 @@ export class DashboardComponent implements OnInit {
   
   constructor(
     private AS: AdminDataService,
+    private dialog: MatDialog,
     private cdr: ChangeDetectorRef  // Inject ChangeDetectorRef
   ) {
     
   }
+
+  inputPhotos() {
+      if (this.dialog) {
+        this.dialog.open(DisplayImagesComponent)
+      } else {
+        console.error('Uploading form not found');
+      }
+    }
 
   ngOnInit(): void {
     this.getOldest();

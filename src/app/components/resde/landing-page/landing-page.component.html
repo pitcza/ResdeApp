@@ -23,8 +23,26 @@
 
     <!-- RIGHT SCREEN -->
     <div class="right">
-        <img class="web" src="../../../../assets/images/web.png" alt="Re'sIt Web App Clipart">
-        <img class="mobile" src="../../../../assets/images/mobile.png" alt="Re'sIt Mobile App Clipart">
+        <!-- <img class="web" src="../../../../assets/images/web.png" alt="Re'sIt Web App Clipart">
+        <img class="mobile" src="../../../../assets/images/mobile.png" alt="Re'sIt Mobile App Clipart"> -->
+        <div class="gallery">
+            <h2> Barangay Gordon Heigths </h2>
+            <div class="gallery-container">
+                <!-- <img class="gallery-item gallery-item-1" src="../../../../assets/images/sample1.jpg" data-index="1">
+                <img class="gallery-item gallery-item-2" src="../../../../assets/images/sample2.jpg" data-index="2">
+                <img class="gallery-item gallery-item-3" src="../../../../assets/images/sample3.jpg" data-index="3">
+                <img class="gallery-item gallery-item-4" src="../../../../assets/images/sample4.jpg" data-index="4">
+                <img class="gallery-item gallery-item-5" src="../../../../assets/images/sample5.jpg" data-index="5"> -->
+                <img *ngFor="let photo of landingPhotos; index as i"
+                    class="gallery-item gallery-item-{{i + 1}}"
+                    [src]="photo"
+                    [attr.data-index]="i + 1">
+            </div>
+            <div class="gallery-controls"></div>
+        </div>
+        <ng-template #placeholder>
+            <p>Loading images...</p>
+        </ng-template>
     </div>
 </div>
 
