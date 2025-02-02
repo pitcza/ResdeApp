@@ -8,7 +8,7 @@
                 <div class="input-row">
                     <div class="input-field">
                         <label class="labelline"> Title </label>
-                        <input class="txt-field" type="text" formControlName="title" maxlength="50" [disabled]="wordCount >= maxWords">
+                        <input class="txt-field" type="text" formControlName="title" maxlength="50" [disabled]="wordCount >= maxWords" (keydown.enter)="focusDescription()">
                         
                         <div *ngIf="postForm.get('title')?.hasError('wordLimit') && postForm.get('title')?.touched" class="error">
                             Title cannot exceed 5 words.
@@ -67,7 +67,8 @@
 
             <div class="announcebuttons">
                 <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
-                <input class="submit-btn" type="submit" value="Upload" [disabled]="postForm.invalid">
+                <input class="submit-btn" type="submit" value="Upload" [disabled]="postForm.invalid || isSubmitting">
+
             </div>
 
         </form>

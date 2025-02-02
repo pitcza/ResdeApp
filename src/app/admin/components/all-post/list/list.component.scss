@@ -190,3 +190,22 @@ table { // fixed width
         }
     }
 }
+
+.search-input {
+    width: 200px; 
+    padding: 8px 12px;
+    border: 2px solid var(--primary-green);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: var(--dark-green);
+    }
+
+    &::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+    }
+}

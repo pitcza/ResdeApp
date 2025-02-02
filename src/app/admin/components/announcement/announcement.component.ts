@@ -25,6 +25,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
   toDate: string = '';    // For the "to" date
   wordCount: number = 0;
   maxWords: number = 5;
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -129,10 +130,9 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    if (this.postForm.invalid) {
-      return;
-    }
+    if (this.postForm.invalid) return;
   
+    this.isSubmitting = true;
     const formData = new FormData();
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('description', this.postForm.get('description')!.value);
@@ -157,9 +157,9 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
         
         this.postForm.reset(); 
         this.image = null;    
-        this.ImagePreview = null; 
-  
-        this.fetchAnnouncement(); 
+        this.ImagePreview = null;
+        this.fetchAnnouncement();
+        this.isSubmitting = false;
       },
       (error) => {
         console.error('Error creating post', error);
@@ -170,9 +170,10 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
           confirmButtonText: 'Close',
           confirmButtonColor: '#777777'
         });
+        this.isSubmitting = false;
       }
     );
-  }
+  }  
   
   
 
@@ -247,6 +248,14 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  focusDescription() {
+    const descriptionField = document.querySelector('textarea[formControlName="description"]') as HTMLTextAreaElement;
+    if (descriptionField) {
+      descriptionField.focus();
+    }
+  }
+  
 
 }
 

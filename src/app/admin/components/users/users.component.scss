@@ -195,3 +195,56 @@ table { // fixed width
         }
     }
 }
+.header-actions {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1px; 
+}
+
+.search-container {
+    margin-bottom: 1px;
+    display: flex;
+    justify-content: flex-start; 
+    padding: 10px 0;
+}
+
+.search-input {
+    width: 300px; 
+    padding: 8px 12px;
+    border: 2px solid var(--primary-green);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: var(--dark-green);
+    }
+
+    &::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+
+    .search-container {
+        width: 100%; 
+        margin-right: 0; 
+        margin-bottom: 10px; 
+    }
+
+    .card-header {
+        width: 100%; 
+        a {
+            width: 100%;
+            text-align: center; 
+        }
+    }
+}

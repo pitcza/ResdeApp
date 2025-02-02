@@ -22,7 +22,7 @@ export class ListComponent implements OnInit, AfterViewInit {
   fromDate: string = '';  // For the "from" date
   toDate: string = '';    // For the "to" date
   isLoading: boolean = true;
-  
+  searchQuery: string = '';
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -72,6 +72,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     filterPosts() {
       const selectedCategory = this.categoryFilter;
       const selectedStatus = this.statusFilter;
+      const searchLower = this.searchQuery.toLowerCase();
     
       this.filteredDataSource.data = this.dataSource.data.filter(post => {
         const categoryMatch = selectedCategory ? post.category?.toLowerCase() === selectedCategory.toLowerCase() : true;
@@ -80,8 +81,13 @@ export class ListComponent implements OnInit, AfterViewInit {
         const postDate = post.created_at ? new Date(post.created_at) : null;  // Check for undefined or null created_at
         const fromDateMatch = this.fromDate ? postDate && postDate >= new Date(this.fromDate) : true;
         const toDateMatch = this.toDate ? postDate && postDate <= new Date(this.toDate) : true;
-    
-        return categoryMatch && fromDateMatch && toDateMatch;
+        
+        // Search Filter (Matches name or title)
+        const nameMatch = post.user_name?.toLowerCase().includes(searchLower);
+        const titleMatch = post.title?.toLowerCase().includes(searchLower);
+        const searchMatch = !this.searchQuery || nameMatch || titleMatch;
+
+        return categoryMatch && fromDateMatch && toDateMatch && searchMatch;
       });
     
       this.cdr.detectChanges();
@@ -129,6 +135,11 @@ export class ListComponent implements OnInit, AfterViewInit {
     } else {
       console.error('Uploading form not found');
     }
+  }
+
+  onSearchChange(event: any) {
+    this.searchQuery = event.target.value;
+    this.filterPosts();
   }
 
   // DELETE USER POST PROCESS
@@ -182,5 +193,6 @@ export interface TableElement {
   name: string;
   category: string;
   title: string;
+  user_name: string;
   id: number;
 }

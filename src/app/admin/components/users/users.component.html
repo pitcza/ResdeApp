@@ -4,10 +4,21 @@
     </div>
 
     <div class="table-content">
+      <div class="header-actions">
+        <div class="search-container">
+            <input
+                type="text"
+                [(ngModel)]="searchQuery"
+                (input)="applyFilter()"
+                placeholder="Search by name, email, phone, or age..."
+                class="search-input"
+            />
+        </div>
 
         <div class="card-header">
             <a routerLink="../../admin/dashboard"> Dashboard <span> <i class='bx bxs-home'></i> </span> </a>
         </div>
+    </div>
 
           <br>
 

@@ -19,6 +19,7 @@
 
             <div class="filters">
                 <div class="selects">
+                    <input type="text" placeholder="Search by name or title" (input)="onSearchChange($event)" class="search-input">
                     <select id="filter-category" (change)="onCategoryChange($event)">
                         <option selected value=""> All Category </option>
                         <option value="Compost">Compost</option>

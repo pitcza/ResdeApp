@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class UsersComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['name', 'email', 'phone', 'badge', 'age', 'action'];
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
+  searchQuery: string = '';
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   
@@ -21,6 +22,16 @@ export class UsersComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.fetchUsers();  // Fetch the users when the component initializes
+    this.filteredDataSource.filterPredicate = (data: TableElement, filter: string) => {
+      const searchTerms = filter.toLowerCase();
+      return (
+        (data.fname?.toLowerCase().includes(searchTerms) || false) ||
+        (data.lname?.toLowerCase().includes(searchTerms) || false) ||
+        (data.email?.toLowerCase().includes(searchTerms) || false) ||
+        (data.phone?.toLowerCase().includes(searchTerms) || false) ||
+        (data.age?.toString().includes(searchTerms) || false)
+      );
+    };
   }
 
   ngAfterViewInit(): void {
@@ -56,7 +67,12 @@ export class UsersComponent implements AfterViewInit, OnInit {
       }
     );
   }  
+  // Apply filter based on search query
+  applyFilter(): void {
+    this.filteredDataSource.filter = this.searchQuery.trim().toLowerCase();
+  }
 
+  
   removeUser(userId: number): void {
     // Show confirmation dialog before deleting
     Swal.fire({
@@ -106,5 +122,6 @@ export interface TableElement {
   email?: string;
   phone?: string;
   badge?: string;
+  age?: number;
   id: number;
 }

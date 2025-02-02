@@ -9,6 +9,9 @@
 
     <div class="table-content">
         <div class="filters">
+            <!-- search bar -->
+            <input class="search-input"ype="text" id="search" placeholder="Search by Name or Title" (input)="onSearchChange($event)">
+            
             <div class="data-filter">
                 <!-- <h2> Filter Category: </h2> -->
                 <select id="filter-category" (change)="onCategoryChange($event)">
