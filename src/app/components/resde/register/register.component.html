@@ -162,4 +162,27 @@
               </form>
         </div>
     </div>
+
+
+    <!-- Email Verification Popup -->
+    <div *ngIf="isPopupVisible" class="popup-overlay" (click)="cancelEmailVerification()">
+      <div class="popup-container" (click)="$event.stopPropagation()">
+        <div class="popup-content">
+          <h2>Verify Your Email</h2>
+          <p>A verification code has been sent to your email: <strong>{{ registerData.email }}</strong></p>
+          <p>Check your inbox and enter the code below.</p>
+          
+          <!-- Verification input -->
+          <input type="text" [(ngModel)]="verificationCode" placeholder="Enter Code" required />
+
+          <!-- Redirect to email link -->
+          <p>If you didn't receive the email, check your spam folder or <a [href]="getMailProviderUrl(registerData.email)" target="_blank">go to your email inbox</a>.</p>
+
+          <div class="buttons">
+              <button class="cancel-btn" (click)="cancelEmailVerification()">Cancel</button>
+              <button class="submit-btn" (click)="verifyEmail(verificationCode)">Verify</button>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>

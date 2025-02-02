@@ -146,8 +146,10 @@ export class RegisterComponent {
     private as: AuthserviceService
   ) {}
 
+  verificationCode: string = '';
   passwordVisible = false;
   confirmPasswordVisible = false;
+  isPopupVisible = false;
 
   // method to toggle the password visibility
   togglePasswordVisibility() {
@@ -332,6 +334,15 @@ export class RegisterComponent {
       });
       return; // Stop form submission if privacy is not checked
     }
+
+    Swal.fire({
+      title: 'Registering...',
+      text: 'Please wait while we process your registration.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
   
     const formData = new FormData();
   
@@ -343,28 +354,12 @@ export class RegisterComponent {
   
     this.as.register(formData).subscribe(
       (response: any) => {
-        // Handle successful registration
-        console.log('Registration successful:', response);
-        this.router.navigate(['/resIt/login-to-resIt']); // Redirect after successful registration
-    
-        Swal.fire({
-          title: "Registration Successful!",
-          text: "You can now login to your Re'sIt account.",
-          icon: "success",
-          iconColor: '#689f7a',
-          confirmButtonText: 'Close',
-          confirmButtonColor: "#7f7f7f",
-          timer: 5000,
-          scrollbarPadding: false,
-          willOpen: () => {
-            document.body.style.overflowY = 'scroll';
-          },
-          willClose: () => {
-            document.body.style.overflowY = 'scroll';
-          }
-        });
+        Swal.close();
+        // Show the email verification popup when successfully registered
+        this.isPopupVisible = true;
       },
       (error: any) => {
+        Swal.close();
         if (error.status === 0) {
           Swal.fire({
             title: "No Internet Connection",
@@ -384,7 +379,6 @@ export class RegisterComponent {
             timer: 5000
           });
         } else {
-          // ❌ Other registration failure
           Swal.fire({
             title: "Registration Failed",
             text: "An unexpected error occurred.",
@@ -398,62 +392,146 @@ export class RegisterComponent {
     );
     
   }
-  
 
-  // // VIEWING TERMS AND CONDITIONS
-  // viewTerms() {
-  //   if (this.dialog) {
-  //     this.dialog.open(TermsConditionsComponent)
-  //   } else {
-  //     console.error('Terms and conditions dialog not found');
-  //   }
-  // }
-
-  // // VIEWING PRIVACY POLICY
-  // viewPolicy() {
-  //   if (this.dialog) {
-  //     this.dialog.open(PrivacypolicyComponent)
-  //   } else {
-  //     console.error('Privacy policy dialog not found');
-  //   }
-  // }
-
-
-      // Open Terms and Conditions modal
-      viewTerms() {
-        const dialogRef = this.dialog.open(TermsConditionsComponent);
-        dialogRef.componentInstance.agreed.subscribe(() => {
-            this.agreedToTerms = true; // Mark terms as agreed
-            this.updatePrivacyCheckbox(); // Update the checkbox state
-        });
-        dialogRef.componentInstance.disagreed.subscribe(() => {
-          this.agreedToTerms = false; // Mark terms as disagreed
-          this.updatePrivacyCheckbox(); // Update the checkbox state
-      });
-    }
-
-    // Open Privacy Policy modal
-    viewPolicy() {
-        const dialogRef = this.dialog.open(PrivacypolicyComponent);
-        dialogRef.componentInstance.agreed.subscribe(() => {
-            this.agreedToPrivacy = true; // Mark privacy policy as agreed
-            this.updatePrivacyCheckbox(); // Update the checkbox state
-        });
-        dialogRef.componentInstance.disagreed.subscribe(() => {
-          this.agreedToPrivacy = false; // Mark privacy policy as disagreed
-          this.updatePrivacyCheckbox(); // Update the checkbox state
-        });
-    }
-
-        // Update the privacy checkbox state
-        updatePrivacyCheckbox() {
-          this.registerData.privacy = this.agreedToTerms && this.agreedToPrivacy; // Checkbox is checked only if both are agreed
+  // Method to handle email verification
+  verifyEmail(code: string) {
+    Swal.fire({
+      title: 'Verifying Email...',
+      text: 'Please wait while we verify your email.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
       }
+    });
   
-      // Show a notice about the agreement status
-      get agreementNotice(): string {
-          const totalAgreements = 2;
-          const agreedCount = (this.agreedToTerms ? 1 : 0) + (this.agreedToPrivacy ? 1 : 0);
-          return `You have agreed to ${agreedCount}/${totalAgreements} agreements.`;
+    this.as.verifyEmailWithCode(this.registerData.email, code).subscribe(
+      (response: any) => {
+        Swal.close();
+        Swal.fire({
+          title: "Email Verified!",
+          text: "You can now login to your Re'sIt account.",
+          icon: "success",
+          iconColor: '#689f7a',
+          confirmButtonText: 'Close',
+          confirmButtonColor: "#7f7f7f",
+          timer: 5000,
+          scrollbarPadding: false,
+          willOpen: () => {
+            document.body.style.overflowY = 'scroll';
+          },
+          willClose: () => {
+            document.body.style.overflowY = 'scroll';
+          }
+        });
+        this.router.navigate(['/resIt/login-to-resIt']); // Redirect after successful verification
+      },
+      (error: any) => {
+        Swal.close();
+        Swal.fire({
+          title: "Verifying Failed",
+          text: "An unexpected error occurred.",
+          icon: "error",
+          confirmButtonText: 'OK',
+          confirmButtonColor: "#7f7f7f",
+          timer: 5000
+        });
       }
+    );
   }
+
+  getMailProviderUrl(email: string): string {
+    const domain = email.split('@')[1];
+    
+    switch (domain) {
+      case 'gmail.com':
+        return 'https://mail.google.com';
+      case 'yahoo.com':
+        return 'https://mail.yahoo.com';
+      case 'outlook.com':
+        return 'https://outlook.live.com';
+      default:
+        return 'https://www.' + domain;
+    }
+  }
+  
+  // Email verification cancellation logic
+  cancelEmailVerification() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will cancel your registration.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it',
+      confirmButtonColor: '#C14141',
+      cancelButtonColor: '#7f7f7f',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Call the AuthserviceService to delete the data
+        this.as.cancelRegistration(this.registerData.email).subscribe(
+          () => {
+            Swal.fire({
+              title: 'Verification Canceled!',
+              text: 'Your registration information has been deleted.',
+              icon: 'success',
+              showConfirmButton: true,
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f'
+            });
+            // Navigate the user away or reset form
+            this.isPopupVisible = false;
+            // this.router.navigate(['/register']);
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was a problem deleting your information. Please try again.',
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#7f7f7f',
+            });
+          }
+        );
+      }
+    });
+  }
+
+  // Open Terms and Conditions modal
+  viewTerms() {
+    const dialogRef = this.dialog.open(TermsConditionsComponent);
+    dialogRef.componentInstance.agreed.subscribe(() => {
+        this.agreedToTerms = true; // Mark terms as agreed
+        this.updatePrivacyCheckbox(); // Update the checkbox state
+    });
+    dialogRef.componentInstance.disagreed.subscribe(() => {
+      this.agreedToTerms = false; // Mark terms as disagreed
+      this.updatePrivacyCheckbox(); // Update the checkbox state
+    });
+  }
+
+  // Open Privacy Policy modal
+  viewPolicy() {
+    const dialogRef = this.dialog.open(PrivacypolicyComponent);
+    dialogRef.componentInstance.agreed.subscribe(() => {
+        this.agreedToPrivacy = true; // Mark privacy policy as agreed
+        this.updatePrivacyCheckbox(); // Update the checkbox state
+    });
+    dialogRef.componentInstance.disagreed.subscribe(() => {
+      this.agreedToPrivacy = false; // Mark privacy policy as disagreed
+      this.updatePrivacyCheckbox(); // Update the checkbox state
+    });
+  }
+
+  // Update the privacy checkbox state
+  updatePrivacyCheckbox() {
+    this.registerData.privacy = this.agreedToTerms && this.agreedToPrivacy; // Checkbox is checked only if both are agreed
+  }
+
+  // Show a notice about the agreement status
+  get agreementNotice(): string {
+    const totalAgreements = 2;
+    const agreedCount = (this.agreedToTerms ? 1 : 0) + (this.agreedToPrivacy ? 1 : 0);
+    return `You have agreed to ${agreedCount}/${totalAgreements} agreements.`;
+  }
+}

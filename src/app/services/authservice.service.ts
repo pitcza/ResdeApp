@@ -66,8 +66,76 @@ export class AuthserviceService{
   }
 
   public register(formData: FormData): Observable<any> {
-    return this.http.post(this.url + 'register', formData);
+    return this.http.post(this.url + 'register', formData).pipe(
+      tap((res: any) => {
+        if (res.success) {
+          // Once registration is successful, trigger email verification
+          this.triggerEmailVerification(formData.get('email') as string);
+        }
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
   }
+
+  private triggerEmailVerification(email: string) {
+    // Send the email address to the backend for verification
+    this.http.post(`${this.url}verify-email-with-code`, { email }).subscribe(
+      (response) => {
+        console.log('Verification email sent successfully:', response);
+        // Optionally, you can handle the response and inform the user
+      },
+      (error) => {
+        console.error('Error sending verification email:', error);
+        // Optionally, handle the error, e.g., show an alert to the user
+      }
+    );
+  }
+
+  public verifyEmailWithCode(email: string, verificationCode: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('auth-token')}` // You can change this based on where you're storing the token
+    });
+  
+    const payload = { email, verification_code: verificationCode };
+  
+    return this.http.post<any>(this.url + 'verify-email-with-code', payload, { headers }).pipe(
+      tap((res) => {
+        console.log('Email verified successfully:', res);
+      }),
+      catchError(error => {
+        if (error.status === 400 && error.error) {
+          return throwError({ message: 'Invalid or expired verification code.' });
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  public cancelRegistration(email: string): Observable<any> {
+    // Create the headers if needed
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+  
+    // Send a DELETE request to the API to cancel the registration
+    return this.http.delete(this.url + 'cancel-registration', {
+      headers: headers,
+      body: { email }
+    }).pipe(
+      tap((res: any) => {
+        console.log('Registration canceled successfully:', res);
+      }),
+      catchError((error) => {
+        console.error('Error canceling registration:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+  
+  
 
   updateUser(formData: FormData): Observable<any> {
       const headers = new HttpHeaders({
