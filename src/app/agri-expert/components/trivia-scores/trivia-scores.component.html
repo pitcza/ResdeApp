@@ -5,16 +5,28 @@
 
   <div class="table-content">
     <div class="table-head">
+      <!-- Search Bar -->
+      <div class="data-search">
+        <input 
+          type="text" 
+          placeholder="Search by Name, Phone#, or Email" 
+          [(ngModel)]="searchText" 
+          (input)="applyFilters()"
+          class="search-input"
+        />
+      </div>
+
+      <!-- Score Filter -->
       <div class="data-filter">
-        <select id="filter-category" >
-          <option selected value="">All Users</option>
-          <option *ngFor="let user of uniqueUsers" [value]="user">{{ user }}</option>
+        <select id="filter-category" [(ngModel)]="selectedScore" (change)="applyFilters()">
+          <option value="">All Scores</option>
+          <option *ngFor="let score of uniqueScores" [value]="score">{{ score }}</option>
         </select>
       </div>
     </div>
 
     <div class="overflow">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <table mat-table [dataSource]="filteredScores" class="mat-elevation-z8">
         <!-- Username Column -->
         <ng-container matColumnDef="username">
           <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -27,14 +39,14 @@
           <td mat-cell *matCellDef="let score">{{ score.correct }}</td>
         </ng-container>
 
-        <!-- Trivia ID Column -->
-        <ng-container matColumnDef="Phone Number">
+        <!-- Phone Number Column -->
+        <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef>Phone Number</th>
           <td mat-cell *matCellDef="let score">{{ score.phone || 'N/A' }}</td>
         </ng-container>
 
-        <!-- Question Column -->
-        <ng-container matColumnDef="Street">
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef>Email</th>
           <td mat-cell *matCellDef="let score">{{ score.email }}</td>
         </ng-container>

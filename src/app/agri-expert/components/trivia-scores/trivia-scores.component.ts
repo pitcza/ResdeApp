@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { AdminDataService } from '../../../services/admin-data.service';
 
 @Component({
@@ -9,15 +8,20 @@ import { AdminDataService } from '../../../services/admin-data.service';
 })
 export class TriviaScoresComponent implements OnInit {
   @Input() scores: TriviaScore[] = [];
-
-  displayedColumns: string[] = ['username', 'score', 'Phone Number', 'Street'];
+  
+  displayedColumns: string[] = ['username', 'score', 'phone', 'email'];
   dataSource: TriviaScore[] = [];
   uniqueUsers: string[] = [];
+  uniqueScores: number[] = [];
+  
+  searchText: string = '';
+  selectedScore: number | string = '';
+
+  filteredScores: TriviaScore[] = [];
 
   constructor(private as: AdminDataService) {}
 
   ngOnInit() {
-    // this.fetchUserScore();
     this.fetchUsersAndScores();
   }
 
@@ -55,9 +59,12 @@ export class TriviaScoresComponent implements OnInit {
             }) || [];
   
             this.scores.sort((a, b) => b.correct - a.correct);
-  
+
             this.dataSource = this.scores;
             this.uniqueUsers = [...new Set(this.scores.map(score => score.user_name))]; 
+            this.uniqueScores = [...new Set(this.scores.map(score => score.correct))];
+            
+            this.applyFilters(); // Apply filters initially
           },
           (error) => {
             console.error('Error fetching scores:', error);
@@ -69,32 +76,35 @@ export class TriviaScoresComponent implements OnInit {
       }
     );
   }
-  
-  
 
-  // fetchUserScore() {
-  //   this.as.userScores().subscribe(
-  //     (response) => {
-  //       this.scores = response?.users?.map((user: any) => ({
-  //         user_name: user.user_name,
-  //         triviaId: user.user_id, 
-  //         question: 'N/A', 
-  //         correct: user.total_score
-  //       })) || [];
+  applyFilters(): void {
+    let filteredData = this.scores;
 
-  //       this.dataSource = this.scores;
-  //       this.uniqueUsers = [...new Set(this.scores.map(score => score.user_name))]; 
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching scores:', error);
-  //     }
-  //   );
-  // }
+    // Filter by search text
+    if (this.searchText) {
+      filteredData = filteredData.filter(score =>
+        score.user_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        score.phone.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        score.email.toLowerCase().includes(this.searchText.toLowerCase())
+      );
+    }
+
+    // Filter by score if selected
+    if (this.selectedScore) {
+      filteredData = filteredData.filter(score => score.correct === this.selectedScore);
+    }
+
+    // Update the displayed data
+    this.filteredScores = filteredData;
+  }
 }
 
 export interface TriviaScore {
   user_name: string;
   triviaId: number | string;
   question: string;
-  correct: number
+  correct: number;
+  phone: string;
+  email: string;
+  created_at: string;
 }
