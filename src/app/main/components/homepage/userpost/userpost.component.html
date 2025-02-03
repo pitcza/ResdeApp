@@ -1,15 +1,20 @@
 <div class="container">
     <div class="post-container">
         <div class="post-header">
-            <h1> {{ data.category }} </h1>
+            <h1> {{ data.user_name.split(' ')[0] }}'s Post </h1>
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
         <div class="post-content">
-            <h4 class="publisher">{{ data.user_name }}</h4>
-            <span class="date">{{ data.created_at | date: 'longDate' }} at {{ data.created_at | date: 'shortTime' }}</span>
             <div class="main-post">
-                <h2>{{ data.title }}</h2>
+                <div class="upper">
+                    <h2>{{ data.title }} <span class="category">{{ data.category }}</span></h2>
+                </div>
+                <p class="info">
+                    <span class="author">{{ data.user_name }} </span>
+                    <!-- <p class="category">{{ data.category }}</p> -->
+                    <span class="date"> • {{ data.created_at | date:'longDate' }} at {{ data.created_at | date: 'shortTime' }}</span>
+                </p>
                 <p [innerHTML]="formatContent(data.content)"></p>
                 <div class="post-img">
                     <img [src]="data.image || '../../../../../assets/images/NoImage.png'" alt="post image">

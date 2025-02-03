@@ -52,11 +52,28 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
           // Get the most recent images (assuming the API returns them in ascending order)
           this.landingPhotos = response[0].images.slice(-5).reverse(); 
         }
+        this.landingPhotos = this.getPhotos();
       },
       error: (error) => {
         console.error('Error fetching landing photos:', error);
+        this.landingPhotos = this.getPhotos();
       }
     });
+  }
+
+  getPhotos(): string[] {
+    const defaultPhotos = [
+      '../../../../assets/images/sample1.jpg',
+      '../../../../assets/images/sample2.jpg',
+      '../../../../assets/images/sample3.jpg',
+      '../../../../assets/images/sample4.jpg',
+      '../../../../assets/images/sample5.jpg'
+    ];
+
+    // Ensure we have at least 5 images, fill the rest with default ones
+    return this.landingPhotos.length >= 5
+      ? this.landingPhotos.slice(0, 5)
+      : [...this.landingPhotos, ...defaultPhotos.slice(this.landingPhotos.length)];
   }
 
   @HostListener('window:scroll', [])

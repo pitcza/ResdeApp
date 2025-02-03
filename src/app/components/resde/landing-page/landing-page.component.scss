@@ -64,6 +64,29 @@
         font-weight: 300;
         transition: all 0.3s ease-in-out;
     }
+
+    .route-btn {
+        width: 250px;
+        background-color: var(--extra-green);
+        height: 50px;
+        background: var(--extra-green);
+    }
+    
+    .route-btn:after {
+        background-color: var(--extra-hover);
+    }
+    
+    .route-btn:hover {
+        border: 1px solid var(--extra-hover);
+    }
+    
+    .route-btn:hover:before {
+        background-color: var(--extra-hover);
+    }
+    
+    .route-btn:hover:after {
+        background-color: var(--extra-hover);
+    }
 }
 
 /* RIGHT CONTENT */
@@ -76,8 +99,8 @@
 
     h2 {
         font-size: 24px;
-        padding-bottom: 220px;
-        margin-top: -120px;
+        padding-bottom: 270px;
+        margin-top: -140px;
         text-align: center;
         color: var(--dark-green);
     }
@@ -116,8 +139,8 @@
 
         .gallery-item {
             position: absolute;
-            height: 300px;
-            width: 430px;
+            height: 400px;
+            width: 530px;
             opacity: 0;
             transition: all 0.3s ease-in-out;
             z-index: 0;
@@ -132,8 +155,8 @@
         }
 
         .gallery-item-2, .gallery-item-4 {
-            height: 350px;
-            width: 480px;
+            height: 450px;
+            width: 580px;
             opacity: 0.8;
             z-index: 1;
         }
@@ -145,8 +168,8 @@
 
         .gallery-item-3 {
             box-shadow: -2px 5px 33px 6px rgba(0, 0, 0, 0.35);
-            height: 400px;
-            width: 530px;
+            height: 500px;
+            width: 630px;
             opacity: 1;
             left: 50%;
             transform: translateX(-50%);
@@ -255,8 +278,8 @@
         flex: 1;
         padding: 20px 20px 30px 20px;
         background-color: var(--bg-color);
-        border-top: 3px solid var(--secondary-green);
-        box-shadow:  10px 10px 20px #254935, -10px -10px 20px #2f5b41;
+        border-top: 3px solid var(--extra-green);
+        box-shadow:  10px 10px 20px #08184e, -10px -10px 20px #173190;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -301,7 +324,7 @@
                 transition: all 0.3s ease-in-out;
 
                 .highlight {
-                    color: var(--secondary-green);
+                    color: var(--extra-green);
                     font-weight: 700;
                 }
             }

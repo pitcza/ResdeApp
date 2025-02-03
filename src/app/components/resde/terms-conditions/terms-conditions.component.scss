@@ -14,7 +14,7 @@
 .dialog-container {
     display: flex;
     flex-direction: column;
-    background: var(--container);
+    background: var(--bg-color);
     width: 800px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     max-height: 90%;
@@ -95,7 +95,7 @@
 }
 
 .dialog-content::-webkit-scrollbar-track {
-    background-color: var(--white);
+    background-color: var(--bg-color);
 }
 
 .dialog-content::-webkit-scrollbar-thumb:hover {

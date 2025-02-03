@@ -104,8 +104,17 @@ export class AdminDataService {
   //   return this.Admin(`post/${id}/decline`, 'PATCH');
   // }
 
+  // for landing page photos
   inputPhotos(formData: FormData): Observable<any> {
     return this.Admin('addphotos', 'POST', formData);
+  }
+
+  getAllLandingPhotos(): Observable<any> {
+    return this.Admin('showallphotos');
+  }
+
+  deleteAllPhotos(ids: number[]): Observable<any> {
+    return this.Admin('deleteAllPhotos', 'POST', { ids });  // Use POST and send the ids in the body
   }
 
   uploadAnn(formData: FormData): Observable<any> {

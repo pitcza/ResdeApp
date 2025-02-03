@@ -130,7 +130,7 @@
           }
           
           .approved-status {
-            background-color: var(--secondary-green); /* Background for approved */
+            background-color: var(--primary-green); /* Background for approved */
           }
 
           .declined-status {
@@ -174,7 +174,7 @@
             }
             
             .published-time {
-                color: var(--secondary-green);
+                color: var(--primary-green);
                 font-weight: 500;
             }
         }

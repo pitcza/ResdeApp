@@ -38,11 +38,11 @@
     <!-- Left container -->
     <div class="left-container" *ngIf="selectedItem.title" style="--delay: 0.1s;">
       <h2 class="title">{{ selectedItem.title }}</h2>
-      <div class="info">
-        <p class="author">{{ selectedItem.author }} • </p>
-        <p class="category">{{ selectedItem.category }}</p>
-        <p class="date"> • {{ selectedItem.date | date:'longDate' }}</p>
-      </div>
+      <p class="info">
+        <span class="author">{{ selectedItem.author }} • </span>
+        <span class="category">{{ selectedItem.category }}</span>
+        <span class="date"> • {{ selectedItem.date | date:'longDate' }}</span>
+      </p>
       <p class="description" [innerHTML]="formatContent(selectedItem.description)"></p>
       <img [src]="selectedItem.image" alt="Image" class="main-image" />
 

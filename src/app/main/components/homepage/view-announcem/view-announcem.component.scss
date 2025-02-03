@@ -14,7 +14,7 @@
 .ev-container {
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--bg-color);
     width: 900px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     max-height: 90%;
@@ -24,7 +24,9 @@
 .ev-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 30px;
+    background-color: var(--primary-green);
     z-index: 1;
 
     .exit-button {
@@ -35,16 +37,15 @@
         border: none;
         font-size: 40px;
         cursor: pointer;
-        color: var(--gray-btn);
+        color: var(--bg-color);
     }
     
     .exit-button:hover {
-        color: var(--gray-hover);
+        color: var(--bg-dark);
     }
     
     h1 {
-        color: black;
-        padding-top: 5px;
+        color: white;
         font-weight: 700;
         font-size: 25px;
         text-align: left;
@@ -54,14 +55,15 @@
 // BODY CONTENT //
 .ev-content {
     display: flex;
+    flex-direction: column;
     gap: 30px;
-    overflow-y: auto;
     width: 100%;
     padding: 30px;
+    overflow-y: auto;
 
     .ev-img {
-        height: 300px;
-        width: 300px;
+        height: auto;
+        width: 100%;
         background-color: #929292;
         cursor: pointer;
 
@@ -74,7 +76,6 @@
     }
 
     .ev-details {
-        flex-basis: 60%;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -86,7 +87,8 @@
 
         p {
             font-size: 16px;
-            padding: 5px 0;
+            padding-top: 15px;
+            margin-bottom: -10px;
         }
 
         .date {
@@ -168,9 +170,6 @@
     }
 
     .ev-content {
-        display: flex;
-        flex-direction: column-reverse;
-
         .ev-details {
             h4 { 
                 font-size: 20px; 

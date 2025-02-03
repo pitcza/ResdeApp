@@ -1,26 +1,24 @@
 :root {
-    --primary-green: #4d745a;
-    --primary-hover: #446750;
-    --secondary-green: #689f7a;
-    --secondary-hover: #568b67;
-    --dark-green: #2a523b;
-    --dark-hover: #214430;
+    --primary-green: #266CA9;
+    --primary-hover: #19609d;
+    --secondary-green: #81C6EF;
+    --secondary-hover: #5daad7;
+    --dark-green: #0F2573;
+    --dark-hover: #091e68;
 
-    // NEW PALETTE
-    --primary-blue: #4F7CBC;
-    --secondary-blue: #305992;
-    --dark-blue: #123b5d;
+    --extra-green: #689F7A;
+    --extra-hover: #568b67;
 
-    --bg-color: #EDE6DE;
-    --bg-light: #F9F6F3;
-    --bg-dark: #E0D4C8;
+    --bg-color: #F2F2F2;
+    --bg-light: #FEFEFE;
+    --bg-dark: #DFDFDF;
 
-    --red-btn: #C14141;
+    --red-btn: #cc4646;
     --red-hover: #A93636;
     --gray-btn: #7f7f7f;
     --gray-hover: #6d6d6d;
     --white: #EAEAEA;
-    --white-hover: #e7e7e7;
+    --white-hover: #EAEAEA;
 
     --container: #D6CABC;
     --cont-input: #F8F6F4;
@@ -546,13 +544,14 @@ table tr td:last-child {
     overflow: visible;
 }
 
-.actions .edit, .actions .delete, .actions .view {
+.actions .edit, .actions .delete, .actions .view, .forlanding #history {
     position: relative;
     overflow: visible;
 }
 
 .actions .tooltiptext,
-.exit-button .exit-tooltip {
+.exit-button .exit-tooltip,
+.forlanding .tooltiptext {
     font-family: 'Poppins';
     position: absolute;
     top: 120%;
@@ -566,8 +565,12 @@ table tr td:last-child {
     font-size: 14px;
     border-radius: 4px;
     transition: opacity 0.3s, visibility 0.3s, top 0.3s, background 0.3s;
-    z-index: 1;
+    z-index: 3;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.forlanding .tooltiptext {
+    width: 200px;
 }
 
 .logout .logout-tooltip {
@@ -591,7 +594,8 @@ table tr td:last-child {
 .delete:hover .tooltiptext,
 .view:hover .tooltiptext,
 .exit-button:hover .exit-tooltip,
-.logout:hover .logout-tooltip {
+.logout:hover .logout-tooltip,
+#history:hover .tooltiptext {
     top: 130%;
     opacity: 1;
     visibility: visible;

@@ -47,10 +47,9 @@
   p { font-size: 16px; }
 
   .info {
-    display: flex;
-    gap: 5px;
     margin-bottom: 25px;
-    p { font-size: 13px; }
+
+    span { font-size: 13px; }
 
     .category {
       background-color: #e4e4e4;
@@ -82,7 +81,7 @@
     border-radius: 5px;
     display: flex;
     gap: 20px;
-    border-top: 3px solid var(--secondary-green);
+    border-top: 3px solid var(--secondary-hover);
     cursor: pointer;
 
     opacity: 0;
@@ -135,7 +134,7 @@
     }
 
     .category {
-      background-color:var(--secondary-green);
+      background-color:var(--secondary-hover);
       color: white;
       font-family: 'Poppins';
       border-radius: 5px;
@@ -223,6 +222,7 @@
         width: 100%;
         height: 100%;
         background-color: white;
+        border-top: 3px solid var(--secondary-green);
         padding: 30px;
         border-radius: 5px;
         
@@ -300,10 +300,8 @@
         p { font-size: 14px; }
     
         .info {
-            display: flex;
-            gap: 5px;
             margin-bottom: 25px;
-            p { font-size: 12px; }
+            span { font-size: 12px; }
         }
     
         img {

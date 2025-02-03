@@ -12,7 +12,8 @@ import { AllPostModule } from './components/all-post/all-post.module';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UsersComponent } from './components/users/users.component';
-import { DisplayImagesComponent } from './components/display-images/display-images.component';
+import { DisplayImagesComponent } from './components/forlandingphotos/display-images/display-images.component';
+import { ImagesHistoryComponent } from './components/forlandingphotos/images-history/images-history.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { DisplayImagesComponent } from './components/display-images/display-imag
     AnnouncementComponent,
     ReportsComponent,
     UsersComponent,
-    DisplayImagesComponent
+    DisplayImagesComponent,
+    ImagesHistoryComponent
   ],
   imports: [
     CommonModule,

@@ -2,8 +2,14 @@
     <div class="head">
         <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
         <h1> Dashboard </h1>
-        <div class="route-btn" (click)="inputPhotos()">
-            <i class='bx bx-image-add'></i> <a> Customize Landing Page Photos </a>
+        <div class="forlanding">
+            <div id="history" (click)="photosHistory()">
+                <i class='bx bx-history'></i>
+                <span class="tooltiptext"> Previous landing page photos uploaded. </span>
+            </div>
+            <div class="route-btn" (click)="inputPhotos()">
+                <i class='bx bx-image-add'></i> <a> Customize Landing Page Photos </a>
+            </div>
         </div>
     </div>
     <div class="cards">

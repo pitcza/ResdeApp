@@ -3,8 +3,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdminDataService } from '../../../services/admin-data.service';
 import { Chart } from 'chart.js/auto';
 import { MatPaginator } from '@angular/material/paginator';
-import { DisplayImagesComponent } from '../display-images/display-images.component';
+import { DisplayImagesComponent } from '../forlandingphotos/display-images/display-images.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ImagesHistoryComponent } from '../forlandingphotos/images-history/images-history.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -57,12 +58,20 @@ export class DashboardComponent implements OnInit {
   }
 
   inputPhotos() {
-      if (this.dialog) {
-        this.dialog.open(DisplayImagesComponent)
-      } else {
-        console.error('Uploading form not found');
-      }
+    if (this.dialog) {
+      this.dialog.open(DisplayImagesComponent)
+    } else {
+      console.error('Uploading form not found');
     }
+  }
+
+  photosHistory() {
+    if (this.dialog) {
+      this.dialog.open(ImagesHistoryComponent)
+    } else {
+      console.error('Uploading form not found');
+    }
+  }
 
   ngOnInit(): void {
     this.getOldest();
