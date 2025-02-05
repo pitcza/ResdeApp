@@ -8,30 +8,28 @@
       </div>
   
       <div class="post-content">
-        <!-- Table to display images history -->
-        <table mat-table [dataSource]="imagesHistory" class="mat-elevation-z8">
-            <ng-container matColumnDef="created_at">
-                <th mat-header-cell *matHeaderCellDef>Date Uploaded</th>
-                <td mat-cell *matCellDef="let element">{{ element.created_at | date:'mediumDate' }}</td>
-              </ng-container>
-  
-          <ng-container matColumnDef="images">
-            <th mat-header-cell *matHeaderCellDef>Images</th>
-            <td mat-cell *matCellDef="let element">
-              <div *ngFor="let image of element.images">
-                <img [src]="image" alt="Image" width="50" height="50">
+        <div class="cards-container">
+          <p *ngIf="imagesHistory.length === 0" class="no-uploads-message">
+            No previous uploads.
+          </p>
+          
+          <div class="card" *ngFor="let element of imagesHistory">
+              <div class="card-header">
+                  <h3>{{ element.created_at | date:'mediumDate' }} at {{ element.created_at | date:'shortTime' }}</h3>
               </div>
-            </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element"> delete button here? hehe wait baka kasi hanapin saan napupunta ibang images </td>
-          </ng-container>
-  
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+              <div class="card-body">
+                  <div class="landing-images">
+                      <img *ngFor="let image of element.images" [src]="image" alt="Image">
+                  </div>
+              </div>
+              <div class="actions" id="uploads-actions">
+                <button class="delete" (click)="deletePhotoEntry(element.id)">
+                    <i class='bx bx-trash'></i>
+                    <span class="tooltiptext"> Delete </span>
+                </button>
+              </div>
+          </div>
+      </div>
       </div>
   
       <div class="post-footer">

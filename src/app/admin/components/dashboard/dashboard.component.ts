@@ -371,7 +371,7 @@ export class DashboardComponent implements OnInit {
             }
           });
   
-          this.oldestpending = posts.slice(0, 2);
+          this.oldestpending = posts.slice(0, 10);
   
           this.dataSource = new MatTableDataSource(this.oldestpending);
         } else {

@@ -113,6 +113,10 @@ export class AdminDataService {
     return this.Admin('showallphotos');
   }
 
+  deletePhotoById(id: number): Observable<any> {
+    return this.Admin(`deletephoto/${id}`, 'DELETE');
+  }
+
   deleteAllPhotos(ids: number[]): Observable<any> {
     return this.Admin('deleteAllPhotos', 'POST', { ids });  // Use POST and send the ids in the body
   }
@@ -121,6 +125,7 @@ export class AdminDataService {
     return this.Admin('announcements', 'POST', formData);
   }
 
+  // for announcements
   getAnn(params: { start_date: string; end_date: string }): Observable<any> {
     const queryParams = new HttpParams()
     .set('start_date', params.start_date)

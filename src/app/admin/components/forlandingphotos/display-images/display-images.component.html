@@ -8,23 +8,42 @@
         </div>
 
         <div class="post-content">
-            <p> Choose 5 images for landing page. (pasingit, di pa tapos mga ui about d2 sa landing page photos :>) </p>
+            <p> Select 5 images to display on the <span class="appname-font">Re’sIt</span> landing page. </p>
             <input type="file" (change)="onFileSelected($event)" multiple accept="image/*" [attr.max]="5" />
 
-            <!-- Display the latest uploaded images -->
-        <div class="latest-images-container" *ngIf="latestImages.length > 0">
-            <h2>Latest Uploaded Images:</h2>
-            <div class="image-list">
-                <div class="image-item" *ngFor="let image of latestImages">
-                    <img [src]="image" alt="Latest Uploaded Image" width="100%" />
+            <!-- Display Selected Image Previews -->
+            <div class="selected-images-container" *ngIf="selectedImages.length > 0">
+                <h2>Selected Images Preview:</h2>
+                <div class="image-list">
+                    <div class="image-item" *ngFor="let image of selectedImages">
+                        <img [src]="image" alt="Selected Image" width="100%" />
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Display the latest uploaded images -->
+            <div class="latest-images-container" *ngIf="latestImages.length > 0">
+                <div class="cont-header">
+                    <h2>Latest Uploaded Images:</h2>
+                    <p>{{ latestUploadDate }}</p>
+                </div>
+                <div class="image-list">
+                    <div class="image-item" *ngFor="let image of latestImages">
+                        <img [src]="image" alt="Latest Uploaded Image" width="100%" />
+                    </div>
+                </div>
+                <div class="actions" id="uploads-actions">
+                    <button class="delete" (click)="deleteLatestImages()">
+                        <i class='bx bx-trash'></i>
+                        <span class="tooltiptext"> Delete </span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="post-footer">
             <div class="buttons">
-                <input class="danger-btn" type="button" value="Remove All">
+                <!-- <input class="danger-btn" type="button" value="Remove All"> -->
                 <input class="submit-btn" type="button" value="Upload" (click)="uploadImages()">
             </div> 
         </div>

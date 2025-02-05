@@ -28,7 +28,6 @@
     padding: 20px 30px;
     background-color: var(--primary-green);
     z-index: 1;
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.192);
 
     .popup-head {
         h1 {
@@ -60,6 +59,75 @@
     overflow-y: auto;
     width: 100%;
     padding: 30px;
+
+    .cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .no-uploads-message {
+            text-align: center;
+            font-size: 18px;
+            color: #7f7f7f;
+            margin-top: 20px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            width: 100%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+
+            .card-header h3 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 500;
+                padding-left: 10px;
+                text-align: left;
+            }
+
+            .card-body {
+                .landing-images {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    justify-content: center;
+                    margin-top: 10px;
+                }
+                
+                .landing-images img {
+                    width: 150px;
+                    height: 100%;
+                    border-radius: 4px;
+                }
+            }
+
+            .actions {
+                margin-bottom: -9px;
+                margin-top: 4px;
+            }
+        }
+    }
+
+   
+
+        // .landing-images {
+        //     display: flex;
+        // flex-wrap: wrap;
+        // gap: 10px;
+
+        //     img {
+        //         object-fit: cover;
+        //         object-position: center;
+        //         align-content: center;
+        //         height: 150px;
+        //         width: 280px;
+        //         border-radius: 5px;
+        //     }
+        // }
+    
 }
 
 // SCROLLBAR //
