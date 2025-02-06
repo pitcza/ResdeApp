@@ -47,7 +47,7 @@ export class RegisterComponent {
   ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
 
    // Function to validate age
-   isAgeValid(): boolean {
+  isAgeValid(): boolean {
     const ageNumber = Number(this.registerData.age);
     return ageNumber >= 12 && ageNumber <= 100;
   }
@@ -165,27 +165,37 @@ export class RegisterComponent {
   onPhoneNumberInput(event: any): void {
     const allowedKeys = ['+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const input = event.target as HTMLInputElement;
-    const currentValue = input.value;
-  
+    let currentValue = input.value;
+
+    // Prevent input if it's not an allowed key
     if (!allowedKeys.includes(event.data)) {
-      event.preventDefault();
+        event.preventDefault();
+        return;
     }
-  
+
+    // Ensure the input starts with '+63 '
     if (!currentValue.startsWith('+63 ')) {
-      input.value = `+63 ${currentValue.replace(/^(\+63|0)?/, '')}`;
+        currentValue = `+63 ${currentValue.replace(/^(\+63|0)?/, '')}`;
     }
-  
-    const rawNumber = currentValue.slice(3).replace(/\D/g, ''); // Exclude '+63'
-  
-    // Format the number as XXX-XXX-XXXX
+
+    let rawNumber = currentValue.slice(4).replace(/\D/g, ''); // Exclude '+63 '
+
+    // Ensure the first digit after +63 is always '9'
+    if (rawNumber.length > 0 && rawNumber[0] !== '9') {
+        rawNumber = '9' + rawNumber.substring(1);
+    }
+
+    // Format the number as 9XX-XXX-XXXX
     let formattedNumber = '';
     if (rawNumber.length > 0) formattedNumber += rawNumber.slice(0, 3);
     if (rawNumber.length > 3) formattedNumber += '-' + rawNumber.slice(3, 6);
     if (rawNumber.length > 6) formattedNumber += '-' + rawNumber.slice(6, 10);
-  
+
     input.value = `+63 ${formattedNumber}`;
-  
-    this.phoneNumberInvalid = input.value.length !== 16;
+    this.registerData.phone_number = input.value; // Update registerData.phone_number
+
+    // Ensure the total length is 16 (including '+63 ')
+    this.phoneNumberInvalid = this.registerData.phone_number.length !== 16;
   }
   
   // password validations

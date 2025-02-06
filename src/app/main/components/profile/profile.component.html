@@ -21,65 +21,90 @@
                 <!-- EDIT PROFILE-->
                 <div class="container" id="content2" *ngIf="currentContent === 'content2'">
                     <div class="head">
-                        <h1> Edit Profile </h1>
+                        <h1>Edit Profile</h1>
                     </div>
-                    <form action="" class="form-field" [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                
+                    <form class="form-field" [formGroup]="userForm" (ngSubmit)="updateUserData()">
                         <div class="input-row">
-                            <div class="input-field">
-                                <label class="labelline"> First name </label>
-                                <input class="txt-field" type="text" name="firstname" formControlName="fname" placeholder="{{ user.fname }}">
-                            </div>
-                            <div class="input-field">
-                                <label class="labelline"> Last name </label>
-                                <input class="txt-field" type="text" name="lastname" formControlName="lname" placeholder="{{ user.lname }}">
-                            </div>
+                          <div class="input-field">
+                            <label class="labelline">First Name</label>
+                            <input class="txt-field" type="text" formControlName="fname">
+                          </div>
+                          <div class="input-field">
+                            <label class="labelline">Last Name</label>
+                            <input class="txt-field" type="text" formControlName="lname">
+                          </div>
                         </div>
             
                         <div class="input-row">
-                            <div class="input-field">
-                                <label class="labelline"> Email </label>
-                                <input class="txt-field" type="email" name="email" formControlName="email" placeholder="{{ user.email }}" >
-                            </div>
-                            <div class="input-field">
-                                <label class="labelline"> Phone Number </label>
-                                <input class="txt-field" type="text" name="phonenum" id="numberInput" formControlName="phone_number" placeholder="{{ user.phone_number }}" maxlength="16" (input)="onPhoneNumberInput($event)">
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-field">
-                                <label class="labelline"> Age </label>
-                                <select class="txt-field" formControlName="age">
-                                    <option value=""  disabled selected > Select your age </option>
-                                    <option *ngFor="let option of ages" [value]="option">{{ option }}</option>
-                                </select>
-                            </div>
-                            <div class="input-field">
-                                <label class="labelline"> Street </label>
-                                <select class="txt-field" formControlName="street">
-                                    <option value=""  disabled selected > Select Street </option>
-                                    <option *ngFor="let option of streets" [value]="option">{{ option }}</option>
-                                </select>
-                            </div>
+                          <div class="input-field">
+                            <label class="labelline">Email</label>
+                            <input class="txt-field" type="email" formControlName="email" [readonly]="true">
+                          </div>
+                          <div class="input-field">
+                            <label class="labelline">Phone Number</label>
+                            <input class="txt-field" type="text" formControlName="phone_number" id="numberInput" maxlength="16" (input)="onPhoneNumberInput($event)">
+                            <span class="errorMessage" *ngIf="userForm.get('phone_number')?.invalid && userForm.get('phone_number')?.touched">
+                                Phone number must be in the format: +63 XXX-XXX-XXXX.
+                            </span>
+                          </div>
                         </div>
             
                         <div class="input-row">
-                            <div class="input-field">
-                                <label class="labelline"> Barangay </label>
-                                <input class="txt-field" type="text" name="barangay" value="Gordon Heights"  formControlName="barangay" placeholder="{{ user.barangay}}">
-                            </div>
-                            <div class="input-field">
-                                <label class="labelline"> City </label>
-                                <input class="txt-field" type="text" name="city" value="Olongapo City"  formControlName="city" placeholder="{{ user.city }}">
-                            </div>
+                          <div class="input-field">
+                            <label class="labelline">Age</label>
+                            <input 
+                            type="text" 
+                            id="ageInput" 
+                            placeholder="Enter your age" 
+                            formControlName="age"
+                            name="age" 
+                            list="ageList"
+                            class="txt-field"
+                            required
+                            />
+                            <datalist id="ageList">
+                            <option *ngFor="let age of ages" [value]="age"></option>
+                            </datalist>
+                            <span class="errorMessage" *ngIf="userForm.get('age')?.invalid && userForm.get('age')?.touched">
+                                You must be at least 12 years old to have this account.
+                            </span>
+                          </div>
+                          <div class="input-field">
+                            <label class="labelline">Street</label>
+                            <input 
+                            type="text" 
+                            id="streetInput" 
+                            placeholder="Enter your street" 
+                            formControlName="street"
+                            name="street" 
+                            list="streetList"
+                            class="txt-field"
+                            required
+                            />
+                            <datalist id="streetList">
+                            <option *ngFor="let street of streets" [value]="street"></option>
+                            </datalist>
+                          </div>
+                        </div>
+            
+                        <div class="input-row">
+                          <div class="input-field">
+                            <label class="labelline">Barangay</label>
+                            <input class="txt-field" type="text" formControlName="barangay" [disabled]="true">
+                          </div>
+                          <div class="input-field">
+                            <label class="labelline">City</label>
+                            <input class="txt-field" type="text" formControlName="city" [disabled]="true">
+                          </div>
                         </div>
             
                         <div class="buttons">
-                            <input class="submit-btn" type="submit" value="Update Info" type="submit" [disabled]="updateForm.invalid">
+                          <button type="submit" class="submit-btn" [disabled]="userForm.pristine || userForm.invalid">Update Info</button>
                         </div>
-            
-                    </form>
+                      </form>
                 </div>
+                
 
                 <!-- CHANGE PASSWORD -->
                 <div class="container" id="content3" *ngIf="currentContent === 'content3'">

@@ -108,6 +108,16 @@
                     padding: 20px 10px 3px;
                     transition: all 0.5s ease-in-out;
                     background-color: var(--input-color);
+
+                    &:disabled {
+                        background-color: var(--input-bg);
+                        cursor: not-allowed;
+                    }
+
+                    &:read-only {
+                        background-color: var(--input-bg);
+                        cursor: default;
+                    }
                 }
 
                 .txt-field:hover {
@@ -206,6 +216,13 @@
 
 #posts {
     margin-top: 30px;
+}
+
+.errorMessage {
+    display: flex;
+    color: var(--red-btn);
+    font-size: 12px;
+    margin-left: 10px;
 }
 
 /* USER POST CONTAINER */

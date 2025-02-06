@@ -15,28 +15,27 @@ import { AdminDataService } from '../../../services/admin-data.service';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit{
-  // to store which content to show (default to 'content1')
   displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
   dataSource: any [] = [];
   id: any|string;
   element: any;
 
+  userPosts: any[] = [];
   postId!: number; // Holds the post ID
   totalLikes!: number; // Holds the total likes for the post
   post: any = {}; // Holds the post data
+  likesCount: any;
 
   isLoading = true;
   loaders = Array(5).fill(null);
 
-  likesCount: any;
-
   currentContent: string = 'content1';
   isMobile: boolean = false;
-  updateForm: FormGroup;
-  passForm: FormGroup
+  passForm: FormGroup;
+  userForm: FormGroup;
   user: any = {};
 
-  ages: number[] = Array.from({ length: 100 }, (_, i) => i + 1);
+  ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
   streets: string[] = [
     'Acacia St.',
     'Mercurio St.',
@@ -115,13 +114,9 @@ export class ProfileComponent implements OnInit{
     'Blk #30 / Waterdam Rd (Baba/Lower)',
     'Blk #31 / Waterdam Rd (Baba/Lower)'
   ];
-
-  initialUser: any = {}; // To store the initial user data
-
-  userPosts: any[] = []; // Define the userPosts array here
   
   ngOnInit(): void {
-    this.fetchUserPost();
+    this.fetchUserData();
     this.dataservice.getUserPosts().subscribe(
       (posts) => {
         this.userPosts = posts;
@@ -130,97 +125,205 @@ export class ProfileComponent implements OnInit{
         console.error('Error fetching user posts', error);
       }
     );
-    this.dataservice.getUser().subscribe(
-      (response) => {
-        this.user = response;
-        this.initialUser = { ...response };  // Store the initial data
-        this.updateForm.patchValue({
-          fname: this.user.fname,
-          lname: this.user.lname,
-          email: this.user.email,
-          phone_number: this.user.phone_number,
-          city: this.user.city,
-          barangay: this.user.barangay,
-          age: this.user.age,
-          street: this.user.street
-        });
-      },
-      (error) => {
-        console.error('Error fetching user data', error); 
-      }
-    );
     this.getUserTotalLikes()
   }
 
-  // phone number validations
-  phoneNumberInvalid: boolean = false;
+  constructor(
+    private authservice: AuthserviceService, 
+    private fb: FormBuilder,
+    private dataservice: DataserviceService,
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private AS: AdminDataService
+  ) {
+    this.checkIfMobile();
 
-  onPhoneNumberInput(event: any): void {
-    const allowedKeys = ['+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    const input = event.target as HTMLInputElement;
-    const currentValue = input.value;
-  
-    if (!allowedKeys.includes(event.data)) {
-      event.preventDefault();
-    }
-  
-    if (!currentValue.startsWith('+63 ')) {
-      input.value = `+63 ${currentValue.replace(/^(\+63|0)?/, '')}`;
-    }
-  
-    const rawNumber = currentValue.slice(3).replace(/\D/g, ''); // Exclude '+63'
-  
-    // Format the number as XXX-XXX-XXXX
-    let formattedNumber = '';
-    if (rawNumber.length > 0) formattedNumber += rawNumber.slice(0, 3);
-    if (rawNumber.length > 3) formattedNumber += '-' + rawNumber.slice(3, 6);
-    if (rawNumber.length > 6) formattedNumber += '-' + rawNumber.slice(6, 10);
-  
-    input.value = `+63 ${formattedNumber}`;
-  
-    this.phoneNumberInvalid = input.value.length !== 16;
+    this.userForm = this.fb.group({
+      fname: ['', Validators.required],
+      lname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, this.phoneValidator]],
+      age: ['', [Validators.required, this.ageValidator]],
+      street: ['', Validators.required],
+      barangay: [{ value: '', disabled: true }, Validators.required],
+      city: [{ value: '', disabled: true }, Validators.required]
+    });
+    this.fetchUserData();
+
+    this.passForm = this.fb.group({
+      currentPassword: ['', [Validators.required]],
+      new_password: ['', [Validators.required, Validators.minLength(8)]],
+      new_password_confirmation: ['', [Validators.required]],
+    }, {
+      validator: this.passwordMatchValidator, 
+    });
   }
 
-  constructor(
-      private authservice: AuthserviceService, 
-      private fb: FormBuilder,
-      private dataservice: DataserviceService,
-      private cdr: ChangeDetectorRef,
-      private dialog: MatDialog,
-      private AS: AdminDataService
-    ) {
-      this.checkIfMobile();
+  fetchUserData(): void {
+    this.isLoading = true;
 
-      this.updateForm = this.fb.group({
-        fname: ['', [Validators.required]],
-        lname: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
-        phone_number: ['', [Validators.pattern('^[0-9+()-\s]*$')]],
-        city: ['', [Validators.required]],
-        barangay: ['', [Validators.required]],
-        age: ['', [Validators.required]],
-        street: ['', [Validators.required]],
-      });
+    this.authservice.getUser().subscribe(
+        (response) => {
+            console.log('Response from API:', response);
 
-      this.passForm = this.fb.group({
-        currentPassword: ['', [Validators.required]],
-        new_password: ['', [Validators.required, Validators.minLength(8)]],
-        new_password_confirmation: ['', [Validators.required]],
-      }, {
-        validator: this.passwordMatchValidator, 
-      });
-      
+            if (response && response.user) {
+                const user = response.user;
+                this.user = user;
+
+                // Log user data before patching
+                console.log('User data from API:', user);
+
+                this.userForm.patchValue({
+                    fname: user.fname || '',
+                    lname: user.lname || '',
+                    email: user.email || '',
+                    phone_number: user.phone_number || '',
+                    age: user.age || '',
+                    street: user.street || '',
+                    barangay: user.barangay || '',
+                    city: user.city || ''
+                });
+
+                // 🔥 Log form value after patching
+                console.log('Form after patching:', this.userForm.value);
+
+                // Mark form as pristine to prevent unnecessary validation
+                this.userForm.markAsPristine();
+                this.userForm.markAsUntouched();
+
+                this.cdr.detectChanges(); // Ensure UI updates
+            } else {
+                console.warn('Unexpected response format:', response);
+            }
+
+            this.isLoading = false;
+        },
+        (error) => {
+            console.error('Error fetching user data:', error);
+            this.isLoading = false;
+            Swal.fire('Error', 'Failed to load user data.', 'error');
+        }
+    );
+  }
+
+  ageValidator(control: any): { [key: string]: boolean } | null {
+    const age = Number(control.value);
+    if (isNaN(age) || age < 12 || age > 100) {
+      return { invalidAge: true };
+    }
+    return null;
+  }
+
+  isAgeValid(): boolean {
+    return this.userForm.get('age')?.valid ?? false;
+  }
+
+  phoneValidator(control: any): { [key: string]: boolean } | null {
+    const phonePattern = /^\+63\s\d{3}-\d{3}-\d{4}$/; // +63 XXX-XXX-XXXX format
+    if (!phonePattern.test(control.value)) {
+      return { invalidPhone: true }; 
+    }
+    return null;
+  }
+  
+
+  // phone number validations
+  // phoneNumberInvalid: boolean = false;
+
+  onPhoneNumberInput(event: any): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+
+    if (value.startsWith('63')) {
+        value = value.substring(2); // Remove '63' if manually entered
+    } else if (value.startsWith('0')) {
+        value = value.substring(1); // Remove leading '0'
     }
 
-    passwordMatchValidator(group: FormGroup) {
-      const passwordControl = group.get('new_password');
-      const passwordConfirmationControl = group.get('new_password_confirmation');
-      
-      const new_password = passwordControl ? passwordControl.value : '';
-      const new_passwordConfirmation = passwordConfirmationControl ? passwordConfirmationControl.value : '';
-      
-      return new_password === new_passwordConfirmation ? null : { mismatch: true };
+    // Ensure the first digit after +63 is always '9'
+    if (value.length > 0 && value[0] !== '9') {
+        value = '9' + value.substring(1);
     }
+
+    // Format as +63 9XX-XXX-XXXX
+    let formattedNumber = '+63 ';
+    if (value.length > 0) formattedNumber += value.slice(0, 3);
+    if (value.length > 3) formattedNumber += '-' + value.slice(3, 6);
+    if (value.length > 6) formattedNumber += '-' + value.slice(6, 10);
+
+    input.value = formattedNumber;
+
+    this.userForm.controls['phone_number'].setValue(formattedNumber);
+    this.userForm.controls['phone_number'].updateValueAndValidity();
+  }
+
+  
+
+  updateUserData(): void {
+    if (this.userForm.valid) {
+      if (!this.userForm.dirty) {
+        Swal.fire('No Changes', 'No updates were made to your profile.', 'info');
+        return; // Prevent unnecessary API call
+      }
+  
+      Swal.fire({
+        title: 'Update Profile',
+        text: 'Are you sure you want to update your profile?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#7f7f7f',
+        confirmButtonText: 'Yes, update it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const userData = this.userForm.value;
+          console.log('Submitting Updated User Data:', userData);
+  
+          this.authservice.updateUser(userData).subscribe(
+            (response) => {
+              console.log('User data updated successfully:', response);
+              Swal.fire({
+                title: "Profile Updated!",
+                text: "Your profile has been updated successfully.",
+                icon: "success",
+                confirmButtonText: 'Close',
+                confirmButtonColor: "#7f7f7f",
+                timer: 5000,
+              });
+  
+              this.userForm.markAsPristine(); // Reset form state to disable button
+              this.userForm.markAsUntouched();
+            },
+            (error) => {
+              console.error('Error updating user data:', error);
+              Swal.fire('Error', 'There was a problem updating your profile.', 'error');
+            }
+          );
+        }
+      });
+    } else {
+      console.warn('Form is invalid:', this.userForm);
+      this.userForm.markAllAsTouched();
+    }
+  }
+  
+  
+  
+
+  
+  
+
+
+
+  passwordMatchValidator(group: FormGroup) {
+    const passwordControl = group.get('new_password');
+    const passwordConfirmationControl = group.get('new_password_confirmation');
+    
+    const new_password = passwordControl ? passwordControl.value : '';
+    const new_passwordConfirmation = passwordConfirmationControl ? passwordConfirmationControl.value : '';
+    
+    return new_password === new_passwordConfirmation ? null : { mismatch: true };
+  }
 
   // Check if the screen width is 480px or less
   @HostListener('window:resize', ['$event'])
@@ -245,59 +348,6 @@ export class ProfileComponent implements OnInit{
   showContent3() {
     this.currentContent = 'content3';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  onSubmit() {
-    if (this.updateForm.valid) {
-      const formData = this.updateForm.value;
-      formData.phone_number = formData.phone_number ? formData.phone_number.toString() : '';
-
-      // Compare form values with initial values
-      if (this.hasFormChanged(formData)) {
-        this.authservice.updateUser(formData).subscribe(
-          response => {
-            console.log('Update successful:', response);
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              icon: 'success',
-              iconColor: '#689f7a',
-              title: 'Your information updated successfully!',
-              showConfirmButton: false,
-              timer: 8000,
-              timerProgressBar: true,
-            });
-          },
-          error => {
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              icon: 'error',
-              title: 'Error updating the information.',
-              showConfirmButton: false,
-              timer: 5000,
-              timerProgressBar: true,
-            });
-          }
-        );
-      } else {
-        console.log('No changes detected, update skipped.');
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'warning',
-          title: 'You have no changes.',
-          showConfirmButton: false,
-          timer: 5000,
-          timerProgressBar: true,
-        });
-      }
-    }
-  }
-
-  // Function to compare form values with initial values
-  hasFormChanged(formData: any): boolean {
-    return Object.keys(formData).some(key => formData[key] !== this.initialUser[key]);
   }
 
   onPasswordChange() {

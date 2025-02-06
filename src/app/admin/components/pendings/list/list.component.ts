@@ -129,14 +129,14 @@ filterPosts() {
             this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
         
             Swal.fire({
-              title: "Post Approved!",
-              text: "The post has been approved.",
-              icon: "success",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777",
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'Post Approved!',
+              showConfirmButton: false,
               timer: 5000,
-              scrollbarPadding: false
-            });
+              timerProgressBar: true,
+          });
           },
           error: (err) => {
             Swal.fire({
@@ -176,15 +176,14 @@ filterPosts() {
           next: () => {
             this.dataSource.data = this.dataSource.data.filter(post => post.id !== id);
             this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
-
             Swal.fire({
-              title: "Post Declined!",
-              text: "The post has been declined.",
-              icon: "success",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777",
-              timer: 5000,
-              scrollbarPadding: false
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Post Declined!',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
             });
           },
           error: (err) => {

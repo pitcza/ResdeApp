@@ -133,16 +133,29 @@ export class AuthserviceService{
       })
     );
   }
-  
-  
-  
 
+  public getUser(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('auth-token')}`
+    });
+  
+    return this.http.get(this.url + 'getUser', { headers }).pipe(
+      tap((res: any) => {
+        console.log('User data fetched successfully:', res);
+      }),
+      catchError(error => {
+        console.error('Error fetching user data:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
   updateUser(formData: FormData): Observable<any> {
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      });
-
-      return this.http.post(this.url + 'update', formData, { headers });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('auth-token')}`
+    });
+  
+    return this.http.put(this.url + 'update', formData, { headers });
   }
 
   public verifyCurrentPassword(currentPassword: string): Observable<any> {
