@@ -178,6 +178,12 @@
           <!-- Redirect to email link -->
           <p>If you didn't receive the email, check your spam folder or <a [href]="getMailProviderUrl(registerData.email)" target="_blank">go to your email inbox</a>.</p>
 
+          <!-- New: Request another code button -->
+          <p>
+            Didn't get the code? 
+            <button (click)="resendVerificationEmail()" class="resend-btn">Request Another Code</button>
+          </p>
+
           <div class="buttons">
               <button class="cancel-btn" (click)="cancelEmailVerification()">Cancel</button>
               <button class="submit-btn" (click)="verifyEmail(verificationCode)">Verify</button>

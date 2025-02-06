@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthserviceService } from '../../../services/authservice.service';
 
@@ -43,10 +43,50 @@ export class RegisterComponent {
     password_confirmation: '',
     privacy: false
   };
-  errorMessages: string[] = [];
-  ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
 
-   // Function to validate age
+  ngOnInit() {
+    if (localStorage.getItem('registrationCanceled') === 'true') {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Your registration was not saved.',
+        showConfirmButton: false,
+        timer: 3000
+      });
+  
+      // Remove the flag so it doesn’t show on every reload
+      localStorage.removeItem('registrationCanceled');
+    }
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleRefresh(event: Event) {
+    if (this.isPopupVisible) {
+      event.preventDefault();
+      event.returnValue = true;
+
+      // ganito for dev?? sana gumana sa site, mawawala data sa database if nirefresh or leave page nang ndi ineenter code hehe
+      // fetch('https://api.resit.site/api/cancel-due-refresh',
+      fetch('http://127.0.0.1:8000/api/cancel-due-refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: this.registerData.email }),
+        keepalive: true // Ensures request completes before page unloads
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        localStorage.setItem('registrationCanceled', 'true'); // Set flag before refresh
+      })
+      .catch(error => console.error('Error deleting user:', error));
+    }
+  }
+
+  errorMessages: string[] = [];
+
+  // age validation
+  ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
   isAgeValid(): boolean {
     const ageNumber = Number(this.registerData.age);
     return ageNumber >= 12 && ageNumber <= 100;
@@ -55,7 +95,6 @@ export class RegisterComponent {
   validateAgeInput(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
   
-    // Allow only numbers (0-9) and backspace (8)
     if (charCode < 48 || charCode > 57) {
       event.preventDefault();
     }
@@ -192,7 +231,7 @@ export class RegisterComponent {
     if (rawNumber.length > 6) formattedNumber += '-' + rawNumber.slice(6, 10);
 
     input.value = `+63 ${formattedNumber}`;
-    this.registerData.phone_number = input.value; // Update registerData.phone_number
+    this.registerData.phone_number = input.value;
 
     // Ensure the total length is 16 (including '+63 ')
     this.phoneNumberInvalid = this.registerData.phone_number.length !== 16;
@@ -413,7 +452,7 @@ export class RegisterComponent {
         Swal.showLoading();
       }
     });
-  
+
     this.as.verifyEmailWithCode(this.registerData.email, code).subscribe(
       (response: any) => {
         Swal.close();
@@ -437,9 +476,60 @@ export class RegisterComponent {
       },
       (error: any) => {
         Swal.close();
+
+        // Check if the error message indicates an invalid code
+        if (error.status === 400 && error.error?.error === "Invalid verification code.") {
+          Swal.fire({
+            title: "Invalid Code!",
+            text: "Check your email again or request a new code.",
+            icon: "warning",
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#ff7043",
+            timer: 5000
+          });
+        } else {
+          Swal.fire({
+            title: "Verification Failed",
+            text: "An unexpected error occurred.",
+            icon: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#7f7f7f",
+            timer: 5000
+          });
+        }
+      }
+    );
+  }
+
+
+  // Function to resend the verification email
+  resendVerificationEmail() {
+    Swal.fire({
+      title: 'Sending Another Code...',
+      text: 'Please wait while we send your new verification code.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    this.as.resendVerificationEmail(this.registerData.email).subscribe(
+      (response: any) => {
+        Swal.close();
         Swal.fire({
-          title: "Verifying Failed",
-          text: "An unexpected error occurred.",
+          title: "Code Sent!",
+          text: "A new verification code has been sent to your email.",
+          icon: "success",
+          confirmButtonText: 'OK',
+          confirmButtonColor: "#7f7f7f",
+          timer: 5000
+        });
+      },
+      (error: any) => {
+        Swal.close();
+        Swal.fire({
+          title: "Error",
+          text: error.error.message || "Failed to resend verification email. Please try again.",
           icon: "error",
           confirmButtonText: 'OK',
           confirmButtonColor: "#7f7f7f",
@@ -448,6 +538,7 @@ export class RegisterComponent {
       }
     );
   }
+
 
   getMailProviderUrl(email: string): string {
     const domain = email.split('@')[1];
@@ -488,9 +579,7 @@ export class RegisterComponent {
               confirmButtonText: 'Close',
               confirmButtonColor: '#7f7f7f'
             });
-            // Navigate the user away or reset form
             this.isPopupVisible = false;
-            // this.router.navigate(['/register']);
           },
           (error) => {
             Swal.fire({

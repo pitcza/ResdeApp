@@ -350,3 +350,16 @@ input::-webkit-outer-spin-button {
         width: 100px;
     }
 }
+
+.resend-btn {
+    background: none;
+    border: none;
+    color: var(--primary-green);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.resend-btn:hover {
+    color: var(--primary-hover);
+}

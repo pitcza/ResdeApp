@@ -6,6 +6,24 @@
     overflow-x: hidden;
     overflow-y: hidden;
     height: 100vh;
+    background-image: url('../../../../assets/images/GH.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.content {
+    position: relative;
+    z-index: 2;
 }
 
 .left, .right {
@@ -36,10 +54,11 @@
             font-size: 200px;
             line-height: 200px;
             text-transform: uppercase;
-            color: var(--dark-green);
+            color: var(--secondary-green);
             transition: all 0.3s ease-in-out;
             font-weight: 700;
             margin-bottom: 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
         }
 
         .the3 {
@@ -49,9 +68,10 @@
                 font-weight: 600;
                 line-height: 53px;
                 text-transform: uppercase;
-                color: var(--dark-green);
+                color: var(--secondary-green);
                 transition: all 0.3s ease-in-out;
                 margin-bottom: 0;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
             }
         }
     }
@@ -62,30 +82,42 @@
         margin-top: 10px;
         text-transform: uppercase;
         font-weight: 300;
+        color: var(--bg-color);
+        letter-spacing: 0.7px;
         transition: all 0.3s ease-in-out;
+        z-index: 10;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
     }
 
     .route-btn {
         width: 250px;
-        background-color: var(--extra-green);
+        background-color: var(--primary-green);
         height: 50px;
-        background: var(--extra-green);
+        background: var(--primary-green);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+        a {
+            font-size: 20px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: white;
+        }
     }
     
     .route-btn:after {
-        background-color: var(--extra-hover);
+        background-color: var(--extra-green);
     }
     
     .route-btn:hover {
-        border: 1px solid var(--extra-hover);
+        border: 1px solid var(--extra-green);
     }
     
     .route-btn:hover:before {
-        background-color: var(--extra-hover);
+        background-color: var(--extra-green);
     }
     
     .route-btn:hover:after {
-        background-color: var(--extra-hover);
+        background-color: var(--extra-green);
     }
 }
 
@@ -102,7 +134,8 @@
         padding-bottom: 270px;
         margin-top: -140px;
         text-align: center;
-        color: var(--dark-green);
+        color: var(--secondary-green);
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
     }
 
     // .mobile { display: none; }
@@ -742,6 +775,10 @@ footer {
 
 // FIT DIN FOR MOBILE BROWSER
 @media (max-width: 500px) {
+    .overlay {
+        height: 107%;
+    }
+
     .spit-screen {
         display: flex;
         flex-direction: column;
@@ -788,7 +825,12 @@ footer {
             }
     
             .gallery-controls {
-                width: 100%;
+                width: 120%;
+
+                button {
+                    font-size: 26px;
+                    padding: 5px;
+                }
             }
         }
 

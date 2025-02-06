@@ -33,7 +33,7 @@ export class ResdeComponent {
     if (window.scrollY > 0) {
       bgElement.style.opacity = '0.9';
     } else {
-      bgElement.style.opacity = '0.0';
+      bgElement.style.opacity = '0.7';
     }
 
     // Ignore small scrolls

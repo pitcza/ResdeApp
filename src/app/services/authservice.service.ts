@@ -113,6 +113,10 @@ export class AuthserviceService{
     );
   }
 
+  resendVerificationEmail(email: string) {
+    return this.http.post(`${this.url}email/resend`, { email });
+  }
+
   public cancelRegistration(email: string): Observable<any> {
     // Create the headers if needed
     const headers = new HttpHeaders({

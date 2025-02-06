@@ -15,6 +15,15 @@
 }
 
 /* LEFT CONTENT */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
 .left {
     width: 60%;
     padding: 50px;
@@ -22,10 +31,17 @@
     background-size: cover;
     animation: fadeInLeft 0.8s forwards;
 
+    background-image: url('../../../../assets/images/GH.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 4;
+
     .container {
         text-align: center;
         --webkit-font-smoothing: antialiased;
         --moz-osx-font-smoothing: grayscale;
+        z-index: 5;
 
         img {
             width: 350px;
@@ -39,8 +55,8 @@
         }
 
         h1 {
-            color: var(--dark-hover);
-            // text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+            color: var(--secondary-green);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
             font-size: 50px;
             font-weight: 700;
             letter-spacing: 3.5px;
@@ -51,6 +67,8 @@
         p {
             font-weight: 400;
             font-size: 16px;
+            color: var(--bg-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
         }
     }
 }
@@ -60,6 +78,7 @@
     width: 40%;
     padding: 150px 50px 3px 50px;
     animation: popIn 0.5s forwards 0.5s;
+    z-index: 6;
 
     .appname {
         h2 {
@@ -212,6 +231,11 @@ a:hover { text-decoration: underline; }
     }
 
     /* LEFT SCREEN */
+    .overlay {
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+
     .left {
         height: 450px;
         width: 100%;
@@ -286,10 +310,15 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 500px) {
+    .overlay {
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
     .left {
         height: 500px;
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
         .container {
             img {
                 width: 170px;
