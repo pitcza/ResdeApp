@@ -1,12 +1,14 @@
 <div class="tabbed">
             <input type="radio" id="tab1" name="css-tabs" checked="checked">
             <input type="radio" id="tab2" name="css-tabs">
+            <input type="radio" id="tab3" name="css-tabs">
 
             <ul class="tabs">
-                <li class="tab"><label for="tab1">Top Posts</label></li>
-                <li class="tab"><label for="tab2">Most Liked</label></li>
+                <li class="tab"><label for="tab1">Most Talked about Issues</label></li>
+                <li class="tab"><label for="tab2">Top Posts</label></li>
+                <li class="tab"><label for="tab3">Most Liked</label></li>
             </ul>
-        
+
             <div class="tab-content" id="tab1">
                 <div class="tab-pane" id="tab1-content">
                     <div class="reports">
@@ -15,6 +17,74 @@
                             <h3>Report Table</h3>
                             <p>Users Top Posts</p>
 
+                            <div class="card-header"> 
+                                <button class="excel" mat-raised-button color="primary" (click)="exportToExcel()"><span> <i class='bx bx-download'></i> </span>Download</button>
+                            </div>
+
+                            <form>
+                                <div class="date-filter">
+                                  <div class="txt_field">
+                                    <label for="filter-from-date">From Date</label>
+                                    <input 
+                                      type="date" 
+                                      id="filter-from-date" 
+                                      (change)="onDateChange($event, 'from')" 
+                                      [value]="start_date" 
+                                    />
+                                  </div>
+                                  <div class="txt_field">
+                                    <label for="filter-to-date">To Date</label>
+                                    <input 
+                                      type="date" 
+                                      id="filter-to-date" 
+                                      (change)="onDateChange($event, 'to')" 
+                                      [value]="end_date" 
+                                    />
+                                  </div>
+                                </div>
+                              </form>
+                              
+                              <div>
+                                <table mat-table [dataSource]="category" class="mat-elevation-z8">
+                                
+                                  <ng-container matColumnDef="category">
+                                    <th mat-header-cell *matHeaderCellDef> Category </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.category || 'N/A'}} </td>
+                                  </ng-container>
+                                
+                                  <ng-container matColumnDef="total posts">
+                                    <th mat-header-cell *matHeaderCellDef> Total Posts </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+                                  </ng-container>
+                              
+                                  <tr mat-header-row *matHeaderRowDef="displayedColumnReport"></tr>
+                                  <tr mat-row *matRowDef="let row; columns: displayedColumnReport;"></tr>
+                                </table>
+                                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10]" showFirstLastButtons
+                                  aria-label="Select page of periodic elements">
+                                </mat-paginator>
+                              </div>
+                              
+
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        
+            <div class="tab-content" id="tab2">
+                <div class="tab-pane" id="tab2-content">
+                    <div class="reports">
+                       
+                        <div class="repcards right-card">
+                            <h3>Report Table</h3>
+                            <p>Users Top Posts</p>
+
+                            <div class="card-header"> 
+                                <button class="excel" mat-raised-button color="primary" (click)="exportToExcel1()"><span> <i class='bx bx-download'></i> </span>Download</button>
+                            </div>
+                           
                             <form>
                                 <div class="date-filter">
                                     <div class="txt_field">
@@ -27,7 +97,7 @@
                                     </div>
                                 </div>
                             </form>
-
+                            
                             <div>
                                 <table mat-table [dataSource]="reports" class="mat-elevation-z8">
                                 
@@ -68,14 +138,17 @@
                 </div>
             </div>
 
-
-            <div class="tab-content" id="tab2">
-                <div class="tab-pane" id="tab2-content">
+            <div class="tab-content" id="tab3">
+                <div class="tab-pane" id="tab4-content">
                     <div class="reports">
         
                         <div class="repcards right-card">
                             <h3>Report Table</h3>
                             <p>Most Liked Post</p>
+
+                            <div class="card-header"> 
+                                <button class="excel" mat-raised-button color="primary" (click)="exportToExcel2()"><span> <i class='bx bx-download'></i> </span>Download</button>
+                            </div>
 
                             <form>
                                 <div class="date-filter">
@@ -112,7 +185,7 @@
                                 
                                     <ng-container matColumnDef="badge">
                                         <th mat-header-cell *matHeaderCellDef> Badge </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.badge1}} </td>
+                                        <td mat-cell *matCellDef="let element"> {{element.badge}} </td>
                                     </ng-container>
                                 
                                     <tr mat-header-row *matHeaderRowDef="displayedColumnReport2"></tr>

@@ -26,9 +26,13 @@ export class DashboardComponent implements OnInit {
 
   reports: MatTableDataSource<any> = new MatTableDataSource();
   liked: MatTableDataSource<any> = new MatTableDataSource();
+  mostCategoriesData: any[] = [];
 
   pieChart1: any;
   pieChart2: any;
+  pieChart: any;
+  barChart: any;
+
   userNames: string[] = [];  // To store user names
   postCounts: number[] = [];  // To store post counts
   title: any;
@@ -40,7 +44,6 @@ export class DashboardComponent implements OnInit {
   filteredDataSource: TableElement[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-
   selectedFilter: string = '';  // Holds the selected filter value
   filterOptions: { label: string, value: string }[] = [
     { label: 'All Users', value: 'all' },
@@ -48,7 +51,6 @@ export class DashboardComponent implements OnInit {
     { label: 'Most Likes', value: 'mostLikes' },
   ];
 
-  
   constructor(
     private AS: AdminDataService,
     private dialog: MatDialog,
@@ -83,6 +85,7 @@ export class DashboardComponent implements OnInit {
     this.getUserTotalPosts(); 
     this.likedpost();
     this.likedposttable();
+    this.getmosttable();
   }
 
   ngAfterViewInit(): void {
@@ -97,6 +100,26 @@ export class DashboardComponent implements OnInit {
     // Detect changes after paginator assignment
     this.cdr.detectChanges();
   }
+
+  getmosttable(): void {
+    this.AS.total_post().subscribe(
+      (data: any) => {
+        console.log(data);
+        this.mostCategoriesData = data;  // Store the response data in the array
+  
+        // Extract categories and their counts directly
+        const categories = this.mostCategoriesData.map((item: any) => item.category);  // Category names
+        const counts = this.mostCategoriesData.map((item: any) => item.count);         // Post counts
+  
+        this.renderBarChart(categories, counts); 
+        this.cdr.detectChanges(); 
+      },
+      (error) => {
+        console.error('Error fetching most categories data:', error);  // Handle errors
+      }
+    );
+  }
+  
   
   getUserTotalPost(): void {
     this.AS.userTotalPost().subscribe(
@@ -151,6 +174,87 @@ export class DashboardComponent implements OnInit {
     );
   }
   
+  renderBarChart(categories: string[], counts: number[]): void {
+    const ctx = document.getElementById('barChart1') as HTMLCanvasElement;
+  
+    if (this.barChart) {
+      this.barChart.destroy();  
+    }
+  
+    this.barChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: categories,  
+        datasets: [
+          {
+            label: 'Total Posts Per Category',
+            data: counts,  
+            backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'], 
+            hoverBackgroundColor: ['#568b67', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40']
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                const value = tooltipItem.raw || 0;
+                return `${tooltipItem.label}: ${value} Posts`; 
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // renderBarChart(categories: string[], counts: number[]): void {
+  //   const ctx = document.getElementById('pieChart') as HTMLCanvasElement;
+  
+  //   if (this.pieChart) {
+  //     this.pieChart.destroy();  
+  //   }
+  
+  //   this.pieChart = new Chart(ctx, {
+  //     type: 'pie',
+  //     data: {
+  //       labels: categories,  
+  //       datasets: [
+  //         {
+  //           label: 'Total Posts Per Category',
+  //           data: counts,  
+  //           backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'], 
+  //           hoverBackgroundColor: ['#568b67', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40']
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       plugins: {
+  //         legend: {
+  //           display: true,
+  //           position: 'bottom'
+  //         },
+  //         tooltip: {
+  //           callbacks: {
+  //             label: function(tooltipItem) {
+  //               const value = tooltipItem.raw || 0;
+  //               return `${tooltipItem.label}: ${value} Posts`;  // Customize tooltip label
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+  
+
   renderPieChart(): void {
     const ctx = document.getElementById('pieChart1') as HTMLCanvasElement;
 

@@ -154,6 +154,20 @@ export class AdminDataService {
     return this.Admin('liketable')
   }
 
+  total_post():Observable<any> {
+    return this.Admin('mostCategories')
+  }
+
+  tableCategories(params: { start_date: string; end_date: string }): Observable<any> {
+    let queryParams = new HttpParams()
+    .set('start_date', params.start_date)
+    .set('end_date', params.end_date);
+    
+    return this.Admin('tableCategories', 'GET', { queryParams });
+  }
+  
+  
+  
   createQuestions(data: any): Observable<any>{
     return this.Admin('trivia/questions', 'POST', data)
   }
