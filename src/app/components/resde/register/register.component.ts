@@ -89,7 +89,7 @@ export class RegisterComponent {
   ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
   isAgeValid(): boolean {
     const ageNumber = Number(this.registerData.age);
-    return ageNumber >= 12 && ageNumber <= 100;
+    return ageNumber >= 12 && ageNumber <= 150;
   }
 
   validateAgeInput(event: KeyboardEvent) {
@@ -98,6 +98,15 @@ export class RegisterComponent {
     if (charCode < 48 || charCode > 57) {
       event.preventDefault();
     }
+  }
+
+  emailLabel: string = "Email"; // Default label
+  isMinor: boolean = false;
+
+  updateEmailLabel() {
+    const ageNumber = Number(this.registerData.age);
+    this.isMinor = ageNumber < 18;
+    this.emailLabel = this.isMinor ? "Parent's Email" : "Email";
   }
 
   streets: string[] = [
@@ -202,15 +211,11 @@ export class RegisterComponent {
   phoneNumberInvalid: boolean = false;
 
   onPhoneNumberInput(event: any): void {
-    const allowedKeys = ['+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const input = event.target as HTMLInputElement;
     let currentValue = input.value;
 
-    // Prevent input if it's not an allowed key
-    if (!allowedKeys.includes(event.data)) {
-        event.preventDefault();
-        return;
-    }
+    // Allow only numbers and '+'
+    currentValue = currentValue.replace(/[^0-9+]/g, '');
 
     // Ensure the input starts with '+63 '
     if (!currentValue.startsWith('+63 ')) {
@@ -219,21 +224,22 @@ export class RegisterComponent {
 
     let rawNumber = currentValue.slice(4).replace(/\D/g, ''); // Exclude '+63 '
 
-    // Ensure the first digit after +63 is always '9'
+    // Ensure the first digit after '+63 ' is always '9'
     if (rawNumber.length > 0 && rawNumber[0] !== '9') {
         rawNumber = '9' + rawNumber.substring(1);
     }
 
-    // Format the number as 9XX-XXX-XXXX
+    // Format as '9XX-XXX-XXXX'
     let formattedNumber = '';
     if (rawNumber.length > 0) formattedNumber += rawNumber.slice(0, 3);
     if (rawNumber.length > 3) formattedNumber += '-' + rawNumber.slice(3, 6);
     if (rawNumber.length > 6) formattedNumber += '-' + rawNumber.slice(6, 10);
 
+    // Set the formatted value back
     input.value = `+63 ${formattedNumber}`;
     this.registerData.phone_number = input.value;
 
-    // Ensure the total length is 16 (including '+63 ')
+    // Ensure the total length is exactly 16 characters (including '+63 ')
     this.phoneNumberInvalid = this.registerData.phone_number.length !== 16;
   }
   
@@ -301,8 +307,8 @@ export class RegisterComponent {
     // Validate age
     if (!this.isAgeValid()) {
       Swal.fire({
-        title: "Invalid Age",
-        text: "You must be at least 12 years old to register.",
+        title: "Age Restriction",
+        text: "Sorry, you must be at least 12 years old to proceed.",
         icon: "error",
         confirmButtonText: 'OK',
         confirmButtonColor: "#7f7f7f",
@@ -472,7 +478,7 @@ export class RegisterComponent {
             document.body.style.overflowY = 'scroll';
           }
         });
-        this.router.navigate(['/resIt/login-to-resIt']); // Redirect after successful verification
+        this.router.navigate(['/login-to-resIt']); // Redirect after successful verification
       },
       (error: any) => {
         Swal.close();

@@ -189,8 +189,8 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Total Posts Per Category',
             data: counts,  
-            backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'], 
-            hoverBackgroundColor: ['#568b67', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40']
+            backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'], 
+            hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D']
           }
         ]
       },
@@ -270,8 +270,8 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Total Posts Per User',
             data: this.postCounts,  
-            backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'], 
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'] 
+            backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'], 
+            hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D'] 
           }
         ]
       },
@@ -311,8 +311,8 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Likes Per Post',  
             data: likesCount, 
-            backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'] 
+            backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'], 
+            hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D']
           }
         ]
       },

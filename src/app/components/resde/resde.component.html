@@ -1,15 +1,15 @@
 <main>
     <div class="header" [ngClass]="{'hide-header': isHeaderHidden}">
-        <div class="bg" [ngClass]="{'hide': isLoginRoute}"></div>
+        <div class="bg"></div>
         <div class="resdeapp">
-            <img src="../../../../assets/logo/ResIt.png" [ngClass]="{'hide': isLoginRoute}">
-            <h1 [ngClass]="{'hide': isLoginRoute}"> Re’sIt </h1>
+            <img src="../../../../assets/logo/ResItLogo.png">
+            <h1> Re’sIt </h1>
         </div>
         <div class="pages">
             <a routerLink="resIt-app" routerLinkActive="active-link">
                 <h2> Home </h2>
             </a>
-            <a routerLink="login-to-resIt" routerLinkActive="active-link">
+            <a routerLink="/login-to-resIt" routerLinkActive="active-link">
                 <h2> Login </h2>
             </a>
         </div>

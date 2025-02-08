@@ -5,161 +5,153 @@
 
         <!-- ACCOUNT REGISTRATION FORM -->
         <div class="info">
-            <form (ngSubmit)="onRegister()" #registerForm="ngForm">
-                <h1>Create Account</h1>
-              
-                <!-- USER INFORMATION -->
-                <div class="input-row">
-                  <div class="input-group">
-                    <label for="inputfield">First Name</label>
-                    <input type="text" id="inputfield" placeholder="First Name" [(ngModel)]="registerData.fname" name="fname" required>
-                    <span class="errorMessage" *ngIf="registerForm.controls['fname']?.invalid && registerForm.controls['fname']?.touched">
-                        First Name is required.
-                    </span>
-                  </div>
-                  <div class="input-group">
-                    <label for="inputfield">Last Name</label>
-                    <input type="text" id="inputfield" placeholder="Last Name" [(ngModel)]="registerData.lname" name="lname" required>
-                    <span class="errorMessage" *ngIf="registerForm.controls['lname']?.invalid && registerForm.controls['lname']?.touched">
-                      Last Name is required.
-                    </span>
-                  </div>
-                </div>
+          <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+            <h1>Create Account</h1>
+          
+            <!-- USER INFORMATION -->
+            <div class="input-row">
+              <div class="input-group">
+                <label for="inputfield">First Name</label>
+                <input type="text" id="inputfield" placeholder="First Name" [(ngModel)]="registerData.fname" name="fname" required>
+                <span class="errorMessage" *ngIf="registerForm.controls['fname']?.invalid && registerForm.controls['fname']?.touched">
+                    First Name is required.
+                </span>
+              </div>
+              <div class="input-group">
+                <label for="inputfield">Last Name</label>
+                <input type="text" id="inputfield" placeholder="Last Name" [(ngModel)]="registerData.lname" name="lname" required>
+                <span class="errorMessage" *ngIf="registerForm.controls['lname']?.invalid && registerForm.controls['lname']?.touched">
+                  Last Name is required.
+                </span>
+              </div>
+            </div>
 
-                <div class="input-row">
-                  <div class="input-group">
-                    <label for="inputfield">Street</label>
-                    <input 
-                      type="text" 
-                      id="streetInput" 
-                      placeholder="Enter your street" 
-                      [(ngModel)]="registerData.street" 
-                      name="street" 
-                      list="streetList"
-                      class="no-spinner"
-                      required
-                    />
-                    <datalist id="streetList">
-                      <option *ngFor="let street of streets" [value]="street"></option>
-                    </datalist>
-                    <span class="errorMessage" *ngIf="registerForm.controls['street']?.invalid && registerForm.controls['street']?.touched">
-                      Street is required.
-                    </span>
-                  </div>
+            <div class="input-row">
+              <div class="input-group">
+                <label for="inputfield">Street</label>
+                <input 
+                  type="text" 
+                  id="streetInput" 
+                  placeholder="Enter your street" 
+                  [(ngModel)]="registerData.street" 
+                  name="street" 
+                  list="streetList"
+                  class="no-spinner"
+                  required
+                />
+                <datalist id="streetList">
+                  <option *ngFor="let street of streets" [value]="street"></option>
+                </datalist>
+                <span class="errorMessage" *ngIf="registerForm.controls['street']?.invalid && registerForm.controls['street']?.touched">
+                  Street is required.
+                </span>
+              </div>
 
-                  <div class="input-group">
-                    <label for="inputfield">Age</label>
-                    <input 
-                      type="text" 
-                      id="ageInput" 
-                      placeholder="Enter your age" 
-                      [(ngModel)]="registerData.age" 
-                      name="age" 
-                      list="ageList"
-                      min="12"
-                      max="100"
-                      (keypress)="validateAgeInput($event)"
-                      class="no-spinner"
-                      required
-                    />
-                    <datalist id="ageList">
-                      <option *ngFor="let age of ages" [value]="age"></option>
-                    </datalist>
-                    <span class="errorMessage" *ngIf="!isAgeValid() && registerData.age">
-                      You must be at least 12 years old to register.
-                    </span>
-                    <span class="errorMessage" *ngIf="registerForm.controls['age']?.invalid && registerForm.controls['age']?.touched">
-                      Age is required.
-                    </span>
-                  </div>
+              <div class="input-group">
+                <label for="inputfield">Age</label>
+                <input 
+                  type="text" 
+                  id="ageInput" 
+                  placeholder="Enter your age" 
+                  [(ngModel)]="registerData.age" 
+                  name="age" 
+                  list="ageList"
+                  min="12"
+                  max="100"
+                  (ngModelChange)="updateEmailLabel()" 
+                  (keypress)="validateAgeInput($event)"
+                  class="no-spinner"
+                  required
+                />
+                <datalist id="ageList">
+                  <option *ngFor="let age of ages" [value]="age"></option>
+                </datalist>
+                <span class="errorMessage" *ngIf="!isAgeValid() && registerData.age">
+                  You must be at least 12 years old to register.
+                </span>
+                <span class="errorMessage" *ngIf="registerForm.controls['age']?.invalid && registerForm.controls['age']?.touched">
+                  Age is required.
+                </span>
+              </div>
+            </div>
+          
+            <p class="errorMessage" *ngIf="isMinor">
+              Minors must use a parent's or guardian's email address.
+            </p>
+            <div class="input-row">
+              <div class="input-group">
+                <label for="inputfield">{{ emailLabel }}</label>
+                <input type="email" id="inputfield" placeholder="example@email.com" [(ngModel)]="registerData.email" name="email" required>
+                <span class="errorMessage" *ngIf="registerForm.controls['email']?.invalid && registerForm.controls['email']?.touched">
+                  {{ emailLabel }} is required.
+                </span>
+              </div>
+              <div class="input-group">
+                <label for="inputfield">Phone Number</label>
+                <input type="text" placeholder="+63 XXX-XXX-XXXX" [(ngModel)]="registerData.phone_number" name="phone_number" maxlength="16" (input)="onPhoneNumberInput($event)" required />
+                <span class="errorMessage" *ngIf="registerForm.controls['phone_number']?.invalid && registerForm.controls['phone_number']?.touched">
+                  Phone Number is required.
+                </span>
+                <div *ngIf="phoneNumberInvalid" class="errorMessage">
+                  Phone number is not valid. Please enter a valid phone number (e.g., +63 912-345-6789).
                 </div>
-              
-                <div class="input-row">
-                  <div class="input-group">
-                    <label for="inputfield">Email</label>
-                    <input type="email" id="inputfield" placeholder="example@email.com" [(ngModel)]="registerData.email" name="email" required>
-                    <span class="errorMessage" *ngIf="registerForm.controls['email']?.invalid && registerForm.controls['email']?.touched">
-                        Email is required.
-                    </span>
-                  </div>
-                  <div class="input-group">
-                    <label for="inputfield">Phone Number</label>
-                    <input type="text" placeholder="XXXX-XXX-XXXX" [(ngModel)]="registerData.phone_number" name="phone_number" maxlength="16" (input)="onPhoneNumberInput($event)" required />
-                    <span class="errorMessage" *ngIf="registerForm.controls['phone_number']?.invalid && registerForm.controls['phone_number']?.touched">
-                      Phone Number is required.
-                    </span>
-                    <div *ngIf="phoneNumberInvalid" class="errorMessage">
-                      Phone number is not valid. Please enter a valid phone number (e.g., +63 912-345-6789).
-                    </div>
-                  </div>
-                </div>
-              
-                <div class="input-row">
-                  <div class="input-group">
-                    <label for="inputfield">Barangay</label>
-                    <input type="text" id="inputfield" placeholder="Barangay" value="Gordon Heights" [(ngModel)]="registerData.barangay" name="barangay" required readonly disabled>
-                  </div>
-                  <div class="input-group">
-                    <label for="inputfield">City</label>
-                    <input type="text" id="inputfield" placeholder="City" value="Olongapo City" [(ngModel)]="registerData.city" name="city" required readonly disabled>
-                  </div>
-                </div>
-              
-                <!-- PASSWORD -->
-                <div class="input-row">
-                  <div class="input-group">
-                    <label for="inputfield">Password</label>
-                    <input [type]="passwordVisible ? 'text' : 'password'" id="inputfield" placeholder="Password" [(ngModel)]="registerData.password" name="password" (input)="validatePassword()" required />
-                    <i id="show-hide" class="bx" [class.bx-show]="passwordVisible" [class.bx-hide]="!passwordVisible" (click)="togglePasswordVisibility()"></i>
-                    <!-- PASSWORD ERRORS -->
-                    <span class="errorMessage" *ngIf="passwordErrors.required">
-                      Password is required.
-                    </span>
-                    <span class="errorMessage" *ngIf="passwordErrors.length">
-                      Password must be at least 8 characters long.
-                    </span>
-                    <span class="errorMessage" *ngIf="passwordErrors.capital">
-                      Password must include at least one capital letter (A-Z).
-                    </span>
-                    <span class="errorMessage" *ngIf="passwordErrors.lowercase">
-                      Password must include at least one small letter (a-z).
-                    </span>
-                    <span class="errorMessage" *ngIf="passwordErrors.number">
-                      Password must include at least one number (0-9).
-                    </span>
-                    <span class="errorMessage" *ngIf="passwordErrors.special">
-                      Password must include at least one special character (e.g., ! &#64; # $ % ^ & *).
-                    </span>
-                  </div>
-                  <div class="input-group">
-                    <label for="inputfield">Confirm Password</label>
-                    <input [type]="confirmPasswordVisible ? 'text' : 'password'" id="inputfield" placeholder="Confirm Password" [(ngModel)]="registerData.password_confirmation" name="password_confirmation" required>
-                    <i id="show-hide" class="bx" [class.bx-show]="confirmPasswordVisible" [class.bx-hide]="!confirmPasswordVisible" (click)="toggleConfirmPasswordVisibility()"></i>
-                    <span *ngIf="registerData.password !== registerData.password_confirmation && registerForm.controls['password_confirmation']?.touched" class="errorMessage">
-                        Passwords do not match.
-                    </span>
-                  </div>
-                </div>
-              
-                <!-- DATA PRIVACY CHECKBOX -->
-                <div class="privacy-container">
-                  <h3 class="privacy-label">
-                    <input type="checkbox" [(ngModel)]="registerData.privacy" name="privacy" required>
-                    <p>I agree to the <a (click)="viewTerms()">Terms and Conditions</a> and <a (click)="viewPolicy()">Privacy Policy</a></p>
-                  </h3>
-                  <p class="agreement-notice">{{ agreementNotice }}</p> 
-                </div>
-              
-                <!-- SIGN UP BUTTON -->
-                <div class="button">
-                  <button class="btn" type="submit">Sign Up</button>
-                </div>
-                <br>
-                <!-- LOG IN LINK -->
-                <div class="loginlink">
-                  Already have an account? <a routerLink="/resIt/login-to-resIt">Login</a>
-                </div>
-              </form>
+              </div>
+            </div>
+          
+            <div class="input-row">
+              <div class="input-group">
+                <label for="inputfield">Barangay</label>
+                <input type="text" id="inputfield" placeholder="Barangay" value="Gordon Heights" [(ngModel)]="registerData.barangay" name="barangay" required readonly disabled>
+              </div>
+              <div class="input-group">
+                <label for="inputfield">City</label>
+                <input type="text" id="inputfield" placeholder="City" value="Olongapo City" [(ngModel)]="registerData.city" name="city" required readonly disabled>
+              </div>
+            </div>
+          
+            <!-- PASSWORD -->
+            <div class="input-row">
+              <div class="input-group">
+                <label for="inputfield">Password</label>
+                <input [type]="passwordVisible ? 'text' : 'password'" id="inputfield" placeholder="Password" [(ngModel)]="registerData.password" name="password" (input)="validatePassword()" required />
+                <i id="show-hide" class="bx" [class.bx-show]="passwordVisible" [class.bx-hide]="!passwordVisible" (click)="togglePasswordVisibility()"></i>
+                <!-- PASSWORD ERRORS -->
+                <span class="errorMessage" *ngIf="passwordErrors.required">Password is required.</span>
+                <span class="errorMessage" *ngIf="passwordErrors.length">Password must be at least 8 characters long.</span>
+                <span class="errorMessage" *ngIf="passwordErrors.capital">Password must include at least one capital letter (A-Z).</span>
+                <span class="errorMessage" *ngIf="passwordErrors.lowercase">Password must include at least one small letter (a-z).</span>
+                <span class="errorMessage" *ngIf="passwordErrors.number">Password must include at least one number (0-9).</span>
+                <span class="errorMessage" *ngIf="passwordErrors.special">Password must include at least one special character (e.g., ! &#64; # $ % ^ & *).</span>
+              </div>
+              <div class="input-group">
+                <label for="inputfield">Confirm Password</label>
+                <input [type]="confirmPasswordVisible ? 'text' : 'password'" id="inputfield" placeholder="Confirm Password" [(ngModel)]="registerData.password_confirmation" name="password_confirmation" required>
+                <i id="show-hide" class="bx" [class.bx-show]="confirmPasswordVisible" [class.bx-hide]="!confirmPasswordVisible" (click)="toggleConfirmPasswordVisibility()"></i>
+                <span *ngIf="registerData.password !== registerData.password_confirmation && registerForm.controls['password_confirmation']?.touched" class="errorMessage">
+                    Passwords do not match.
+                </span>
+              </div>
+            </div>
+          
+            <!-- DATA PRIVACY CHECKBOX -->
+            <div class="privacy-container">
+              <h3 class="privacy-label">
+                <input type="checkbox" [(ngModel)]="registerData.privacy" name="privacy" required>
+                <p>I agree to the <a (click)="viewTerms()">Terms and Conditions</a> and <a (click)="viewPolicy()">Privacy Policy</a></p>
+              </h3>
+              <p class="agreement-notice">{{ agreementNotice }}</p> 
+            </div>
+          
+            <!-- SIGN UP BUTTON -->
+            <div class="button">
+              <button class="btn" type="submit">Sign Up</button>
+            </div>
+            <br>
+            <!-- LOG IN LINK -->
+            <div class="loginlink">
+              Already have an account? <a routerLink="/login-to-resIt">Login</a>
+            </div>
+          </form>
         </div>
     </div>
 

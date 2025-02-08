@@ -125,6 +125,7 @@ export class ProfileComponent implements OnInit{
         console.error('Error fetching user posts', error);
       }
     );
+    this.fetchUserPosts();
     this.getUserTotalLikes()
   }
 
@@ -157,6 +158,10 @@ export class ProfileComponent implements OnInit{
     }, {
       validator: this.passwordMatchValidator, 
     });
+    
+    this.passForm.controls['new_password'].valueChanges.subscribe(() => {
+      this.validatePassword();
+    });
   }
 
   fetchUserData(): void {
@@ -164,48 +169,48 @@ export class ProfileComponent implements OnInit{
 
     this.authservice.getUser().subscribe(
         (response) => {
-            console.log('Response from API:', response);
+          console.log('Response from API:', response);
 
-            if (response && response.user) {
-                const user = response.user;
-                this.user = user;
+          if (response && response.user) {
+            const user = response.user;
+            this.user = user;
 
-                // Log user data before patching
-                console.log('User data from API:', user);
+            // Log user data before patching
+            console.log('User data from API:', user);
 
-                this.userForm.patchValue({
-                    fname: user.fname || '',
-                    lname: user.lname || '',
-                    email: user.email || '',
-                    phone_number: user.phone_number || '',
-                    age: user.age || '',
-                    street: user.street || '',
-                    barangay: user.barangay || '',
-                    city: user.city || ''
-                });
+            this.userForm.patchValue({
+              fname: user.fname || '',
+              lname: user.lname || '',
+              email: user.email || '',
+              phone_number: user.phone_number || '',
+              age: user.age || '',
+              street: user.street || '',
+              barangay: user.barangay || '',
+              city: user.city || ''
+            });
 
-                // 🔥 Log form value after patching
-                console.log('Form after patching:', this.userForm.value);
+            console.log('Form after patching:', this.userForm.value);
 
-                // Mark form as pristine to prevent unnecessary validation
-                this.userForm.markAsPristine();
-                this.userForm.markAsUntouched();
+            // Mark form as pristine to prevent unnecessary validation
+            this.userForm.markAsPristine();
+            this.userForm.markAsUntouched();
 
-                this.cdr.detectChanges(); // Ensure UI updates
-            } else {
-                console.warn('Unexpected response format:', response);
-            }
+            this.cdr.detectChanges(); // Ensure UI updates
+          } else {
+            console.warn('Unexpected response format:', response);
+          }
 
-            this.isLoading = false;
+          this.isLoading = false;
         },
         (error) => {
-            console.error('Error fetching user data:', error);
-            this.isLoading = false;
-            Swal.fire('Error', 'Failed to load user data.', 'error');
+          console.error('Error fetching user data:', error);
+          this.isLoading = false;
+          Swal.fire('Error', 'Failed to load user data.', 'error');
         }
     );
   }
 
+  // age validations
   ageValidator(control: any): { [key: string]: boolean } | null {
     const age = Number(control.value);
     if (isNaN(age) || age < 12 || age > 100) {
@@ -226,23 +231,20 @@ export class ProfileComponent implements OnInit{
     return null;
   }
   
-
   // phone number validations
-  // phoneNumberInvalid: boolean = false;
-
   onPhoneNumberInput(event: any): void {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
 
     if (value.startsWith('63')) {
-        value = value.substring(2); // Remove '63' if manually entered
+      value = value.substring(2); // Remove '63' if manually entered
     } else if (value.startsWith('0')) {
-        value = value.substring(1); // Remove leading '0'
+      value = value.substring(1); // Remove leading '0'
     }
 
     // Ensure the first digit after +63 is always '9'
     if (value.length > 0 && value[0] !== '9') {
-        value = '9' + value.substring(1);
+      value = '9' + value.substring(1);
     }
 
     // Format as +63 9XX-XXX-XXXX
@@ -257,8 +259,7 @@ export class ProfileComponent implements OnInit{
     this.userForm.controls['phone_number'].updateValueAndValidity();
   }
 
-  
-
+  // for content 2
   updateUserData(): void {
     if (this.userForm.valid) {
       if (!this.userForm.dirty) {
@@ -307,13 +308,32 @@ export class ProfileComponent implements OnInit{
     }
   }
   
+  // password validations
+  passwordErrors = {
+    required: false,
+    length: false,
+    capital: false,
+    lowercase: false,
+    number: false,
+    special: false,
+  };
   
+  validatePassword(): void {
+    const password = this.passForm.controls['new_password'].value || '';
   
+    // error flags
+    this.passwordErrors.required = !password;
+    this.passwordErrors.length = password.length > 0 && password.length < 8; // for at least 8 characters
+    this.passwordErrors.capital = !/[A-Z]/.test(password); // for capital letter
+    this.passwordErrors.lowercase = !/[a-z]/.test(password); // for small letter
+    this.passwordErrors.number = !/\d/.test(password); // for number
+    this.passwordErrors.special = !/[!@#$%^&*(),.?":{}|<>]/.test(password); // for special character
 
-  
-  
-
-
+    // Mark the password field as invalid if any error exists
+    this.passForm.controls['new_password'].setErrors(
+      Object.values(this.passwordErrors).some(error => error) ? { invalidPassword: true } : null
+    );
+  }
 
   passwordMatchValidator(group: FormGroup) {
     const passwordControl = group.get('new_password');
@@ -324,31 +344,7 @@ export class ProfileComponent implements OnInit{
     
     return new_password === new_passwordConfirmation ? null : { mismatch: true };
   }
-
-  // Check if the screen width is 480px or less
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    this.checkIfMobile();
-  }
-
-  checkIfMobile() {
-    this.isMobile = window.innerWidth <= 480;
-  }
-
-  showContent1() {
-    this.currentContent = 'content1';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  showContent2() {
-    this.currentContent = 'content2';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  showContent3() {
-    this.currentContent = 'content3';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  // end of password validations
 
   onPasswordChange() {
     if (this.passForm.valid) {
@@ -422,34 +418,65 @@ export class ProfileComponent implements OnInit{
     }
   }
 
+
+  // for mobile view
+  // check if the screen width is 480px or less
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.checkIfMobile();
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 480;
+  }
+
+  showContent1() {
+    this.currentContent = 'content1';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  showContent2() {
+    this.currentContent = 'content2';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  showContent3() {
+    this.currentContent = 'content3';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   // totalLikes: number = 0;
 
-  fetchUserPost(): void {
+  // user approved posts
+  fetchUserPosts(): void {
     this.dataservice.getUserPosts().subscribe(
       (response) => {
-        // Map posts to store in dataSource
-        this.dataSource = response.posts
-          .map((post: any) => ({
-            id: post.id,
-            title: post.title,
-            category: post.category,
-            date: post.created_at,
-            image: post.image,
-            status: post.status,
-            description: post.content,
-            total_likes: post.total_likes ?? 0  // Default to 0 if no likes
-          }))
-          .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
-            const dateA = new Date(a.date || 0).getTime();
-            const dateB = new Date(b.date || 0).getTime();
-            return dateB - dateA; // Sort in descending order (newest first)
-          });
+        console.log('Fetched Posts:', response);  // Log the response
 
-        // Fetch the likes from the likedposttable API
-        this.getUserTotalLikes();
+        if (response && response.posts) {
+          this.dataSource = (response.posts || [])
+            .map((post: any) => ({
+              id: post.id,
+              title: post.title,
+              category: post.category,
+              date: post.created_at,
+              image: post.image,
+              status: post.status,
+              description: post.content,
+              total_likes: post.total_likes ?? 0 
+            }))
+            .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
+              const dateA = new Date(a.date || 0).getTime();
+              const dateB = new Date(b.date || 0).getTime();
+              return dateB - dateA;
+            });
 
-        console.log(response);
-        this.isLoading = false;
+          this.isLoading = false;
+        } else {
+          console.warn('No posts found in the response:', response);
+          this.isLoading = false;
+        }
+
         this.cdr.detectChanges();
       },
       (error) => {
@@ -457,9 +484,9 @@ export class ProfileComponent implements OnInit{
         this.isLoading = false;
       }
     );
-}
+  }
 
-getUserTotalLikes(): void {
+  getUserTotalLikes(): void {
     this.AS.likedposttable().subscribe(
       (response) => {
         const likedPosts = response['posts'] || [];
@@ -478,8 +505,7 @@ getUserTotalLikes(): void {
         console.error('Error fetching posts for table and chart', error);
       }
     );
-}
-
+  }
 
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
@@ -487,30 +513,26 @@ getUserTotalLikes(): void {
   }
 
   // VIEWING POST POPUP
-    viewPost(id: number) {
-      if (this.dialog) {
-        this.dialog.open(ViewComponent, {
-          data: { id: id }  
-        });
-      } else {
-        console.error('View popup not found');
-      }
-    }
-
-    fetchPostLikes(postId: number): void {
-      this.dataservice.getUserLikes(postId).subscribe({
-        next: (response) => {
-          this.totalLikes = response.total_likes; 
-          this.post = response;
-        },
-        error: (err) => {
-          console.error('Error fetching likes:', err);
-        },
+  viewPost(id: number) {
+    if (this.dialog) {
+      this.dialog.open(ViewComponent, {
+        data: { id: id }  
       });
+    } else {
+      console.error('View popup not found');
     }
+  }
 
-
-
-
+  fetchPostLikes(postId: number): void {
+    this.dataservice.getUserLikes(postId).subscribe({
+      next: (response) => {
+        this.totalLikes = response.total_likes; 
+        this.post = response;
+      },
+      error: (err) => {
+        console.error('Error fetching likes:', err);
+      },
+    });
+  }
 }
 

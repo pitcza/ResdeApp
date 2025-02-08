@@ -214,97 +214,97 @@ export class PostslistComponent implements OnInit {
   
 
   // DELETE PROCESS
-deletePost(id: number) {
-  Swal.fire({
-    title: 'Delete Post?',
-    text: 'This action can\'t be undone.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#C14141',
-    cancelButtonColor: '#7f7f7f',
-    confirmButtonText: 'Delete',
-    cancelButtonText: 'Cancel'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.ds.deletePost(id).subscribe(
-        () => {
-          // Remove the post from dataSource and filteredDataSource
-          this.dataSource = this.dataSource.filter(post => post.id !== id);
-          this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
-          this.cdr.detectChanges();
-  
-          // Refresh the posts list
-          this.refreshPosts();
-  
-          Swal.fire({
-            title: 'Post Deleted!',
-            text: 'The post has been deleted.',
-            icon: 'success',
-            confirmButtonText: 'Close',
-            confirmButtonColor: '#7f7f7f',
-            timer: 5000,
-            scrollbarPadding: false
-          });
-        },
-        error => {
-          console.error('Error deleting post:', error);
-          Swal.fire({
-            title: 'Error!',
-            text: 'There was an error deleting the post.',
-            icon: 'error',
-            confirmButtonText: 'Close',
-            confirmButtonColor: '#7f7f7f',
-            timer: 5000,
-            scrollbarPadding: false
-          });
-        }
-      );
-    }
-  });
-}
+  deletePost(id: number) {
+    Swal.fire({
+      title: 'Delete Post?',
+      text: 'This action can\'t be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#C14141',
+      cancelButtonColor: '#7f7f7f',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ds.deletePost(id).subscribe(
+          () => {
+            // Remove the post from dataSource and filteredDataSource
+            this.dataSource = this.dataSource.filter(post => post.id !== id);
+            this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
+            this.cdr.detectChanges();
+    
+            // Refresh the posts list
+            this.refreshPosts();
+    
+            Swal.fire({
+              title: 'Post Deleted!',
+              text: 'The post has been deleted.',
+              icon: 'success',
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f',
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          },
+          error => {
+            console.error('Error deleting post:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was an error deleting the post.',
+              icon: 'error',
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f',
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          }
+        );
+      }
+    });
+  }
 
 // Function to refresh the posts list
-refreshPosts() {
-  this.ds.getUserPosts().subscribe(
-    (response) => {
-      // Map and sort the response to match the expected structure
-      this.dataSource = response.posts
-        .map((post: any) => ({
-          id: post.id,
-          title: post.title,
-          category: post.category,
-          date: post.created_at,
-          image: post.image,
-          status: post.status,
-          description: post.content
-        }))
-        .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
-          const dateA = new Date(a.date || 0).getTime();
-          const dateB = new Date(b.date || 0).getTime();
-          return dateB - dateA; // Sort in descending order (newest first)
+  refreshPosts() {
+    this.ds.getUserPosts().subscribe(
+      (response) => {
+        // Map and sort the response to match the expected structure
+        this.dataSource = response.posts
+          .map((post: any) => ({
+            id: post.id,
+            title: post.title,
+            category: post.category,
+            date: post.created_at,
+            image: post.image,
+            status: post.status,
+            description: post.content
+          }))
+          .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
+            const dateA = new Date(a.date || 0).getTime();
+            const dateB = new Date(b.date || 0).getTime();
+            return dateB - dateA; // Sort in descending order (newest first)
+          });
+    
+        // Immediately filter the posts after refreshing
+        this.filterPosts();
+    
+        // Update the filteredDataSource
+        this.filteredDataSource.data = [...this.dataSource];
+        this.cdr.detectChanges();
+      },
+      error => {
+        console.error('Error fetching posts:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'There was an error fetching the posts.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7f7f7f',
+          timer: 5000,
+          scrollbarPadding: false
         });
-  
-      // Immediately filter the posts after refreshing
-      this.filterPosts();
-  
-      // Update the filteredDataSource
-      this.filteredDataSource.data = [...this.dataSource];
-      this.cdr.detectChanges();
-    },
-    error => {
-      console.error('Error fetching posts:', error);
-      Swal.fire({
-        title: 'Error!',
-        text: 'There was an error fetching the posts.',
-        icon: 'error',
-        confirmButtonText: 'Close',
-        confirmButtonColor: '#7f7f7f',
-        timer: 5000,
-        scrollbarPadding: false
-      });
-    }
-  );
-}
+      }
+    );
+  }
 }
 
 

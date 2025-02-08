@@ -5,13 +5,13 @@ import { DataserviceService } from '../../../services/dataservice.service';
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.scss',
+  styleUrls: ['./landing-page.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class LandingPageComponent implements AfterViewInit, OnInit {
   private galleryContainer: HTMLElement | null = null;
   private galleryControlsContainer: HTMLElement | null = null;
-  private galleryItems: NodeListOf<Element> = document.querySelectorAll('.gallery-item');
+  private galleryItems: NodeListOf<Element> = [] as unknown as NodeListOf<Element>; // Delay initialization
   private galleryControls: string[] = ['previous', 'next'];
   landingPhotos: string[] = []; // Store fetched images
 
@@ -63,11 +63,11 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
 
   getPhotos(): string[] {
     const defaultPhotos = [
-      '../../../../assets/images/sample1.jpg',
-      '../../../../assets/images/sample2.jpg',
-      '../../../../assets/images/sample3.jpg',
-      '../../../../assets/images/sample4.jpg',
-      '../../../../assets/images/sample5.jpg'
+      '../../../../assets/images/NoImage.png',
+      '../../../../assets/images/NoImage.png',
+      '../../../../assets/images/NoImage.png',
+      '../../../../assets/images/NoImage.png',
+      '../../../../assets/images/NoImage.png'
     ];
 
     // Ensure we have at least 5 images, fill the rest with default ones
@@ -80,24 +80,27 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
   onWindowScroll(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.checkElementsInView();
-    }
 
-    const scrollTopButton = document.getElementById('scrollTopButton');
-    if (window.scrollY > 300) {
-      scrollTopButton?.classList.add('show');
-    } else {
-      scrollTopButton?.classList.remove('show');
+      const scrollTopButton = document.getElementById('scrollTopButton');
+      if (scrollTopButton) {
+        if (window.scrollY > 300) {
+          scrollTopButton.classList.add('show');
+        } else {
+          scrollTopButton.classList.remove('show');
+        }
+      }
     }
   }
 
-  scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  scrollToTop(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   private checkElementsInView(): void {
     if (isPlatformBrowser(this.platformId)) {
       const elementsToAnimate = document.querySelectorAll('.rs-container, .head, .left, .right') as NodeListOf<HTMLElement>;
-
       elementsToAnimate.forEach((element) => {
         this.toggleInView(element);
       });

@@ -11,7 +11,7 @@
 
     .forlanding {
         display: flex;
-        gap: 5px;
+        gap: 7px;
 
         #history {
             width: 40px;
@@ -84,8 +84,12 @@
     }
     
     .card-single:last-child {
-        background-color: var(--primary-green);
+        background-color: var(--secondary-hover);
         border-top: none;
+
+        &:hover {
+            background-color: var(--primary-green);
+        }
     }
     
     .card-single:last-child h1,
@@ -210,6 +214,10 @@ td .status {
 .info h4 {
     font-size: .8rem;
     font-weight: 600;
+}
+
+.report {
+    margin-bottom: 30px;
 }
 
 .reports {

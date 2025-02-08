@@ -6,7 +6,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
     height: 100vh;
-    background-image: url('../../../../assets/images/GH.png');
+    background-image: url('../../../../assets/images/GH-BG.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -110,6 +110,7 @@
     
     .route-btn:hover {
         border: 1px solid var(--extra-green);
+        transform: scale(1.1);
     }
     
     .route-btn:hover:before {
@@ -312,7 +313,7 @@
         padding: 20px 20px 30px 20px;
         background-color: var(--bg-color);
         border-top: 3px solid var(--extra-green);
-        box-shadow:  10px 10px 20px #08184e, -10px -10px 20px #173190;
+        box-shadow:  10px 10px 20px #101b2c, -10px -10px 20px #274067;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -460,11 +461,13 @@ footer {
         flex-direction: column;
 
         .email {
+            p { color: var(--primary-green); }
             a { color: var(--primary-green); font-size: 16px; }
             i {
                 position: absolute;
                 margin-left: -23px;
                 padding-top: 3px;
+                color: black;
             }
             p {
                 margin-left: 23px;
@@ -909,7 +912,7 @@ footer {
     right: 20px;
     width: 50px;
     height: 50px;
-    background-color: var(--secondary-green); // Use your existing palette
+    background-color: var(--primary-green); // Use your existing palette
     color: white;
     border: none;
     border-radius: 50%;
@@ -918,7 +921,7 @@ footer {
     text-align: center;
     line-height: 50px;
     cursor: pointer;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;

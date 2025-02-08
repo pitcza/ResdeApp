@@ -3,8 +3,8 @@
     --primary-hover: #19609d;
     --secondary-green: #81C6EF;
     --secondary-hover: #5daad7;
-    --dark-green: #0F2573;
-    --dark-hover: #091e68;
+    --dark-green: #1C2E4A;
+    --dark-hover: #16263e;
 
     --extra-green: #689F7A;
     --extra-hover: #568b67;
@@ -45,7 +45,7 @@
 
 body {
     padding: 0;
-    background-color: var(--bg-color);
+    background-color: var(--dark-green);
     font-family: 'Poppins';
 }
 
@@ -193,7 +193,7 @@ select {
     .btn {
         border: none;
         width: 200px;
-        background-color: var(--dark-green);
+        background-color: var(--primary-green);
         color: var(--bg-color);
         margin-top: 30px;
         height: 40px;
@@ -202,7 +202,7 @@ select {
         text-align: -webkit-center;
         text-transform: uppercase;
         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.4);
-        transition: .1s ease-in-out, .4s color;
+        transition: all 0.4s ease-in-out;
         text-decoration: none;
         color: var(--bg-color);
         font-size: 16px;
@@ -219,7 +219,7 @@ select {
     }
 
     .btn:hover {
-        background-color: var(--dark-hover);
+        background-color: var(--primary-hover);
     }
 
     button:active {
@@ -830,6 +830,7 @@ table tr td:last-child {
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-typography {
+    font-family: 'Poppins';
     all: unset; /* Resets all inherited and default styles */
     font-family: inherit !important;
     font-size: inherit !important;

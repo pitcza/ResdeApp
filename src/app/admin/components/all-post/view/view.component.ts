@@ -65,6 +65,7 @@ export class ViewComponent implements OnInit{
       if (result.isConfirmed) {
         this.as.deletePost(id).subscribe({
           next: () => {
+            this.dialogRef.close(true);
             Swal.fire({
               title: "Post Deleted!",
               text: "The post has been deleted.",
@@ -73,9 +74,7 @@ export class ViewComponent implements OnInit{
               confirmButtonColor: "#777777",
               timer: 5000,
               scrollbarPadding: false
-            });
-  
-            this.router.navigate(['admin/all-post/list']);
+            });  
           },
           error: (err) => {
             Swal.fire({
@@ -159,7 +158,7 @@ export class ViewComponent implements OnInit{
   
         this.as.rejectPost(id, remarks).subscribe({
           next: () => {
-      
+            this.dialogRef.close(true);
             Swal.fire({
               title: "Post Declined!",
               text: "The post has been declined.",
