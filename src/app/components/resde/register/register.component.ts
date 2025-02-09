@@ -63,23 +63,28 @@ export class RegisterComponent {
   @HostListener('window:beforeunload', ['$event'])
   handleRefresh(event: Event) {
     if (this.isPopupVisible) {
+      // Preventing the page from unloading if user is in the process of registering
       event.preventDefault();
       event.returnValue = true;
 
-      // ganito for dev?? sana gumana sa site, mawawala data sa database if nirefresh or leave page nang ndi ineenter code hehe
-      // fetch('https://api.resit.site/api/cancel-due-refresh',
-      fetch('http://127.0.0.1:8000/api/cancel-due-refresh', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: this.registerData.email }),
-        keepalive: true // Ensures request completes before page unloads
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        localStorage.setItem('registrationCanceled', 'true'); // Set flag before refresh
-      })
-      .catch(error => console.error('Error deleting user:', error));
+      // Listen for the page unload event after the user confirms leaving
+      window.onunload = () => {
+        // Send the cancel request only if the page is unloaded (not if reload is canceled)
+        // ganito for dev?? sana gumana sa site, mawawala data sa database if nirefresh or leave page nang ndi ineenter code hehe
+        // fetch('https://api.resit.site/api/cancel-due-refresh'
+        fetch('http://127.0.0.1:8000/api/cancel-due-refresh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: this.registerData.email }),
+          keepalive: true // Ensure the request completes before the page is unloaded
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          localStorage.setItem('registrationCanceled', 'true'); // Set flag before page is unloaded
+        })
+        .catch(error => console.error('Error:', error));
+      };
     }
   }
 

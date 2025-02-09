@@ -27,6 +27,7 @@ export class AuthserviceService{
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+    return throwError(errorMessage);
   }
 
   public login(formData: FormData) {
@@ -64,6 +65,32 @@ export class AuthserviceService{
       })
     );
   }
+
+  public logout(): Observable<any> {
+    const token = sessionStorage.getItem('auth-token');
+  
+    if (!token) {
+      return throwError({ error: 'User not authenticated' });
+    }
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  
+    return this.http.post(this.url + 'logout', {}, { headers }).pipe(
+      tap(() => {
+        sessionStorage.removeItem('auth-token');
+        sessionStorage.removeItem('name');
+        sessionStorage.removeItem('role');
+        sessionStorage.removeItem('request-token');
+      }),
+      catchError(error => {
+        console.error('Logout error:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
 
   public register(formData: FormData): Observable<any> {
     return this.http.post(this.url + 'register', formData).pipe(
@@ -138,6 +165,91 @@ export class AuthserviceService{
     );
   }
 
+  public forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.url}forgot-password`, { email }).pipe(
+      tap((response: any) => {
+        console.log('Password reset email sent:', response);
+        // Handle the response, such as displaying a success message
+      }),
+      catchError((error: HttpErrorResponse) => {
+        // Handle the error response
+        console.error('Error during password reset:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  public verifyResetToken(email: string, token: string): Observable<any> {
+    return this.http.post(`${this.url}verify-token`, { email, token }).pipe(
+      tap((response: any) => {
+        console.log('Token verified successfully:', response);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        // Handle token verification errors
+        console.error('Error verifying token:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  // without auto login
+  public resetPassword(email: string, token: string, passwordData: any): Observable<any> {
+    // Verify the token before proceeding
+    return this.verifyResetToken(email, token).pipe(
+      tap(() => {
+        // If token is valid, proceed to reset password
+        this.http.post(`${this.url}reset-password`, { email, token, ...passwordData }).pipe(
+          tap((response: any) => {
+            console.log('Password has been reset successfully:', response);
+          }),
+          catchError(this.handleError)
+        ).subscribe();
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // with auto login sa back, ayaw makuha pwede naman pala sa ts lang
+  // resetPasswordAndLogin(email: string, password: string, token: string): Observable<any> {
+  //   const payload = {
+  //     email: email,
+  //     password: password,
+  //     password_confirmation: password,
+  //     token: token
+  //   };
+  
+  //   return this.http.post(`${this.url}reset-password`, payload).pipe(
+  //     tap((res: any) => {
+  //       console.log('Password reset and login successful:', res);
+  
+  //       if (res.token) {
+  //         sessionStorage.setItem('auth-token', res.token);
+  //         sessionStorage.setItem('name', `${res.user.fname} ${res.user.lname}`);
+  //         sessionStorage.setItem('role', res.role);
+  
+  //         let time = new Date();
+  //         time.setMinutes(time.getMinutes() + 55);  // Set expiration time for the token
+  //         sessionStorage.setItem('request-token', time.toISOString());
+  //       }
+  //     }),
+  //     catchError(error => {
+  //       if (error.status === 400) {
+  //         return throwError({ message: 'Invalid or expired reset token.' });
+  //       } else if (error.status === 422 && error.error) {
+  //         const errors = error.error;
+  //         const errorMessages = [];
+  //         for (const key in errors) {
+  //           if (errors.hasOwnProperty(key)) {
+  //             errorMessages.push(...errors[key]);
+  //           }
+  //         }
+  //         return throwError({ errors: errorMessages });
+  //       }
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
+  
   public getUser(): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${sessionStorage.getItem('auth-token')}`

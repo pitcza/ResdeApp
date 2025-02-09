@@ -52,7 +52,7 @@
         <div class="logoutbtn">
           <div class="logout" (click)="logoutPopup()">
             <span> <i class='bx bx-log-out-circle'></i> 
-                <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
+                <app-logout *ngIf="showPopup" (closedPopup)="closePopup()"></app-logout>
             </span>
           </div>
         </div>
@@ -99,7 +99,7 @@
 
       <div class="logout" (click)="logoutPopup()">
         <span> <i class='bx bx-log-out-circle'> <p> Logout </p> </i>
-            <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
+            <app-logout *ngIf="showPopup" (closedPopup)="closePopup()"></app-logout>
         </span>
       </div>
       <img class="resitlogo" src="assets/logo/ResItLogo.png">

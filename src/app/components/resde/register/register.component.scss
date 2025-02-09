@@ -287,14 +287,6 @@ input::-webkit-outer-spin-button {
 }
 
 
-
-
-
-
-
-
-
-
 /* Style for popup overlay */
 .popup-overlay {
     position: fixed;
@@ -311,55 +303,91 @@ input::-webkit-outer-spin-button {
 
 /* Style for the popup container */
 .popup-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 500px;
-    text-align: center;
-}
+    background-color: var(--bg-color);
+    border-radius: 5px;
+    width: 450px;
+    text-align: left;
+    padding: 30px 0;
 
-.popup-content {
-    h2 {
-        margin-bottom: 15px;
-    }
+    transition: all 0.3s ease-in-out;
+    animation: popIn 0.3s forwards;
+
+    .popup-content {
+        h2 {
+            width: 450px;
+            padding: 0 30px;
+        }
+
+        .main-content {
+            padding: 20px 30px;
+            margin: 20px 0;
+            border-top: 1px solid var(--bg-dark);
+            border-bottom: 1px solid var(--bg-dark);
+
+            input[type="text"] {
+                font-family: 'Poppins';
+                display: block;
+                width: 100%;
+                height: auto;
+                box-sizing: border-box;
+                border-radius: 10px;
+                border: 2px solid var(--secondary-green);
+                outline: none;
+                background: var(--cont-input);
+                padding: 15px;
+                margin: 15px 0;
+                font-size: 15px;
+                font-weight: 400;
+                box-shadow: 0px 1px 1px rgb(141, 141, 141);
+                transition: all 0.2s ease;
+            }
+
+            input:focus {
+                outline: none;
+                border: 2px solid var(--secondary-hover);
+                background-color: var(--cont-input-hover);
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+        
+        .forcode {
+            font-size: 15px;
+            padding: 0 30px;
+        }
+ 
+        a {
+            color: var(--primary-green);
     
-    p {
-        font-size: 15px;
-    }
+            &:hover {
+                text-decoration: underline;
+            }
+        }
 
-    a {
-        color: var(--primary-green);
-
-        &:hover {
+        .resend-btn {
+            background: none;
+            border: none;
+            color: var(--primary-green);
+            cursor: pointer;
             text-decoration: underline;
+            font-size: 14px;
+        }
+        
+        .resend-btn:hover {
+            color: var(--primary-hover);
+        }
+
+        .buttons {
+            gap: 15px;
+            padding: 0 30px;
+            margin-top: 30px;
+
+            .submit-btn,
+            .cancel-btn {
+                width: 100px;
+            }
         }
     }
-}
-
-.popup-content input {
-    width: 80%;
-    padding: 10px;
-    margin: 20px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.buttons {
-    .submit-btn,
-    .cancel-btn {
-        width: 100px;
-    }
-}
-
-.resend-btn {
-    background: none;
-    border: none;
-    color: var(--primary-green);
-    cursor: pointer;
-    text-decoration: underline;
-    font-size: 14px;
-}
-
-.resend-btn:hover {
-    color: var(--primary-hover);
 }

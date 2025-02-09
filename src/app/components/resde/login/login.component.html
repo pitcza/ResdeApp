@@ -28,16 +28,16 @@
                 <div class="input-container email">
                     <i id="bx" class='bx bxs-user-circle'></i>
                     <input id="email" name="email" type="email" placeholder="Email" [(ngModel)]="loginData.email" required>
-                  </div>
-                  <div class="input-container password">
+                </div>
+                <div class="input-container password">
                     <i id="bx" class='bx bxs-lock'></i>
                     <input id="password" name="password" [type]="passwordVisible ? 'text' : 'password'" placeholder="Password" [(ngModel)]="loginData.password" required #password="ngModel" minlength="8">
                     <i id="show-hide" class="bx" [class.bx-show]="passwordVisible" [class.bx-hide]="!passwordVisible" (click)="togglePasswordVisibility()"></i>
-                  </div>
+                </div>
 
                 <!-- FORGOT PASSWORD LINK -->
                 <div class="forgotpassword">
-                    <p> <a routerLink="/forgotpassword"> <strong> Forgot Password? </strong> </a> </p>
+                    <p> <a routerLink="/forgot-pass"> <strong> Forgot Password? </strong> </a> </p>
                 </div>
 
                 <!-- LOG IN BUTTON -->

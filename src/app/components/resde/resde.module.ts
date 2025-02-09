@@ -8,6 +8,8 @@ import { RegisterComponent } from './register/register.component';
 import { MaterialModule } from '../../modules/material.module';
 import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,11 +18,13 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
     RegisterComponent,
     PrivacypolicyComponent,
     TermsConditionsComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     CommonModule,
     ResdeRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ]
 })
 export class ResdeModule { }

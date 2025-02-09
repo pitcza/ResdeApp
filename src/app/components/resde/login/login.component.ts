@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from '../../../services/authservice.service';
 
 import Swal from 'sweetalert2';
@@ -22,44 +22,37 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private as: AuthserviceService
   ) {}
 
-  // onLogin() {
-  //   this.isLoading = true;
-  //   const formData = new FormData();
-  //   formData.append('email', this.loginData.email);
-  //   formData.append('password', this.loginData.password);
+  ngOnInit() {  
+    // Retrieve email and password from query parameters if available
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['email']) {
+        this.loginData.email = params['email'];
+      }
+      if (params['password']) {
+        this.loginData.password = params['password'];
 
-  //   this.as.login(formData).subscribe(
-  //     (response: any) => {
-  //       this.isLoading = false;
-        
-  //       console.log('Login successful:', response);
-        
-  //       this.router.navigate(['/main']);
-
-  //       Swal.fire({
-  //         toast: true,
-  //         position: 'top-end',
-  //         icon: 'success',
-  //         iconColor: '#9EB3AA',
-  //         title: 'Login Successfully',
-  //     //         showConfirmButton: false,
-  //         timer: 5000,
-  //         timerProgressBar: true,
-  //       });
-
-  //     },
-  //     (error: any) => {
-  //       if (error.errors) {
-  //         this.errorMessages = error.errors;
-  //       } else {
-  //         console.error('Login failed:', error);
-  //       }
-  //     }
-  //   );
-  // }
+        const swalLoading = Swal.fire({
+          title: 'Password Reset Successful!',
+          text: 'Logging in with your new password...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+  
+        // Wait for delay before calling onLogin
+        setTimeout(() => {
+          Swal.close();  // Close loading after delay
+          this.onLogin();  // Call onLogin after the delay
+        }, 1500);
+      }
+    });
+  }
+  
 
   onLogin() {
     this.isLoading = true;

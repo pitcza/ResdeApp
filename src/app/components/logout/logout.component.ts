@@ -1,5 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthserviceService } from '../../services/authservice.service';
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-logout',
@@ -10,27 +13,48 @@ export class LogoutComponent {
   @Output() leaveClicked = new EventEmitter<void>();
   @Output() closedPopup = new EventEmitter<void>();
 
-  constructor(private router: Router) {
-    this.updateLogoutLink();
-  }
-
   logoutLink: string = '/login-to-resIt';
 
-  updateLogoutLink(): void {
-    // const currentRoute = this.router.url;
+  constructor(
+    private router: Router, 
+    private authService: AuthserviceService
+  ) {}
 
-    // if (currentRoute.startsWith('/admin')) {
-    //   this.logoutLink = '/admin-login';
-    // } else if (currentRoute.startsWith('/main')) {
-    //   this.logoutLink = '/login-to-resIt';
-    // }
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        // Show success toast
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Logout successful!',
+          iconColor: '#689f7a',
+          showConfirmButton: false,
+          timer: 2000
+        });
+
+        this.router.navigate([this.logoutLink]);
+      },
+      error: (error) => {
+        console.error('Logout failed:', error);
+
+        // Show error toast
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Logout failed!',
+          showConfirmButton: false,
+          timer: 2000
+        });
+
+        // this.router.navigate([this.logoutLink]);
+      }
+    });
   }
 
   close() {
     this.closedPopup.emit();
-  }
-
-  onLeaveClick() {
-    this.leaveClicked.emit();
   }
 }

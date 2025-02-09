@@ -125,25 +125,25 @@ export class MainComponent implements OnInit{
     this.showPopup = this.showPopup;
   }
 
- protected logout() {
-      next: (res: any) => {
-        sessionStorage.clear();
-        this.router.navigate(['login']); 
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 2500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          }
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Logged out successfully"
-        });
-      }
-  } 
+//  protected logout() {
+//     next: (res: any) => {
+//       sessionStorage.clear();
+//       this.router.navigate(['login']); 
+//       const Toast = Swal.mixin({
+//         toast: true,
+//         position: "top-end",
+//         showConfirmButton: false,
+//         timer: 2500,
+//         timerProgressBar: true,
+//         didOpen: (toast) => {
+//           toast.onmouseenter = Swal.stopTimer;
+//           toast.onmouseleave = Swal.resumeTimer;
+//         }
+//       });
+//       Toast.fire({
+//         icon: "success",
+//         title: "Logged out successfully"
+//       });
+//     }
+//   } 
 }
