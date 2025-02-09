@@ -14,15 +14,17 @@ export class ReportsComponent implements OnInit {
   displayedColumnReport: string[] = ['category', 'total posts'];
   displayedColumnReport1: string[] = ['fullName', 'total likes', 'total post', 'action'];
   displayedColumnReport2: string[] = ['fullName', 'liked title', 'likes', 'badge'];
+  DataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
 
-  dataSource!: MatTableDataSource<any>;
+  // dataSource!: MatTableDataSource<any>;
 
   previewData: any[] = [];
   previewVisible = false;
 
   reports: MatTableDataSource<any> = new MatTableDataSource();
   liked: MatTableDataSource<any> = new MatTableDataSource();
-  category: MatTableDataSource<any> = new MatTableDataSource();
+  // category: MatTableDataSource<any> = new MatTableDataSource();
+  category = new MatTableDataSource<any>();
 
   errorMessage: string = '';
 
@@ -34,11 +36,15 @@ export class ReportsComponent implements OnInit {
   fromDate: string = '';  
   toDate: string = '';    
 
-  start_date: string ='';  // Store the start date
-  end_date: string ='';
+  startDate: string ='';  // Store the start date
+  endDate: string ='';
 
-  filteredDataSource: TableElement[] = [];
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // start_date: string | null = null;
+  // end_date: string | null = null;
+
+  @ViewChild('paginator') paginator!: MatPaginator;
+  @ViewChild('paginator1') paginator1!: MatPaginator;
+  @ViewChild('paginator2') paginator2!: MatPaginator;
 
   selectedFilter: string = '';  // Holds the selected filter value
   filterOptions: { label: string, value: string }[] = [
@@ -57,35 +63,37 @@ export class ReportsComponent implements OnInit {
     this.getUserTotalPosts(); 
     this.likedpost();
     this.likedposttable();
-    this.getCategoriesData();
+    this.getCategories(); // Fetch initial data
   }
 
   ngAfterViewInit(): void {
-    if (this.reports && this.paginator) {
-      this.reports.paginator = this.paginator;
+    if (this.category) {
+      this.category.paginator = this.paginator;
     }
-    if (this.liked && this.paginator) {
-      this.liked.paginator = this.paginator;
+    if (this.reports) {
+      this.reports.paginator = this.paginator1;
+    }
+    if (this.liked) {
+      this.liked.paginator = this.paginator2;
     }
     this.cdr.detectChanges();
   }
 
-  getCategoriesData(): void {
-    this.AS.tableCategories({ start_date: this.start_date, end_date: this.end_date })
-      .subscribe(
-        (data) => {
-          this.category.data = data;
-          console.log('Filtered Categories Data:', data);
-  
-          // After successfully fetching data, call exportToExcel
-          this.exportToExcel();
-        },
-        (error) => {
-          this.errorMessage = 'Error fetching categories data';
-          console.error(error);
+  getCategories(): void {
+    this.AS
+      .tableCategories(this.fromDate, this.toDate)
+      .subscribe((data) => {
+        // Sort the data in descending order based on total_posts
+        data.sort((a: any, b: any) => b.total_posts - a.total_posts);
+
+        this.category.data = data;
+        if (this.paginator) {
+          this.category.paginator = this.paginator;
         }
-      );
-  }
+      });
+}
+
+
 
   getUserTotalPost(): void {
     this.AS.userTotalPost().subscribe(
@@ -121,7 +129,7 @@ export class ReportsComponent implements OnInit {
           .sort((a: any, b: any) => b.total_posts - a.total_posts);
         this.reports.data = userData;
         if (this.paginator) {
-          this.reports.paginator = this.paginator;
+          this.reports.paginator = this.paginator1;
         }
         this.cdr.detectChanges();
       },
@@ -161,23 +169,16 @@ export class ReportsComponent implements OnInit {
   likedposttable(): void {
     this.AS.likedposttable().subscribe(
       (response) => {
-        this.liked = new MatTableDataSource();
         const posts = response['posts'] || [];
-        this.title = [];
-        this.likesCount = [];
-        for (let i = 0; i < posts.length; i++) {
-          const post = posts[i];
-          this.liked.data.push({
-            post_id: post.post_id,
-            title: post.title,
-            user_name: post.user_name,
-            likes_count: post.likes_count,
-            created_at: post.created_at,
-            badge1: post.badge
-          });
-          this.title.push(post.title);
-          this.likesCount.push(post.likes_count);
-        }
+        this.liked.data = posts.map((post: any) => ({
+          post_id: post.post_id,
+          title: post.title,
+          user_name: post.user_name,
+          likes_count: post.likes_count,
+          created_at: post.created_at,
+          badge: post.badge || 'N/A'
+        }));
+        this.liked.paginator = this.paginator2;
         this.cdr.detectChanges();
       },
       (error) => {
@@ -186,41 +187,69 @@ export class ReportsComponent implements OnInit {
     );
   }
 
-  filterPosts(): void {
-    const reports = this.reports.data || [];
-    const filteredPosts = reports.filter(post => {
-      const postDate = post.created_at ? new Date(post.created_at) : null;
-      const fromDateMatch = this.fromDate ? postDate && postDate >= new Date(this.fromDate) : true;
-      const toDateMatch = this.toDate ? postDate && postDate <= new Date(this.toDate) : true;
-      return fromDateMatch && toDateMatch;
-    });
-    this.reports.data = filteredPosts;
-    this.cdr.detectChanges();
-  }
+  filterPosts() {
+    this.category.data = this.category.data.filter(post => {
+        const postDate = post.created_at ? new Date(post.created_at) : null;
 
-  filterLikes(): void {
-    const sourceData = this.liked.data || [];
-    const filteredPosts = sourceData.filter(post => {
-      const postDate = post.created_at ? new Date(post.created_at) : null;
-      const fromDateMatch = this.fromDate ? postDate && postDate >= new Date(this.fromDate) : true;
-      const toDateMatch = this.toDate ? postDate && postDate <= new Date(this.toDate) : true;
-      return fromDateMatch && toDateMatch;
-    });
-    this.liked.data = filteredPosts;
-    this.cdr.detectChanges();
-  }
+        if (postDate && isNaN(postDate.getTime())) {
+            console.error(`Invalid post date: ${post.created_at}`);
+            return false; // Exclude invalid dates
+        }
 
-  onDateChange(event: any, type: string) {
-    const selectedDate = event.target.value;
-    if (type === 'from') {
-      this.fromDate = selectedDate;
-    } else if (type === 'to') {
-      this.toDate = selectedDate;
-    }
-    this.filterPosts();
-    this.filterLikes();
-    this.getCategoriesData();
+        const fromDate = this.fromDate ? new Date(this.fromDate) : null;
+        const toDate = this.toDate ? new Date(this.toDate) : null;
+
+        if (fromDate && isNaN(fromDate.getTime())) {
+            console.error(`Invalid fromDate: ${this.fromDate}`);
+            return false;
+        }
+
+        if (toDate && isNaN(toDate.getTime())) {
+            console.error(`Invalid toDate: ${this.toDate}`);
+            return false;
+        }
+
+        const fromDateMatch = fromDate ? postDate && postDate >= fromDate : true;
+        const toDateMatch = toDate ? postDate && postDate <= toDate : true;
+
+        return fromDateMatch && toDateMatch;
+    });
+
+    this.cdr.detectChanges();
+}
+
+
+filterCategories(): void {
+  const category = this.category.data || []; 
+  const filteredData = category.filter((category) => {
+      const categoryDate = category.created_at ? new Date(category.created_at) : null;
+
+      const fromDateMatch = this.fromDate
+          ? categoryDate && categoryDate >= new Date(this.fromDate)
+          : true;
+
+      const toDateMatch = this.toDate
+          ? categoryDate && categoryDate <= new Date(this.toDate)
+          : true;
+
+      return fromDateMatch && toDateMatch;
+  });
+
+  this.category.data = filteredData; // Update the filtered data
+  this.cdr.detectChanges(); // Refresh the UI
+}
+
+
+
+onDateChange(event: Event, type: 'from' | 'to'): void {
+  const input = event.target as HTMLInputElement;
+  if (type === 'from') {
+    this.fromDate = input.value;
+  } else if (type === 'to') {
+    this.toDate = input.value;
   }
+  this.getCategories(); // Fetch filtered data whenever the date changes
+}
 
   togglePreview(): void {
     this.previewVisible = !this.previewVisible;

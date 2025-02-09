@@ -158,16 +158,18 @@ export class AdminDataService {
     return this.Admin('mostCategories')
   }
 
-  tableCategories(params: { start_date: string; end_date: string }): Observable<any> {
-    let queryParams = new HttpParams()
-    .set('start_date', params.start_date)
-    .set('end_date', params.end_date);
-    
-    return this.Admin('tableCategories', 'GET', { queryParams });
-  }
-  
-  
-  
+
+tableCategories(startDate?: string, endDate?: string ): Observable<any> {
+  const params: any = {};
+  if (startDate) params.start_date = startDate;
+  if (endDate) params.end_date = endDate;
+
+  console.log('Sending API request with params:', params); // Debugging
+
+  return this.Admin('tableCategories', 'GET', params); // Replace `Admin` with your actual HTTP call
+}
+
+
   createQuestions(data: any): Observable<any>{
     return this.Admin('trivia/questions', 'POST', data)
   }

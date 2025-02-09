@@ -102,23 +102,24 @@ export class DashboardComponent implements OnInit {
   }
 
   getmosttable(): void {
-    this.AS.total_post().subscribe(
+    this.AS.tableCategories().subscribe(
       (data: any) => {
         console.log(data);
-        this.mostCategoriesData = data;  // Store the response data in the array
+        this.mostCategoriesData = data;  // Store response data
   
-        // Extract categories and their counts directly
-        const categories = this.mostCategoriesData.map((item: any) => item.category);  // Category names
-        const counts = this.mostCategoriesData.map((item: any) => item.count);         // Post counts
+        // Extract category names and post counts (assuming `data` has a valid structure)
+        const category = data.map((item: any) => item.category); 
+        const total_posts = data.map((item: any) => item.total_posts);  
   
-        this.renderBarChart(categories, counts); 
-        this.cdr.detectChanges(); 
+        this.renderBarChart(category, total_posts);  // Pass the extracted data
+        this.cdr.detectChanges();  
       },
       (error) => {
-        console.error('Error fetching most categories data:', error);  // Handle errors
+        console.error('Error fetching most categories data:', error);
       }
     );
   }
+  
   
   
   getUserTotalPost(): void {
@@ -174,7 +175,7 @@ export class DashboardComponent implements OnInit {
     );
   }
   
-  renderBarChart(categories: string[], counts: number[]): void {
+  renderBarChart(category: string[], total_posts: number[]): void {
     const ctx = document.getElementById('barChart1') as HTMLCanvasElement;
   
     if (this.barChart) {
@@ -184,11 +185,11 @@ export class DashboardComponent implements OnInit {
     this.barChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: categories,  
+        labels: category,  
         datasets: [
           {
             label: 'Total Posts Per Category',
-            data: counts,  
+            data: total_posts,  
             backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'], 
             hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D']
           }
@@ -214,7 +215,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // renderBarChart(categories: string[], counts: number[]): void {
+  // renderBarChart(category: string[], total_posts: number[]): void {
   //   const ctx = document.getElementById('pieChart') as HTMLCanvasElement;
   
   //   if (this.pieChart) {
@@ -224,11 +225,11 @@ export class DashboardComponent implements OnInit {
   //   this.pieChart = new Chart(ctx, {
   //     type: 'pie',
   //     data: {
-  //       labels: categories,  
+  //       labels: category,  
   //       datasets: [
   //         {
   //           label: 'Total Posts Per Category',
-  //           data: counts,  
+  //           data: total_posts,  
   //           backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'], 
   //           hoverBackgroundColor: ['#568b67', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40']
   //         }
