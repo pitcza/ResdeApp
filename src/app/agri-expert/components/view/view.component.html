@@ -2,40 +2,46 @@
     <div class="post-container">
         <div class="post-header">
             <div class="popup-head">
-                <h1> Idea Post </h1>
-                <!-- <p class="status" [ngClass]="{
+                <h1> {{ post.user_name.split(' ')[0] }}'s Post </h1>
+                <p class="status" [ngClass]="{
                     'pending-status': post.status === 'pending',
                     'approved-status': post.status === 'approved',
                     'declined-status': post.status === 'declined',
-                  }"> {{ post.status }} </p> -->
+                  }"> {{ post.status }} </p>
             </div>
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
         <div class="post-content">
-            <h4 class="publisher">{{post?.user_name}}</h4>
-            <span class="date">{{ post?.created_at | date: 'dd-MM-yyyy' }}</span>
+            <div class="declined-remarks" *ngIf="post.status === 'declined'">
+                <h3> Declined Post. </h3>
+                <p> <strong>Remarks:</strong> {{ post.remarks }} </p>
+            </div>
+
             <div class="main-post">
-                <h2>{{post?.title}}</h2>
-                <span class="category">{{post?.category}}</span>
-                <p>{{post?.content}}</p>
+                <div class="upper">
+                    <h2>{{ post.title }} <span class="category">{{ post.category }}</span></h2>
+                </div>
+                <p class="info">
+                    <span class="author">{{ post.user_name }} </span>
+                    <!-- <p class="category">{{ data.category }}</p> -->
+                    <span class="date"> • {{ post.created_at | date:'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
+                </p>
+                <p [innerHTML]="formatContent(post.content)"></p>
                 <div class="post-img">
-                    <img [src]=" post?.image || '../../../../../assets/images/NoImage.png'" alt="post image">
+                    <img [src]="post.image || '../../../../../assets/images/NoImage.png'" alt="post image">
                 </div>
             </div>
         </div>
 
         <div class="post-footer">
-            <div class="buttons">
-                <div *ngIf="data.context === 'componentA'"> 
-                    <input class="danger-btn" type="button" value="Delete" (click)="deletePost(data.id)">
-                </div>
-                <div *ngIf="data.context === 'componentB'">
-                    <input class="submit-btn" type="button" value="Approve Post" (click)="approvePost(data.id)">
-                    <input class="danger-btn" type="button" value="Decline" (click)="declinePost(data.id)">
-                </div> 
+            <div class="buttons" *ngIf="post.status === 'approved'"> 
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost(data.id)">
             </div>
-            
+            <div class="buttons" *ngIf="post.status === 'pending'">
+                <input class="submit-btn" type="button" value="Approve Post" (click)="approvePost(data.id)">
+                <input class="danger-btn" type="button" value="Decline" (click)="declinePost(data.id)">
+            </div> 
         </div>
     </div>
 </div>

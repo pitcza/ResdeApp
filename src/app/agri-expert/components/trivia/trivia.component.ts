@@ -39,9 +39,9 @@ export class TriviaComponent implements OnInit {
     this.as.getquestions().subscribe(
       (data: TriviaQuestion[]) => {
         this.dataSource = new MatTableDataSource(data);
-        this.filteredDataSource.data = data;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+      this.filteredDataSource = new MatTableDataSource(data);
+      this.filteredDataSource.paginator = this.paginator;
+      this.filteredDataSource.sort = this.sort;
       },
       (error) => {
         console.error('Error fetching questions:', error);
