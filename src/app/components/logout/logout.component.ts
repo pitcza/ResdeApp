@@ -28,7 +28,7 @@ export class LogoutComponent {
           toast: true,
           position: 'top-end',
           icon: 'success',
-          title: 'Logout successful!',
+          title: 'Successfully logged out.',
           iconColor: '#689f7a',
           showConfirmButton: false,
           timer: 2000

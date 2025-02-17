@@ -10,7 +10,7 @@
 
       <div class="post-heading">
         <span> Recent Posts </span>
-        <h3> Recycled Garden Gallery </h3>
+        <!-- <h3> Recycled Garden Gallery </h3> -->
       </div>
 
       <div class="filters">
@@ -57,7 +57,7 @@
 
         <!-- Dynamically render posts once loaded -->
         <ng-container *ngIf="!isLoading && filteredPosts.length > 0">
-        <div *ngFor="let post of filteredPosts" class="post-box">
+        <div *ngFor="let post of paginatedPosts" class="post-box">
           <div class="post-img" (click)="viewPost(post.id)">
             <img alt="uploaded image" [src]="post.image || '../../../../assets/images/NoImage.png'">
             <span class="category">{{ post.category }}</span>
@@ -88,6 +88,13 @@
           </div>
         </div>
         </ng-container>
+      </div>
+      
+      <!-- Pagination Controls -->
+      <div class="pagination" *ngIf="totalPages > 1">
+        <span> Page {{ currentPage }} of {{ totalPages }} </span>
+        <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+        <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
       </div>
     </div>
     

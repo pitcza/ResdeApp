@@ -10,6 +10,8 @@ import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component'
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { FormsModule } from '@angular/forms';
+import { ClickableRsComponent } from './landing-page/clickable-rs/clickable-rs.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { FormsModule } from '@angular/forms';
     PrivacypolicyComponent,
     TermsConditionsComponent,
     ForgotPasswordComponent,
+    ClickableRsComponent,
   ],
   imports: [
     CommonModule,
     ResdeRoutingModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
   ]
 })
 export class ResdeModule { }

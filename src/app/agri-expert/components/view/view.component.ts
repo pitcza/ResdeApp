@@ -26,6 +26,13 @@ export class ViewComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  formatContent(content: string | null): string {
+    if (!content) {
+      return 'N/A';
+    }
+    return content.replace(/\n/g, '<br>');
+  }
+
   ngOnInit(): void {
     this.id = this.data.id;  
     this.fetchPostData();

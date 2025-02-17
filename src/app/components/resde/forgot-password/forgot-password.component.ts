@@ -214,17 +214,6 @@ export class ForgotPasswordComponent {
 
     this.authService.resetPassword(this.email, this.token, passwordData).subscribe(
       (response) => {
-        // Swal.close();
-        // Swal.fire('Success', 'Your password has been reset successfully.', 'success');
-        // Swal.fire({
-        //   toast: true,
-        //   position: 'top-end',
-        //   icon: 'success',
-        //   title: 'Your password has been reset successfully.',
-        //   showConfirmButton: false,
-        //   timer: 5000,
-        //   timerProgressBar: true,
-        // });
         this.router.navigate(['/login-to-resIt'], {
           queryParams: { email: this.email, password: this.newPassword }
         });
@@ -235,39 +224,5 @@ export class ForgotPasswordComponent {
     );
   }
 
-
-  // with auto login sa back, ayaw makuha pwede naman pala sa ts lang
-  // resetPassword() {
-  //   if (!this.newPassword || !this.confirmNewPassword) {
-  //     Swal.fire('Error', 'Please fill in both password fields.', 'error');
-  //     return;
-  //   }
-  
-  //   if (this.newPassword !== this.confirmNewPassword) {
-  //     Swal.fire('Error', 'Passwords do not match.', 'error');
-  //     return;
-  //   }
-  
-  //   const swalLoading = Swal.fire({
-  //     title: 'Resetting...',
-  //     text: 'Please wait while we reset your password.',
-  //     allowOutsideClick: false,
-  //     didOpen: () => {
-  //       Swal.showLoading();
-  //     }
-  //   });
-  
-  //   this.authService.resetPasswordAndLogin(this.email, this.newPassword, this.token).subscribe(
-  //     (response) => {
-  //       Swal.close();  // Close the loading Swal
-  //       Swal.fire('Success', 'Password reset successful, and you are now logged in!', 'success');
-  //       this.router.navigate(['/main']); // Navigate to the main page
-  //     },
-  //     (error) => {
-  //       Swal.close();  // Close the loading Swal
-  //       Swal.fire('Error', 'Something went wrong. Please try again later.', 'error');
-  //     }
-  //   );
-  // }
 
 }

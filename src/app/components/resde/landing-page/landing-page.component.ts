@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, Inject, PLATFORM_ID, HostListener, ViewEncapsulation, OnInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { DataserviceService } from '../../../services/dataservice.service';
+import { ClickableRsComponent } from './clickable-rs/clickable-rs.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-landing-page',
@@ -17,6 +19,7 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
+    private dialog: MatDialog,
     private adminPhotos: DataserviceService
   ) {}
 
@@ -89,6 +92,16 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
           scrollTopButton.classList.remove('show');
         }
       }
+    }
+  }
+
+  showCardContent(type: string): void {
+    if (this.dialog) {
+      this.dialog.open(ClickableRsComponent, {
+        data: { type },  // Pass the type (reduce, reuse, recycle)
+      });
+    } else {
+      console.error('Dialog component not found');
     }
   }
 

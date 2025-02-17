@@ -21,6 +21,9 @@ export class HomepageComponent implements OnInit {
 
   filteredPosts: any[] = [];
 
+  currentPage = 1;
+  itemsPerPage = 10;
+
   constructor(private ds: DataserviceService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -91,7 +94,6 @@ export class HomepageComponent implements OnInit {
     imgElement.src = '../assets/images/NoImage.png';
   }
 
-
   viewAnnouncem(id: number) {
       const announcementPost = this.announcements.find(announcement => announcement.id === id); // Correct comparison
 
@@ -118,29 +120,54 @@ export class HomepageComponent implements OnInit {
       (response) => {
         this.posts = response.posts || [];
         this.posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        this.filteredPosts = this.posts;
+        this.filteredPosts = [...this.posts]; // Keep filteredPosts intact
         this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts:', error);
-        this.isLoading = false; // Turn off loading state even on error
+        this.isLoading = false;
       }
     );
   }
 
-  filterPosts(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-  
-    if (selectElement) {
-      const selectedCategory = selectElement.value;
-  
-      if (selectedCategory === '') {
-        this.filteredPosts = this.posts;  // Show all posts if "All Category" is selected
-      } else {
-        this.filteredPosts = this.posts.filter(post => post.category === selectedCategory);
-      }
+  get paginatedPosts(): any[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredPosts.slice(start, start + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredPosts.length / this.itemsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
     }
   }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  filterPosts(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedCategory = selectElement.value;
+    console.log('Selected Category:', selectedCategory); // Debugging log
+  
+    if (selectedCategory === '') {
+      this.filteredPosts = [...this.posts];
+    } else {
+      this.filteredPosts = this.posts.filter(post =>
+        post.category?.toLowerCase().trim() === selectedCategory.toLowerCase().trim()
+      );
+    }
+  
+    this.currentPage = 1;
+    console.log('Filtered Posts:', this.filteredPosts); // Debugging log
+  }
+  
 
   toggleLike(post: any): void {
     this.ds.likePost(post.id).subscribe(
