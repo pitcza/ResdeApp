@@ -4,6 +4,7 @@ import { AdminDataService } from '../../../services/admin-data.service';
 import { Chart } from 'chart.js/auto';
 import { MatPaginator } from '@angular/material/paginator';
 import * as XLSX from 'xlsx';  // Import XLSX
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-reports',
@@ -20,6 +21,8 @@ export class ReportsComponent implements OnInit {
 
   previewData: any[] = [];
   previewVisible = false;
+
+  isLoading = true;
 
   reports: MatTableDataSource<any> = new MatTableDataSource();
   liked: MatTableDataSource<any> = new MatTableDataSource();
@@ -79,23 +82,35 @@ export class ReportsComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  getCategories(): void {
-    this.AS
-      .tableCategories(this.fromDate, this.toDate)
-      .subscribe((data) => {
-        // Sort the data in descending order based on total_posts
-        data.sort((a: any, b: any) => b.total_posts - a.total_posts);
-
-        this.category.data = data;
-        if (this.paginator) {
-          this.category.paginator = this.paginator;
+  onSubmit() {
+    // Call the getCategories method with the selected startDate and endDate
+    this.getCategories(this.startDate, this.endDate);
+  }
+  
+  
+  getCategories(startDate?: string, endDate?: string): void {
+    this.isLoading = true;
+    this.AS.tableCategories(startDate, endDate)
+      .subscribe(
+        (data) => {
+          console.log('API Response:', data); // Make sure the data is correct
+          this.category.data = data;
+          this.isLoading = false;
+  
+          // Handle pagination if needed
+          if (this.paginator) {
+            this.category.paginator = this.paginator;
+          }
+          
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
         }
-      });
-}
-
-
+      );
+  }
 
   getUserTotalPost(): void {
+    this.isLoading = true;
     this.AS.userTotalPost().subscribe(
       (response) => {
         this.reports = new MatTableDataSource();
@@ -108,6 +123,7 @@ export class ReportsComponent implements OnInit {
         this.userNames = userData.map((user: any) => user.user_name);
         this.postCounts = userData.map((user: any) => user.total_posts);
         this.cdr.detectChanges();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching total posts per user', error);
@@ -116,6 +132,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getUserTotalPosts(): void {
+    this.isLoading = true;
     this.AS.userTotalPosts().subscribe(
       (response) => {
         this.reports = new MatTableDataSource();
@@ -132,6 +149,7 @@ export class ReportsComponent implements OnInit {
           this.reports.paginator = this.paginator1;
         }
         this.cdr.detectChanges();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching total posts per user', error);
@@ -167,6 +185,7 @@ export class ReportsComponent implements OnInit {
   }
 
   likedposttable(): void {
+    this.isLoading = true;
     this.AS.likedposttable().subscribe(
       (response) => {
         const posts = response['posts'] || [];
@@ -180,6 +199,7 @@ export class ReportsComponent implements OnInit {
         }));
         this.liked.paginator = this.paginator2;
         this.cdr.detectChanges();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts for table and chart', error);
@@ -241,15 +261,15 @@ filterCategories(): void {
 
 
 
-onDateChange(event: Event, type: 'from' | 'to'): void {
-  const input = event.target as HTMLInputElement;
-  if (type === 'from') {
-    this.fromDate = input.value;
-  } else if (type === 'to') {
-    this.toDate = input.value;
-  }
-  this.getCategories(); // Fetch filtered data whenever the date changes
-}
+// onDateChange(event: Event, type: 'from' | 'to'): void {
+//   const input = event.target as HTMLInputElement;
+//   if (type === 'from') {
+//     this.fromDate = input.value;
+//   } else if (type === 'to') {
+//     this.toDate = input.value;
+//   }
+//   this.getCategories(); // Fetch filtered data whenever the date changes
+// }
 
   togglePreview(): void {
     this.previewVisible = !this.previewVisible;

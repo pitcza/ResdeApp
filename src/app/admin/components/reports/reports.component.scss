@@ -307,12 +307,12 @@ td .status {
 
 .date-filter {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     column-gap: 10px;
     padding: 10px 0;
 
     .txt_field {
-        flex-basis: 100%;
+        flex-basis: 10%;
         position: relative;
         font-weight: 400;
         margin-bottom: 0.2rem;
@@ -354,12 +354,37 @@ td .status {
         display: flex;
         justify-content: flex-end;
         border: none;
-        padding-left: 73px;
+        padding-left: 90px;
         font-size: 13px;
         color: black;
         width: 100%;
         outline: none;
     }
+
+    button {
+        background: var(--primary-green);
+        border-radius: 5px;
+        color: white;
+        font-size: 1rem;
+        padding: .5rem 1rem;
+        transition: all 0.3s ease-in-out;
+        border-style: none;
+        height: 35px;
+
+        p{
+            margin-top: -3px;
+        }
+    }
+
+    .loading {
+        margin-top: 250px;
+        margin-bottom: 250px;
+
+        .app-loading {
+            margin-top: 250px;
+            margin-bottom: 250px;
+        }
+      }
 }
 
 

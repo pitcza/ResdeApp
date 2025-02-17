@@ -5,13 +5,16 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 const MatModules = [
   CommonModule,
@@ -27,10 +30,11 @@ const MatModules = [
   MatSortModule,
   ReactiveFormsModule,
   FormsModule,
-  MatSelect,
-  MatOption,
-  MatDialogModule,
-  MatFormField,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule,  
+  MatInputModule,  
+  MatProgressSpinnerModule     
 ];
 
 @NgModule({

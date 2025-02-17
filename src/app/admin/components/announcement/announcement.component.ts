@@ -164,7 +164,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
         console.error('Error creating post', error);
         Swal.fire({
           title: 'Error',
-          text: 'An error occurred while creating the post.',
+          text: 'An error occurred while creating the announcement.',
           icon: 'error',
           confirmButtonText: 'Close',
           confirmButtonColor: '#777777'

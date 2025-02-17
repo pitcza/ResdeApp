@@ -14,6 +14,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { UsersComponent } from './components/users/users.component';
 import { DisplayImagesComponent } from './components/forlandingphotos/display-images/display-images.component';
 import { ImagesHistoryComponent } from './components/forlandingphotos/images-history/images-history.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ImagesHistoryComponent } from './components/forlandingphotos/images-his
     ReportsComponent,
     UsersComponent,
     DisplayImagesComponent,
-    ImagesHistoryComponent
+    ImagesHistoryComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,

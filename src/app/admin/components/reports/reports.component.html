@@ -18,31 +18,29 @@
                             <button class="excel" mat-raised-button color="primary" (click)="exportToExcel()"><span> <i class='bx bx-download'></i> </span>Download</button>
                         </div>
 
-                        <!-- <form>
+                        <form (ngSubmit)="onSubmit()">
                             <div class="date-filter">
                                 <div class="txt_field">
-                                  <label for="filter-from-date">From Date</label>
-                                  <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
+                                    <label for="start_date">Start Date</label>
+                                    <input type="date" [(ngModel)]="startDate" name="start_date" id="start_date">
                                 </div>
-                                <div class="txt_field">
-                                  <label for="filter-to-date">To Date</label>
-                                  <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
-                                </div>
-                            </div>
-                          </form> -->
 
-                          <!-- <div class="filter-container">
-                            <label for="startDate">Start Date:</label>
-                            <input type="date" [(ngModel)]="startDate" (change)="getCategories()" />
-                          
-                            <label for="endDate">End Date:</label>
-                            <input type="date" [(ngModel)]="endDate" (change)="getCategories()" />
-                          
-                            <button (click)="getCategories()">Filter</button>
-                          </div> -->
-                        
+                                <div class="txt_field">
+                                    <label for="end_date">End Date</label>
+                                    <input type="date" [(ngModel)]="endDate" name="end_date" id="end_date">
+                                </div>
+
+                                <button type="submit">
+                                    <p>Apply</p>
+                                </button>
+
+                            </div>
+                            
+                        </form>
+
                         <div>
-                            <table mat-table [dataSource]="category" class="mat-elevation-z8">
+
+                            <table mat-table [dataSource]="category.data" class="mat-elevation-z8">
                             
                             <ng-container matColumnDef="category">
                                 <th mat-header-cell *matHeaderCellDef> Category </th>
@@ -53,24 +51,21 @@
                                 <th mat-header-cell *matHeaderCellDef> Total Posts </th>
                                 <td mat-cell *matCellDef="let element"> {{element.total_posts}} </td>
                             </ng-container>
-
-                            <!-- <ng-container matColumnDef="Dates">
-                                <th mat-header-cell *matHeaderCellDef> Dates </th>
-                                <td mat-cell *matCellDef="let element"> {{element.dates}} </td>
-                            </ng-container> -->
                         
                             <tr mat-header-row *matHeaderRowDef="displayedColumnReport"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnReport;"></tr>
                             </table>
+
+                            <div class="loading"  *ngIf="isLoading">
+                                <app-loading></app-loading>
+                             </div>
+
                             <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5]" showFirstLastButtons
                             aria-label="Select page of periodic elements">
                             </mat-paginator>
                         </div>
                         
-
-                        
                     </div>
-
                 </div>
             </div>
         </div>
@@ -142,6 +137,11 @@
                                         <tr mat-header-row *matHeaderRowDef="displayedColumnReport1"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumnReport1;"></tr>
                                     </table>
+
+                                    <div class="loading"  *ngIf="isLoading">
+                                        <app-loading></app-loading>
+                                     </div>
+
                                     <mat-paginator #paginator1 [pageSize]="10" [pageSizeOptions]="[10]" showFirstLastButtons
                                         aria-label="Select page of periodic elements">
                                     </mat-paginator>
@@ -211,6 +211,10 @@
                                         <tr mat-header-row *matHeaderRowDef="displayedColumnReport2"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumnReport2;"></tr>
                                     </table>
+
+                                    <div class="loading"  *ngIf="isLoading">
+                                        <app-loading></app-loading>
+                                     </div>
                                     
                                     <mat-paginator #paginator2 [pageSize]="10" [pageSizeOptions]="[10]" showFirstLastButtons
                                         aria-label="Select page of periodic elements">

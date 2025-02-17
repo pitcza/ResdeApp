@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
@@ -20,21 +20,27 @@ export class AdminDataService {
   //   return this.http.get<any>(this.url + endpoint, { headers });
   // }
 
-  private Admin(endpoint: string, method: string = 'GET', body: any = null): Observable<any> {
+  private Admin(endpoint: string, method: string = 'GET', body: any = null, params: any = null): Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
+    // Create an options object to include headers and params
+    const options = {
+        headers: headers,
+        params: params // Add query parameters here
+    };
+
     switch (method.toUpperCase()) {
         case 'GET':
-            return this.http.get<any>(this.url + endpoint, { headers });
+            return this.http.get<any>(this.url + endpoint, options);
         case 'POST':
-            return this.http.post<any>(this.url + endpoint, body, { headers });
+            return this.http.post<any>(this.url + endpoint, body, options);
         case 'PUT':
-            return this.http.put<any>(this.url + endpoint, body, { headers });
+            return this.http.put<any>(this.url + endpoint, body, options);
         case 'PATCH':
-            return this.http.patch<any>(this.url + endpoint, body, { headers });
+            return this.http.patch<any>(this.url + endpoint, body, options);
         case 'DELETE':
-            return this.http.delete<any>(this.url + endpoint, { headers });
+            return this.http.delete<any>(this.url + endpoint, options);
         default:
             throw new Error('Invalid method');
     }
@@ -159,14 +165,17 @@ export class AdminDataService {
   }
 
 
-tableCategories(startDate?: string, endDate?: string ): Observable<any> {
+tableCategories(startDate?: string, endDate?: string): Observable<any> {
   const params: any = {};
-  if (startDate) params.start_date = startDate;
-  if (endDate) params.end_date = endDate;
 
-  console.log('Sending API request with params:', params); // Debugging
+  if (startDate) {
+    params.start_date = startDate;
+  }
+  if (endDate) {
+    params.end_date = endDate;
+  }
 
-  return this.Admin('tableCategories', 'GET', params); // Replace `Admin` with your actual HTTP call
+  return this.Admin('tableCategories', 'GET', null, params);
 }
 
 
