@@ -46,10 +46,9 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
 
   private initForm() {
     this.postForm = this.fb.group({
-      title: ['', [Validators.required, wordLimitValidator(5)]],
-      description: ['', Validators.required],
-      expires_at: ['', [Validators.required]],
-      image: [null]
+        title: [{ value: '', disabled: false }, [Validators.required, wordLimitValidator(5)]],
+        description: [{ value: '', disabled: false }, Validators.required],
+        image: [null]
     });
 
     this.postForm.get('title')?.valueChanges.subscribe(value => {
@@ -136,7 +135,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
     const formData = new FormData();
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('description', this.postForm.get('description')!.value);
-    formData.append('expires_at', this.postForm.get('expires_at')?.value);
+    // formData.append('expires_at', this.postForm.get('expires_at')?.value);
     if (this.image) {
       formData.append('image', this.image);
     }

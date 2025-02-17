@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataserviceService } from '../../../services/dataservice.service';
+import Swal from 'sweetalert2';
 
 interface TriviaQuestion {
   id: number;
@@ -64,9 +65,23 @@ export class GreenmoduleComponent implements OnInit {
     );
   }
   
-  submitAnswers(): void {
+  submitAnswers() {
+    // Find unanswered question indices
+    const unanswered = this.triviaQuestions
+      .map((q, index) => (this.userAnswers[index] ? null : index + 1))
+      .filter((num) => num !== null);
+  
+    if (unanswered.length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Please answer all questions before submitting! Missing: ${unanswered.join(', ')}`,
+      });
+      return;
+    }
+  
+    // Proceed with normal submission logic
     this.score = 0;
-
     const submitPromises = this.triviaQuestions.map((question, index) => {
       const userAnswer = this.userAnswers[index];
       if (userAnswer && userAnswer !== 'answered') {
@@ -82,9 +97,9 @@ export class GreenmoduleComponent implements OnInit {
             console.error(`Error submitting answer for question ${question.id}:`, error);
           });
       }
-      return Promise.resolve(); // Skip if no answer provided or already answered
+      return Promise.resolve();
     });
-
+  
     Promise.all(submitPromises).then(() => {
       this.showResults = true;
     });

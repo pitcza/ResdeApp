@@ -8,7 +8,7 @@
                 <div class="input-row">
                     <div class="input-field">
                         <label class="labelline"> Title </label>
-                        <input class="txt-field" type="text" formControlName="title" maxlength="50" [disabled]="wordCount >= maxWords" (keydown.enter)="focusDescription()">
+                        <input class="txt-field" type="text" formControlName="title" maxlength="50" (keydown.enter)="focusDescription()">
                         
                         <div *ngIf="postForm.get('title')?.hasError('wordLimit') && postForm.get('title')?.touched" class="error">
                             Title cannot exceed 5 words.

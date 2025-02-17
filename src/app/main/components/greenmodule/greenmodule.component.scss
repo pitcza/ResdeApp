@@ -162,37 +162,72 @@
         color: #2d6a4f;
       }
   
+      // .options {
+      //   display: flex;
+      //   flex-wrap: wrap;
+      //   gap: 12px;
+  
+      //   .option {
+      //     flex: 1 1 calc(50% - 10px);
+      //     display: flex;
+      //     align-items: center;
+      //     padding: 12px;
+      //     background: var(--bg-dark);
+      //     border: 2px solid transparent;
+      //     border-radius: 8px;
+      //     cursor: pointer;
+      //     transition: all 0.3s ease;
+  
+      //     input {
+      //       margin-right: 8px;
+      //     }
+  
+      //     &:hover {
+      //       background: #d8f3dc;
+      //       border-color: #52b788;
+      //     }
+  
+      //     &.selected {
+      //       background: #b7e4c7;
+      //       border-color: #2d6a4f;
+      //     }
+      //   }
+      // }
+
       .options {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 12px;
-  
-        .option {
-          flex: 1 1 calc(50% - 10px);
-          display: flex;
-          align-items: center;
-          padding: 12px;
-          background: var(--bg-dark);
-          border: 2px solid transparent;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-  
-          input {
-            margin-right: 8px;
-          }
-  
-          &:hover {
-            background: #d8f3dc;
-            border-color: #52b788;
-          }
-  
-          &.selected {
-            background: #b7e4c7;
-            border-color: #2d6a4f;
-          }
+      }
+      
+      .option {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: #f1faee;
+        border: 2px solid #286147;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        font-weight: 500;
+        color: #2d6a4f;
+      
+        input {
+          display: none; // Hide default radio buttons
+        }
+      
+        &:hover {
+          background: #d8f3dc;
+          border-color: #52b788;
+        }
+      
+        &.selected {
+          background: #b7e4c7;
+          border-color: #2d6a4f;
         }
       }
+      
     }
   
     .btn-submit {
