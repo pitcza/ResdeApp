@@ -1,0 +1,128 @@
+<div class="container">
+    <div *ngIf="type === 'reduce'" class="popup-container" id="reduce">
+        <!-- Content for the Reduce popup -->
+        <div class="popup-header">
+            <h1> Reducing Waste: Small Changes, Big Impact </h1>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="popup-content">
+            <div class="main-content">
+                <h2>Share actionable tips to minimize waste at home and in the community, such as:</h2>
+                <p>Choosing products with less packaging.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reduce1.png" alt="Reduce Image Example">
+                </div>
+                <p>Opting for reusable items like water bottles, cloth bags, etc..</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reduce2.png" alt="Reduce Image Example">
+                </div>
+                <p>Composting organic waste to reduce landfill contributions.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reduce3.png" alt="Reduce Image Example">
+                </div>
+            </div>
+            <div class="main-content">
+                <h2>Provide examples of products or practices that can be reduced:</h2>
+                <p>Buying in bulk to reduce packaging waste.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reduce4.png" alt="Reduce Image Example">
+                </div>
+                <p>Switching to digital documents to reduce paper usage.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reduce5.png" alt="Reduce Image Example">
+                </div>
+            </div>
+            <div class="bottom-content">
+                <img class="ars" src="../../../../../assets/images/reduce.png">
+                <h3>Encourage residents to post their own tips and share their experiences on <span class="appname-font">Re’sIt</span>.</h3>
+            </div>
+
+            <div class="buttons">
+                <input class="submit-btn" type="button" value="Learn or Share Your Tips!" routerLink="/login-to-resIt" (click)="closeDialog()">
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="type === 'reuse'" class="popup-container" id="reuse">
+        <!-- Content for the Reuse popup -->
+        <div class="popup-header">
+            <h1> Reusing: Get Creative with Everyday Items </h1>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="popup-content">
+            <div class="main-content">
+                <h2>Provide tips on how to reuse common household items:</h2>
+                <p>Turning glass jars into storage containers.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reuse1.png" alt="Reuse Image Example">
+                </div>
+                <p>Repurposing old clothes into new accessories.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reuse2.png" alt="Reuse Image Example">
+                </div>
+                <p>Using cardboard boxes for organizing.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reuse3.png" alt="Reuse Image Example">
+                </div>
+            </div>
+            <div class="main-content">
+                <h2>Suggest DIY projects or home improvement ideas where reused materials can be incorporated.</h2>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/reuse4.png" alt="Reuse Image Example">
+                </div>
+            </div>
+            <div class="bottom-content">
+                <img class="ars" src="../../../../../assets/images/reuse.png">
+                <h3>Showcase successful reuse projects from the community as inspiration.</h3>
+            </div>
+
+            <div class="buttons">
+                <input class="submit-btn" type="button" value="Start a Reuse Project!" routerLink="/login-to-resIt" (click)="closeDialog()">
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="type === 'recycle'" class="popup-container" id="recycle">
+        <!-- Content for the Recycle popup -->
+        <div class="popup-header">
+            <h1> Recycling: Transform Waste Into Something Valuable </h1>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="popup-content">
+            <div class="main-content">
+                <h2>Offer guidance on the proper ways to sort and prepare recyclables:</h2>
+                <p>Separating paper, plastic, metal, and glass.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/recycle1.png" alt="Recycle Image Example">
+                </div>
+                <p>Cleaning containers before recycling them.</p>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/recycle2.png" alt="Recycle Image Example">
+                </div>
+            </div>
+            <div class="main-content">
+                <h2>Highlight the importance of supporting local recycling programs and initiatives.</h2>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/recycle3.png" alt="Recycle Image Example">
+                </div>
+            </div>
+            <div class="main-content">
+                <h2>Feature creative ideas for upcycling or turning recyclables into art or functional items (e.g., turning plastic bottles into planters).</h2>
+                <div class="img-content">
+                    <img src="../../../../../assets/images/popup/recycle4.png" alt="Recycle Image Example">
+                </div>
+            </div>
+            <div class="bottom-content">
+                <img class="ars" src="../../../../../assets/images/recycle.png">
+                <h3>Encourage residents to share their creative recycling projects and engage with others.</h3>
+            </div>
+
+            <div class="buttons">
+                <input class="submit-btn" type="button" value="Share Your Recycling Ideas!" routerLink="/login-to-resIt" (click)="closeDialog()">
+            </div>
+        </div>
+    </div>
+</div>
