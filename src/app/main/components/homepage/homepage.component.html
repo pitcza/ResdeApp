@@ -30,6 +30,16 @@
             <option value="Tips & tricks">Tips & tricks</option>
           </select>
         </div>
+
+        <div class="data-search">
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            [(ngModel)]="searchText" 
+            (input)="applyFilters()"
+            class="search-input"
+          />
+        </div>
       </div>
 
       <!-- No posts available message -->

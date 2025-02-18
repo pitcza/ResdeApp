@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { DataserviceService } from '../../../services/dataservice.service';
 import { UserpostComponent } from './userpost/userpost.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,11 +20,12 @@ export class HomepageComponent implements OnInit {
   // announcement: MatTableDataSource<TableElement> = new MatTableDataSource(this.announcements);
 
   filteredPosts: any[] = [];
+  searchText: string = '';
 
   currentPage = 1;
   itemsPerPage = 10;
 
-  constructor(private ds: DataserviceService, private dialog: MatDialog) {}
+  constructor(private ds: DataserviceService, private dialog: MatDialog, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadPosts();
@@ -122,6 +123,7 @@ export class HomepageComponent implements OnInit {
         this.posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         this.filteredPosts = [...this.posts]; // Keep filteredPosts intact
         this.isLoading = false;
+        console.log(response)
       },
       (error) => {
         console.error('Error fetching posts:', error);
@@ -167,6 +169,23 @@ export class HomepageComponent implements OnInit {
     this.currentPage = 1;
     console.log('Filtered Posts:', this.filteredPosts); // Debugging log
   }
+
+  applyFilters(): void {
+    let filteredData = this.posts;
+  
+    if (this.searchText) {
+      filteredData = filteredData.filter(post =>
+        post.content.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        post.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        post.category.toLowerCase().includes(this.searchText.toLowerCase())
+      );
+    }
+  
+    this.filteredPosts = filteredData;
+    this.cdr.detectChanges(); // Manually trigger change detection
+  }
+  
+  
   
 
   toggleLike(post: any): void {
