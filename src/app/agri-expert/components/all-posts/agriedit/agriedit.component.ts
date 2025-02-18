@@ -37,6 +37,18 @@ export class AgrieditComponent {
         (data) => {
           console.log('Fetched Post Data:', data); // Add this line to inspect the data
           this.post = data.post; // Accessing 'post' within the response
+    
+          // Ensure form is populated with fetched data
+          this.postData = { 
+            title: this.post.title || '', 
+            content: this.post.content || '', 
+            category: this.post.category || '' 
+          };
+    
+          // Handle image preview if an image exists
+          if (this.post.image) {
+            this.ImagePreview = this.post.image;
+          }
         },
         (error) => {
           console.error('Error fetching post data', error);
