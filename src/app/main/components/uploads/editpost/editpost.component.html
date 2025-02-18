@@ -44,14 +44,14 @@
         <div class="input-row">
           <div class="input-field-short">
             <label class="up-labelline"> Upload Photo </label>
-            <input class="file-field" type="file" id="file" accept="image/*" (change)="onFileSelected($event)" name="image">
+            <input class="file-field" type="file" id="file" accept="image/*" (change)="onFileSelected($event)" [value]="ImagePreview" name="image">
           </div>
           <!-- <div class="input-field">
             <div class="preview">
-              <h2>{{ ImagePreview ? 'Image Preview' : 'Choose Image File to Preview' }}</h2>
+              <h2>{{ ImagePreview ? 'Current Image:' : 'Choose Image File to Preview' }}</h2>
             </div>
             <div class="image-preview" *ngIf="ImagePreview">
-              <img [src]="ImagePreview" alt="Image Preview">
+              <img [src]="ImagePreview" [(ngModel)]="postData.image" alt="Image Preview">
             </div>
           </div> -->
         </div>

@@ -35,14 +35,24 @@ export class EditpostComponent implements OnInit {
   fetchPostData() {
     this.ds.getPost(this.id).subscribe(
       (data) => {
-        console.log('Fetched Post Data:', data); // Add this line to inspect the data
-        this.post = data.post; // Accessing 'post' within the response
+        console.log('Fetched Post Data:', data); // Log fetched data
+        if (data && data.post) {
+          // Assign fetched post data to the form model
+          this.postData.title = data.post.title;
+          this.postData.content = data.post.content;
+          this.postData.category = data.post.category;
+          // If there's an image, set the image preview
+          // if (data.post.image) {
+          //   this.ImagePreview = data.post.image; // Assuming image is a URL or base64 data
+          // }
+        }
       },
       (error) => {
         console.error('Error fetching post data', error);
       }
     );
   }
+  
 
   // Handles the file selection and previews the image
   onFileSelected(event: Event): void {
@@ -103,10 +113,14 @@ export class EditpostComponent implements OnInit {
           this.ds.updatePost(postId, formData).subscribe(
             (response) => {
               Swal.fire({
+                toast: true,
+                position: 'top-end',
                 icon: 'success',
-                text: 'Post has been updated.',
+                title: 'Post has been updated.',
+                showConfirmButton: false,
+                timer: 5000
               });
-              this.router.navigate(['main/uploads/list']);
+              this.closeDialog();
             },
             (error) => {
               Swal.fire({
