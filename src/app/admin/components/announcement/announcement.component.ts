@@ -6,6 +6,8 @@ import { AdminDataService } from '../../../services/admin-data.service';
 import Swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ViewAnnouncemComponent } from '../../../main/components/homepage/view-announcem/view-announcem.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-announcement',
@@ -27,12 +29,15 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
   maxWords: number = 5;
   isSubmitting = false;
 
+  announcements: any[] = [];
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private as: AdminDataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -91,6 +96,10 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
         this.dataSource.data = posts; // Use `.data` to update the existing data source
         this.filteredDataSource.data = posts; // Update filtered data
         this.filteredDataSource.paginator = this.paginator; // Reassign paginator
+
+        // Store the fetched announcements in `this.announcements`
+        this.announcements = posts;
+
         this.isLoading = false;
       },
       (error) => {
@@ -99,6 +108,19 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  viewAnnounce(id: number) {
+    // Ensure `this.announcements` is populated with the fetched data
+    const announcementPost = this.announcements.find(announcement => announcement.id === id); // Correct comparison
+  
+    if (announcementPost) {
+        this.dialog.open(ViewAnnouncemComponent, {
+          data: announcementPost
+        });
+    } else {
+        console.error('Announcement not found');
+    }
+}
   
 
   filterPosts() {
