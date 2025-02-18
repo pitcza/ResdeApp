@@ -271,6 +271,7 @@
         }
 
         .category {
+            text-transform: capitalize;
             color: white;
             position: absolute;
             left: 10px;
@@ -308,6 +309,7 @@
                 background-color: rgba(0, 0, 0, 0.06);
                 border-radius: 5px;
                 margin-right: 8px;
+                text-transform: capitalize;
             }
             
             .published-time {
@@ -647,7 +649,7 @@
     transition: border-color 0.3s ease;
   
     &:focus {
-        border-color: var(--dark-green);
+        border-color: var(--primary-green);
     }
   
     &::placeholder {
