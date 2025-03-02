@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { DataserviceService } from '../../../services/dataservice.service';
 import { ClickableRsComponent } from './clickable-rs/clickable-rs.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AdminDataService } from '../../../services/admin-data.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -16,17 +17,19 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
   private galleryItems: NodeListOf<Element> = [] as unknown as NodeListOf<Element>; // Delay initialization
   private galleryControls: string[] = ['previous', 'next'];
   landingPhotos: string[] = []; // Store fetched images
+  photoContent: string[] = []; // Store fetched contents
+  defaultImage = '../../../../assets/images/NoImage.png';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private dialog: MatDialog,
-    private adminPhotos: DataserviceService
+    private adminPhotos: AdminDataService
   ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.checkElementsInView();
-      this.fetchLandingPhotos(); // Fetch images from API
+      this.fetchLatestPhotos(); // Fetch images from API
     }
   }
 
@@ -44,25 +47,45 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
           exampleCarousel.setControls();
           exampleCarousel.useControls();
         }
-      }, 500); // Delay execution to allow images to load
+      }, 300); // Delay execution to allow images to load
     }
   }
 
-  fetchLandingPhotos(): void {
+  fetchLatestPhotos(): void {
     this.adminPhotos.getLandingPhotos().subscribe({
       next: (response) => {
-        if (response.length > 0) {
-          // Get the most recent images (assuming the API returns them in ascending order)
-          this.landingPhotos = response[0].images.slice(-5).reverse(); 
+        if (response.data) {
+          const latestPhoto = response.data;
+  
+          this.landingPhotos = [
+            latestPhoto.image1 ? latestPhoto.image1 : this.defaultImage,
+            latestPhoto.image2 ? latestPhoto.image2 : this.defaultImage,
+            latestPhoto.image3 ? latestPhoto.image3 : this.defaultImage,
+            latestPhoto.image4 ? latestPhoto.image4 : this.defaultImage,
+            latestPhoto.image5 ? latestPhoto.image5 : this.defaultImage
+          ];
+  
+          this.photoContent = [
+            latestPhoto.content1 ? latestPhoto.content1 : 'No description available',
+            latestPhoto.content2 ? latestPhoto.content2 : 'No description available',
+            latestPhoto.content3 ? latestPhoto.content3 : 'No description available',
+            latestPhoto.content4 ? latestPhoto.content4 : 'No description available',
+            latestPhoto.content5 ? latestPhoto.content5 : 'No description available'
+          ];
+        } else {
+          this.landingPhotos = Array(5).fill(this.defaultImage);
+          this.photoContent = Array(5).fill('No description available');
         }
-        this.landingPhotos = this.getPhotos();
       },
       error: (error) => {
-        console.error('Error fetching landing photos:', error);
-        this.landingPhotos = this.getPhotos();
+        console.error('Error fetching latest photo:', error);
+        this.landingPhotos = Array(5).fill(this.defaultImage);
+        this.photoContent = Array(5).fill('No description available');
       }
     });
   }
+  
+  
 
   getPhotos(): string[] {
     const defaultPhotos = [
@@ -212,7 +235,7 @@ class Carousel {
       if (nextButton) {
         this.setCurrentState(nextButton);
       }
-    }, 5000); // Move to next every 5 seconds
+    }, 10000); // Move to next every 10 seconds
   }
 
   private resetAutoSlide(): void {

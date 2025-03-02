@@ -826,12 +826,10 @@ table tr td:last-child {
         }
     }
 }
-// html, body { height: 100%; }
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-typography {
     font-family: 'Poppins';
-    all: unset; /* Resets all inherited and default styles */
+    all: unset;
     font-family: inherit !important;
     font-size: inherit !important;
     line-height: inherit !important;

@@ -2,13 +2,26 @@
     <div class="post-container">
         <div class="post-header">
             <div class="popup-head">
-                <h1>Customize Landing Page Highlight</h1>
+                <h1>Edit Landing Page Highlight</h1>
             </div>
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
         <div class="post-content">
-            <form [formGroup]="photoForm">
+            <div *ngIf="loading" class="popup-loader">
+                <div class="loader"></div>
+                <p>Loading...</p>
+            </div>
+
+            <div *ngIf="!loading && !hasPhotos" class="no-uploads-message">
+                <p>No existing highlights available.</p>
+
+                <div class="buttons">
+                    <input class="submit-btn" type="button" value="Back to Upload" (click)="uploadHighlight()" />
+                </div>
+            </div>
+
+            <form *ngIf="!loading && hasPhotos" [formGroup]="photoForm">
                 <p> Upload up to five environmental highlight photos of our Brgy. Gordon Heights to be featured on the 
                     <span class="appname-font"> Re’sIt </span> landing page. 
                 </p>
@@ -25,8 +38,6 @@
                             <label class="labelline"> Description/Content </label>
                             <input class="txt-field" type="text" formControlName="content{{ i+1 }}">
                         </div>
-                        <button *ngIf="inputRows.length > 1" type="button" class="remove-btn" 
-                            (click)="removeInputRow(i)">Remove</button>
                     </div>
                 
                     <!-- Image Preview Below -->
@@ -34,21 +45,15 @@
                         <img [src]="imagePreviews['image' + (i+1)]" class="image-preview" alt="Preview">
                     </div>
                 </div>
-                
-
-                <!-- Add Button -->
-                <div class="button">
-                    <button *ngIf="inputRows.length < 5" type="button" class="add-btn" (click)="addInputRow()"> + Add More </button>
-                </div>
 
                 <div class="bottom">
                     <div class="buttons">
-                        <input class="submit-btn left" type="button" value="Edit Current Highlights" (click)="editLatestUpload()"/>
+                        <input class="danger-btn left" type="button" value="Delete" (click)="deleteHighlight()"/>
                     </div>
 
                     <div class="buttons">
-                        <input class="danger-btn" type="button" value="Cleare All" (click)="clearImages()" />
-                        <input class="submit-btn" type="button" value="Upload" (click)="uploadImages()" />
+                        <input class="cancel-btn" type="button" value="Cancel" (click)="cancelEdit()" />
+                        <input class="submit-btn" type="button" value="Update" (click)="updateLatestPhotos()" />
                     </div>
                 </div>
             </form>

@@ -10,7 +10,9 @@ import Swal from 'sweetalert2';
 })
 export class ImagesHistoryComponent implements OnInit {
   imagesHistory: any[] = [];
-  displayedColumns: string[] = ['created_at', 'images', 'action'];  // Declare displayed columns array
+  displayedColumns: string[] = ['created_at', 'images', 'content', 'action'];  // Declare displayed columns array
+
+  isLoading = true;
 
   constructor(
     public dialogRef: MatDialogRef<ImagesHistoryComponent>,
@@ -29,16 +31,38 @@ export class ImagesHistoryComponent implements OnInit {
 
   // Method to fetch images history from backend
   fetchImagesHistory(): void {
+    this.isLoading = true;
+
     this.adminDataService.getAllLandingPhotos().subscribe(
-      (data: any[]) => {
-        // Sort the data by created_at to get the most recent one first
-        data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-  
-        // Exclude the latest uploaded image by slicing the array
-        this.imagesHistory = data.slice(1);  // Exclude the first item (latest uploaded image)
+      (response: any) => {
+        if (response.data && response.data.length > 0) {
+          // Transform data structure to match UI needs
+          this.imagesHistory = response.data.map((photo: any) => ({
+            id: photo.id,
+            created_at: photo.created_at,
+            imagesWithContent: [
+              { image: photo.image1 || '../../../../assets/images/NoImage.png', content: photo.content1 },
+              { image: photo.image2 || '../../../../assets/images/NoImage.png', content: photo.content2 },
+              { image: photo.image3 || '../../../../assets/images/NoImage.png', content: photo.content3 },
+              { image: photo.image4 || '../../../../assets/images/NoImage.png', content: photo.content4 },
+              { image: photo.image5 || '../../../../assets/images/NoImage.png', content: photo.content5 }
+            ].filter(item => item.image) // Ensures empty image slots are removed if necessary
+          }));
+        } else {
+          this.imagesHistory = [];
+        }
+        this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching images history:', error);
+        console.error("Error fetching image history:", error);
+        this.isLoading = false;
+        Swal.fire({
+          title: "Error",
+          text: "Failed to fetch images history. Please try again later.",
+          icon: "error",
+          confirmButtonText: "Close",
+          confirmButtonColor: "#7f7f7f"
+        });
       }
     );
   }
@@ -49,8 +73,8 @@ export class ImagesHistoryComponent implements OnInit {
 
     if (idsToDelete.length === 0) {
       Swal.fire({
-        title: "No Images Found",
-        text: "There are no images to delete.",
+        title: "No Previous Highlights Found",
+        text: "There are no previous highlights to delete.",
         icon: "error",
         confirmButtonText: "Close",
         confirmButtonColor: "#7f7f7f"
@@ -60,13 +84,13 @@ export class ImagesHistoryComponent implements OnInit {
 
     // Show confirmation before deleting all images
     Swal.fire({
-      title: "Delete All Previous Images",
+      title: "Delete All Previous Highlights",
       text: `Are you sure you want to delete ${idsToDelete.length} previous uploaded? This action cannot be undone.`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, Delete All",
       cancelButtonText: "Cancel",
-      confirmButtonColor: "#d33",
+      confirmButtonColor: "#cc4646",
       cancelButtonColor: "#7f7f7f"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -75,8 +99,8 @@ export class ImagesHistoryComponent implements OnInit {
             console.log("Images deleted successfully:", response);
 
             Swal.fire({
-              title: "Images Deleted!",
-              text: "All previous images have been successfully deleted.",
+              title: "Previous Highlights Deleted!",
+              text: "All previous photos and contents have been successfully deleted.",
               icon: "success",
               confirmButtonText: "Close",
               confirmButtonColor: "#7f7f7f",
@@ -103,13 +127,13 @@ export class ImagesHistoryComponent implements OnInit {
 
   deletePhotoEntry(entryId: number): void {
     Swal.fire({
-      title: "Delete Images",
-      text: "Are you sure you want to delete these photos?",
+      title: "Delete Highlight",
+      text: "Are you sure you want to delete previous highlight?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, Delete",
       cancelButtonText: "Cancel",
-      confirmButtonColor: "#d33",
+      confirmButtonColor: "#cc4646",
       cancelButtonColor: "#7f7f7f"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -118,8 +142,8 @@ export class ImagesHistoryComponent implements OnInit {
             console.log("Photo entry deleted successfully");
 
             Swal.fire({
-              title: "Images Deleted",
-              text: "The photos has been successfully deleted.",
+              title: "Previes Highlight Deleted",
+              text: "The previous highlight has been successfully deleted.",
               icon: "success",
               confirmButtonText: "Close",
               confirmButtonColor: "#7f7f7f",

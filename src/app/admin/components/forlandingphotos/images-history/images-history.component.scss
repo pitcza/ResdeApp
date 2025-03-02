@@ -95,11 +95,22 @@
                     gap: 8px;
                     justify-content: center;
                     margin-top: 10px;
+
+                    p {
+                        width: 300px;
+                    }
+                }
+
+                .image-content-pair {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-bottom: 10px;
                 }
                 
                 .landing-images img {
-                    width: 150px;
-                    height: 100%;
+                    width: 300px;
+                    height: auto;
                     border-radius: 4px;
                 }
             }
@@ -157,6 +168,38 @@
 
     .buttons {
         margin-top: 0;
+    }
+}
+
+.popup-loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .loader {
+        width: 65px;
+        height: 60px;
+        background: linear-gradient(#0000 calc(1*100%/6),#81C6EF 0 calc(3*100%/6),#0000 0),
+                linear-gradient(#0000 calc(2*100%/6),#266CA9 0 calc(4*100%/6),#0000 0),
+                linear-gradient(#0000 calc(3*100%/6),#1C2E4A 0 calc(5*100%/6),#0000 0);
+        background-size: 15px 400%;
+        background-repeat: no-repeat;
+        animation: matrix 1s infinite linear;
+    }
+
+    p {
+        opacity: 0.5;
+    }
+}
+
+@keyframes matrix {
+    0% {
+    background-position: 0% 100%, 50% 100%, 100% 100%
+    }
+
+    100% {
+    background-position: 0% 0%, 50% 0%, 100% 0%
     }
 }
 

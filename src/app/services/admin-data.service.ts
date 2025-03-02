@@ -111,8 +111,16 @@ export class AdminDataService {
   // }
 
   // for landing page photos
-  inputPhotos(formData: FormData): Observable<any> {
+  uploadLandingPhotos(formData: FormData): Observable<any> {
     return this.Admin('addphotos', 'POST', formData);
+  }
+
+  getLandingPhotos(): Observable<any> {
+    return this.http.get<any>(this.url + 'showlatestphoto'); // No authentication required
+  }
+
+  editLatestPhoto(formData: FormData): Observable<any> {
+    return this.Admin('editLatestPhoto', 'POST', formData);
   }
 
   getAllLandingPhotos(): Observable<any> {

@@ -15,6 +15,7 @@ import { UsersComponent } from './components/users/users.component';
 import { DisplayImagesComponent } from './components/forlandingphotos/display-images/display-images.component';
 import { ImagesHistoryComponent } from './components/forlandingphotos/images-history/images-history.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { EditLatestComponent } from './components/forlandingphotos/edit-latest/edit-latest.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     UsersComponent,
     DisplayImagesComponent,
     ImagesHistoryComponent,
-    LoadingComponent
+    LoadingComponent,
+    EditLatestComponent
   ],
   imports: [
     CommonModule,

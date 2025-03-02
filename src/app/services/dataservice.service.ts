@@ -34,10 +34,6 @@ export class DataserviceService {
   }
 }
 
-  getLandingPhotos(): Observable<any> {
-    return this.http.get<any>(this.url + 'showphotos'); // No authentication required
-  }
-
   getUser(): Observable<any> {
     return this.User('user')
   }

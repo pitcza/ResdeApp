@@ -2,16 +2,21 @@
     <div class="post-container">
       <div class="post-header">
         <div class="popup-head">
-          <h1>Previous Landing Page Photos</h1>
+          <h1>Previous Landing Page Highlights</h1>
         </div>
         <button class="exit-button" (click)="closeDialog()"> &times; </button>
       </div>
   
       <div class="post-content">
         <div class="cards-container">
-          <p *ngIf="imagesHistory.length === 0" class="no-uploads-message">
+          <p *ngIf="imagesHistory.length === 0 && !isLoading" class="no-uploads-message">
             No previous uploads.
           </p>
+
+          <div *ngIf="isLoading" class="popup-loader">
+            <div class="loader"></div>
+            <p>Loading...</p>
+          </div>
           
           <div class="card" *ngFor="let element of imagesHistory">
               <div class="card-header">
@@ -19,7 +24,10 @@
               </div>
               <div class="card-body">
                   <div class="landing-images">
-                      <img *ngFor="let image of element.images" [src]="image" alt="Image">
+                    <div class="image-content-pair" *ngFor="let item of element.imagesWithContent">
+                      <img [src]="item.image" alt="Image">
+                      <p class="image-content">{{ item.content }}</p>
+                    </div>
                   </div>
               </div>
               <div class="actions" id="uploads-actions">
@@ -29,7 +37,7 @@
                 </button>
               </div>
           </div>
-      </div>
+        </div>
       </div>
   
       <div class="post-footer">
