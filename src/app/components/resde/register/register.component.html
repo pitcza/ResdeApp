@@ -128,10 +128,14 @@
             <!-- DATA PRIVACY CHECKBOX -->
             <div class="privacy-container">
               <h3 class="privacy-label">
-                <input type="checkbox" [(ngModel)]="registerData.privacy" name="privacy" required>
-                <p>I agree to the <a (click)="viewTerms()">Terms and Conditions</a> and <a (click)="viewPolicy()">Privacy Policy</a></p>
+                <input type="checkbox" [(ngModel)]="registerData.terms" name="terms" required>
+                <p>I have read and agree to the <a (click)="viewTerms()">Terms and Conditions</a>.</p>
               </h3>
-              <p class="agreement-notice">{{ agreementNotice }}</p> 
+              
+              <h3 class="privacy-label">
+                  <input type="checkbox" [(ngModel)]="registerData.privacy" name="privacy" required>
+                  <p>I acknowledge and accept the <a (click)="viewPolicy()">Privacy Policy</a>.</p>
+              </h3>
             </div>
           
             <!-- SIGN UP BUTTON -->

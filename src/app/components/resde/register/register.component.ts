@@ -20,6 +20,7 @@ interface RegisterData {
   city: string;
   password: string;
   password_confirmation: string;
+  terms: boolean;
   privacy: boolean;
 }
 
@@ -43,6 +44,7 @@ export class RegisterComponent {
     city: 'Olongapo City',
     password: '',
     password_confirmation: '',
+    terms: false,
     privacy: false
   };
 
@@ -311,6 +313,7 @@ export class RegisterComponent {
     // Identify missing fields (excluding privacy policy)
     const emptyFields = Object.keys(this.registerData)
       .filter(key => key !== 'privacy' && !this.registerData[key as keyof RegisterData])
+      .filter(key => key !== 'terms' && !this.registerData[key as keyof RegisterData])
       .map(key => fieldLabels[key]);
 
     if (emptyFields.length > 0) {
@@ -399,11 +402,49 @@ export class RegisterComponent {
       return; // Stop if password doesn't meet requirements
     }
   
+    // Check if the terms and conditions and privacy policy checkbox is checked
+    if (!this.registerData.privacy && !this.registerData.terms) {
+      Swal.fire({
+        title: "Action Required",
+        text: "You must agree to the Terms and Conditions and Privacy Policy to proceed.",
+        icon: "error",
+        confirmButtonText: 'Close',
+        confirmButtonColor: "#7f7f7f",
+        scrollbarPadding: false,
+        willOpen: () => {
+          document.body.style.overflowY = 'scroll';
+        },
+        willClose: () => {
+          document.body.style.overflowY = 'scroll';
+        }
+      });
+      return; // Stop form submission if terms and privacy is not checked
+    }
+
+    // Check if the terms and conditions checkbox is checked
+    if (!this.registerData.terms) {
+      Swal.fire({
+        title: "Action Required",
+        text: "You must agree to the Terms and Conditions to proceed.",
+        icon: "error",
+        confirmButtonText: 'Close',
+        confirmButtonColor: "#7f7f7f",
+        scrollbarPadding: false,
+        willOpen: () => {
+          document.body.style.overflowY = 'scroll';
+        },
+        willClose: () => {
+          document.body.style.overflowY = 'scroll';
+        }
+      });
+      return; // Stop form submission if terms is not checked
+    }
+
     // Check if the privacy policy checkbox is checked
     if (!this.registerData.privacy) {
       Swal.fire({
         title: "Action Required",
-        text: "You must agree to the Terms and Conditions and Privacy Policy to proceed.",
+        text: "You must accept the Privacy Policy to proceed.",
         icon: "error",
         confirmButtonText: 'Close',
         confirmButtonColor: "#7f7f7f",
@@ -635,11 +676,11 @@ export class RegisterComponent {
     const dialogRef = this.dialog.open(TermsConditionsComponent);
     dialogRef.componentInstance.agreed.subscribe(() => {
         this.agreedToTerms = true; // Mark terms as agreed
-        this.updatePrivacyCheckbox(); // Update the checkbox state
+        this.updateTermsCheckbox(); // Update the checkbox state
     });
     dialogRef.componentInstance.disagreed.subscribe(() => {
       this.agreedToTerms = false; // Mark terms as disagreed
-      this.updatePrivacyCheckbox(); // Update the checkbox state
+      this.updateTermsCheckbox(); // Update the checkbox state
     });
   }
 
@@ -656,15 +697,11 @@ export class RegisterComponent {
     });
   }
 
-  // Update the privacy checkbox state
-  updatePrivacyCheckbox() {
-    this.registerData.privacy = this.agreedToTerms && this.agreedToPrivacy; // Checkbox is checked only if both are agreed
+  updateTermsCheckbox() {
+    this.registerData.terms = this.agreedToTerms;
   }
 
-  // Show a notice about the agreement status
-  get agreementNotice(): string {
-    const totalAgreements = 2;
-    const agreedCount = (this.agreedToTerms ? 1 : 0) + (this.agreedToPrivacy ? 1 : 0);
-    return `You have agreed to ${agreedCount}/${totalAgreements} agreements.`;
+  updatePrivacyCheckbox() {
+    this.registerData.privacy = this.agreedToPrivacy;
   }
 }

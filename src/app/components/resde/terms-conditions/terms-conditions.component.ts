@@ -10,7 +10,6 @@ export class TermsConditionsComponent {
     @Output() agreed = new EventEmitter<void>();
     @Output() disagreed = new EventEmitter<void>();
 
-
     constructor(public dialogRef: MatDialogRef<TermsConditionsComponent>) {}
 
     closeDialog() {
@@ -21,6 +20,7 @@ export class TermsConditionsComponent {
         this.agreed.emit(); 
         this.closeDialog(); 
     }
+
     disagree() {
       this.disagreed.emit(); // Emit the "disagreed" event
       this.closeDialog(); // Close the modal
