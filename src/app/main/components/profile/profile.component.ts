@@ -35,7 +35,6 @@ export class ProfileComponent implements OnInit{
   userForm: FormGroup;
   user: any = {};
 
-  ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
   streets: string[] = [
     'Acacia St.',
     'Mercurio St.',
@@ -144,7 +143,7 @@ export class ProfileComponent implements OnInit{
       lname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, this.phoneValidator]],
-      age: ['', [Validators.required, this.ageValidator]],
+      birthdate: ['', [Validators.required, this.birthdateValidator]],
       street: ['', Validators.required],
       barangay: [{ value: '', disabled: true }, Validators.required],
       city: [{ value: '', disabled: true }, Validators.required]
@@ -162,6 +161,58 @@ export class ProfileComponent implements OnInit{
     this.passForm.controls['new_password'].valueChanges.subscribe(() => {
       this.validatePassword();
     });
+  }
+
+  isMinor: boolean = false;
+
+  calculateAge(): void {
+    const birthdate = this.userForm.get('birthdate')?.value;
+    if (!birthdate) return;
+  
+    const birthDateObj = new Date(birthdate);
+    const today = new Date();
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+  
+    // Show an error if the user is under 12
+    if (age < 12) {
+      Swal.fire({
+        title: "Age Restriction",
+        text: "You must be at least 12 years old to have an account.",
+        icon: "error",
+        confirmButtonColor: "#cc4646",
+        confirmButtonText: "OK"
+      });
+  
+      this.userForm.get('birthdate')?.setErrors({ underage: true });
+    } else {
+      this.userForm.get('birthdate')?.setErrors(null);
+    }
+  
+    // Change email label if age is between 12-17
+    if (age >= 12 && age <= 17) {
+      this.isMinor = true;
+    } else {
+      this.isMinor = false;
+    }
+  }  
+
+  birthdateValidator(control: any): { [key: string]: boolean } | null {
+    if (!control.value) return null;
+  
+    const birthdate = new Date(control.value);
+    const today = new Date();
+    let age = today.getFullYear() - birthdate.getFullYear();
+    const monthDiff = today.getMonth() - birthdate.getMonth();
+  
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
+      age--;
+    }
+  
+    return age < 12 ? { underage: true } : null;
   }
 
   fetchUserData(): void {
@@ -183,12 +234,13 @@ export class ProfileComponent implements OnInit{
               lname: user.lname || '',
               email: user.email || '',
               phone_number: user.phone_number || '',
-              age: user.age || '',
+              birthdate: user.birthdate || '',
               street: user.street || '',
               barangay: user.barangay || '',
               city: user.city || ''
             });
 
+            this.calculateAge();
             console.log('Form after patching:', this.userForm.value);
 
             // Mark form as pristine to prevent unnecessary validation
@@ -208,15 +260,6 @@ export class ProfileComponent implements OnInit{
           Swal.fire('Error', 'Failed to load user data.', 'error');
         }
     );
-  }
-
-  // age validations
-  ageValidator(control: any): { [key: string]: boolean } | null {
-    const age = Number(control.value);
-    if (isNaN(age) || age < 12 || age > 100) {
-      return { invalidAge: true };
-    }
-    return null;
   }
 
   isAgeValid(): boolean {
@@ -291,6 +334,7 @@ export class ProfileComponent implements OnInit{
                 confirmButtonColor: "#7f7f7f",
                 timer: 5000,
               });
+              this.fetchUserData();
   
               this.userForm.markAsPristine(); // Reset form state to disable button
               this.userForm.markAsUntouched();

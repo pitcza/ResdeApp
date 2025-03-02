@@ -49,31 +49,22 @@
               </div>
 
               <div class="input-group">
-                <label for="inputfield">Age</label>
+                <label for="birthdateInput">Birthdate</label>
                 <input 
-                  type="text" 
-                  id="ageInput" 
-                  placeholder="Enter your age" 
-                  [(ngModel)]="registerData.age" 
-                  name="age" 
-                  list="ageList"
-                  min="12"
-                  max="100"
-                  (ngModelChange)="updateEmailLabel()" 
-                  (keypress)="validateAgeInput($event)"
-                  class="no-spinner"
+                  type="date" 
+                  id="birthdateInput" 
+                  [(ngModel)]="registerData.birthdate" 
+                  name="birthdate"
+                  (ngModelChange)="calculateAge()"
                   required
                 />
-                <datalist id="ageList">
-                  <option *ngFor="let age of ages" [value]="age"></option>
-                </datalist>
-                <span class="errorMessage" *ngIf="!isAgeValid() && registerData.age">
+                <span class="errorMessage" *ngIf="registerData.age !== null && registerData.age < 12">
                   You must be at least 12 years old to register.
                 </span>
-                <span class="errorMessage" *ngIf="registerForm.controls['age']?.invalid && registerForm.controls['age']?.touched">
-                  Age is required.
+                <span class="errorMessage" *ngIf="registerForm.controls['birthdate']?.invalid && registerForm.controls['birthdate']?.touched">
+                  Birthdate is required.
                 </span>
-              </div>
+              </div>              
             </div>
           
             <p class="errorMessage" *ngIf="isMinor">

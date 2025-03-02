@@ -13,7 +13,8 @@ interface RegisterData {
   lname: string;
   email: string;
   phone_number: string;
-  age: string;
+  birthdate: string;
+  age: number | null;
   street: string;
   barangay: string;
   city: string;
@@ -35,7 +36,8 @@ export class RegisterComponent {
     lname: '',
     email: '',
     phone_number: '',
-    age: '',
+    birthdate: '',
+    age: null,
     street: '',
     barangay: 'Gordon Heights',
     city: 'Olongapo City',
@@ -90,8 +92,25 @@ export class RegisterComponent {
 
   errorMessages: string[] = [];
 
+  calculateAge(): void {
+    if (this.registerData.birthdate) {
+      const birthDate = new Date(this.registerData.birthdate);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+  
+      this.registerData.age = age;
+      this.updateEmailLabel(); // Update email label after calculating age
+    } else {
+      this.registerData.age = null;
+    }
+  }
+
   // age validation
-  ages: number[] = Array.from({ length: 89 }, (_, i) => i + 12);
   isAgeValid(): boolean {
     const ageNumber = Number(this.registerData.age);
     return ageNumber >= 12 && ageNumber <= 150;
@@ -109,9 +128,13 @@ export class RegisterComponent {
   isMinor: boolean = false;
 
   updateEmailLabel() {
-    const ageNumber = Number(this.registerData.age);
-    this.isMinor = ageNumber < 18;
-    this.emailLabel = this.isMinor ? "Parent's Email" : "Email";
+    if (this.registerData.age !== null && this.registerData.age >= 12 && this.registerData.age <= 17) {
+      this.isMinor = true;
+      this.emailLabel = "Parent's Email";
+    } else {
+      this.isMinor = false;
+      this.emailLabel = "Email";
+    }
   }
 
   streets: string[] = [
@@ -409,7 +432,7 @@ export class RegisterComponent {
     // Append all fields from registerData to formData
     Object.keys(this.registerData).forEach(key => {
       const value = this.registerData[key as keyof RegisterData];
-      formData.append(key, value.toString());
+      formData.append(key, value ? value.toString() : ''); // Ensure value is not null
     });
   
     this.as.register(formData).subscribe(

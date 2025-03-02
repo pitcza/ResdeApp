@@ -38,7 +38,7 @@
             
                         <div class="input-row">
                           <div class="input-field">
-                            <label class="labelline">Email</label>
+                            <label class="labelline">{{ isMinor ? "Parent's Email" : "Email" }}</label>
                             <input class="txt-field" type="email" formControlName="email" [readonly]="true">
                           </div>
                           <div class="input-field">
@@ -51,25 +51,21 @@
                         </div>
             
                         <div class="input-row">
-                          <div class="input-field">
-                            <label class="labelline">Age</label>
-                            <input 
-                            type="text" 
-                            id="ageInput" 
-                            placeholder="Enter your age" 
-                            formControlName="age"
-                            name="age" 
-                            list="ageList"
-                            class="txt-field"
-                            required
-                            />
-                            <datalist id="ageList">
-                            <option *ngFor="let age of ages" [value]="age"></option>
-                            </datalist>
-                            <span class="errorMessage" *ngIf="userForm.get('age')?.invalid && userForm.get('age')?.touched">
-                                You must be at least 12 years old to have this account.
-                            </span>
-                          </div>
+                            <div class="input-field">
+                                <label class="labelline">Birthdate</label>
+                                <input 
+                                    type="date" 
+                                    id="birthdateInput" 
+                                    formControlName="birthdate"
+                                    name="birthdate"
+                                    class="txt-field"
+                                    (change)="calculateAge()"
+                                    required
+                                />
+                                <span class="errorMessage" *ngIf="userForm.get('birthdate')?.invalid && userForm.get('birthdate')?.touched">
+                                    You must be at least 12 years old to have this account.
+                                </span>
+                            </div>
                           <div class="input-field">
                             <label class="labelline">Street</label>
                             <input 
