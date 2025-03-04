@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="post-container">
+      <div class="post-header">
+        <div class="popup-head">
+            <h1>Trivia Details</h1>
+        </div>
+        <button class="exit-button" (click)="closeDialog()"> &times; </button>
+      </div>
+  
+      <div class="post-content">
+        <table class="trivia-table">
+          <tbody>
+            <tr>
+              <td><strong>Category:</strong></td>
+              <td>{{ triviaData.category }}</td>
+            </tr>
+            <tr>
+              <td><strong>Title/Topic:</strong></td>
+              <td>{{ triviaData.title }}</td>
+            </tr>
+            <tr>
+              <td><strong>Trivia:</strong></td>
+              <td>{{ triviaData.facts }}</td>
+            </tr>
+            <tr>
+              <td><strong>Question:</strong></td>
+              <td>{{ triviaData.question }}</td>
+            </tr>
+            <tr>
+              <td><strong>Correct Answer:</strong></td>
+              <td class="correct-answer">{{ triviaData.correct_answer }}</td>
+            </tr>
+            <tr>
+              <td><strong>Choices:</strong></td>
+              <td>
+                <ul>
+                  <li *ngFor="let answer of triviaData.answers">{{ answer }}</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Created At:</strong></td>
+              <td>{{ triviaData.created_at | date:'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="post-footer">
+        <div class="buttons">
+          <button class="danger-btn" (click)="deletequest(triviaData.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+</div>

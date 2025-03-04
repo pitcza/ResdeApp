@@ -56,72 +56,78 @@
     <div class="content">
       <div class="trivia-section">
         <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
-         <!-- Introduction -->
-         <div class="introduction-title" *ngIf="!showResults">
+    
+        <!-- Introduction -->
+        <div class="introduction-title" *ngIf="!showResults">
           <p>
             Trivia quizzes are a fun way to test your knowledge and learn new facts. 
-            Take this quiz to see how much you know about plants and sustainability and earn a more awesome awards!
+            Take this quiz to see how much you know about plants and sustainability and earn awesome rewards!
           </p>
         </div>
-
+    
         <!-- Error Message -->
         <div *ngIf="errorMessage" class="error">
           <p>{{ errorMessage }}</p>
         </div>
     
         <!-- Loading Placeholder -->
-        <div *ngIf="!errorMessage && triviaQuestions.length === 0 && !showResults" class="loading">
-          <p>Loading questions...</p>
+        <div *ngIf="loading" class="loading">
+          <p>Loading trivia and question...</p>
         </div>
     
-        <!-- Quiz Form -->
-        <form *ngIf="triviaQuestions.length > 0 && !showResults" (ngSubmit)="submitAnswers()">
-          <div *ngFor="let question of triviaQuestions; let i = index" class="question-card">
-            <p class="question-text">{{ i + 1 }}. {{ question.question }}</p>
-            <div class="options">
-              <label
-                *ngFor="let answer of question.answers"
-                class="option"
-                [ngClass]="{ selected: userAnswers[i] === answer }"
-              >
-                <input
-                  type="radio"
-                  [name]="'question-' + question.id"
-                  [value]="answer"
-                  [(ngModel)]="userAnswers[i]"
-                />
-                {{ answer }}
-              </label>
+        <!-- Show the trivia facts first -->
+        <div *ngIf="trivia">
+          <div class="question-card">
+            <h3 class="question-text">{{ trivia.title }}</h3>
+            <p>{{ trivia.facts }}</p>
+          </div>
+
+          <!-- If user has NOT answered, show the question form -->
+          <div *ngIf="!hasAnswered">
+            <div class="question-card">
+              <h3 class="question-text">{{ trivia.question }}</h3>
+              <div class="options">
+                <label 
+                  *ngFor="let answer of trivia.answers" 
+                  class="option" 
+                  [class.selected]="selectedAnswer === answer">
+                  <input 
+                    type="radio" 
+                    name="triviaAnswer" 
+                    [value]="answer" 
+                    [(ngModel)]="selectedAnswer" />
+                  {{ answer }}
+                </label>
+              </div>
+              <button class="btn-submit" (click)="submitTriviaAnswer()">Submit Answer</button>
             </div>
           </div>
-          <button type="submit" class="btn-submit">Submit</button>
-        </form>
-    
-        <!-- Results Section -->
-        <div *ngIf="showResults" class="results">
-          <p class="feedback">
-            Great job! 🌟 Keep learning and practicing to improve your knowledge about sustainability and plant care.
-          </p>
-          <h3 class="score">Your Score: {{ score }}/{{ triviaQuestions.length }}</h3>
-          <ul class="result-list">
-            <li *ngFor="let question of triviaQuestions; let i = index">
-              <p>
-                <strong>{{ i + 1 }}. {{ question.question }}</strong><br />
-                Your Answer: 
-                <span [ngClass]="{ correct: userAnswers[i] === question.correct_answer, incorrect: userAnswers[i] !== question.correct_answer }">
-                  {{ userAnswers[i] || 'Not Answered' }}
-                </span><br />
-                Correct Answer: <span class="correct-answer">{{ question.correct_answer }}</span>
-              </p>
-            </li>
-          </ul>
-          <!-- <button class="btn-retry" (click)="retryQuiz()">Retry Quiz</button> -->
+
+          <!-- If user has answered, show results instead -->
+          <div *ngIf="hasAnswered" class="results">
+            <h3 class="feedback">{{ isCorrect ? '🎉 Correct answer!' : '❌ Wrong answer!' }}</h3>
+            
+            <ul class="result-list">
+              <li>
+                <strong>Question:</strong> {{ trivia.question }}
+              </li>
+              <li>
+                <strong>Your Answer:</strong> 
+                <span [class.correct]="isCorrect" [class.incorrect]="!isCorrect">
+                  {{ userAnswer }}
+                </span>
+              </li>
+              <li *ngIf="!isCorrect">
+                <strong>Correct Answer:</strong> 
+                <span class="correct-answer">{{ trivia.correct_answer }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
+
       </div>
     </div>
     
-      
-      
-      
+</div>
 
     

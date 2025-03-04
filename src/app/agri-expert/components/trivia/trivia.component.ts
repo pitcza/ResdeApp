@@ -7,6 +7,7 @@ import { AdminDataService } from '../../../services/admin-data.service';
 import { CreatetriviaComponent } from '../createtrivia/createtrivia.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTriviaComponent } from '../edit-trivia/edit-trivia.component';
+import { ViewTriviaComponent } from '../view-trivia/view-trivia.component';
 
 @Component({
   selector: 'app-trivia',
@@ -14,7 +15,7 @@ import { EditTriviaComponent } from '../edit-trivia/edit-trivia.component';
   styleUrls: ['./trivia.component.scss']
 })
 export class TriviaComponent implements OnInit {
-  displayedColumns: string[] = ['date', 'question', 'answers', 'correct_answer', 'action'];
+  displayedColumns: string[] = ['date', 'category', 'title', 'facts', 'action'];
   dataSource!: MatTableDataSource<TriviaQuestion>;
   filteredDataSource: MatTableDataSource<TriviaQuestion> = new MatTableDataSource();
 
@@ -38,16 +39,20 @@ export class TriviaComponent implements OnInit {
   fetchquestions() {
     this.as.getquestions().subscribe(
       (data: TriviaQuestion[]) => {
+        // Sort trivia from oldest to latest by created_at
+        data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  
         this.dataSource = new MatTableDataSource(data);
-      this.filteredDataSource = new MatTableDataSource(data);
-      this.filteredDataSource.paginator = this.paginator;
-      this.filteredDataSource.sort = this.sort;
+        this.filteredDataSource = new MatTableDataSource(data);
+        this.filteredDataSource.paginator = this.paginator;
+        this.filteredDataSource.sort = this.sort;
       },
       (error) => {
         console.error('Error fetching questions:', error);
       }
     );
   }
+  
 
   filterPosts() {
   
@@ -77,11 +82,30 @@ export class TriviaComponent implements OnInit {
 
 
   openTriviaModal(): void {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+  
+    const triviaExists = this.dataSource.data.some(trivia => {
+      const triviaDate = new Date(trivia.created_at).toISOString().split('T')[0]; // Extract YYYY-MM-DD
+      return triviaDate === today;
+    });
+  
+    if (triviaExists) {
+      Swal.fire({
+        title: "Trivia Already Posted",
+        text: "You have already posted a trivia for today! You can create a new one tomorrow.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#777777",
+      });
+      return; // Stop execution if trivia already exists
+    }
+  
     this.dialog.open(CreatetriviaComponent, {
       data: { exampleData: 'Some data to pass' }, // Optional data to pass to the component
     });
-  }
 
+  }
+  
   openEditModal(id : number): void {
     if (this.dialog) {
     this.dialog.open(EditTriviaComponent, {
@@ -92,10 +116,20 @@ export class TriviaComponent implements OnInit {
     }
   }
 
+  viewTrivia(id : number): void {
+    if (this.dialog) {
+    this.dialog.open(ViewTriviaComponent, {
+      data: { id: id }
+    });
+    }else {
+      console.error('not found');
+    }
+  }
+
   deletequest(id: number): void {
     Swal.fire({
       title: 'Delete Trivia Question',
-      text: 'Are you sure you want to delete this question?',
+      text: 'Are you sure you want to delete this trivia and question?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#AB0E0E',
@@ -110,8 +144,8 @@ export class TriviaComponent implements OnInit {
             this.filteredDataSource.data = this.filteredDataSource.data.filter(question => question.id !== id);
   
             Swal.fire({
-              title: "Question Deleted!",
-              text: "The question has been successfully deleted.",
+              title: "Trivia Question Deleted!",
+              text: "The trivia and question has been successfully deleted.",
               icon: "success",
               confirmButtonText: 'Close',
               confirmButtonColor: "#777777",
@@ -140,9 +174,9 @@ export class TriviaComponent implements OnInit {
 
 export interface TriviaQuestion {
   id: number;
-  question: string;
-  correct_answer: string;
-  answers: string[];
+  category: string;
+  title: string;
+  facts: string;
   created_at: string;
   updated_at: string;
 }

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { AdminDataService } from '../../../services/admin-data.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-createtrivia',
   templateUrl: './createtrivia.component.html',
@@ -10,23 +12,42 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class CreatetriviaComponent implements OnInit {
   triviaForm: FormGroup;
+  categories: string[] = ['Reduce', 'Reuse', 'Recycle', 'Gardening'];
   successMessage: string = '';
   errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
     private adminService: AdminDataService,
-    public dialogRef: MatDialogRef<CreatetriviaComponent>, // MatDialog reference
-    @Inject(MAT_DIALOG_DATA) public data: any // Data passed to dialog
+    public dialogRef: MatDialogRef<CreatetriviaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.triviaForm = this.fb.group({
+      category: ['', Validators.required],
+      title: ['', [Validators.required, Validators.maxLength(255)]],
+      facts: ['', Validators.required],
       question: ['', Validators.required],
       correct_answer: ['', Validators.required],
-      answers: this.fb.array([this.fb.control('', Validators.required)]),
+      answers: this.fb.array(
+        [this.fb.control('', Validators.required), this.fb.control('', Validators.required)],
+        [Validators.minLength(2), Validators.maxLength(4)]
+      ),
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.triviaForm = this.fb.group({
+      category: ['', Validators.required],
+      title: ['', [Validators.required, Validators.maxLength(255)]],
+      facts: ['', Validators.required],
+      question: ['', Validators.required],
+      correct_answer: ['', Validators.required],
+      answers: this.fb.array(
+        [this.fb.control('', Validators.required), this.fb.control('', Validators.required)],
+        [Validators.minLength(2), Validators.maxLength(4)]
+      ),
+    });
+  }
 
   get answers(): FormArray {
     return this.triviaForm.get('answers') as FormArray;
@@ -39,58 +60,82 @@ export class CreatetriviaComponent implements OnInit {
   }
 
   removeAnswer(index: number): void {
-    this.answers.removeAt(index);
+    if (this.answers.length > 2) {
+      this.answers.removeAt(index);
+    }
   }
+
   addAnswerOnEnter(event: KeyboardEvent, index: number): void {
     if (event.key === 'Enter' && this.answers.length < 4) {
-      // Prevent the default behavior of the Enter key (e.g., form submission)
       event.preventDefault();
-  
       const currentInput = this.answers.at(index);
-  
-      // Ensure the current input is valid before adding a new one
       if (currentInput?.value?.trim()) {
         this.addAnswer();
-  
-        // Use `setTimeout` to ensure the DOM updates before focusing on the new input
         setTimeout(() => {
           const nextInput = document.querySelector(
             `input[placeholder="Answer ${this.answers.length}"]`
           ) as HTMLInputElement;
-          if (nextInput) {
-            nextInput.focus();
-          }
+          nextInput?.focus();
         });
       }
     }
   }
-  
 
   onSubmit(): void {
-    // Validate if the correct answer is included in the answers array
-    const correctAnswer = this.triviaForm.get('correct_answer')?.value;
-    const answers = this.answers.value;
-
-    if (!answers.includes(correctAnswer)) {
-      this.errorMessage = 'The correct answer must be included in the choices.';
+    if (this.triviaForm.invalid) {
+      this.errorMessage = 'Please fill out all required fields correctly.';
       return;
     }
-
-    if (this.triviaForm.valid) {
-      const formData = this.triviaForm.value;
-      this.adminService.createQuestions(formData).subscribe({
-        next: (response) => {
-          this.successMessage = 'Trivia question created successfully!';
-          this.dialogRef.close(response); // Close dialog and pass back data
-        },
-        error: (err) => {
-          console.error('Error creating trivia question:', err);
-        },
-      });
-    }
+  
+    Swal.fire({
+      title: 'Confirmation',
+      text: "Are you sure you want to submit this trivia and question?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Submit',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("User confirmed submission, sending data...");
+  
+        const triviaData = {
+          ...this.triviaForm.value,
+          answers: this.triviaForm.value.answers.map((a: string) => a.trim()),
+        };
+  
+        this.adminService.createQuestions(triviaData).subscribe(
+          (response) => {
+            console.log("Trivia posted successfully:", response);
+            
+            Swal.fire({
+              title: 'Trivia Posted',
+              text: 'Trivia question created successfully!',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#3085d6'
+            });
+              this.dialogRef.close(true);
+          },
+          (error) => {
+            console.error("Error creating trivia:", error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'An error occurred while creating trivia.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        );
+      } else {
+        console.log("User canceled submission.");
+      }
+    });
   }
+  
 
   closeDialog(): void {
-    this.dialogRef.close(); // Close dialog without action
+    this.dialogRef.close(false);
   }
 }

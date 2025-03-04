@@ -195,6 +195,10 @@ tableCategories(startDate?: string, endDate?: string): Observable<any> {
     return this.Admin('trivia/getquestions')
   }
 
+  getQuestionById(id: number): Observable<any> {
+    return this.Admin(`trivia/triviaByID/${id}`, 'GET');
+  }
+
   updatequestions(id: number, updatedTriviaData: any): Observable<any> {
     return this.Admin(`trivia/questions/${id}`, 'PUT', updatedTriviaData)
   }

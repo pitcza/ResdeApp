@@ -170,6 +170,31 @@
     .status {
         color: var(--red-btn);
     }
+
+    td:nth-child(4) {
+      min-width: 300px;
+      max-width: 300px;
+    }
+
+    .long {
+      display: -webkit-box;
+      display: -moz-box; 
+      display: -ms-box;
+      display: box;
+      -webkit-line-clamp: 1;
+      -moz-line-clamp: 1;
+      -ms-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      -moz-box-orient: vertical;
+      -ms-box-orient: vertical;
+      box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      line-height: 1.5;
+      max-height: calc(1.5em * 1); 
+    }
 }
 
 // DATE PICKER

@@ -2,14 +2,50 @@
   <div class="post-container">
     <div class="post-header">
       <div class="popup-head">
-          <h1> Create Trivia </h1>
+          <h1> Create Trivia and Question for today </h1>
       </div>
       <button class="exit-button" (click)="closeDialog()"> &times; </button>
     </div>
 
     <div class="post-content">
       <form (ngSubmit)="onSubmit()" [formGroup]="triviaForm">
-        <!-- Same form content as before -->
+        
+        <!-- Category Selection -->
+        <div class="input-row">
+          <div class="input-field-shorter">
+            <label class="labelline" for="category">Category</label>
+            <select class="txt-field" id="category" formControlName="category">
+              <option value="" disabled selected>Select a category</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+            <div class="error" *ngIf="triviaForm.get('category')?.invalid && triviaForm.get('category')?.touched">
+              Category is required.
+            </div>
+          </div>
+
+          <div class="input-field">
+            <label class="labelline" for="title">Title/Topic</label>
+            <input class="txt-field" id="title" formControlName="title" type="text" />
+            <div class="error" *ngIf="triviaForm.get('title')?.invalid && triviaForm.get('title')?.touched">
+              Title/Topic is required.
+            </div>
+          </div>
+        </div>
+
+        <!-- Facts -->
+        <div class="input-row">
+          <div class="input-field">
+            <label class="labelline" for="facts">Trivia</label>
+            <textarea class="txtarea-field" id="facts" formControlName="facts"></textarea>
+            <div class="error" *ngIf="triviaForm.get('facts')?.invalid && triviaForm.get('facts')?.touched">
+              Trivia is required.
+            </div>
+          </div>
+        </div>
+
+        <h5> Enter a question about the Trivia </h5>
+
+        <!-- Trivia Question -->
         <div class="input-row">
           <div class="input-field">
             <label class="labelline" for="question">Question</label>
@@ -20,6 +56,7 @@
           </div>
         </div>
 
+        <!-- Correct Answer -->
         <div class="input-row">
           <div class="input-field">
             <label class="labelline" for="correct_answer">Correct Answer</label>
@@ -30,28 +67,33 @@
           </div>
         </div>
 
+        <!-- Choices -->
         <div class="input-row">
           <div class="input-field" formArrayName="answers">
-            <label class="up-labelline" >Choices</label>
+            <label class="up-labelline">Choices (Requires at least 2 choices)</label>
             <div class="with-add">
               <div class="another-div">
                 <div class="with-remove" *ngFor="let answer of answers.controls; let i = index">
-                  <input class="fix-txt-field" [formControlName]="i" placeholder="Answer {{ i + 1 }}" type="text" (keydown)="addAnswerOnEnter($event, i)"/>
-                  <button class="removebtn" type="button" (click)="removeAnswer(i)" [disabled]="answers.length === 1"> <i class='bx bx-x'></i> </button>
+                  <input class="fix-txt-field" [formControlName]="i" placeholder="Answer {{ i + 1 }}" type="text" (keydown)="addAnswerOnEnter($event, i)" />
+                  <button class="removebtn" type="button" (click)="removeAnswer(i)" [disabled]="answers.length === 1">
+                    <i class='bx bx-x'></i>
+                  </button>
                 </div>
               </div>
-              <button type="button" class="addbtn" (click)="addAnswer()" >Add</button>
+              <button type="button" class="addbtn" (click)="addAnswer()" [disabled]="answers.length >= 4">Add</button>
             </div>
           </div>
         </div>
+
         <p *ngIf="answers.length >= 4" class="warning">
           You can only add up to 4 answers. 
           <br> 
           {{ errorMessage }}
         </p>
-        
+
       </form>
     </div>
+
     <div class="post-footer">
       <div class="buttons">
         <button class="cancel-btn" (click)="closeDialog()">Cancel</button>
@@ -60,5 +102,4 @@
     </div>
 
   </div>
-
 </div>

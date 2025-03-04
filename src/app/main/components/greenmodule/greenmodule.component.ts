@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DataserviceService } from '../../../services/dataservice.service';
-import Swal from 'sweetalert2';
-
-interface TriviaQuestion {
-  id: number;
-  question: string;
-  answers: string[];
-  correct_answer: string;
-}
 
 @Component({
   selector: 'app-greenmodule',
@@ -15,93 +7,80 @@ interface TriviaQuestion {
   styleUrls: ['./greenmodule.component.scss']
 })
 export class GreenmoduleComponent implements OnInit {
-  triviaQuestions: TriviaQuestion[] = [];
-  userAnswers: (string | null)[] = []; // Allow null values
-  showResults = false;
-  score = 0;
-  errorMessage: string | null = null;
+  trivia: any = null;
+  selectedAnswer: string = '';
+  userAnswer: string = '';
+  isCorrect: boolean = false;
+  hasAnswered: boolean = false;
+  loading: boolean = true;
+  errorMessage: string = '';
+  showResults: boolean = false; // ✅ Fix 1: Declare showResults
 
   constructor(private ds: DataserviceService) {}
 
   ngOnInit(): void {
-    this.loadTriviaQuestions();
+    this.getTriviaQuestion();
   }
 
-  loadTriviaQuestions(): void {
-    this.ds.getQuestions().subscribe(
-      (questions) => {
-        this.triviaQuestions = questions;
-  
-        this.ds.getUserScore().subscribe(
-          (scores) => {
-            let totalScore = 0;
-  
-            this.userAnswers = this.triviaQuestions.map((question) => {
-              const existingScore = scores.find((score: any) => score.question_id === question.id);
-              if (existingScore) {
-                totalScore += existingScore.score; 
-                return 'answered';
-              }
-              return null; 
-            });
-  
-            const allAnswered = this.userAnswers.every((answer) => answer === 'answered');
-            if (allAnswered) {
-              this.showResults = true;
-              this.score = totalScore; 
-            }
-          },
-          (error) => {
-            console.error('Error fetching user scores', error);
-          }
-        );
-  
-        this.errorMessage = null; 
+  getTriviaQuestion(): void {
+    this.ds.getTodayTrivia().subscribe(
+      (data) => {
+        this.trivia = data;
+        this.checkIfAnswered();
+        this.loading = false;
       },
       (error) => {
-        console.error('Error fetching trivia questions', error);
-        this.errorMessage = 'Failed to load trivia questions. Please try again later.';
+        this.errorMessage = 'Failed to load trivia.';
+        this.loading = false;
       }
     );
   }
+
+  checkIfAnswered(): void {
+    this.ds.getUserScore().subscribe(
+      (data) => {
+        console.log("Checking if user has already answered:", data);
   
-  submitAnswers() {
-    // Find unanswered question indices
-    const unanswered = this.triviaQuestions
-      .map((q, index) => (this.userAnswers[index] ? null : index + 1))
-      .filter((num) => num !== null);
-  
-    if (unanswered.length > 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: `Please answer all questions before submitting! Missing: ${unanswered.join(', ')}`,
-      });
+        const answeredTrivia = data.find((q: any) => q.trivia_question_id === this.trivia.id);
+        if (answeredTrivia) {
+          this.hasAnswered = true;
+          this.showResults = true;
+          this.userAnswer = answeredTrivia.user_answer;
+          this.isCorrect = this.userAnswer === this.trivia.correct_answer;
+        } else {
+          this.hasAnswered = false;
+          this.showResults = false;
+        }
+      },
+      (error) => {
+        console.error("Error fetching user score:", error);
+      }
+    );
+  }  
+
+  submitTriviaAnswer(): void {
+    if (!this.selectedAnswer) {
+      alert('Please select an answer!');
       return;
     }
   
-    // Proceed with normal submission logic
-    this.score = 0;
-    const submitPromises = this.triviaQuestions.map((question, index) => {
-      const userAnswer = this.userAnswers[index];
-      if (userAnswer && userAnswer !== 'answered') {
-        return this.ds
-          .submitAnswer(question.id, userAnswer)
-          .toPromise()
-          .then((response) => {
-            if (response && response.score) {
-              this.score++; // Increment score for correct answers
-            }
-          })
-          .catch((error) => {
-            console.error(`Error submitting answer for question ${question.id}:`, error);
-          });
-      }
-      return Promise.resolve();
-    });
+    if (this.hasAnswered) {
+      alert('You have already answered this trivia.');
+      return;
+    }
   
-    Promise.all(submitPromises).then(() => {
-      this.showResults = true;
-    });
-  }
+    this.ds.submitAnswer(this.trivia.id, this.selectedAnswer).subscribe(
+      (response) => {
+        this.hasAnswered = true;
+        this.showResults = true;
+        this.userAnswer = this.selectedAnswer;
+        this.isCorrect = response.correct;
+  
+        console.log("Answer submitted successfully:", response);
+      },
+      (error) => {
+        alert('Error submitting answer.');
+      }
+    );
+  }  
 }

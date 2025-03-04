@@ -80,6 +80,10 @@ export class DataserviceService {
 
   // for trivia
 
+  getTodayTrivia(): Observable<any> {
+    return this.User('trivia/triviatoday')
+  }
+
   getQuestions(): Observable<any> {
     return this.User(`trivia/getquestions`); 
   }
