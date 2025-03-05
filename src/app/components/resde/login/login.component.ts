@@ -132,7 +132,7 @@ export class LoginComponent {
         });
       }
     );
-}
+  }
 
 
   showSuccessAlert() {
@@ -152,7 +152,7 @@ export class LoginComponent {
     console.log("Starting showTriviaPopup...");
   
     Swal.fire({
-      title: 'Fetching Today’s Trivia! 🌿',
+      title: 'Checking Today’s Trivia! 🌿',
       text: 'Hold on! We’re bringing you an eco-friendly fact to challenge your knowledge.',
       allowOutsideClick: false,
       didOpen: () => {
@@ -162,9 +162,23 @@ export class LoginComponent {
   
     this.userData.getTodayTrivia().subscribe(
       (trivia) => {
-        console.log("Trivia fetched:", trivia);
         Swal.close(); // Close loading popup
+        console.log("Trivia fetched:", trivia);
   
+        // ✅ Ensure trivia is valid before proceeding
+        if (!trivia || Object.keys(trivia).length === 0) {
+          console.log("No trivia available for today.");
+          Swal.fire({
+            title: 'No Trivia for Today 😞',
+            text: 'Come back tomorrow for a new eco-friendly challenge!',
+            icon: 'info',
+            confirmButtonText: 'Okay',
+            confirmButtonColor: '#3085d6'
+          });
+          return;
+        }
+  
+        // ✅ Fetch user scores only if trivia exists
         this.userData.getUserScore().subscribe(
           (userScores) => {
             console.log("User scores fetched:", userScores);
@@ -172,92 +186,87 @@ export class LoginComponent {
             const hasAnswered = userScores.some((q: any) => q.trivia_question_id === trivia.id);
             console.log("Checking if user has already answered:", hasAnswered);
   
-            if (!hasAnswered) {
-              console.log("User has NOT answered, showing trivia popup...");
+            if (hasAnswered) {
+              console.log("User has already answered, skipping trivia popup.");
+              return; // Stop further processing
+            }
   
+            // ✅ Show trivia facts first
+            Swal.fire({
+              title: `${trivia.category} Trivia of the Day 🌱`,
+              html: `<strong>${trivia.title}</strong><br><br>${trivia.facts}`,
+              icon: 'info',
+              confirmButtonText: 'Got it!',
+              confirmButtonColor: '#3085d6'
+            }).then(() => {
               Swal.fire({
-                title: `${trivia.category} Trivia of the Day 🌱`,
-                html: `<strong>${trivia.title}</strong><br><br>${trivia.facts}`,
-                icon: 'info',
-                confirmButtonText: 'Got it!',
-                confirmButtonColor: '#3085d6'
-              }).then(() => {
-                console.log("User clicked 'Next', showing trivia question...");
+                title: 'Getting Your Question Ready... 🤔',
+                text: 'Just a moment! Your challenge is loading.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
   
+              setTimeout(() => {
+                Swal.close(); // Close loading popup
+  
+                // ✅ Show trivia question
                 Swal.fire({
-                  title: 'Getting Your Question Ready... 🤔',
-                  text: 'Just a moment! Your challenge is loading.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                    Swal.showLoading();
+                  title: '🌍 Trivia Question!',
+                  text: trivia.question,
+                  input: 'radio',
+                  inputOptions: trivia.answers.reduce((options: any, answer: string, index: number) => {
+                    options[index] = answer;
+                    return options;
+                  }, {}),
+                  inputValidator: (value) => {
+                    return value ? null : 'Please select an answer!';
+                  },
+                  confirmButtonText: 'Submit Answer',
+                  confirmButtonColor: '#3085d6'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    const selectedAnswer = trivia.answers[result.value];
+  
+                    Swal.fire({
+                      title: 'Checking Your Answer... 🔍',
+                      text: 'Let’s see if you got it right!',
+                      allowOutsideClick: false,
+                      didOpen: () => {
+                        Swal.showLoading();
+                      }
+                    });
+  
+                    // ✅ Submit the answer
+                    this.userData.submitAnswer(trivia.id, selectedAnswer).subscribe(
+                      (response) => {
+                        Swal.close(); // Close loading popup
+  
+                        const isCorrect = response.correct;
+                        Swal.fire({
+                          title: isCorrect ? '🎉 You Got It Right!' : '❌ Oops, Not Quite!',
+                          text: `The correct answer is: ${trivia.correct_answer}`,
+                          icon: isCorrect ? 'success' : 'error',
+                          confirmButtonText: 'OK',
+                          confirmButtonColor: '#3085d6'
+                        });
+                      },
+                      (error) => {
+                        console.error("Error submitting answer:", error);
+                        Swal.close();
+                        Swal.fire({
+                          title: 'Error',
+                          text: 'Something went wrong. Please try again later.',
+                          icon: 'error',
+                          confirmButtonText: 'OK'
+                        });
+                      }
+                    );
                   }
                 });
-  
-                setTimeout(() => {
-                  Swal.close(); // Close loading popup
-  
-                  // Show trivia question
-                  Swal.fire({
-                    title: '🌍 Trivia Question!',
-                    text: trivia.question,
-                    input: 'radio',
-                    inputOptions: trivia.answers.reduce((options: any, answer: string, index: number) => {
-                      options[index] = answer;
-                      return options;
-                    }, {}),
-                    inputValidator: (value) => {
-                      console.log("Validating input:", value);
-                      return value ? null : 'Please select an answer!';
-                    },
-                    confirmButtonText: 'Submit Answer',
-                    confirmButtonColor: '#3085d6'
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      const selectedAnswer = trivia.answers[result.value];
-                      console.log("Submitting answer:", selectedAnswer);
-  
-                      Swal.fire({
-                        title: 'Checking Your Answer... 🔍',
-                        text: 'Let’s see if you got it right!',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                          Swal.showLoading();
-                        }
-                      });
-  
-                      // Submit the answer
-                      this.userData.submitAnswer(trivia.id, selectedAnswer).subscribe(
-                        (response) => {
-                          console.log("Answer submitted successfully:", response);
-                          Swal.close(); // Close loading popup
-  
-                          const isCorrect = response.correct;
-                          Swal.fire({
-                            title: isCorrect ? '🎉 You Got It Right!' : '❌ Oops, Not Quite!',
-                            text: `The correct answer is: ${trivia.correct_answer}`,
-                            icon: isCorrect ? 'success' : 'error',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#3085d6'
-                          });
-                        },
-                        (error) => {
-                          console.error("Error submitting answer:", error);
-                          Swal.close(); // Close loading popup
-                          Swal.fire({
-                            title: 'Error',
-                            text: 'Something went wrong. Please try again later.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                          });
-                        }
-                      );
-                    }
-                  });
-                }, 1000); // Simulated delay for question loading
-              });
-            } else {
-              console.log("User has already answered, skipping trivia popup.");
-            }
+              }, 1000); // Simulated delay for question loading
+            });
           },
           (error) => {
             console.error("Error fetching user score:", error);
@@ -266,12 +275,28 @@ export class LoginComponent {
         );
       },
       (error) => {
+        Swal.close(); // Close loading popup before showing the error
         console.error("Error fetching trivia:", error);
-        Swal.close();
+  
+        // ✅ Handle 404 error (No trivia for today)
+        if (error.status === 404) {
+          Swal.fire({
+            title: 'No Trivia for Today 😞',
+            text: 'Come back tomorrow for a new eco-friendly challenge!',
+            icon: 'info',
+            confirmButtonText: 'Okay',
+            confirmButtonColor: '#3085d6'
+          });
+        } else {
+          // ✅ Handle other errors
+          Swal.fire({
+            title: 'Error Fetching Trivia',
+            text: 'Something went wrong. Please try again later.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
       }
     );
-  }
-  
-  
- 
+  }  
 }
