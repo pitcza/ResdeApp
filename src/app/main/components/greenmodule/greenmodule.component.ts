@@ -1,12 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataserviceService } from '../../../services/dataservice.service';
+
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-greenmodule',
   templateUrl: './greenmodule.component.html',
   styleUrls: ['./greenmodule.component.scss']
 })
-export class GreenmoduleComponent implements OnInit {
+export class GreenmoduleComponent implements OnInit, OnDestroy {
+  barangayPosts: any[] = []; // Store posts here
+  isLoading: boolean = true; // Loading state
+  private routerSubscription!: Subscription;
+  
   trivia: any = null;
   selectedAnswer: string = '';
   userAnswer: string = '';
@@ -16,10 +24,43 @@ export class GreenmoduleComponent implements OnInit {
   errorMessage: string = '';
   showResults: boolean = false; // ✅ Fix 1: Declare showResults
 
-  constructor(private ds: DataserviceService) {}
+  constructor(
+    private router: Router,
+    private ds: DataserviceService
+  ) {}
 
   ngOnInit(): void {
     this.getTriviaQuestion();
+
+    this.fetchBarangayPosts(); // Initial fetch
+
+    // ✅ Detect when the user navigates back to this tab
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.fetchBarangayPosts();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  // Fetch All Barangay Posts
+  fetchBarangayPosts() {
+    this.isLoading = true; // Show skeleton loader
+    this.ds.getBarangayPosts().subscribe(
+      (posts) => {
+        this.barangayPosts = posts;
+        this.isLoading = false; // Hide skeleton loader
+      },
+      (error) => {
+        console.error('Error fetching posts:', error);
+        this.isLoading = false;
+      }
+    );
   }
 
   getTriviaQuestion(): void {
@@ -30,7 +71,7 @@ export class GreenmoduleComponent implements OnInit {
         this.loading = false;
       },
       (error) => {
-        this.errorMessage = 'Failed to load trivia.';
+        this.errorMessage = 'No trivia for today.';
         this.loading = false;
       }
     );

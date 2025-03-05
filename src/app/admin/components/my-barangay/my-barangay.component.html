@@ -1,0 +1,58 @@
+<div class="content">
+    <div class="head">
+      <h1>Our Barangay Initiative/Projects</h1>
+      <div class="route-btn" (click)="createPost()">
+        <i class="bx bx-plus"></i> <a>Create</a>
+      </div>
+    </div>
+  
+    <div class="all-posts">
+        <!-- Skeleton Loader (Only Shows While Loading) -->
+        <ng-container *ngIf="isLoading">
+            <div class="post-card skeleton" *ngFor="let i of [1,2,3,4]">
+                <div class="skeleton-text"></div>
+                <div class="post-images">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-img"></div>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Actual Posts -->
+        <ng-container *ngIf="!isLoading">
+            <div class="post-card" *ngFor="let post of barangayPosts">
+                <div class="post-header">
+                <h2>{{ post.caption }}</h2>
+                <p> {{ post.created_at | date: 'mediumDate' }} at {{ post.created_at | date: 'shortTime' }} </p>
+                </div>
+        
+                <!-- Image Grid (Slice first 4 images only) -->
+                <div class="post-images">
+                    <ng-container *ngFor="let img of post.images.slice(0, 3); let i = index">
+                        <img *ngIf="img" [src]="img" alt="Post Image">
+                    </ng-container>
+            
+                    <!-- Check if there are at least 4 images -->
+                    <ng-container *ngIf="post.images.length >= 4">
+                        <!-- 4th Image with Overlay if More Than 4 Images -->
+                        <div class="image-wrapper" *ngIf="post.images.length > 4; else normalImage">
+                            <img [src]="post.images[3]" alt="Post Image">
+                            <img [src]="post.images[4]" alt="Post Image">
+                            <div class="image-overlay">
+                                <span>View More</span>
+                            </div>
+                        </div>
+
+                        <!-- Normal 4th Image (No Overlay) -->
+                        <ng-template #normalImage>
+                            <img [src]="post.images[3]" alt="Post Image">
+                        </ng-template>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+  

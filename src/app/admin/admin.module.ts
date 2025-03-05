@@ -16,6 +16,8 @@ import { DisplayImagesComponent } from './components/forlandingphotos/display-im
 import { ImagesHistoryComponent } from './components/forlandingphotos/images-history/images-history.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { EditLatestComponent } from './components/forlandingphotos/edit-latest/edit-latest.component';
+import { MyBarangayComponent } from './components/my-barangay/my-barangay.component';
+import { CreatePostComponent } from './components/my-barangay/create-post/create-post.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { EditLatestComponent } from './components/forlandingphotos/edit-latest/e
     DisplayImagesComponent,
     ImagesHistoryComponent,
     LoadingComponent,
-    EditLatestComponent
+    EditLatestComponent,
+    MyBarangayComponent,
+    CreatePostComponent
   ],
   imports: [
     CommonModule,

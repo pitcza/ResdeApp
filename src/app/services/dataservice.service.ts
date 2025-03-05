@@ -96,5 +96,15 @@ export class DataserviceService {
     return this.User(`trivia/questions/${id}/answer`, 'POST', { answer: answer }); 
   }
 
+  // barangay posts
+  // Get All Barangay Posts
+  getBarangayPosts(): Observable<any> {
+    return this.User('barangay-posts');
+  }
+
+  // Get Barangay Post by ID
+  getBarangayPostById(id: number): Observable<any> {
+    return this.User(`barangay-posts/${id}`, 'GET');
+  }
 
 }

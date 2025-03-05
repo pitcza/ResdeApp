@@ -211,4 +211,28 @@ tableCategories(startDate?: string, endDate?: string): Observable<any> {
     return this.Admin('trivia/alluser/scores')
   }
 
+  // Create Barangay Post
+  createBarangayPost(formData: FormData): Observable<any> {
+    return this.Admin('barangay-posts', 'POST', formData);
+  }
+
+  // Get All Barangay Posts
+  getBarangayPosts(): Observable<any> {
+    return this.Admin('barangay-posts');
+  }
+
+  // Get Barangay Post by ID
+  getBarangayPostById(id: number): Observable<any> {
+    return this.Admin(`barangay-posts/${id}`, 'GET');
+  }
+
+  // Update Barangay Post
+  updateBarangayPost(id: number, formData: FormData): Observable<any> {
+    return this.Admin(`barangay-posts/${id}`, 'PUT', formData);
+  }
+
+  // Delete Barangay Post
+  deleteBarangayPost(id: number): Observable<any> {
+    return this.Admin(`barangay-posts/${id}`, 'DELETE');
+  }
 }

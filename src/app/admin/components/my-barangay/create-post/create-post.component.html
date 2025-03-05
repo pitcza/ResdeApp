@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <div class="popup-head">
+                <h1>Create Barangay Initiative Post</h1>
+            </div>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="post-content">
+            <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+                <p> Share our Barangay Initiative/Projects </p>
+
+                <!-- Caption Input -->
+                <div class="input-row">
+                    <div class="input-field">
+                        <label class="labelline">Caption</label>
+                        <input class="txt-field" type="text" formControlName="caption" placeholder="Enter caption...">
+                    </div>
+                </div>
+
+                <!-- Image Upload with Preview -->
+                <div class="input-row">
+                    <div class="input-field-short">
+                        <label class="up-labelline">Upload Images</label>
+                        <input class="file-field" type="file" multiple (change)="onFileChange($event)">
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="image-preview" *ngIf="imagePreviews.length > 0">
+                        <div *ngFor="let img of imagePreviews">
+                            <img [src]="img" alt="Preview">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPost()" />
+                    <input class="submit-btn" type="submit" value="Post" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
