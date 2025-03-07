@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <div class="popup-head">
+                <h1>Barangay Update</h1>
+            </div>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="post-content">
+            <!-- Loading State -->
+            <div *ngIf="isLoading" class="popup-loader">
+                <div class="loader"></div>
+                <p>Loading...</p>
+            </div>
+            
+            <div class="main-post">
+                <p class="info">
+                    <span class="date">{{ post.created_at | date:'mediumDate' }} at {{ post.created_at | date:'shortTime' }}</span>
+                </p>
+                <p [innerHTML]="formatContent(post.caption)"></p>
+                <div class="post-img">
+                    <img *ngFor="let image of post.images" [src]="image" alt="Image">
+                </div>
+            </div>
+        </div>
+
+        <div class="post-footer">
+            <div class="buttons">
+                <input class="danger-btn" type="button" value="Delete" (click)="deletePost(post.id)">
+                <!-- <input class="submit-btn" type="button" value="Edit" (click)="editPost(post.id)"> -->
+            </div>
+        </div>
+    </div>
+</div>

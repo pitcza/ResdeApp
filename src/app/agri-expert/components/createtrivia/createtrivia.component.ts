@@ -94,7 +94,7 @@ export class CreatetriviaComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes, Submit',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#266CA9',
       cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -114,7 +114,7 @@ export class CreatetriviaComponent implements OnInit {
               text: 'Trivia question created successfully!',
               icon: 'success',
               confirmButtonText: 'OK',
-              confirmButtonColor: '#3085d6'
+              confirmButtonColor: '#266CA9'
             });
               this.dialogRef.close(true);
           },

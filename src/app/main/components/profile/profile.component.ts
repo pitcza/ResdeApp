@@ -315,7 +315,7 @@ export class ProfileComponent implements OnInit{
         text: 'Are you sure you want to update your profile?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#266CA9',
         cancelButtonColor: '#7f7f7f',
         confirmButtonText: 'Yes, update it!'
       }).then((result) => {

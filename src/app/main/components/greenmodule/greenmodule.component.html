@@ -1,72 +1,79 @@
 <div class="content">
   <div class="trivia-section">
-    <h2 class="section-title">🌱 Plant Trivia Quiz 🌿</h2>
-
-    <!-- Introduction -->
-    <div class="introduction-title" *ngIf="!showResults">
-      <p>
-        Trivia quizzes are a fun way to test your knowledge and learn new facts. 
-        Take this quiz to see how much you know about plants and sustainability and earn awesome rewards!
-      </p>
+    <div class="click" (click)="toggleTrivia()">
+      <h2 class="section-title">🌱 Trivia Quiz of the Day 🌿</h2>
+      <p> Check Trivia! </p>
     </div>
 
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error">
-      <p>{{ errorMessage }}</p>
-    </div>
-
-    <!-- Loading Placeholder -->
-    <div *ngIf="loading" class="loading">
-      <p>Loading trivia and question...</p>
-    </div>
-
-    <!-- Show the trivia facts first -->
-    <div *ngIf="trivia">
-      <div class="question-card">
-        <h3 class="question-text">{{ trivia.title }}</h3>
-        <p>{{ trivia.facts }}</p>
+    <div class="show" *ngIf="showTrivia">
+      <!-- Introduction -->
+      <div class="introduction-title" *ngIf="!showResults">
+        <p>
+          Answering Trivia Quiz is a fun way to test your knowledge and learn new facts. 
+          Read the trivia of the day and take the quiz to see how much you know about plants and sustainability and earn awesome rewards!
+        </p>
       </div>
 
-      <!-- If user has NOT answered, show the question form -->
-      <div *ngIf="!hasAnswered">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Loading Placeholder -->
+      <div *ngIf="loading" class="loading">
+        <p>Loading trivia and question...</p>
+      </div>
+
+      <!-- Show the trivia facts first -->
+      <div *ngIf="trivia">
         <div class="question-card">
-          <h3 class="question-text">{{ trivia.question }}</h3>
-          <div class="options">
-            <label 
-              *ngFor="let answer of trivia.answers" 
-              class="option" 
-              [class.selected]="selectedAnswer === answer">
-              <input 
-                type="radio" 
-                name="triviaAnswer" 
-                [value]="answer" 
-                [(ngModel)]="selectedAnswer" />
-              {{ answer }}
-            </label>
-          </div>
-          <button class="btn-submit" (click)="submitTriviaAnswer()">Submit Answer</button>
+          <h2 class="category-text">{{ trivia.category }} Trivia</h2>
+          <h3 class="question-text">{{ trivia.title }}</h3>
+          <p>{{ trivia.facts }}</p>
         </div>
-      </div>
 
-      <!-- If user has answered, show results instead -->
-      <div *ngIf="hasAnswered" class="results">
-        <h3 class="feedback">{{ isCorrect ? '🎉 Correct answer!' : '❌ Wrong answer!' }}</h3>
-        
-        <ul class="result-list">
-          <li>
-            <strong>Question:</strong> {{ trivia.question }}
-          </li>
-          <li>
-            <strong>Your Answer:</strong> 
-            <span [class.correct]="isCorrect" [class.incorrect]="!isCorrect">
-              {{ userAnswer }}
-            </span>
-          </li>
-          <li *ngIf="!isCorrect">
-            <strong>Correct Answer:</strong> 
-            <span class="correct-answer">{{ trivia.correct_answer }}</span>
-          </li>
-        </ul>
+        <!-- If user has NOT answered, show the question form -->
+        <div *ngIf="!hasAnswered">
+          <div class="question-card">
+            <h3 class="question-text">{{ trivia.question }}</h3>
+            <div class="options">
+              <label 
+                *ngFor="let answer of trivia.answers" 
+                class="option" 
+                [class.selected]="selectedAnswer === answer">
+                <input 
+                  type="radio" 
+                  name="triviaAnswer" 
+                  [value]="answer" 
+                  [(ngModel)]="selectedAnswer" />
+                {{ answer }}
+              </label>
+            </div>
+            <button class="btn-submit" (click)="submitTriviaAnswer()">Submit Answer</button>
+          </div>
+        </div>
+
+        <!-- If user has answered, show results instead -->
+        <div *ngIf="hasAnswered" class="results">
+          <h3> You already answered the question for trivia of the day!</h3>
+          <h3 class="feedback">{{ isCorrect ? '🎉 Correct answer!' : '❌ Wrong answer!' }}</h3>
+          
+          <ul class="result-list">
+            <li>
+              <strong>Question:</strong> {{ trivia.question }}
+            </li>
+            <li>
+              <strong>Your Answer:</strong> 
+              <span [class.correct]="isCorrect" [class.incorrect]="!isCorrect">
+                {{ userAnswer }}
+              </span>
+            </li>
+            <li *ngIf="!isCorrect">
+              <strong>Correct Answer: </strong> 
+              <span class="correct-answer">{{ trivia.correct_answer }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -75,7 +82,17 @@
 
   <div class="posts">
     <div class="head">
-      <h1>Our Barangay Initiative/Projects</h1>
+      <h1>Our Barangay Initiatives/Projects</h1>
+
+      <div class="data-search">
+        <input 
+          type="text" 
+          placeholder="Search..." 
+          [(ngModel)]="searchText" 
+          (input)="applyFilters()"
+          class="search-input"
+        />
+      </div>
     </div>
   
     <div class="all-posts">
@@ -92,16 +109,21 @@
         </div>
       </ng-container>
 
+      <!-- Show "No Barangay Posts Yet" when no posts are available -->
+      <div *ngIf="!isLoading && filteredPosts.length === 0" class="no-posts">
+        <p>No Barangay Posts Yet.</p>
+      </div>
+
       <!-- Actual Posts -->
-      <ng-container *ngIf="!isLoading">
-        <div class="post-card" *ngFor="let post of barangayPosts">
-          <div class="post-header">
-            <h2>{{ post.caption }}</h2>
+      <ng-container *ngIf="!isLoading && filteredPosts.length > 0">
+        <div class="post-card" *ngFor="let post of paginatedPosts">
+          <div class="post-header" (click)="viewPost(post.id)">
+            <h2 [innerHTML]="formatContent(post.caption)"></h2>
             <p> {{ post.created_at | date: 'mediumDate' }} at {{ post.created_at | date: 'shortTime' }} </p>
           </div>
     
           <!-- Image Grid (Slice first 4 images only) -->
-          <div class="post-images">
+          <div class="post-images" (click)="viewPost(post.id)">
             <ng-container *ngFor="let img of post.images.slice(0, 3); let i = index">
                 <img [src]="img" alt="Post Image">
             </ng-container>
@@ -126,7 +148,12 @@
         </div>
       </ng-container>
     </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <span> Page {{ currentPage }} of {{ totalPages }} </span>
+      <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+    </div>
   </div>
 </div>
-
-    

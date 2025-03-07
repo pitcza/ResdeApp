@@ -1,9 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DataserviceService } from '../../../services/dataservice.service';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { ViewBrgypostComponent } from './view-brgypost/view-brgypost.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-greenmodule',
@@ -26,8 +28,16 @@ export class GreenmoduleComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
     private ds: DataserviceService
   ) {}
+
+  showTrivia = false;
+
+  toggleTrivia() {
+    this.showTrivia = !this.showTrivia;
+  }
 
   ngOnInit(): void {
     this.getTriviaQuestion();
@@ -48,19 +58,55 @@ export class GreenmoduleComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Fetch All Barangay Posts
   fetchBarangayPosts() {
-    this.isLoading = true; // Show skeleton loader
+    this.isLoading = true;
     this.ds.getBarangayPosts().subscribe(
       (posts) => {
         this.barangayPosts = posts;
-        this.isLoading = false; // Hide skeleton loader
+        this.filteredPosts = [...posts]; // Initialize with all posts
+        this.applyFilters(); // Apply any active filters
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts:', error);
         this.isLoading = false;
       }
     );
+  }
+
+  filteredPosts: any[] = []; // Posts after search/filter
+  searchText: string = ''; // Search text
+  currentPage = 1;
+  itemsPerPage = 10;
+
+  applyFilters(): void {
+    this.filteredPosts = this.barangayPosts.filter(post =>
+      post.caption.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+    this.currentPage = 1; // Reset to first page on new search
+    this.cdr.detectChanges(); // Ensure UI updates
+  }
+
+  // Pagination Logic
+  get paginatedPosts(): any[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredPosts.slice(start, start + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredPosts.length / this.itemsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
 
   getTriviaQuestion(): void {
@@ -124,4 +170,23 @@ export class GreenmoduleComponent implements OnInit, OnDestroy {
       }
     );
   }  
+
+  viewPost(id: number) {
+    const dialogRef = this.dialog.open(ViewBrgypostComponent, {
+      data: { id: id }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.fetchBarangayPosts();
+      }
+    });
+  }
+
+  formatContent(content: string | null): string {
+    if (!content) {
+      return 'N/A';
+    }
+    return content.replace(/\n/g, '<br>');
+  }
 }

@@ -169,11 +169,11 @@ export class LoginComponent {
         if (!trivia || Object.keys(trivia).length === 0) {
           console.log("No trivia available for today.");
           Swal.fire({
-            title: 'No Trivia for Today 😞',
-            text: 'Come back tomorrow for a new eco-friendly challenge!',
+            title: 'No Trivia Quiz for Today 😞',
+            text: 'You can continue browsing and come back tomorrow for a new eco-friendly challenge!',
             icon: 'info',
             confirmButtonText: 'Okay',
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#266CA9'
           });
           return;
         }
@@ -188,6 +188,13 @@ export class LoginComponent {
   
             if (hasAnswered) {
               console.log("User has already answered, skipping trivia popup.");
+              Swal.fire({
+                title: 'You already answered the Trivia Quiz for today! ✅',
+                text: 'Great job! Come again tomorrow for another trivia challenge.',
+                icon: 'info',
+                confirmButtonText: 'Continue Browsing',
+                confirmButtonColor: '#266CA9'
+              });
               return; // Stop further processing
             }
   
@@ -197,7 +204,7 @@ export class LoginComponent {
               html: `<strong>${trivia.title}</strong><br><br>${trivia.facts}`,
               icon: 'info',
               confirmButtonText: 'Got it!',
-              confirmButtonColor: '#3085d6'
+              confirmButtonColor: '#266CA9'
             }).then(() => {
               Swal.fire({
                 title: 'Getting Your Question Ready... 🤔',
@@ -224,7 +231,7 @@ export class LoginComponent {
                     return value ? null : 'Please select an answer!';
                   },
                   confirmButtonText: 'Submit Answer',
-                  confirmButtonColor: '#3085d6'
+                  confirmButtonColor: '#266CA9'
                 }).then((result) => {
                   if (result.isConfirmed) {
                     const selectedAnswer = trivia.answers[result.value];
@@ -249,7 +256,7 @@ export class LoginComponent {
                           text: `The correct answer is: ${trivia.correct_answer}`,
                           icon: isCorrect ? 'success' : 'error',
                           confirmButtonText: 'OK',
-                          confirmButtonColor: '#3085d6'
+                          confirmButtonColor: '#266CA9'
                         });
                       },
                       (error) => {
@@ -281,11 +288,11 @@ export class LoginComponent {
         // ✅ Handle 404 error (No trivia for today)
         if (error.status === 404) {
           Swal.fire({
-            title: 'No Trivia for Today 😞',
+            title: 'No Trivia Quiz for Today 😞',
             text: 'Come back tomorrow for a new eco-friendly challenge!',
             icon: 'info',
             confirmButtonText: 'Okay',
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#266CA9'
           });
         } else {
           // ✅ Handle other errors

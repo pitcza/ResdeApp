@@ -15,25 +15,33 @@
                 <div class="input-row">
                     <div class="input-field">
                         <label class="labelline">Caption</label>
-                        <input class="txt-field" type="text" formControlName="caption" placeholder="Enter caption...">
+                        <textarea class="txtarea-field" formControlName="caption" placeholder="Enter caption..."></textarea>
                     </div>
                 </div>
 
                 <!-- Image Upload with Preview -->
                 <div class="input-row">
-                    <div class="input-field-short">
-                        <label class="up-labelline">Upload Images</label>
-                        <input class="file-field" type="file" multiple (change)="onFileChange($event)">
+                    <div class="add-image upload" (click)="triggerFileInput()">
+                        <span>{{ imagePreviews.length > 0 ? imagePreviews.length + ' photo/s selected' : '+ Upload Photos' }}</span>
                     </div>
                 </div>
 
                 <div class="input-row">
                     <div class="image-preview" *ngIf="imagePreviews.length > 0">
-                        <div *ngFor="let img of imagePreviews">
+                        <div *ngFor="let img of imagePreviews; let i = index" class="image-container">
                             <img [src]="img" alt="Preview">
+                            <button class="remove-btn" (click)="removeImage(i)">×</button>
+                        </div>
+                        <!-- + Button to Add More Images -->
+                        <div class="add-image" *ngIf="imagePreviews.length < 10" (click)="triggerFileInput()">
+                            <span>+</span>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Hidden File Input -->
+                <input #fileInput class="file-field" type="file" multiple (change)="onFileChange($event)" hidden>
+                
 
                 <div class="buttons">
                     <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPost()" />

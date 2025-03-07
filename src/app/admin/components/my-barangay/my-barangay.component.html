@@ -1,8 +1,19 @@
 <div class="content">
     <div class="head">
       <h1>Our Barangay Initiative/Projects</h1>
-      <div class="route-btn" (click)="createPost()">
-        <i class="bx bx-plus"></i> <a>Create</a>
+      <div class="right">
+        <div class="data-search">
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              [(ngModel)]="searchText" 
+              (input)="applyFilters()"
+              class="search-input"
+            />
+        </div>
+        <div class="route-btn" (click)="createPost()">
+            <i class="bx bx-plus"></i> <a>Create</a>
+          </div>
       </div>
     </div>
   
@@ -20,16 +31,39 @@
             </div>
         </ng-container>
 
+        <!-- Show "No Barangay Posts Yet" when no posts are available -->
+        <div *ngIf="!isLoading && filteredPosts.length === 0" class="no-posts">
+            <p>No Barangay Posts Yet.</p>
+        </div>
+
         <!-- Actual Posts -->
-        <ng-container *ngIf="!isLoading">
-            <div class="post-card" *ngFor="let post of barangayPosts">
+        <ng-container *ngIf="!isLoading && filteredPosts.length > 0">
+            <div class="post-card" *ngFor="let post of paginatedPosts">
                 <div class="post-header">
-                <h2>{{ post.caption }}</h2>
-                <p> {{ post.created_at | date: 'mediumDate' }} at {{ post.created_at | date: 'shortTime' }} </p>
+                    <div class="info">
+                        <h2 [innerHTML]="formatContent(post.caption)"></h2>
+                        <p> {{ post.created_at | date: 'mediumDate' }} at {{ post.created_at | date: 'shortTime' }} </p>
+                    </div>
+                    <div class="menu-dropdown" (click)="toggleMenu($event, post.id)">
+                        <button class="dropdown-toggle">
+                            <i class='bx bx-dots-horizontal-rounded'></i>
+                        </button>
+                    
+                        <div class="dropdown-menu" *ngIf="menuVisiblePostId === post.id">
+                            <div class="menu" (click)="editPost(post.id)">
+                                <i class='bx bxs-edit' ></i>
+                                <a>Edit</a>
+                            </div>
+                            <div class="menu danger" (click)="deletePost(post.id)">
+                                <i class='bx bxs-trash' ></i>
+                                <a>Delete</a>
+                            </div>
+                        </div>
+                    </div>                    
                 </div>
         
                 <!-- Image Grid (Slice first 4 images only) -->
-                <div class="post-images">
+                <div class="post-images" (click)="viewPost(post.id)">
                     <ng-container *ngFor="let img of post.images.slice(0, 3); let i = index">
                         <img *ngIf="img" [src]="img" alt="Post Image">
                     </ng-container>
@@ -53,6 +87,12 @@
                 </div>
             </div>
         </ng-container>
+    </div>
+    <!-- Pagination Controls -->
+    <div class="pagination" *ngIf="totalPages > 1">
+        <span> Page {{ currentPage }} of {{ totalPages }} </span>
+        <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+        <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
     </div>
 </div>
   

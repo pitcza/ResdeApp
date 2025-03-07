@@ -18,6 +18,8 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { EditLatestComponent } from './components/forlandingphotos/edit-latest/edit-latest.component';
 import { MyBarangayComponent } from './components/my-barangay/my-barangay.component';
 import { CreatePostComponent } from './components/my-barangay/create-post/create-post.component';
+import { ViewPostComponent } from './components/my-barangay/view-post/view-post.component';
+import { EditPostComponent } from './components/my-barangay/edit-post/edit-post.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { CreatePostComponent } from './components/my-barangay/create-post/create
     LoadingComponent,
     EditLatestComponent,
     MyBarangayComponent,
-    CreatePostComponent
+    CreatePostComponent,
+    ViewPostComponent,
+    EditPostComponent
   ],
   imports: [
     CommonModule,

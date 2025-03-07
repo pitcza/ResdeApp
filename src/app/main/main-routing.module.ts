@@ -6,12 +6,12 @@ import { GreenmoduleComponent } from './components/greenmodule/greenmodule.compo
 import { HomepageComponent } from './components/homepage/homepage.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'my-barangay', pathMatch: 'full' },
   { path: 'home', component: HomepageComponent },
   // { path: 'home', loadChildren: () => import('./components/homepage/homepage.module').then(m => m.HomepageModule) },
   { path: 'likes', component: LikedpostsComponent },
   { path: 'uploads', loadChildren: () => import('./components/uploads/uploads.module').then(m => m.UploadsModule) },
-  { path: 'green-module', component: GreenmoduleComponent },
+  { path: 'my-barangay', component: GreenmoduleComponent },
   { path: 'user-info', component: ProfileComponent },
 ];
 

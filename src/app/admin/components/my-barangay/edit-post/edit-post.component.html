@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="post-container">
+        <div class="post-header">
+            <div class="popup-head">
+                <h1>Edit Barangay Initiative Post</h1>
+            </div>
+            <button class="exit-button" (click)="closeDialog()"> &times; </button>
+        </div>
+
+        <div class="post-content">
+            <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+                <p> Update our Barangay Initiative/Projects </p>
+
+                <!-- Caption Input -->
+                <div class="input-row">
+                    <div class="input-field">
+                        <label class="labelline">Caption</label>
+                        <textarea class="txtarea-field" formControlName="caption" placeholder="Update caption..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Existing Image Preview -->
+                <div class="input-row" *ngIf="imagePreviews.length > 0">
+                    <div class="image-preview">
+                        <div *ngFor="let img of imagePreviews; let i = index" class="image-container">
+                            <img [src]="img" alt="Existing Image">
+                            <button class="remove-btn" (click)="removeImage(i)">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Upload with Preview -->
+                <div class="input-row">
+                    <div class="add-image upload" (click)="triggerFileInput()">
+                        <span>{{ selectedFiles.length > 0 ? selectedFiles.length + ' new photo/s selected' : '+ Upload New Photos' }}</span>
+                    </div>
+                </div>
+
+                <div class="input-row" *ngIf="selectedFiles.length > 0">
+                    <div class="image-preview">
+                        <div *ngFor="let img of selectedFiles; let i = index" class="image-container">
+                            <img [src]="img" alt="New Preview">
+                            <button class="remove-btn" (click)="removeImage(i)">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden File Input -->
+                <input #fileInput class="file-field" type="file" multiple (change)="onFileChange($event)" hidden>
+
+                <div class="buttons">
+                    <input class="cancel-btn" type="button" value="Cancel" (click)="closeDialog()" />
+                    <input class="submit-btn" type="submit" value="Update Post" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
