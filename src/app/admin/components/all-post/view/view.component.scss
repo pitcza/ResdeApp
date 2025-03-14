@@ -48,17 +48,9 @@
             font-size: 14px;
             border-radius: 5px;
         }
-        
-        .pending-status {
-            background-color: var(--gray-btn); /* Background for pending */
-        }
-        
-        .approved-status {
-            background-color: var(--primary-hover); /* Background for approved */
-        }
 
-        .declined-status {
-            background-color: var(--red-btn); /* Background for pending */
+        .red-status {
+            background-color: var(--red-btn);
         }
     }
 

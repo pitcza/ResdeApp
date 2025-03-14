@@ -44,79 +44,75 @@ export class AdminDataService {
         default:
             throw new Error('Invalid method');
     }
-}
-
-  TotalPosts(): Observable<any> {
-      return this.Admin('totalPosts');
   }
 
-  // allPosts(): Observable<any> {
-  //     return this.Admin('allPost');
-  // }
+  // for dashboard totals
+  dashboardStatistics(): Observable<any> {
+    return this.Admin('dashboardStatistics');
+  }
 
-  allPosts(params: { start_date: string; end_date: string }): Observable<any> {
-    const queryParams = new HttpParams()
-      .set('start_date', params.start_date)
-      .set('end_date', params.end_date);
-  
-    return this.Admin('allPost', 'GET', queryParams);  
+  // dashborad - materials bar chart
+  getMaterialsChart(): Observable<any> {
+    return this.Admin('chartMaterials');
+  }
+
+  // dashboard - most talked-about categories
+  tableCategories(startDate?: string, endDate?: string): Observable<any> {
+    const params: any = {};
+
+    if (startDate) {
+      params.start_date = startDate;
+    }
+    if (endDate) {
+      params.end_date = endDate;
+    }
+
+    return this.Admin('tableCategories', 'GET', null, params);
+  }
+
+  // dashboard - most active users
+  getMostActiveUsers(): Observable<any> {
+    return this.Admin('most-active-users');
+  }
+
+  // dashboard - most liked posts
+  getMostLikedPosts(): Observable<any> {
+    return this.Admin('most-liked-posts');
+  }
+
+  // all posts tab - all posted and reported
+  AllPosts(): Observable<any> {
+    return this.Admin('allPost');
   }
   
+  // view post by id
   getPostById(id: number): Observable<any> {
-      return this.Admin(`userpost/${id}`);
+    return this.Admin(`userpost/${id}`);
   }
 
-  deletePost(id: number): Observable<any> {
-      return this.Admin(`deletepost/${id}`, 'DELETE');
+  // remove post + removal remarks
+  deletePost(id: number, remarks: string): Observable<any> {
+    return this.Admin(`removepost/${id}`, 'PUT', { remarks });
   }
 
-  TotalPendingPosts(): Observable<any> {
-      return this.Admin('totalPendings');
+  // reported posts tab
+  reportedPosts(): Observable<any> {
+    return this.Admin('allReportedPosts');
   }
 
-  TotalDeclinedPosts(): Observable<any> {
-      return this.Admin('totalDeclined');
-  }
-
-  TotalUsers(): Observable<any> {
-      return this.Admin('totalusers');
-  }
-
+  // users tab - list of users
   getUsers(): Observable<any> {
-      return this.Admin('users');
+    return this.Admin('users');
   }
 
+  // delete user
   deleteUser(userId: number): Observable<any> {
     return this.Admin(`delete/user?user_id=${userId}`, 'DELETE');
   }
 
-  getPosts(): Observable<any> {
-    return this.Admin('allPost');
-  }
-
-  getOldest():Observable<any> {
-    return this.Admin('oldestpending')
-  }
-
-  approvePost(id: number): Observable<any> {
-    return this.Admin(`post/${id}/approve`, 'PATCH');
-  }
-
-  rejectPost(id: number, remarks: string): Observable<any> {
-    return this.Admin(`post/${id}/decline`, 'PATCH', { remarks });
-  }
-
-  // rejectPost(id: number, ): Observable<any> {
-  //   return this.Admin(`post/${id}/decline`, 'PATCH');
-  // }
-
-  // for landing page photos
+  // dashboard - landing page photos
   uploadLandingPhotos(formData: FormData): Observable<any> {
     return this.Admin('addphotos', 'POST', formData);
-  }
-
-  getLandingPhotos(): Observable<any> {
-    return this.http.get<any>(this.url + 'showlatestphoto'); // No authentication required
   }
 
   editLatestPhoto(formData: FormData): Observable<any> {
@@ -132,14 +128,19 @@ export class AdminDataService {
   }
 
   deleteAllPhotos(ids: number[]): Observable<any> {
-    return this.Admin('deleteAllPhotos', 'POST', { ids });  // Use POST and send the ids in the body
+    return this.Admin('deleteAllPhotos', 'POST', { ids });
   }
 
+  // no authentication required, show sa landing page
+  getLandingPhotos(): Observable<any> {
+    return this.http.get<any>(this.url + 'showlatestphoto');
+  }
+
+  // for announcements
   uploadAnn(formData: FormData): Observable<any> {
     return this.Admin('announcements', 'POST', formData);
   }
 
-  // for announcements
   getAnn(params: { start_date: string; end_date: string }): Observable<any> {
     const queryParams = new HttpParams()
     .set('start_date', params.start_date)
@@ -152,41 +153,48 @@ export class AdminDataService {
     return this.Admin(`announcements/${id}`, 'DELETE')
   }
 
-  userTotalPost():Observable<any> {
-    return this.Admin('userTotalPost')
+  // for barangay posts
+  createBarangayPost(formData: FormData): Observable<any> {
+    return this.Admin('barangay-posts', 'POST', formData);
   }
 
-  userTotalPosts():Observable<any> {
-    return this.Admin('userTotalPosts')
+  getBarangayPosts(): Observable<any> {
+    return this.Admin('barangay-posts');
   }
 
-  likedpost():Observable<any> {
-    return this.Admin('likechart')
+  getBarangayPostById(id: number): Observable<any> {
+    return this.Admin(`barangay-posts/${id}`, 'GET');
   }
 
-  likedposttable():Observable<any> {
-    return this.Admin('liketable')
+  updateBarangayPost(id: number, formData: FormData): Observable<any> {
+    return this.Admin(`barangay-posts/${id}`, 'PUT', formData);
   }
 
+  deleteBarangayPost(id: number): Observable<any> {
+    return this.Admin(`barangay-posts/${id}`, 'DELETE');
+  }
+
+  // report tab - categories posted
   total_post():Observable<any> {
     return this.Admin('mostCategories')
   }
 
-
-tableCategories(startDate?: string, endDate?: string): Observable<any> {
-  const params: any = {};
-
-  if (startDate) {
-    params.start_date = startDate;
-  }
-  if (endDate) {
-    params.end_date = endDate;
+  // report tab - materials posted count
+  materialsPosted():Observable<any> {
+    return this.Admin('materialsCount')
   }
 
-  return this.Admin('tableCategories', 'GET', null, params);
-}
+  // report tab - most active users
+  topUsers(): Observable<any> {
+    return this.Admin('topUsers');
+  }
 
+  // report tab - most liked posts
+  topLiked(): Observable<any> {
+    return this.Admin('topLiked');
+  }
 
+  // trivia quiz - for environmental admin
   createQuestions(data: any): Observable<any>{
     return this.Admin('trivia/questions', 'POST', data)
   }
@@ -207,32 +215,8 @@ tableCategories(startDate?: string, endDate?: string): Observable<any> {
     return this.Admin(`trivia/question/${id}`, 'DELETE')
   }
 
+  // wala pa
   userScores(): Observable<any>{
     return this.Admin('trivia/alluser/scores')
-  }
-
-  // Create Barangay Post
-  createBarangayPost(formData: FormData): Observable<any> {
-    return this.Admin('barangay-posts', 'POST', formData);
-  }
-
-  // Get All Barangay Posts
-  getBarangayPosts(): Observable<any> {
-    return this.Admin('barangay-posts');
-  }
-
-  // Get Barangay Post by ID
-  getBarangayPostById(id: number): Observable<any> {
-    return this.Admin(`barangay-posts/${id}`, 'GET');
-  }
-
-  // Update Barangay Post
-  updateBarangayPost(id: number, formData: FormData): Observable<any> {
-    return this.Admin(`barangay-posts/${id}`, 'PUT', formData);
-  }
-
-  // Delete Barangay Post
-  deleteBarangayPost(id: number): Observable<any> {
-    return this.Admin(`barangay-posts/${id}`, 'DELETE');
   }
 }

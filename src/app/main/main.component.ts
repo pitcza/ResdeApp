@@ -10,7 +10,6 @@ import { AuthserviceService } from '../services/authservice.service';
   styleUrl: './main.component.scss'
 })
 export class MainComponent implements OnInit{
-
   name: string = '';
 
   ngOnInit(): void {

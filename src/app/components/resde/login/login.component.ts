@@ -59,7 +59,6 @@ export class LoginComponent {
   onLogin() {
     this.isLoading = true;
 
-    // Check if email or password is blank
     if (!this.loginData.email || !this.loginData.password) {
       this.isLoading = false;
       Swal.fire({
@@ -83,7 +82,6 @@ export class LoginComponent {
         this.isLoading = false;
         console.log('Login successful:', response);
         
-        // ✅ Store authToken and userId
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('userId', response.user.id); // Store user ID
 
@@ -165,7 +163,6 @@ export class LoginComponent {
         Swal.close(); // Close loading popup
         console.log("Trivia fetched:", trivia);
   
-        // ✅ Ensure trivia is valid before proceeding
         if (!trivia || Object.keys(trivia).length === 0) {
           console.log("No trivia available for today.");
           Swal.fire({
@@ -178,7 +175,6 @@ export class LoginComponent {
           return;
         }
   
-        // ✅ Fetch user scores only if trivia exists
         this.userData.getUserScore().subscribe(
           (userScores) => {
             console.log("User scores fetched:", userScores);
@@ -198,7 +194,6 @@ export class LoginComponent {
               return; // Stop further processing
             }
   
-            // ✅ Show trivia facts first
             Swal.fire({
               title: `${trivia.category} Trivia of the Day 🌱`,
               html: `<strong>${trivia.title}</strong><br><br>${trivia.facts}`,
@@ -218,7 +213,6 @@ export class LoginComponent {
               setTimeout(() => {
                 Swal.close(); // Close loading popup
   
-                // ✅ Show trivia question
                 Swal.fire({
                   title: '🌍 Trivia Question!',
                   text: trivia.question,
@@ -245,7 +239,6 @@ export class LoginComponent {
                       }
                     });
   
-                    // ✅ Submit the answer
                     this.userData.submitAnswer(trivia.id, selectedAnswer).subscribe(
                       (response) => {
                         Swal.close(); // Close loading popup
@@ -257,6 +250,8 @@ export class LoginComponent {
                           icon: isCorrect ? 'success' : 'error',
                           confirmButtonText: 'OK',
                           confirmButtonColor: '#266CA9'
+                        }).then(() => {
+                          location.reload();
                         });
                       },
                       (error) => {
@@ -272,7 +267,7 @@ export class LoginComponent {
                     );
                   }
                 });
-              }, 1000); // Simulated delay for question loading
+              }, 1000);
             });
           },
           (error) => {
@@ -285,7 +280,6 @@ export class LoginComponent {
         Swal.close(); // Close loading popup before showing the error
         console.error("Error fetching trivia:", error);
   
-        // ✅ Handle 404 error (No trivia for today)
         if (error.status === 404) {
           Swal.fire({
             title: 'No Trivia Quiz for Today 😞',
@@ -295,7 +289,6 @@ export class LoginComponent {
             confirmButtonColor: '#266CA9'
           });
         } else {
-          // ✅ Handle other errors
           Swal.fire({
             title: 'Error Fetching Trivia',
             text: 'Something went wrong. Please try again later.',

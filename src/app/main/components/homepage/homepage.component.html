@@ -17,18 +17,10 @@
         <div class="selects">
           <select id="filter-category" (change)="filterPosts($event)">
             <option selected value=""> All Category </option>
-            <option value="Compost">Compost</option>
-            <option value="Plastic">Plastic</option>
-            <option value="Rubber">Rubber</option>
-            <option value="Wood">Wood</option>
-            <option value="Paper">Paper</option>
-            <option value="Glass">Glass</option>
-            <option value="Boxes">Boxes</option>
-            <option value="Mixed Waste">Mixed Waste</option>
-            <option value="Cloth">Cloth</option>
-            <option value="Issues">Issues</option>
-            <option value="Miscellaneous Products">Miscellaneous Products</option>
-            <option value="Tips & tricks">Tips & tricks</option>
+            <option value="Reduce">Reduce</option>
+            <option value="Reuse">Reuse</option>
+            <option value="Recycle">Recycle</option>
+            <option value="Gardening">Gardening</option>
           </select>
         </div>
 
@@ -69,6 +61,29 @@
         <!-- Dynamically render posts once loaded -->
         <ng-container *ngIf="!isLoading && filteredPosts.length > 0">
         <div *ngFor="let post of paginatedPosts" class="post-box">
+          <div class="menu-dropdown" (click)="toggleMenu($event, post.id)">
+            <button class="dropdown-toggle">
+                <i class='bx bx-dots-horizontal-rounded'></i>
+            </button>
+        
+            <div class="dropdown-menu" *ngIf="menuVisiblePostId === post.id">
+              <div class="menu update" *ngIf="post.user_id === loggedInUserId" (click)="editPost(post.id)">
+                <i class='bx bx-edit'></i>
+                <a>Edit Post</a>
+              </div>
+              <div class="menu danger" *ngIf="post.user_id === loggedInUserId" (click)="deletePost(post.id)">
+                <i class='bx bxs-trash'></i>
+                <a>Delete Post</a>
+              </div>
+          
+              <!-- if yung post is hindi kay user na nakalog in -->
+              <div class="menu danger" *ngIf="post.user_id !== loggedInUserId" (click)="openReportModal(post.id)">
+                <i class='bx bxs-message-alt-error'></i>
+                <a>Report Post</a>
+              </div>
+            </div>
+          </div> 
+
           <div class="post-img" (click)="viewPost(post.id)">
             <img alt="uploaded image" [src]="post.image || '../../../../assets/images/NoImage.png'">
             <span class="category">{{ post.category }}</span>
@@ -80,20 +95,20 @@
               <strong class="title">{{ post.title }}</strong>
             </a>
             <div class="category-time">
-              <span class="post-category">{{ post.category }}</span>
-              <span class="published-time">{{ post.created_at | date: 'mediumDate' }}</span>
+              <!-- <span class="post-category">{{ post.category }}</span> -->
+              <span class="published-time">{{ post.created_at | date: 'mediumDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
             </div>
             
             <div class="publisher-name">
-              <span> {{ post.user_name }} </span>
+              <span> {{ post.fname }} {{ post.lname }} </span>
             </div>
     
-            <a (click)="viewPost(post.id)" class="get">Read more</a>
+            <a (click)="viewPost(post.id)" class="get">View Post</a>
             
             <a (click)="toggleLike(post)">
               <span class="heart-btn">
+                <span>{{ post.total_likes }}</span>
                 <i [ngClass]="post.liked_by_user ? 'bx bxs-heart' : 'bx bx-heart'"></i>
-                <span>{{ post.likes_count }}</span>
               </span>
             </a>
           </div>
@@ -138,6 +153,32 @@
           <div *ngIf="announcements.length === 0">No announcements available.</div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal-overlay" *ngIf="showReportModal">
+  <div class="modal-container">
+    <h3>Report Post</h3>
+    <p>Why are you reporting this post?</p>
+
+    <div class="checkbox-group">
+      <label *ngFor="let reason of reportReasons">
+        <input 
+          type="checkbox" 
+          [value]="reason" 
+          (change)="toggleReason(reason, $event)"
+          [checked]="selectedReasons.includes(reason)"
+        >
+        <span>{{ reason }}</span>
+      </label>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn cancel" (click)="closeReportModal()">Cancel</button>
+      <button class="btn report" [disabled]="selectedReasons.length === 0" (click)="submitReport()">Report</button>
     </div>
   </div>
 </div>

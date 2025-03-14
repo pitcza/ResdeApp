@@ -3,11 +3,9 @@
         <div class="post-header">
             <div class="popup-head">
                 <h1> {{ post.user_name.split(' ')[0] }}'s Post </h1>
-                <p class="status" [ngClass]="{
-                    'pending-status': post.status === 'pending',
-                    'approved-status': post.status === 'approved',
-                    'declined-status': post.status === 'declined',
-                  }"> {{ post.status }} </p>
+                <p *ngIf="post.status === 'reported' || post.status === 'removed'" class="status red-status"> 
+                    {{ post.status }} 
+                </p>
             </div>
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
@@ -35,13 +33,9 @@
         </div>
 
         <div class="post-footer">
-            <div class="buttons" *ngIf="post.status === 'approved'"> 
-                <input class="danger-btn" type="button" value="Delete" (click)="deletePost(data.id)">
+            <div class="buttons" *ngIf="post.status === 'posted' || post.status === 'reported'"> 
+                <input class="danger-btn" type="button" value="Remove Post" (click)="deletePost(data.id)">
             </div>
-            <div class="buttons" *ngIf="post.status === 'pending'">
-                <input class="submit-btn" type="button" value="Approve Post" (click)="approvePost(data.id)">
-                <input class="danger-btn" type="button" value="Decline" (click)="declinePost(data.id)">
-            </div> 
         </div>
     </div>
 </div>

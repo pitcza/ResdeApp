@@ -8,7 +8,6 @@ import { MaterialModule } from '../modules/material.module';
 import { PendingsComponent } from './components/pendings/pendings.component';
 import { PendingsModule } from './components/pendings/pendings.module';
 import { AllPostComponent } from './components/all-post/all-post.component';
-import { AllPostModule } from './components/all-post/all-post.module';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UsersComponent } from './components/users/users.component';
@@ -20,6 +19,7 @@ import { MyBarangayComponent } from './components/my-barangay/my-barangay.compon
 import { CreatePostComponent } from './components/my-barangay/create-post/create-post.component';
 import { ViewPostComponent } from './components/my-barangay/view-post/view-post.component';
 import { EditPostComponent } from './components/my-barangay/edit-post/edit-post.component';
+import { ReportedPostsComponent } from './components/reported-posts/reported-posts.component';
 
 
 @NgModule({
@@ -37,14 +37,13 @@ import { EditPostComponent } from './components/my-barangay/edit-post/edit-post.
     MyBarangayComponent,
     CreatePostComponent,
     ViewPostComponent,
-    EditPostComponent
+    ReportedPostsComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     MaterialModule,
     PendingsModule,
-    AllPostModule
   ]
 })
 export class AdminModule { }

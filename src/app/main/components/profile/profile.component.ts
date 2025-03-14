@@ -4,10 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataserviceService } from '../../../services/dataservice.service';
 import { group } from 'console';
 
+import { ViewComponent } from '../uploads/view/view.component';
+import { EditpostComponent } from '../uploads/editpost/editpost.component';
+
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ViewComponent } from '../uploads/view/view.component';
-import { AdminDataService } from '../../../services/admin-data.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-profile',
@@ -15,15 +17,16 @@ import { AdminDataService } from '../../../services/admin-data.service';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit{
+  filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
   dataSource: any [] = [];
   id: any|string;
   element: any;
 
   userPosts: any[] = [];
-  postId!: number; // Holds the post ID
-  totalLikes!: number; // Holds the total likes for the post
-  post: any = {}; // Holds the post data
+  postId!: number;
+  totalLikes!: number;
+  post: any = {};
   likesCount: any;
 
   isLoading = true;
@@ -34,6 +37,11 @@ export class ProfileComponent implements OnInit{
   passForm: FormGroup;
   userForm: FormGroup;
   user: any = {};
+
+  currentPage: number = 1;
+  pageSize: number = 6;
+  totalPages: number = 0;
+  paginatedPosts: any[] = [];
 
   streets: string[] = [
     'Acacia St.',
@@ -125,7 +133,6 @@ export class ProfileComponent implements OnInit{
       }
     );
     this.fetchUserPosts();
-    this.getUserTotalLikes()
   }
 
   constructor(
@@ -134,7 +141,6 @@ export class ProfileComponent implements OnInit{
     private dataservice: DataserviceService,
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog,
-    private AS: AdminDataService
   ) {
     this.checkIfMobile();
 
@@ -161,10 +167,11 @@ export class ProfileComponent implements OnInit{
     this.passForm.controls['new_password'].valueChanges.subscribe(() => {
       this.validatePassword();
     });
+
+    this.filteredDataSource = new MatTableDataSource<TableElement>([]);
   }
 
   isMinor: boolean = false;
-
   calculateAge(): void {
     const birthdate = this.userForm.get('birthdate')?.value;
     if (!birthdate) return;
@@ -177,7 +184,6 @@ export class ProfileComponent implements OnInit{
       age--;
     }
   
-    // Show an error if the user is under 12
     if (age < 12) {
       Swal.fire({
         title: "Age Restriction",
@@ -219,46 +225,43 @@ export class ProfileComponent implements OnInit{
     this.isLoading = true;
 
     this.authservice.getUser().subscribe(
-        (response) => {
-          console.log('Response from API:', response);
+      (response) => {
+        console.log('Response from API:', response);
 
-          if (response && response.user) {
-            const user = response.user;
-            this.user = user;
+        if (response && response.user) {
+          const user = response.user;
+          this.user = user;
+          console.log('User data from API:', user);
 
-            // Log user data before patching
-            console.log('User data from API:', user);
+          this.userForm.patchValue({
+            fname: user.fname || '',
+            lname: user.lname || '',
+            email: user.email || '',
+            phone_number: user.phone_number || '',
+            birthdate: user.birthdate || '',
+            street: user.street || '',
+            barangay: user.barangay || '',
+            city: user.city || ''
+          });
 
-            this.userForm.patchValue({
-              fname: user.fname || '',
-              lname: user.lname || '',
-              email: user.email || '',
-              phone_number: user.phone_number || '',
-              birthdate: user.birthdate || '',
-              street: user.street || '',
-              barangay: user.barangay || '',
-              city: user.city || ''
-            });
+          this.calculateAge();
+          console.log('Form after patching:', this.userForm.value);
 
-            this.calculateAge();
-            console.log('Form after patching:', this.userForm.value);
+          this.userForm.markAsPristine();
+          this.userForm.markAsUntouched();
 
-            // Mark form as pristine to prevent unnecessary validation
-            this.userForm.markAsPristine();
-            this.userForm.markAsUntouched();
-
-            this.cdr.detectChanges(); // Ensure UI updates
-          } else {
-            console.warn('Unexpected response format:', response);
-          }
-
-          this.isLoading = false;
-        },
-        (error) => {
-          console.error('Error fetching user data:', error);
-          this.isLoading = false;
-          Swal.fire('Error', 'Failed to load user data.', 'error');
+          this.cdr.detectChanges();
+        } else {
+          console.warn('Unexpected response format:', response);
         }
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching user data:', error);
+        this.isLoading = false;
+        Swal.fire('Error', 'Failed to load user data.', 'error');
+      }
     );
   }
 
@@ -277,7 +280,7 @@ export class ProfileComponent implements OnInit{
   // phone number validations
   onPhoneNumberInput(event: any): void {
     const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+    let value = input.value.replace(/\D/g, '');
 
     if (value.startsWith('63')) {
       value = value.substring(2); // Remove '63' if manually entered
@@ -307,7 +310,7 @@ export class ProfileComponent implements OnInit{
     if (this.userForm.valid) {
       if (!this.userForm.dirty) {
         Swal.fire('No Changes', 'No updates were made to your profile.', 'info');
-        return; // Prevent unnecessary API call
+        return;
       }
   
       Swal.fire({
@@ -364,8 +367,6 @@ export class ProfileComponent implements OnInit{
   
   validatePassword(): void {
     const password = this.passForm.controls['new_password'].value || '';
-  
-    // error flags
     this.passwordErrors.required = !password;
     this.passwordErrors.length = password.length > 0 && password.length < 8; // for at least 8 characters
     this.passwordErrors.capital = !/[A-Z]/.test(password); // for capital letter
@@ -373,7 +374,6 @@ export class ProfileComponent implements OnInit{
     this.passwordErrors.number = !/\d/.test(password); // for number
     this.passwordErrors.special = !/[!@#$%^&*(),.?":{}|<>]/.test(password); // for special character
 
-    // Mark the password field as invalid if any error exists
     this.passForm.controls['new_password'].setErrors(
       Object.values(this.passwordErrors).some(error => error) ? { invalidPassword: true } : null
     );
@@ -388,7 +388,6 @@ export class ProfileComponent implements OnInit{
     
     return new_password === new_passwordConfirmation ? null : { mismatch: true };
   }
-  // end of password validations
 
   onPasswordChange() {
     if (this.passForm.valid) {
@@ -462,8 +461,6 @@ export class ProfileComponent implements OnInit{
     }
   }
 
-
-  // for mobile view
   // check if the screen width is 480px or less
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -489,38 +486,28 @@ export class ProfileComponent implements OnInit{
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // totalLikes: number = 0;
-
   // user approved posts
   fetchUserPosts(): void {
     this.dataservice.getUserPosts().subscribe(
       (response) => {
-        console.log('Fetched Posts:', response);  // Log the response
-
         if (response && response.posts) {
-          this.dataSource = (response.posts || [])
-            .map((post: any) => ({
-              id: post.id,
-              title: post.title,
-              category: post.category,
-              date: post.created_at,
-              image: post.image,
-              status: post.status,
-              description: post.content,
-              total_likes: post.total_likes ?? 0 
-            }))
-            .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
-              const dateA = new Date(a.date || 0).getTime();
-              const dateB = new Date(b.date || 0).getTime();
-              return dateB - dateA;
-            });
-
-          this.isLoading = false;
+          this.dataSource = response.posts.map((post: any) => ({
+            id: post.id,
+            title: post.title,
+            category: post.category,
+            date: post.created_at,
+            image: post.image,
+            status: post.status,
+            description: post.content,
+            total_likes: post.total_likes ?? 0 
+          })).sort((a: { date: string }, b: { date: string }) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  
+          this.totalPages = Math.ceil(this.dataSource.length / this.pageSize);
+          this.updatePaginatedPosts();
         } else {
-          console.warn('No posts found in the response:', response);
-          this.isLoading = false;
+          console.warn('No posts found');
         }
-
+        this.isLoading = false;
         this.cdr.detectChanges();
       },
       (error) => {
@@ -529,31 +516,39 @@ export class ProfileComponent implements OnInit{
       }
     );
   }
-
-  getUserTotalLikes(): void {
-    this.AS.likedposttable().subscribe(
-      (response) => {
-        const likedPosts = response['posts'] || [];
-
-        // Update the likes_count for the posts in dataSource
-        likedPosts.forEach((likedPost: any) => {
-          const post = this.dataSource.find(p => p.id === likedPost.post_id);
-          if (post) {
-            post.total_likes = likedPost.likes_count; // Update the likes_count value
-          }
-        });
-
-        this.cdr.detectChanges();
-      },
-      (error) => {
-        console.error('Error fetching posts for table and chart', error);
-      }
-    );
+  
+  updatePaginatedPosts() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedPosts = this.dataSource.slice(startIndex, startIndex + this.pageSize);
   }
+  
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedPosts();
+    }
+  }
+  
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedPosts();
+    }
+  }  
 
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
+
+  // EDITING POST POPUP
+  editPost(id: number) {
+    const dialogRef = this.dialog.open(EditpostComponent, {
+      data: { id: id }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchUserPosts();
+    });
   }
 
   // VIEWING POST POPUP
@@ -567,16 +562,62 @@ export class ProfileComponent implements OnInit{
     }
   }
 
-  fetchPostLikes(postId: number): void {
-    this.dataservice.getUserLikes(postId).subscribe({
-      next: (response) => {
-        this.totalLikes = response.total_likes; 
-        this.post = response;
-      },
-      error: (err) => {
-        console.error('Error fetching likes:', err);
-      },
+  // DELETE PROCESS
+  deletePost(id: number) {
+    Swal.fire({
+      title: 'Delete Post?',
+      text: 'This action can\'t be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#C14141',
+      cancelButtonColor: '#7f7f7f',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dataservice.deletePost(id).subscribe(
+          () => {
+            this.dataSource = this.dataSource.filter(post => post.id !== id);
+            this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
+            this.cdr.detectChanges();
+    
+            Swal.fire({
+              title: 'Post Deleted!',
+              text: 'The post has been deleted.',
+              icon: 'success',
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f',
+              timer: 5000,
+              scrollbarPadding: false
+            }).then(() => {
+              this.fetchUserPosts();
+            });
+          },
+          error => {
+            console.error('Error deleting post:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was an error deleting the post.',
+              icon: 'error',
+              confirmButtonText: 'Close',
+              confirmButtonColor: '#7f7f7f',
+              timer: 5000,
+              scrollbarPadding: false
+            });
+          }
+        );
+      }
     });
   }
 }
 
+export interface TableElement {
+  image: string;
+  created_at?: string;
+  category?: string;
+  title: string;
+  status?: string;
+  id: number;
+  date: number;
+  total_likes?: number;
+}

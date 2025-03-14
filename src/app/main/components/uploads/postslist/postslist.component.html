@@ -10,28 +10,14 @@
     <div class="selects">
       <select id="filter-category" (change)="onCategoryChange($event)">
           <option selected value=""> All Category </option>
-          <option value="Compost">Compost</option>
-          <option value="Plastic">Plastic</option>
-          <option value="Rubber">Rubber</option>
-          <option value="Wood">Wood</option>
-          <option value="Paper">Paper</option>
-          <option value="Glass">Glass</option>
-          <option value="Boxes">Boxes</option>
-          <option value="Mixed Waste">Mixed Waste</option>
-          <option value="Cloth">Cloth</option>
-          <option value="Issues">Issues</option>
-          <option value="Miscellaneous Products">Miscellaneous Products</option>
-          <option value="Tips & tricks">Tips & tricks</option>
-      </select>
-      <select id="filter-status" (change)="onStatusChange($event)">
-        <option selected value=""> All Status </option>
-        <option value="pending"> Pending </option>
-        <option value="approved"> Approved </option>
-        <option value="declined"> Declined </option>
+          <option value="Reduce">Reduce</option>
+          <option value="Reuse">Reuse</option>
+          <option value="Recycle">Recycle</option>
+          <option value="Gardening">Gardening</option>
       </select>
     </div>
 
-    <!-- <form>
+    <form>
       <div class="date-filter">
           <div class="txt_field">
               <label for="datepicker"> From: </label>
@@ -42,7 +28,7 @@
               <input type="date" id="datepicker-end" autocomplete="off" (change)="onDateChange($event, 'to')">
           </div>
       </div>
-    </form> -->
+    </form>
   </div>
 
   <!-- No posts available message -->
@@ -73,11 +59,9 @@
       <mat-card *ngFor="let element of filteredDataSource.data" class="post-box">
         <div mat-card-header class="post-img">
           <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
-          <span class="status" [ngClass]="{
-              'pending-status': element.status === 'pending',
-              'approved-status': element.status === 'approved',
-              'declined-status': element.status === 'declined',
-            }">{{ element.status }}</span>
+          <span class="status" [ngClass]="{'posted-status': element.status === 'posted' || 'reported', 'removed-status': element.status === 'removed'}">
+            {{ element.status === 'posted' || element.status === 'reported' ? element.total_likes + ' Like/s' : (element.status === 'removed' ? 'Removed' : '') }}
+          </span>
         </div>
     
         <!-- POST CONTENT -->
@@ -87,16 +71,15 @@
           </a>
           <div class="category-time">
             <span class="post-category">{{ element.category }}</span>
-            <span class="published-time">{{ element.date | date: 'mediumDate' }}</span>
+            <span class="published-time">{{ element.date | date: 'mediumDate' }} at {{ element.date | date: 'shortTime' }}</span>
           </div>
         </mat-card-content>
     
         <mat-card-actions class="actions" id="uploads-actions">
-          <!-- Only show Edit button if status is pending -->
-          <button *ngIf="element.status === 'pending'" class="edit" (click)="editPost(element.id)">
+          <button class="edit" (click)="editPost(element.id)">
             <i class='bx bx-edit'></i>
             <span class="tooltiptext"> Edit </span>
-        </button>
+          </button>
           <button class="delete">
               <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
               <span class="tooltiptext"> Delete </span>
@@ -109,5 +92,11 @@
       </mat-card>
     </ng-container>
   </div>
-      
+
+  <!-- Pagination Controls -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <span> Page {{ currentPage }} of {{ totalPages }} </span>
+    <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+    <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+  </div>
 </div>

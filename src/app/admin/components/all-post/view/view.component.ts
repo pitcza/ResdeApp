@@ -4,20 +4,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AdminDataService } from '../../../../services/admin-data.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-view-post',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
 export class ViewComponent implements OnInit{
-  
-  id!: number;  // To store the post ID
-  post: any;       // To store the post data
+  id!: number;
+  post: any;
 
   constructor(
-    private route: ActivatedRoute, 
-    private router: Router, 
     private as: AdminDataService,
     public dialogRef: MatDialogRef<ViewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -33,15 +33,28 @@ export class ViewComponent implements OnInit{
   }
 
   fetchPostDetails(id: number): void {
-    this.as.getPostById(id).subscribe(
-      (data) => {
-        console.log('Fetched Post Data:', data); // Add this line to inspect the data
-        this.post = data.post; // Accessing 'post' within the response
+    this.as.getPostById(id).subscribe({
+      next: (response) => {
+        if (response.post) {
+          this.post = response.post;
+          this.post.image = response.image; // Assign full image URL
+          this.post.total_likes = response.total_likes;
+          this.post.user_name = `${response.fname} ${response.lname}`;
+        } else {
+          console.error("Invalid response format:", response);
+        }
       },
-      (error) => {
-        console.error('Error fetching post data', error);
+      error: (error) => {
+        console.error('Error fetching post:', error);
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to fetch post details.",
+          icon: "error",
+          confirmButtonText: 'Close',
+          confirmButtonColor: "#777777"
+        });
       }
-    );
+    });
   }
 
   formatContent(content: string | null): string {
@@ -53,129 +66,42 @@ export class ViewComponent implements OnInit{
 
   deletePost(id: number): void {
     Swal.fire({
-      title: 'Delete User Post',
-      text: `Are you sure you want to delete this post?`,
+      title: 'Remove User Post',
+      text: 'Are you sure you want to remove this post?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#AB0E0E',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
+      confirmButtonColor: '#CC4646',
+      cancelButtonColor: '#7F7F7F',
+      confirmButtonText: 'Remove',
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.as.deletePost(id).subscribe({
-          next: () => {
-            this.dialogRef.close(true);
-            Swal.fire({
-              title: "Post Deleted!",
-              text: "The post has been deleted.",
-              icon: "success",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777",
-              timer: 5000,
-              scrollbarPadding: false
-            });  
-          },
-          error: (err) => {
-            Swal.fire({
-              title: "Error!",
-              text: "Failed to delete the post. Please try again.",
-              icon: "error",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777",
-              scrollbarPadding: false
-            });
-            console.error(err);
+        Swal.fire({
+          title: 'Removal Remarks',
+          input: 'text',
+          inputPlaceholder: 'Enter your reason for removing this post',
+          showCancelButton: true,
+          confirmButtonColor: '#CC4646',
+          cancelButtonColor: '#7F7F7F',   
+          confirmButtonText: 'Submit',
+          cancelButtonText: 'Cancel',
+          inputValidator: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Remarks are required.';
+            }
+            return null;
           }
-        });
-      }
-    });
-  }
-  
-
-
-  // FOR USER PENDING POSTS
-  approvePost(id: number) { // APPROVE PROCESS
-    Swal.fire({
-      title: 'Approve Post',
-      text: 'Are you sure you want to approve this post?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#4d745a',
-      cancelButtonColor: '#7f7f7f',
-      confirmButtonText: 'Approve Post',
-      cancelButtonText: 'Cancel',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.as.approvePost(id).subscribe({
-          next: () => {
-            this.dialogRef.close(true); // Notify parent of changes
-            Swal.fire({
-                title: "Post Approved!",
-                text: "The post has been approved.",
-                icon: "success",
-                confirmButtonText: 'Close',
-                confirmButtonColor: "#777777",
-                timer: 5000,
-                scrollbarPadding: false
-              });
-          },
-          error: (err) => {
-            Swal.fire({
-              title: "Error",
-              text: "There was an error approving the post.",
-              icon: "error",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777"
-            });
-            console.error(err);
-          }
-        });
-      }
-    });
-  }
-
-  declinePost(id: number) {
-    Swal.fire({
-      title: 'Decline Post',
-      text: 'Are you sure you want to decline this post?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#AB0E0E',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Decline',
-      cancelButtonText: 'Cancel',
-      reverseButtons: true,
-      input: 'textarea',  
-      inputPlaceholder: 'Enter your remarks...',
-      inputAttributes: {
-        'aria-label': 'Type your remarks here'
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const remarks = result.value;  
-  
-        this.as.rejectPost(id, remarks).subscribe({
-          next: () => {
-            this.dialogRef.close(true);
-            Swal.fire({
-              title: "Post Declined!",
-              text: "The post has been declined.",
-              icon: "success",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777",
-              timer: 5000,
-              scrollbarPadding: false
-            });
-          },
-          error: (err) => {
-            Swal.fire({
-              title: "Error",
-              text: "There was an error.",
-              icon: "error",
-              confirmButtonText: 'Close',
-              confirmButtonColor: "#777777"
+        }).then((inputResult) => {
+          if (inputResult.isConfirmed) {
+            // Send delete request with remarks
+            this.as.deletePost(id, inputResult.value).subscribe({
+              next: (response) => {
+                Swal.fire('Removed!', 'The post has been marked for deletion.', 'success');
+                this.closeDialog();
+              },
+              error: (error) => {
+                Swal.fire('Error!', 'Failed to delete post. Please try again.', 'error');
+              }
             });
           }
         });

@@ -8,7 +8,6 @@ import { EditpostComponent } from '../editpost/editpost.component';
 import { ViewComponent } from '../view/view.component';
 import { MatTableDataSource } from '@angular/material/table';
 
-
 @Component({
   selector: 'app-postslist',
   templateUrl: './postslist.component.html',
@@ -19,21 +18,21 @@ export class PostslistComponent implements OnInit {
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   dataSource: any [] = [];
   categoryFilter: string = '';
-  statusFilter: string = '';
-  fromDate: string = '';  // For the "from" date
-  toDate: string = '';    // For the "to" date
+  fromDate: string = '';
+  toDate: string = '';
   id: any|string;
   element: any;
-
-  private autoRefreshInterval: any; // To store the interval ID
   
   isLoading = true;
   loaders = Array(5).fill(null);
 
   filteredPosts: any[] = [];
   selectedCategory: string = '';
-  selectedStatus: string = '';
 
+  // Pagination variables
+  currentPage: number = 1;
+  pageSize: number = 9;
+  totalPages: number = 1;
 
   constructor (
     private ds: DataserviceService,
@@ -45,7 +44,6 @@ export class PostslistComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserPost();
     this.filteredDataSource.data = this.dataSource;  
-    this.startAutoRefresh();
   }
 
   setDefaultFilter(): void {
@@ -55,17 +53,10 @@ export class PostslistComponent implements OnInit {
   applyFilters(): void {
     let filteredPosts = this.dataSource;
 
-    // Filter by category
     if (this.selectedCategory) {
       filteredPosts = filteredPosts.filter(post => post.category === this.selectedCategory);
     }
 
-    // Filter by status (applied on already filtered posts)
-    if (this.selectedStatus) {
-      filteredPosts = filteredPosts.filter(post => post.status === this.selectedStatus);
-    }
-
-    // Filter by date range (applied on already filtered posts)
     if (this.fromDate) {
       const fromDate = new Date(this.fromDate);
       filteredPosts = filteredPosts.filter(post => new Date(post.date) >= fromDate);
@@ -76,41 +67,36 @@ export class PostslistComponent implements OnInit {
       filteredPosts = filteredPosts.filter(post => new Date(post.date) <= toDate);
     }
 
-    // Update filtered posts
     this.filteredPosts = filteredPosts;
   }
 
   // UPLOADING POPUP
   uploadIdea() {
     const dialogRef = this.dialog.open(UploadPostComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.newPost) {
-        this.dataSource.unshift(result.newPost);
-        this.cdr.detectChanges();  // Ensure the changes are reflected
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchUserPost(); // Refresh after closing
     });
   }
 
   // EDITING POST POPUP
   editPost(id: number) {
-    if (this.dialog) {
-      this.dialog.open(EditpostComponent, {
-        data: { id: id }
-      });
-    } else {
-      console.error('not found');
-    }
+    const dialogRef = this.dialog.open(EditpostComponent, {
+      data: { id: id }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchUserPost(); // Refresh after closing
+    });
   }
 
   // VIEWING POST POPUP
   viewPost(id: number) {
-    if (this.dialog) {
-      this.dialog.open(ViewComponent, {
-        data: { id: id }  
-      });
-    } else {
-      console.error('View popup not found');
-    }
+    const dialogRef = this.dialog.open(ViewComponent, {
+      data: { id: id }  
+    });
+  
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchUserPost(); // Refresh after closing
+    });
   }
 
   fetchUserPost(): void {
@@ -126,12 +112,17 @@ export class PostslistComponent implements OnInit {
             image: post.image,
             status: post.status,
             description: post.content,
+            total_likes: post.total_likes
           }))
           .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
             const dateA = new Date(a.date || 0).getTime();
             const dateB = new Date(b.date || 0).getTime();
-            return dateB - dateA; // Sort in descending order (newest first)
+            return dateB - dateA;
           });
+
+        this.applyFilters();
+        this.isLoading = false;
+        this.cdr.detectChanges();
 
         // Immediately filter the data after fetching
         this.filterPosts();
@@ -148,49 +139,55 @@ export class PostslistComponent implements OnInit {
     );
   }
 
-  // Auto-refresh setup
-  startAutoRefresh(): void {
-    this.autoRefreshInterval = setInterval(() => {
-      console.log('Refreshing posts...');
-      this.fetchUserPost();
-    }, 30000); // Refresh every 30 seconds (adjust as needed)
+  filterPosts() {
+    let filteredData = this.dataSource;
+
+    if (this.categoryFilter) {
+      filteredData = filteredData.filter(post => post.category?.toLowerCase() === this.categoryFilter.toLowerCase());
+    }
+
+    if (this.fromDate) {
+      const fromDate = new Date(this.fromDate);
+      filteredData = filteredData.filter(post => new Date(post.date) >= fromDate);
+    }
+
+    if (this.toDate) {
+      const toDate = new Date(this.toDate);
+      filteredData = filteredData.filter(post => new Date(post.date) <= toDate);
+    }
+
+    this.filteredPosts = filteredData;
+    this.updatePagination();
   }
 
-  ngOnDestroy(): void {
-    // Clear interval on component destruction to prevent memory leaks
-    if (this.autoRefreshInterval) {
-      clearInterval(this.autoRefreshInterval);
+  // Pagination logic
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredPosts.length / this.pageSize);
+    this.currentPage = Math.min(this.currentPage, this.totalPages) || 1;
+    this.filteredDataSource.data = this.paginateData();
+  }
+
+  paginateData() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredPosts.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.filteredDataSource.data = this.paginateData();
     }
   }
-  
 
-  filterPosts() {
-    const selectedCategory = this.categoryFilter;
-    const selectedStatus = this.statusFilter;
-  
-    const filteredData = this.dataSource.filter(post => {  // Use dataSource for filtering
-      const categoryMatch = selectedCategory ? post.category?.toLowerCase() === selectedCategory.toLowerCase() : true;
-      const statusMatch = selectedStatus ? post.status?.toLowerCase() === selectedStatus.toLowerCase() : true;
-  
-      // Date filter logic
-      const postDate = post.created_at ? new Date(post.created_at) : null;
-      const fromDateMatch = this.fromDate ? postDate && postDate >= new Date(this.fromDate) : true;
-      const toDateMatch = this.toDate ? postDate && postDate <= new Date(this.toDate) : true;
-  
-      return categoryMatch && statusMatch && fromDateMatch && toDateMatch;
-    });
-  
-    this.filteredDataSource.data = filteredData;  // Update filteredDataSource
-    this.cdr.detectChanges();  // Ensure UI updates correctly
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.filteredDataSource.data = this.paginateData();
+    }
   }
   
   onCategoryChange(event: any) {
     this.categoryFilter = event.target.value;
-    this.filterPosts();
-  }
-  
-  onStatusChange(event: any) {
-    this.statusFilter = event.target.value;
     this.filterPosts();
   }
   
@@ -205,14 +202,11 @@ export class PostslistComponent implements OnInit {
     this.filterPosts(); 
   }
 
-  
-
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = '../../../../../assets/images/NoImage.png';
   }
   
-
   // DELETE PROCESS
   deletePost(id: number) {
     Swal.fire({
@@ -228,13 +222,9 @@ export class PostslistComponent implements OnInit {
       if (result.isConfirmed) {
         this.ds.deletePost(id).subscribe(
           () => {
-            // Remove the post from dataSource and filteredDataSource
             this.dataSource = this.dataSource.filter(post => post.id !== id);
             this.filteredDataSource.data = this.filteredDataSource.data.filter(post => post.id !== id);
             this.cdr.detectChanges();
-    
-            // Refresh the posts list
-            this.refreshPosts();
     
             Swal.fire({
               title: 'Post Deleted!',
@@ -244,6 +234,8 @@ export class PostslistComponent implements OnInit {
               confirmButtonColor: '#7f7f7f',
               timer: 5000,
               scrollbarPadding: false
+            }).then(() => {
+              this.fetchUserPost();
             });
           },
           error => {
@@ -262,49 +254,6 @@ export class PostslistComponent implements OnInit {
       }
     });
   }
-
-// Function to refresh the posts list
-  refreshPosts() {
-    this.ds.getUserPosts().subscribe(
-      (response) => {
-        // Map and sort the response to match the expected structure
-        this.dataSource = response.posts
-          .map((post: any) => ({
-            id: post.id,
-            title: post.title,
-            category: post.category,
-            date: post.created_at,
-            image: post.image,
-            status: post.status,
-            description: post.content
-          }))
-          .sort((a: { date: string | undefined }, b: { date: string | undefined }) => {
-            const dateA = new Date(a.date || 0).getTime();
-            const dateB = new Date(b.date || 0).getTime();
-            return dateB - dateA; // Sort in descending order (newest first)
-          });
-    
-        // Immediately filter the posts after refreshing
-        this.filterPosts();
-    
-        // Update the filteredDataSource
-        this.filteredDataSource.data = [...this.dataSource];
-        this.cdr.detectChanges();
-      },
-      error => {
-        console.error('Error fetching posts:', error);
-        Swal.fire({
-          title: 'Error!',
-          text: 'There was an error fetching the posts.',
-          icon: 'error',
-          confirmButtonText: 'Close',
-          confirmButtonColor: '#7f7f7f',
-          timer: 5000,
-          scrollbarPadding: false
-        });
-      }
-    );
-  }
 }
 
 
@@ -315,5 +264,6 @@ export interface TableElement {
   title: string;
   status?: string;
   id: number;
-  date: number
+  date: number;
+  total_likes?: number;
 }

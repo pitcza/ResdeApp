@@ -126,6 +126,15 @@
         font-size: 24px;
         cursor: pointer;
         outline: none;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+
+        span {
+            font-size: 16px;
+            font-weight: 500;
+            color: #484848;
+        }
       
         i {
           color: var(--red-btn); 

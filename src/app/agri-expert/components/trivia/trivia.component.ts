@@ -4,10 +4,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { AdminDataService } from '../../../services/admin-data.service';
-import { CreatetriviaComponent } from '../createtrivia/createtrivia.component';
+import { CreatetriviaComponent } from './createtrivia/createtrivia.component';
 import { MatDialog } from '@angular/material/dialog';
-import { EditTriviaComponent } from '../edit-trivia/edit-trivia.component';
-import { ViewTriviaComponent } from '../view-trivia/view-trivia.component';
+import { EditTriviaComponent } from './edit-trivia/edit-trivia.component';
+import { ViewTriviaComponent } from './view-trivia/view-trivia.component';
 
 @Component({
   selector: 'app-trivia',
@@ -53,12 +53,9 @@ export class TriviaComponent implements OnInit {
     );
   }
   
-
   filterPosts() {
-  
     this.filteredDataSource.data = this.dataSource.data.filter(post => {
   
-      // Date filter logic
       const postDate = post.created_at ? new Date(post.created_at) : null;  // Check for undefined or null created_at
       const fromDateMatch = this.fromDate ? postDate && postDate >= new Date(this.fromDate) : true;
       const toDateMatch = this.toDate ? postDate && postDate <= new Date(this.toDate) : true;
@@ -80,15 +77,14 @@ export class TriviaComponent implements OnInit {
     this.filterPosts(); 
   }
 
-
   openTriviaModal(): void {
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-  
+    const today = new Date().toLocaleDateString('en-CA'); // Get today's date in YYYY-MM-DD format (Canada standard)
+
     const triviaExists = this.dataSource.data.some(trivia => {
-      const triviaDate = new Date(trivia.created_at).toISOString().split('T')[0]; // Extract YYYY-MM-DD
+      const triviaDate = new Date(trivia.created_at).toLocaleDateString('en-CA'); // Extract YYYY-MM-DD in local timezone
       return triviaDate === today;
     });
-  
+
     if (triviaExists) {
       Swal.fire({
         title: "Trivia Already Posted",
@@ -99,11 +95,10 @@ export class TriviaComponent implements OnInit {
       });
       return; // Stop execution if trivia already exists
     }
-  
+
     this.dialog.open(CreatetriviaComponent, {
       data: { exampleData: 'Some data to pass' }, // Optional data to pass to the component
     });
-
   }
   
   openEditModal(id : number): void {

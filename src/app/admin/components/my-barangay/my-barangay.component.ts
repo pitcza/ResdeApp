@@ -16,8 +16,8 @@ import { EditPostComponent } from './edit-post/edit-post.component';
   styleUrls: ['./my-barangay.component.scss']
 })
 export class MyBarangayComponent implements OnInit, OnDestroy {
-  barangayPosts: any[] = []; // Store posts here
-  isLoading: boolean = true; // Loading state
+  barangayPosts: any[] = [];
+  isLoading: boolean = true;
   private routerSubscription!: Subscription;
 
   constructor(
@@ -28,9 +28,8 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.fetchBarangayPosts(); // Initial fetch
+    this.fetchBarangayPosts();
 
-    // ✅ Detect when the user navigates back to this tab
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -46,11 +45,13 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
 
   // Fetch All Barangay Posts
   fetchBarangayPosts() {
-    this.isLoading = true; // Show skeleton loader
+    this.isLoading = true;
     this.adminService.getBarangayPosts().subscribe(
       (posts) => {
         this.barangayPosts = posts;
-        this.isLoading = false; // Hide skeleton loader
+        this.filteredPosts = [...posts];
+        this.applyFilters();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts:', error);
@@ -62,7 +63,6 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
   createPost() {
     const dialogRef = this.dialog.open(CreatePostComponent);
 
-    // Refresh posts after creating a new one
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.fetchBarangayPosts();
@@ -83,16 +83,28 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
   }
 
   editPost(id: number) {
-    const dialogRef = this.dialog.open(EditPostComponent, {
-      data: { id: id }
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.fetchBarangayPosts();
-      }
-    });
+    this.adminService.getBarangayPostById(id).subscribe(
+      (post) => {
+        if (!post) {
+          console.error("❌ Post not found.");
+          return;
+        }
+  
+        // ✅ Pass the full post data instead of just the ID
+        const dialogRef = this.dialog.open(EditPostComponent, {
+          data: { post: post }
+        });
+  
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.fetchBarangayPosts();
+          }
+        });
+      },
+      (error) => console.error("❌ Error fetching post:", error)
+    );
   }
+  
 
   // Delete Post
   deletePost(postId: number) {
@@ -123,10 +135,10 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
   }
 
   // dropdown
-  menuVisiblePostId: number | null = null; // Track which post's menu is open
+  menuVisiblePostId: number | null = null;
 
   toggleMenu(event: Event, postId: number) {
-    event.stopPropagation(); // Prevent auto-closing immediately
+    event.stopPropagation();
     this.menuVisiblePostId = this.menuVisiblePostId === postId ? null : postId;
   }
 
@@ -142,8 +154,8 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
     return content.replace(/\n/g, '<br>');
   }
 
-  filteredPosts: any[] = []; // Posts after search/filter
-  searchText: string = ''; // Search text
+  filteredPosts: any[] = [];
+  searchText: string = '';
   currentPage = 1;
   itemsPerPage = 10;
 
@@ -151,8 +163,8 @@ export class MyBarangayComponent implements OnInit, OnDestroy {
     this.filteredPosts = this.barangayPosts.filter(post =>
       post.caption.toLowerCase().includes(this.searchText.toLowerCase())
     );
-    this.currentPage = 1; // Reset to first page on new search
-    this.cdr.detectChanges(); // Ensure UI updates
+    this.currentPage = 1;
+    this.cdr.detectChanges();
   }
 
   // Pagination Logic

@@ -7,6 +7,7 @@ import { DataserviceService } from '../../../services/dataservice.service';
   styleUrls: ['./likedposts.component.scss'],
 })
 export class LikedpostsComponent implements OnInit {
+  likedPosts: any[] = [];
   items: Item[] = [];
   paginatedItems: Item[] = [];
   selectedItem: Item = {
@@ -14,9 +15,11 @@ export class LikedpostsComponent implements OnInit {
     category: '',
     author: '',
     date: '',
+    post_date: '',
     image: '',
     description: '',
     id: 0,
+    total_likes: 0,
     liked: false
   };
   isLoading = true;
@@ -26,7 +29,7 @@ export class LikedpostsComponent implements OnInit {
   constructor(private ds: DataserviceService) {}
 
   ngOnInit(): void {
-    this.loadLikedPosts();
+    this.fetchLikedPosts();
   }
 
   formatContent(content: string | null): string {
@@ -36,78 +39,41 @@ export class LikedpostsComponent implements OnInit {
     return content.replace(/\n/g, '<br>');
   }
 
-  loadLikedPosts(): void {
-    this.ds.userLiked().subscribe(
-      (response) => {
-        this.items = response.liked_posts
-        .map((post: any) => ({
+  fetchLikedPosts(): void {
+    this.isLoading = true;
+  
+    this.ds.getLikedPosts().subscribe({
+      next: (response) => {
+        this.items = response.liked_posts.map((post: any) => ({
           id: post.id,
-          title: post.title,
-          category: post.category,
-          author: post.user_name,
-          date: new Date(post.created_at).toISOString(), // Convert to ISO for sorting
-          image: post.image,
-          description: post.content,
+          title: post.title || 'Untitled',
+          category: post.category || 'Uncategorized',
+          author: post.user_name || 'Unknown',
+          post_date: post.created_at || '',
+          image: post.image || '../../../../assets/images/default-placeholder.png',
+          description: post.content || '',
+          total_likes: post.total_likes,
+          date: post.liked_at || '',
           liked: post.liked || false,
-        }))
-        .sort((a: Item, b: Item) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
+        }));
+  
+        this.items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
         this.updatePaginatedItems();
-        this.selectedItem = this.items[0] || this.selectedItem;
+        this.selectedItem = this.items.length > 0 ? this.items[0] : this.selectedItem;
         this.isLoading = false;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching liked posts:', error);
         this.isLoading = false;
       }
-    );
-  }
+    });
+  }  
 
   updatePaginatedItems(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     this.paginatedItems = this.items.slice(startIndex, startIndex + this.pageSize);
   }
-  
-
-  likePost(postId: number, event: Event): void {
-    event.stopPropagation(); // Prevent parent click event
-    this.ds.likePost(postId).subscribe(
-      (response) => {
-        console.log('Post like toggled:', response);
-  
-        // Toggle like state for the item
-        const index = this.items.findIndex((item) => item.id === postId);
-        if (index > -1) {
-          const likedItem = this.items[index];
-          likedItem.liked = !likedItem.liked;
-  
-          // Remove from list if unliked
-          if (!likedItem.liked) {
-            this.items.splice(index, 1);
-          }
-        }
-  
-        // Update selectedItem if necessary
-        if (this.selectedItem.id === postId && !this.selectedItem.liked) {
-          this.selectedItem = this.items[0] || {
-            id: 0,
-            title: '',
-            category: '',
-            author: '',
-            date: '',
-            image: '',
-            description: '',
-            liked: false,
-          };
-        }
-      },
-      (error) => {
-        console.error('Error toggling like:', error);
-      }
-    );
-  }
-  
-  
 
   selectItem(item: Item): void {
     this.selectedItem = item;
@@ -135,6 +101,20 @@ export class LikedpostsComponent implements OnInit {
   getTotalPages(): number {
     return Math.ceil(this.items.length / this.pageSize);
   }
+
+  toggleLike(post: Item, event: Event): void {
+    event.stopPropagation(); // Prevents triggering the selectItem function
+  
+    this.ds.toggleLike(post.id).subscribe(
+      (response: any) => {
+        post.liked = !post.liked; // Toggle UI state
+        post.total_likes = response.total_likes; // Update total likes dynamically
+      },
+      (error) => {
+        console.error('Error toggling like:', error);
+      }
+    );
+  }
 }
 
 interface Item {
@@ -143,8 +123,10 @@ interface Item {
   category: string;
   author: string;
   date: string;
+  post_date: string;
   image: string;
   description: string;
+  total_likes: number;
   liked: boolean; 
 }
 

@@ -11,9 +11,8 @@ import { EditpostComponent } from '../editpost/editpost.component';
   styleUrls: ['./view.component.scss']
 })
 export class ViewComponent implements OnInit {
-  
-  id!: number;  // To store the post ID
-  post: any;       // To store the post data
+  id!: number;
+  post: any;
 
   constructor(
     public dialogRef: MatDialogRef<ViewComponent>,
@@ -22,16 +21,17 @@ export class ViewComponent implements OnInit {
     private router: Router,
     private ds: DataserviceService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute  // Inject ActivatedRoute to get route parameters
-  ) {}
+    private route: ActivatedRoute
+  ) {
+    this.id = data?.id;
+  }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
   ngOnInit(): void {
-    this.id = this.data.id;  
-    this.fetchPostData();
+    this.fetchPost();
   }
 
   formatContent(content: string | null): string {
@@ -41,17 +41,24 @@ export class ViewComponent implements OnInit {
     return content.replace(/\n/g, '<br>');
   }
   
-  fetchPostData() {
+  fetchPost(): void {
     this.ds.getPost(this.id).subscribe(
-      (data) => {
-        console.log('Fetched Post Data:', data); // Add this line to inspect the data
-        this.post = data.post; // Accessing 'post' within the response
+      (response) => {
+        this.post = response;
+
+        if (typeof this.post.report_reasons === 'string') {
+          this.post.report_reasons = JSON.parse(this.post.report_reasons);
+        }
       },
       (error) => {
-        console.error('Error fetching post data', error);
+        console.error('Error fetching post:', error);
       }
     );
   }
+
+  getUniqueReasons(): string[] {
+    return Array.from(new Set(this.post.report_reasons));
+  }  
 
   // EDITING POST POPUP
   editPost(id: number) {

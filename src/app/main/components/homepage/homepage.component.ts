@@ -4,7 +4,10 @@ import { UserpostComponent } from './userpost/userpost.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewAnnouncemComponent } from './view-announcem/view-announcem.component';
 import { UploadPostComponent } from '../upload-post/upload-post.component';
-import { MatTableDataSource } from '@angular/material/table';
+
+import Swal from 'sweetalert2';
+import { EditpostComponent } from '../uploads/editpost/editpost.component';
+
 
 @Component({
   selector: 'app-homepage',
@@ -30,6 +33,7 @@ export class HomepageComponent implements OnInit {
   ngOnInit(): void {
     this.loadPosts();
     this.loadAnnouncements();
+    this.getLoggedInUser();
   }
 
   isExpanded = false;
@@ -65,16 +69,14 @@ export class HomepageComponent implements OnInit {
   }
 
   viewPost(postId: number) {
-    const selectedPost = this.posts.find(post => post.id === postId);
-
-    if (selectedPost) {
+    if (postId) {
       this.dialog.open(UserpostComponent, {
-        data: selectedPost  // Passing the selected post data to the dialog
+        data: { id: postId }  // Ensure `id` is correctly assigned
       });
     } else {
-      console.error('Post not found');
+      console.error('Invalid postId:', postId);
     }
-  }
+  }  
 
   loadAnnouncements(): void {
     this.ds.getannouncement().subscribe(
@@ -116,14 +118,30 @@ export class HomepageComponent implements OnInit {
     }
   }
 
+  editPost(id: number) {
+    if (this.dialog) {
+      this.dialog.open(EditpostComponent, {
+        data: { id: id }
+      });
+    } else {
+      console.error('not found');
+    }
+  }
+
   loadPosts(): void {
     this.ds.getAllPosts().subscribe(
       (response) => {
-        this.posts = response.posts || [];
-        this.posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        this.filteredPosts = [...this.posts]; // Keep filteredPosts intact
-        this.isLoading = false;
-        console.log(response)
+        console.log("API Response:", response); // Debugging
+
+      if (response && typeof response === 'object') {
+        this.posts = Object.values(response); // Convert object to array
+      } else {
+        console.error("Unexpected API response format:", response);
+        this.posts = [];
+      }
+
+      this.filteredPosts = [...this.posts];
+      this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts:', error);
@@ -182,22 +200,152 @@ export class HomepageComponent implements OnInit {
     }
   
     this.filteredPosts = filteredData;
-    this.cdr.detectChanges(); // Manually trigger change detection
+    this.cdr.detectChanges();
   }
   
-  
-  
-
-  toggleLike(post: any): void {
-    this.ds.likePost(post.id).subscribe(
-      (response) => {
-        post.liked_by_user = response.liked;
+  toggleLike(post: any) {
+    this.ds.toggleLike(post.id).subscribe(
+      (response: any) => {
+        post.liked_by_user = !post.liked_by_user; // Toggle UI state
+        post.total_likes = response.total_likes; // Update total likes dynamically
       },
       (error) => {
-        console.error('Error liking/unliking post:', error);
+        console.error('Error toggling like:', error);
       }
     );
   }
+  
+  // dropdown
+  menuVisiblePostId: number | null = null; // Track which post's menu is open
+
+  toggleMenu(event: Event, postId: number) {
+    event.stopPropagation(); // Prevent auto-closing immediately
+    this.menuVisiblePostId = this.menuVisiblePostId === postId ? null : postId;
+  }
+
+  @HostListener('document:click')
+  closeMenu() {
+    this.menuVisiblePostId = null;
+  }
+
+  // report and delete 
+  loggedInUserId: number = 0;
+
+  getLoggedInUser() {
+    this.ds.getUser().subscribe((user) => {
+      this.loggedInUserId = user.id;  // Store user ID
+    });
+  }
+
+  deletePost(postId: number) {
+    Swal.fire({
+      title: 'Delete your Post',
+      text: 'Are you suer you want to delete your post? This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ds.deletePost(postId).subscribe(() => {
+          this.filteredPosts = this.filteredPosts.filter(post => post.id !== postId);
+          Swal.fire(
+            'Deleted!',
+            'Your post has been deleted.',
+            'success'
+          );
+        }, (error) => {
+          console.error('Error deleting post:', error);
+          Swal.fire(
+            'Error!',
+            'Something went wrong while deleting the post.',
+            'error'
+          );
+        });
+      }
+    });
+  }
+  
+
+  // REPORTING POST
+  showReportModal = false;
+  selectedPostId: number | null = null;
+  selectedReasons: string[] = [];
+
+  reportReasons = [
+    "Inappropriate Content",
+    "Spam",
+    "Unrelated to 3Rs & Gardening",
+    "Unnecessary or Off-Topic Photo/Video",
+    "Fake Information",
+    "Unauthorized Advertisement",
+    "Copyright Violation",
+  ];
+
+  openReportModal(postId: number) {
+    this.selectedPostId = postId;
+    this.selectedReasons = [];
+    this.showReportModal = true;
+  }
+
+  closeReportModal() {
+    this.showReportModal = false;
+    this.selectedReasons = [];
+  }
+
+  toggleReason(reason: string, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+  
+    if (checked) {
+      this.selectedReasons.push(reason); // Add to array if checked
+    } else {
+      this.selectedReasons = this.selectedReasons.filter(r => r !== reason); // Remove if unchecked
+    }
+  }
+
+  submitReport() {
+    if (!this.selectedPostId || this.selectedReasons.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Report Failed',
+        text: 'Please select at least one reason before submitting.',
+        confirmButtonColor: '#266CA9'
+      });
+      return;
+    }
+
+    const reportedPost = this.posts.find(post => post.id === this.selectedPostId);
+    const reportedUserName = reportedPost ? reportedPost.fname : 'User';
+  
+    this.ds.reportPost(this.selectedPostId, { reasons: this.selectedReasons }).subscribe(
+      response => {
+        console.log('Post reported:', response);
+        this.closeReportModal();
+  
+        // Success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Thanks for letting us know!',
+          html: `We use your feedback to help our system learn when something's not right. <br> We will review it shortly. <br><strong>${reportedUserName}</strong>'s post is temporarily hidden for 30 days.`,
+          confirmButtonColor: '#266CA9'
+        });
+      },
+      error => {
+        console.error('Error reporting post:', error);
+        
+        // Error message
+        Swal.fire({
+          icon: 'error',
+          title: 'Report Failed',
+          text: 'Something went wrong while submitting your report. Please try again later.',
+          confirmButtonColor: '#266CA9'
+        });
+      }
+    );
+  }  
+  
 }
 
 export interface TableElement {
@@ -205,6 +353,8 @@ export interface TableElement {
   created_at?: string;
   category?: string;
   title: string;
+  fname: string;
+  lname: string;
   description: string;
   id: number;
 }

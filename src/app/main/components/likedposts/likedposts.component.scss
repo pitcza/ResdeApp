@@ -67,6 +67,12 @@
 
   .heart-btn {
     font-size: 25px;
+
+    span {
+      font-size: 17px;
+      font-weight: 500;
+      color: #484848;
+    }
   }
 }
 
@@ -167,6 +173,19 @@
     font-size: 20px;
     cursor: pointer;
     outline: none;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #484848;
+    }
+
+    i.bx-heart {
+      color: var(--red-btn); 
+    }
 
     i.bxs-heart {
       color: var(--red-btn); 

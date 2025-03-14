@@ -179,19 +179,12 @@
                         <h2> Change Password </h2>
                     </div>
                 </div>
-
-                <!-- <div class="buttons" (click)="logoutPopup()" *ngIf="isMobile">
-                    <span> <i class='bx bx-log-out-circle'></i> 
-                        <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
-                    </span>
-                    <input class="danger-btn" type="button" value="Log Out">
-                </div> -->
             </div>
         </div>
 
         <div class="container" id="posts">
             <div class="head">
-                <h1> Approved Posts </h1>
+                <!-- <h1> Approved Posts </h1> -->
             </div>
             <div class="post-container">
                 <!-- Show skeleton loaders while posts are loading -->
@@ -211,8 +204,8 @@
         
                 <!-- Dynamically render only approved posts -->
                 <ng-container *ngIf="!isLoading">
-                    <ng-container *ngFor="let element of dataSource">
-                        <div class="post-box" *ngIf="element.status === 'approved'">
+                    <ng-container *ngFor="let element of paginatedPosts">
+                        <div class="post-box" *ngIf="element.status === 'posted' || element.status === 'reported'">
                             <div mat-card-header class="post-img">
                                 <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
                                 <span class="status approved-status">{{ element.total_likes }} Like/s</span>
@@ -227,6 +220,14 @@
                                 </div>
                             </mat-card-content>
                             <mat-card-actions class="actions" id="uploads-actions">
+                                <button class="edit" (click)="editPost(element.id)">
+                                  <i class='bx bx-edit'></i>
+                                  <span class="tooltiptext"> Edit </span>
+                                </button>
+                                <button class="delete">
+                                    <i class='bx bx-trash' (click)="deletePost(element.id)"></i>
+                                    <span class="tooltiptext"> Delete </span>
+                                </button>
                                 <button class="view" (click)="viewPost(element.id)">
                                     <i class='bx bx-detail'></i>
                                     <span class="tooltiptext"> View </span>
@@ -236,7 +237,13 @@
                     </ng-container>
                 </ng-container>
             </div>
+
+            <!-- Pagination Controls -->
+            <div class="pagination" *ngIf="totalPages > 1">
+                <span> Page {{ currentPage }} of {{ totalPages }} </span>
+                <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+                <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+            </div>
         </div>
-        
     </div>
 </main>

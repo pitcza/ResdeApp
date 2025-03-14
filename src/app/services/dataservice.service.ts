@@ -38,48 +38,59 @@ export class DataserviceService {
     return this.User('user')
   }
 
-  getUserLikes(id: number): Observable<any> {
-    return this.User(`/posts/${id}/total-likes`)
-  }
+  // getUserLikes(id: number): Observable<any> {
+  //   return this.User(`/posts/${id}/total-likes`)
+  // }
 
+  // user posting
   createPost(formData: FormData): Observable<any> {
     return this.User('post', 'POST', formData)
-  }
-
-  getAllPosts(): Observable<any> {
-    return this.User('posts')
-  }
-
-  getUserPosts(): Observable<any> {
-    return this.User('getUserPosts')
-  }
-
-  deletePost(id: number): Observable<any> {
-    return this.User(`userdeletepost/${id}`, 'DELETE');
-  }
-
-  getPost(id: number): Observable<any> {
-    return this.User(`post/${id}`);
   }
 
   updatePost(id: number, data: any): Observable<any> {
     return this.User(`updatepost/${id}`, 'POST', data);
   }
 
-  likePost(id: number): Observable<any> {
-    return this.User(`post/${id}/like`, 'POST'); 
+  deletePost(id: number): Observable<any> {
+    return this.User(`userdeletepost/${id}`, 'DELETE');
   }
 
-  userLiked(): Observable<any> {
-    return this.User(`user/liked-posts`); 
+  // community feed - all users posts
+  getAllPosts(): Observable<any> {
+    return this.User('all-posts');
   }
 
+  // logged in user posts
+  getUserPosts(): Observable<any> {
+    return this.User('getUserPosts')
+  }
+
+  // view post - sira pa
+  getPost(postId: number): Observable<any> {
+    return this.User(`post/${postId}`, 'GET');
+  }
+
+  // for liking posts
+  toggleLike(postId: number): Observable<any> {
+    return this.User(`posts/${postId}/toggle-like`, 'POST');
+  }
+
+  // liked posts
+  getLikedPosts(): Observable<any> {
+    return this.User('liked-posts');
+  }
+
+  // for reporting posts
+  reportPost(postId: number, body: any): Observable<any> {
+    return this.User(`posts/${postId}/report`, 'POST', body);
+  }
+
+  // community feed - show barangay announcements
   getannouncement(): Observable<any> {
     return this.User(`getannouncements`, 'GET'); 
   }
-
+  
   // for trivia
-
   getTodayTrivia(): Observable<any> {
     return this.User('trivia/triviatoday')
   }
@@ -97,14 +108,11 @@ export class DataserviceService {
   }
 
   // barangay posts
-  // Get All Barangay Posts
   getBarangayPosts(): Observable<any> {
     return this.User('barangay-posts');
   }
 
-  // Get Barangay Post by ID
   getBarangayPostById(id: number): Observable<any> {
     return this.User(`barangay-posts/${id}`, 'GET');
   }
-
 }

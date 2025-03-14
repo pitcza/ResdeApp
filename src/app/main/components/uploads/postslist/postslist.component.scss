@@ -123,19 +123,16 @@
             padding: 2px 10px 2px 10px;
             font-size: 0.9rem;
             border-radius: 5px;
-          }
-          
-          .pending-status {
-            background-color: var(--gray-btn); /* Background for pending */
-          }
-          
-          .approved-status {
+            text-transform: none;
+        }
+        
+        .posted-status {
             background-color: var(--primary-green); /* Background for approved */
-          }
+        }
 
-          .declined-status {
+        .removed-status {
             background-color: var(--red-btn); /* Background for pending */
-          }
+        }
     }
 
     .mat-mdc-card-content,
@@ -293,6 +290,40 @@
         background: #e0e0e0;
         margin-top: 10px;
         border-radius: 5px;
+    }
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    
+    .paginator-btn {
+        font-family: 'Poppins';
+        padding: 5px 10px;
+        color: white;
+        background-color: var(--primary-green);
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+
+        &[disabled] {
+            background-color: var(--gray-hover);
+            cursor: not-allowed;
+            box-shadow: none;
+            
+            &:hover {
+                background-color: var(--gray-hover);
+            }
+        }
+
+        &:hover {
+            background-color: var(--primary-hover);
+        }
     }
 }
 

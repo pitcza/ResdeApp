@@ -13,52 +13,35 @@ import { ImagesHistoryComponent } from '../forlandingphotos/images-history/image
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  displayedColumnOldest: string[] = ['fullName', 'title', 'status', 'date'];
-  displayedColumnReport1: string[] = ['fullName', 'total likes', 'total post', 'action'];
-  displayedColumnReport2: string[] = ['fullName', 'liked title', 'likes', 'badge'];
-
   dataSource!: MatTableDataSource<any>;  // or MatTableDataSource<TableElement>
-  oldestpending: any = null;
-  pendingPostsCount: number = 0;
-  totalPostsCount: number = 0;
-  DeclinedCount: number = 0;
-  users: number = 0;
+  
+  totalPosts: number = 0;
+  totalReportedPosts: number = 0;
+  totalBarangayPosts: number = 0;
+  totalUsers: number = 0;
 
-  reports: MatTableDataSource<any> = new MatTableDataSource();
-  liked: MatTableDataSource<any> = new MatTableDataSource();
+  barChartMaterials: any;
+  materialLabels: string[] = [];
+  materialCounts: number[] = [];
+
+  barChart: any;
   mostCategoriesData: any[] = [];
 
   pieChart1: any;
+  userNames: string[] = [];
+  postCounts: number[] = [];
+
   pieChart2: any;
-  pieChart: any;
-  barChart: any;
-
-  userNames: string[] = [];  // To store user names
-  postCounts: number[] = [];  // To store post counts
-  title: any;
-  likesCount: any;
-
-  fromDate: string = '';  // For the "from" date
-  toDate: string = '';    // For the "to" date
-
-  filteredDataSource: TableElement[] = [];
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  selectedFilter: string = '';  // Holds the selected filter value
-  filterOptions: { label: string, value: string }[] = [
-    { label: 'All Users', value: 'all' },
-    { label: 'Top Posts', value: 'topPosts' },
-    { label: 'Most Likes', value: 'mostLikes' },
-  ];
+  mostLikedTitles: string[] = [];
+  mostLikedCounts: number[] = [];
 
   constructor(
     private AS: AdminDataService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef  // Inject ChangeDetectorRef
-  ) {
-    
-  }
+    private cdr: ChangeDetectorRef
+  ) { }
 
+  // for landing page highlights
   inputPhotos() {
     if (this.dialog) {
       this.dialog.open(DisplayImagesComponent)
@@ -71,193 +54,232 @@ export class DashboardComponent implements OnInit {
     if (this.dialog) {
       this.dialog.open(ImagesHistoryComponent)
     } else {
-      console.error('Uploading form not found');
+      console.error('History modal not found');
     }
   }
+  // end of landing page highlights
 
   ngOnInit(): void {
-    this.getOldest();
-    this.getPendingPostsCount();
-    this.getPostsCount();
-    this.getDeclinedCount();
-    this.getTotalUsers();
-    this.getUserTotalPost(); 
-    this.getUserTotalPosts(); 
-    this.likedpost();
-    this.likedposttable();
-    this.getmosttable();
+    this.dashboardCounts();
+    this.getActiveUsers();
+    this.getMostLikedPosts();
   }
 
   ngAfterViewInit(): void {
-    // Ensure that the paginator is assigned after the data is loaded
-    if (this.reports && this.paginator) {
-      this.reports.paginator = this.paginator;
-    }
-    if (this.liked && this.paginator) {
-      this.liked.paginator = this.paginator;
-    }
+    setTimeout(() => {
+      this.getMaterialsChart();
+      this.getMostCategories();
+      this.getActiveUsers();
+      this.getMostLikedPosts();
+    });
     
-    // Detect changes after paginator assignment
     this.cdr.detectChanges();
   }
 
-  getmosttable(): void {
-    this.AS.tableCategories().subscribe(
-      (data: any) => {
-        console.log(data);
-        this.mostCategoriesData = data;  // Store response data
-  
-        // Extract category names and post counts (assuming `data` has a valid structure)
-        const category = data.map((item: any) => item.category); 
-        const total_posts = data.map((item: any) => item.total_posts);  
-  
-        this.renderBarChart(category, total_posts);  // Pass the extracted data
-        this.cdr.detectChanges();  
-      },
-      (error) => {
-        console.error('Error fetching most categories data:', error);
-      }
-    );
-  }
-  
-  
-  
-  getUserTotalPost(): void {
-    this.AS.userTotalPost().subscribe(
+  // most talked-about issues
+  getMaterialsChart(): void {
+    this.AS.getMaterialsChart().subscribe(
       (response) => {
-        this.reports = new MatTableDataSource();
-
-        const userData = response['users'].map((user: any) => ({
-          user_name: user.user_name,
-          total_likes: user.total_likes,
-          total_posts: user.total_posts,
-        }));
-
-        this.reports.data = userData;
-
-        this.userNames = userData.map((user: any) => user.user_name);
-        this.postCounts = userData.map((user: any) => user.total_posts);
-
-        this.renderPieChart();
-        this.cdr.detectChanges();  
-      },
-      (error) => {
-        console.error('Error fetching total posts per user', error);
-      }
-    );
-  }
-
-  getUserTotalPosts(): void {
-    this.AS.userTotalPosts().subscribe(
-      (response) => {
-        this.reports = new MatTableDataSource();
-    
-        const userData = response['users']
-          .map((user: any) => ({
-            user_name: user.user_name,
-            total_likes: user.total_likes,
-            total_posts: user.total_posts,
-            badges: user.badges
-          }))
-          .sort((a: any, b: any) => b.total_posts - a.total_posts);  
-          
-        this.reports.data = userData;
-        
-        if (this.paginator) {
-          this.reports.paginator = this.paginator;
+        // console.log("Materials API Response:", response);
+  
+        if (!response || !response.materials_data || response.materials_data.length === 0) {
+          console.warn("No material data found! Displaying an empty chart.");
+          this.materialLabels = [];
+          this.materialCounts = [];
+        } else {
+          this.materialLabels = response.materials_data.map((item: any) => item.materials);
+          this.materialCounts = response.materials_data.map((item: any) => item.total_posts);
         }
   
+        // console.log("Labels:", this.materialLabels);
+        // console.log("Counts:", this.materialCounts);
+  
+        this.createMaterialsBarChart();
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching total posts per user', error);
+        console.error("Error fetching materials chart data:", error);
       }
     );
   }
   
-  renderBarChart(category: string[], total_posts: number[]): void {
-    const ctx = document.getElementById('barChart1') as HTMLCanvasElement;
+  createMaterialsBarChart(): void {
+    setTimeout(() => { // Ensure DOM is ready
+      const canvas = document.getElementById('barChartMaterials') as HTMLCanvasElement;
+      if (!canvas) {
+        console.error("Canvas element 'barChartMaterials' not found!");
+        return;
+      }
   
-    if (this.barChart) {
-      this.barChart.destroy();  
-    }
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        console.error("Canvas context is null!");
+        return;
+      }
   
-    this.barChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: category,  
-        datasets: [
-          {
-            label: 'Total Posts Per Category',
-            data: total_posts,  
-            backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'], 
-            hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D']
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'bottom'
+      if (this.barChartMaterials) {
+        this.barChartMaterials.destroy();
+      }
+  
+      this.barChartMaterials = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: this.materialLabels,
+          datasets: [
+            {
+              label: 'Total Posts Per Material',
+              data: this.materialCounts,
+              backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'],
+              hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D']
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem: any) {
+                  return `${tooltipItem.label}: ${tooltipItem.raw} Posts`;
+                }
+              }
+            }
           },
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                const value = tooltipItem.raw || 0;
-                return `${tooltipItem.label}: ${value} Posts`; 
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1
               }
             }
           }
         }
-      }
-    });
+      });
+    }, 500);
+  }
+  
+
+  // most talked-about categories
+  getMostCategories(): void {
+    this.AS.tableCategories().subscribe(
+        (data: any[]) => {
+            // console.log("Categories API Response:", data);
+
+            if (!data || data.length === 0) {
+                console.warn("No category data received! Displaying empty chart.");
+                this.categoriesBarChart([], []);
+                return;
+            }
+
+            this.mostCategoriesData = data;
+            const categories = data.map(item => item.category);
+            const totalPosts = data.map(item => item.total_posts);
+
+            this.categoriesBarChart(categories, totalPosts);
+            this.cdr.detectChanges();
+        },
+        (error) => {
+            console.error("Error fetching most categories data:", error);
+        }
+    );
   }
 
-  // renderBarChart(category: string[], total_posts: number[]): void {
-  //   const ctx = document.getElementById('pieChart') as HTMLCanvasElement;
-  
-  //   if (this.pieChart) {
-  //     this.pieChart.destroy();  
-  //   }
-  
-  //   this.pieChart = new Chart(ctx, {
-  //     type: 'pie',
-  //     data: {
-  //       labels: category,  
-  //       datasets: [
-  //         {
-  //           label: 'Total Posts Per Category',
-  //           data: total_posts,  
-  //           backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#FF9F40'], 
-  //           hoverBackgroundColor: ['#568b67', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40']
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       plugins: {
-  //         legend: {
-  //           display: true,
-  //           position: 'bottom'
-  //         },
-  //         tooltip: {
-  //           callbacks: {
-  //             label: function(tooltipItem) {
-  //               const value = tooltipItem.raw || 0;
-  //               return `${tooltipItem.label}: ${value} Posts`;  // Customize tooltip label
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
-  
+  categoriesBarChart(category: string[], total_posts: number[]): void {
+    const canvas = document.getElementById('barChart1') as HTMLCanvasElement;
 
-  renderPieChart(): void {
+    if (!canvas) {
+        console.error("Canvas element 'barChart1' not found!");
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+        console.error("Canvas context is null!");
+        return;
+    }
+
+    if (this.barChart) {
+        this.barChart.destroy();
+    }
+
+    this.barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: category,
+            datasets: [
+                {
+                    label: 'Total Posts Per Category',
+                    data: total_posts,
+                    backgroundColor: category.map((_, i) => 
+                        ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'][i % 5]
+                    ),
+                    hoverBackgroundColor: category.map((_, i) => 
+                        ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D'][i % 5]
+                    )
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Prevent sizing issues
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem: any) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw} Posts`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1 // Ensure integer values
+                    }
+                }
+            }
+        }
+    });
+  }
+  
+  // most active user
+  getActiveUsers(): void {
+    this.AS.getMostActiveUsers().subscribe(
+      (response) => {
+        if (response && response.users.length > 0) {
+          this.userNames = response.users.map((user: ActiveUser) => user.name);
+          this.postCounts = response.users.map((user: ActiveUser) => user.total_posts);
+          this.activeUsersPieChart(); // Call function to update pie chart
+        } else {
+          console.warn('No active users found.');
+          this.userNames = [];
+          this.postCounts = [];
+          this.activeUsersPieChart(); // Still update the chart to clear it if necessary
+        }
+      },
+      (error) => {
+        console.error('Error fetching most active users:', error);
+      }
+    );
+  }
+
+  activeUsersPieChart(): void {
     const ctx = document.getElementById('pieChart1') as HTMLCanvasElement;
+
+    if (!ctx) {
+      console.error("Canvas element 'pieChart1' not found!");
+      return;
+    }
 
     if (this.pieChart1) {
       this.pieChart1.destroy();
@@ -285,7 +307,7 @@ export class DashboardComponent implements OnInit {
           },
           tooltip: {
             callbacks: {
-              label: function(tooltipItem) {
+              label: function(tooltipItem: any) {
                 const value = tooltipItem.raw || 0;
                 return `${tooltipItem.label}: ${value} Posts`; 
               }
@@ -296,24 +318,49 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  renderPieChart1(titles: string[], likesCount: number[]): void {
+  // most liked posts
+  getMostLikedPosts(): void {
+    this.AS.getMostLikedPosts().subscribe(
+      (response) => {
+        if (response && response.posts.length > 0) {
+          this.mostLikedTitles = response.posts.map((post: MostLikedPost) => post.title);
+          this.mostLikedCounts = response.posts.map((post: MostLikedPost) => post.total_likes);
+          this.mostLikedPieChart(); // Update Pie Chart 2
+        } else {
+          console.warn('No liked posts found.');
+          this.mostLikedTitles = [];
+          this.mostLikedCounts = [];
+          this.mostLikedPieChart(); // Update to clear chart if empty
+        }
+      },
+      (error) => {
+        console.error('Error fetching most liked posts:', error);
+      }
+    );
+  }
 
+  mostLikedPieChart(): void {
     const ctx = document.getElementById('pieChart2') as HTMLCanvasElement;
-  
-    if (this.pieChart2) {
-      this.pieChart2.destroy(); 
+
+    if (!ctx) {
+      console.error("Canvas element 'pieChart2' not found!");
+      return;
     }
-  
+
+    if (this.pieChart2) {
+      this.pieChart2.destroy();
+    }
+
     this.pieChart2 = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: titles,  
+        labels: this.mostLikedTitles,
         datasets: [
           {
-            label: 'Likes Per Post',  
-            data: likesCount, 
+            label: 'Most Liked Posts',
+            data: this.mostLikedCounts,  
             backgroundColor: ['#266CA9', '#FF6384', '#689F7A', '#FFCE56', '#FF9F40'], 
-            hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D']
+            hoverBackgroundColor: ['#19609d', '#D54866', '#568B67', '#E0B443', '#D9832D'] 
           }
         ]
       },
@@ -326,9 +373,9 @@ export class DashboardComponent implements OnInit {
           },
           tooltip: {
             callbacks: {
-              label: function(tooltipItem) {
+              label: function(tooltipItem: any) {
                 const value = tooltipItem.raw || 0;
-                return `${tooltipItem.label}: ${value} Likes`; // Show likes count in the tooltip
+                return `${tooltipItem.label}: ${value} Likes`; 
               }
             }
           }
@@ -336,222 +383,33 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-  
-  likedpost(): void {
-    this.AS.likedpost().subscribe(
-      (response) => {
-        this.liked = new MatTableDataSource();
-    
-        const posts = response['posts'] || []; 
-    
-        this.title = [];
-        this.likesCount = [];
-    
-        for (let i = 0; i < posts.length; i++) {
-          const post = posts[i];
-          
-          this.liked.data.push({
-            post_id: post.post_id,
-            title: post.title,
-            user_name: post.user_name,
-            likes_count: post.likes_count,
-            created_at: post.created_at
-          });
-  
-          this.title.push(post.title);
-          this.likesCount.push(post.likes_count);
-        }
-  
-        this.renderPieChart1(this.title, this.likesCount);
+
+
+  dashboardCounts(): void {
+    this.AS.dashboardStatistics().subscribe(
+      (response) => {  
+        this.totalPosts = response['total_user_posts'] || 0;
+        this.totalReportedPosts = response['total_reported_posts'] || 0;
+        this.totalBarangayPosts = response['total_barangay_posts'] || 0;
+        this.totalUsers = response['total_users'] || 0;
         
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching total posts per user', error);
+        console.error('Error fetching dashboard counts:', error);
       }
     );
-  }
-
-  likedposttable(): void {
-    this.AS.likedposttable().subscribe(
-      (response) => {
-        this.liked = new MatTableDataSource();
-        console.log(response)
-  
-        const posts = response['posts'] || [];
-        this.title = [];
-        this.likesCount = [];
-        
-        for (let i = 0; i < posts.length; i++) {
-          const post = posts[i];
-  
-          this.liked.data.push({
-            post_id: post.post_id,
-            title: post.title,
-            user_name: post.user_name,
-            likes_count: post.likes_count,
-            created_at: post.created_at,
-            badge1: post.badge
-          });
-  
-          this.title.push(post.title);
-          this.likesCount.push(post.likes_count);
-        }
-   
-        this.cdr.detectChanges();
-      },
-      (error) => {
-        console.error('Error fetching posts for table and chart', error);
-      }
-    );
-  }
-
-  filterPosts(): void {
-    const reports = this.reports.data || [];
-    
-    const filteredPosts = reports.filter(post => {
-      const postDate = post.created_at ? new Date(post.created_at) : null;
-  
-      // Ensure valid date comparisons
-      const fromDateMatch = this.fromDate
-        ? postDate && postDate >= new Date(this.fromDate)
-        : true;
-      const toDateMatch = this.toDate
-        ? postDate && postDate <= new Date(this.toDate)
-        : true;
-  
-      return fromDateMatch && toDateMatch;
-    });
-  
-    this.reports.data = filteredPosts;
-    this.cdr.detectChanges();
-  }
-  
-
-  filterLikes(): void {
-    const sourceData = this.liked.data || [];
-  
-    const filteredPosts = sourceData.filter(post => {
-      const postDate = post.created_at ? new Date(post.created_at) : null;
-  
-      // Ensure valid date comparisons
-      const fromDateMatch = this.fromDate
-        ? postDate && postDate >= new Date(this.fromDate)
-        : true;
-      const toDateMatch = this.toDate
-        ? postDate && postDate <= new Date(this.toDate)
-        : true;
-  
-      return fromDateMatch && toDateMatch;
-    });
-  
-    this.liked.data = filteredPosts;
-    this.cdr.detectChanges();
-  }
-  
-  onDateChange(event: any, type: string) {
-    const selectedDate = event.target.value;
-    if (type === 'from') {
-      this.fromDate = selectedDate;
-    } else if (type === 'to') {
-      this.toDate = selectedDate;
-    }
-  
-    this.filterPosts(); 
-    this.filterLikes(); 
-  }
-
-  getOldest(): void {
-    this.AS.getOldest().subscribe(
-      (response) => {
-  
-        if (response && response.posts) {
-          const posts = response.posts;  
-    
-          posts.forEach((post: { user_name: any; }) => {
-            if (post.user_name) {
-              
-            } else {
-              console.log('User name is missing or not found');
-            }
-          });
-  
-          this.oldestpending = posts.slice(0, 10);
-  
-          this.dataSource = new MatTableDataSource(this.oldestpending);
-        } else {
-          console.error('Error: posts data is not found in the response');
-        }
-  
-        this.cdr.detectChanges();  
-      },
-      (error) => {
-        console.error('Error fetching oldest pending posts', error);
-      }
-    );
-  }
-  
-  getPendingPostsCount(): void {
-    this.AS.TotalPendingPosts().subscribe(
-      (response) => {
-        this.pendingPostsCount = response['Pending posts of resit'];
-        this.cdr.detectChanges();  // Trigger change detection after updating the value
-      },
-      (error) => {
-        console.error('Error fetching pending posts count', error);
-      }
-    );
-  }
-
-  getPostsCount(): void {
-    this.AS.TotalPosts().subscribe(
-      (response) => {
-        this.totalPostsCount = response['Total posts of resit'];
-        this.cdr.detectChanges();  // Trigger change detection after updating the value
-      },
-      (error) => {
-        console.error('Error fetching total posts count', error);
-      }
-    );
-  }
-
-  getDeclinedCount(): void {
-    this.AS.TotalDeclinedPosts().subscribe(
-      (response) => {
-        this.DeclinedCount = response['Declined posts of resit'];
-        this.cdr.detectChanges();  // Trigger change detection after updating the value
-      },
-      (error) => {
-        console.error('Error fetching declined posts count', error);
-      }
-    );
-  }
-
-  getTotalUsers(): void {
-    this.AS.TotalUsers().subscribe(
-      (response) => {
-        this.users = response['Total users of resit app'];
-        this.cdr.detectChanges();  // Trigger change detection after updating the value
-      },
-      (error) => {
-        console.error('Error fetching total users count', error);
-      }
-    );
-  }
+  }  
 }
 
-// Sample data
-export interface TableElement {
+interface ActiveUser {
+  id: number;
+  name: string;
+  total_posts: number;
+}
+
+interface MostLikedPost {
+  id: number;
   title: string;
-  status: string;
-  created_at?: string;
-  user_name?: string;
-
-  total_posts: string;
-  total_likes: string;
-
-  likes_count: string;
-  badges: string;
+  total_likes: number;
 }
-
-

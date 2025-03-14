@@ -1,0 +1,74 @@
+<div class="content">
+    <div class="head">
+        <!-- <div class="title"> <h1> Your Posts </h1> </div> -->
+        <h1> My Posts </h1>
+        <div class="route-btn" (click)="uploadIdea()">
+            <i class='bx bx-plus' ></i> <a> Upload </a>
+        </div>
+    </div>
+
+    <div class="table-content">
+        <div class="table-head">
+            <div class="data-filter">
+                <!-- <h2> Filter Category: </h2> -->
+                <select id="filter-category">
+                    <option selected value=""> All Category </option>
+                    <option value="Reduce">Reduce</option>
+                    <option value="Reuse">Reuse</option>
+                    <option value="Recycle">Recycle</option>
+                    <option value="Gardening">Gardening</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="overflow">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}}, {{element.date | date:'shortTime'}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef>Category</th>
+                <td mat-cell *matCellDef="let element">{{element.category}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="materials">
+                <th mat-header-cell *matHeaderCellDef>Materials</th>
+                <td mat-cell *matCellDef="let element">{{ formatMaterials(element.materials) }}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element">{{element.title}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element" class="actions">
+                    <button class="edit" (click)="editPost(element.id)">
+                        <i class='bx bx-edit'></i>
+                        <span class="tooltiptext"> Edit </span>
+                    </button>
+                    <button class="delete" (click)="deletePost(element.id)">
+                        <i class='bx bx-trash'></i>
+                        <span class="tooltiptext"> Delete </span>
+                    </button>
+                    <button class="view">
+                        <i class='bx bx-detail' (click)="viewPost(element.id, 'componentA')"></i>
+                        <span class="tooltiptext"> View </span>
+                    </button>
+                </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+        </mat-paginator>
+        
+    </div>
+</div>

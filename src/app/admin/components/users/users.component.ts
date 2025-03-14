@@ -44,6 +44,17 @@ export class UsersComponent implements AfterViewInit, OnInit {
       (response) => {
         const excludedEmails = ['admin@gmail.com', 'agri@gmail.com'];  // Emails to exclude intable display
         //Filter out users whose fname is 'User' or 'Agriculural'
+
+        const badgePriority: Record<string, number> = {
+          'Top 1': 1,
+          'Top 2': 2,
+          'Top 3': 3,
+          'Top 4': 4,
+          'Top 5': 5,
+          'Contributor': 6,
+          'Newbie': 7
+        };
+        
         const users = response
           .filter((user: any) => {
             const fnameLower = user.fname.toLowerCase().trim(); //Make sure to trim spaces

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -15,14 +15,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class UploadPostComponent {
   postForm!: FormGroup;
-  image: File | null = null;  // Allows image to be null
+  image: File | null = null;
   isSubmitting: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<UploadPostComponent>,
     private fb: FormBuilder, 
-    private http: HttpClient, 
-    private router: Router,
     private dataService: DataserviceService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -31,12 +29,55 @@ export class UploadPostComponent {
     this.dialogRef.close();
   }
 
+  options: string[] = [
+    'Compost', 'Plastic', 'Rubber', 'Wood', 'Paper', 'Glass', 'Boxes', 
+    'Mixed Waste', 'Cloth', 'Miscellaneous Products', 'Tips & Tricks', 'Issues'
+  ];
+
+  selectedOptions: string[] = [];
+  dropdownOpen: boolean = false;
+
+  get materialsFormArray() {
+    return this.postForm.get('materials') as FormArray;
+  }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  toggleOption(option: string) {
+    const index = this.selectedOptions.indexOf(option);
+    if (index > -1) {
+      this.selectedOptions.splice(index, 1);
+      this.removeMaterial(option);
+    } else {
+      this.selectedOptions.push(option);
+      this.addMaterial(option);
+    }
+  }
+
+  addMaterial(material: string) {
+    this.materialsFormArray.push(this.fb.control(material));
+  }
+
+  removeMaterial(material: string) {
+    const index = this.materialsFormArray.value.indexOf(material);
+    if (index > -1) {
+      this.materialsFormArray.removeAt(index);
+    }
+  }
+
+  isSelected(option: string): boolean {
+    return this.selectedOptions.includes(option);
+  }
+
   ngOnInit() {
     this.postForm = this.fb.group({
       category: ['', Validators.required],
+      materials: this.fb.array([], Validators.required),
       title: ['', Validators.required],
       content: ['', Validators.required],
-      image: [null]  // Validation here is handled server-side, so optional in Angular
+      image: [null]
     });
   }
 
@@ -60,6 +101,12 @@ export class UploadPostComponent {
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('category', this.postForm.get('category')!.value);
     formData.append('content', this.postForm.get('content')!.value);
+
+    const selectedMaterials = this.materialsFormArray.value;
+    selectedMaterials.forEach((material: string) => {
+      formData.append('materials[]', material);
+    });
+
     if (this.image) {
       formData.append('image', this.image);
     }
@@ -70,14 +117,13 @@ export class UploadPostComponent {
         this.cdr.detectChanges();
         this.closeDialog();
         Swal.fire({
-          title: "Post Pending",
-          text: "Waiting for the admin approval.",
-          icon: "success",
-          iconColor: '#689f7a',
-          confirmButtonText: 'Close',
-          confirmButtonColor: "#7f7f7f",
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your post has been successfully published.',
+          showConfirmButton: false,
           timer: 5000,
-          scrollbarPadding: false
+          timerProgressBar: true
         });
         this.isSubmitting = false; 
       },
@@ -96,6 +142,10 @@ export class UploadPostComponent {
             errorMessage = 'Category is required.';
           }
         }
+
+        // if (error?.error?.message) {
+        //   errorMessage = error.error.message;
+        // }
     
         Swal.fire({
           title: 'Error',

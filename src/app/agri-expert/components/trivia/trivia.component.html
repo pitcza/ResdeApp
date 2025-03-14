@@ -27,32 +27,27 @@
     <div class="overflow">
       <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
 
-        <!-- ID Column -->
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef> Date </th>
-          <td mat-cell *matCellDef="let element"> {{ element.created_at | date: 'mediumDate' }} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.created_at | date: 'mediumDate' }}, {{ element.created_at | date: 'shortTime' }} </td>
         </ng-container>
 
-        <!-- Question Column -->
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef> Category </th>
           <td mat-cell *matCellDef="let element"> {{ element.category }} </td>
         </ng-container>
 
-        <!-- Answers Column -->
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef> Title/Topic </th>
           <td mat-cell *matCellDef="let element"> {{ element.title }}
           </td>
         </ng-container>
 
-        <!-- Correct Answer Column -->
         <ng-container matColumnDef="facts">
           <th mat-header-cell *matHeaderCellDef> Trivia </th>
           <td mat-cell *matCellDef="let element"> <div class="long"> {{ element.facts }} </div> </td>
         </ng-container>
 
-        <!-- Action Column -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> Action </th>
           <td mat-cell *matCellDef="let element" class="actions">

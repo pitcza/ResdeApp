@@ -147,6 +147,10 @@
                 }
 
                 .danger {
+                    i, a {
+                        color: var(--red-btn);
+                    }
+                    
                     &:hover {
                         border-radius: 5px;
                         background-color: var(--red-btn);

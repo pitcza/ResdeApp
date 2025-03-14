@@ -13,49 +13,32 @@ import { HttpParams } from '@angular/common/http';
   styleUrl: './reports.component.scss'
 })
 export class ReportsComponent implements OnInit {
-  displayedColumnReport: string[] = ['category', 'total posts'];
-  displayedColumnReport1: string[] = ['fullName', 'total likes', 'total post', 'action'];
-  displayedColumnReport2: string[] = ['fullName', 'liked title', 'likes', 'badge'];
+  categoriesTable: string[] = ['category', 'total_posts'];
+  materialsTable: string[] = ['materials', 'total_posts'];
+  activeUsersTable: string[] = ['fullName', 'total_posts', 'total_likes', 'badge'];
+  topLikesTable: string[] = ['fullName', 'post_title', 'total_likes', 'badge'];
   DataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
-
-  // dataSource!: MatTableDataSource<any>;
 
   previewData: any[] = [];
   previewVisible = false;
 
   isLoading = true;
 
-  reports: MatTableDataSource<any> = new MatTableDataSource();
-  liked: MatTableDataSource<any> = new MatTableDataSource();
-  // category: MatTableDataSource<any> = new MatTableDataSource();
   category = new MatTableDataSource<any>();
-
-  errorMessage: string = '';
-
-  userNames: string[] = [];  // To store user names
-  postCounts: number[] = [];  // To store post counts
-  title: any;
-  likesCount: any;
+  materials: MatTableDataSource<any> = new MatTableDataSource();
+  users: MatTableDataSource<any> = new MatTableDataSource();
+  liked: MatTableDataSource<any> = new MatTableDataSource();
 
   fromDate: string = '';  
   toDate: string = '';    
 
-  startDate: string ='';  // Store the start date
+  startDate: string ='';
   endDate: string ='';
-
-  // start_date: string | null = null;
-  // end_date: string | null = null;
 
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('paginator1') paginator1!: MatPaginator;
   @ViewChild('paginator2') paginator2!: MatPaginator;
-
-  selectedFilter: string = '';  // Holds the selected filter value
-  filterOptions: { label: string, value: string }[] = [
-    { label: 'All Users', value: 'all' },
-    { label: 'Top Posts', value: 'topPosts' },
-    { label: 'Most Likes', value: 'mostLikes' },
-  ];
+  @ViewChild('paginator3') paginator3!: MatPaginator;
 
   constructor(
     private AS: AdminDataService,
@@ -63,231 +46,123 @@ export class ReportsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUserTotalPost(); 
-    this.getUserTotalPosts(); 
-    this.likedpost();
-    this.likedposttable();
-    this.getCategories(); // Fetch initial data
+    this.getMaterialsCount();
+    this.getCategories();
+    this.getTopUsers();
+    this.getTopLiked();
   }
 
   ngAfterViewInit(): void {
-    if (this.category) {
-      this.category.paginator = this.paginator;
-    }
-    if (this.reports) {
-      this.reports.paginator = this.paginator1;
-    }
-    if (this.liked) {
-      this.liked.paginator = this.paginator2;
-    }
+    if (this.category) { this.category.paginator = this.paginator; }
+    if (this.users) { this.users.paginator = this.paginator1; }
+    if (this.liked) { this.liked.paginator = this.paginator2; }
     this.cdr.detectChanges();
   }
 
   onSubmit() {
-    // Call the getCategories method with the selected startDate and endDate
     this.getCategories(this.startDate, this.endDate);
   }
+
+  getMaterialsCount(): void {
+    this.isLoading = true;
+
+    this.AS.materialsPosted().subscribe(
+      (data) => {
+        console.log('Materials Count API Response:', data);
+
+        const sortedMaterials = Object.entries(data).map(([material, count]) => ({
+          materials: material,  // Ensure it matches table column name
+          total_posts: Number(count) // Convert to number
+        })).sort((a, b) => b.total_posts - a.total_posts); // Sort descending
+
+        this.materials.data = sortedMaterials;
+
+        if (this.paginator3) {
+          this.materials.paginator = this.paginator3;
+        }
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching materials count:', error);
+        this.isLoading = false;
+      }
+    );
+  }
   
-  
+  // tinanggal ko this pero nasa backend pa
   getCategories(startDate?: string, endDate?: string): void {
     this.isLoading = true;
     this.AS.tableCategories(startDate, endDate)
-      .subscribe(
-        (data) => {
-          console.log('API Response:', data); // Make sure the data is correct
-          this.category.data = data;
-          this.isLoading = false;
-  
-          // Handle pagination if needed
-          if (this.paginator) {
-            this.category.paginator = this.paginator;
-          }
-          
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-        }
-      );
-  }
-
-  getUserTotalPost(): void {
-    this.isLoading = true;
-    this.AS.userTotalPost().subscribe(
-      (response) => {
-        this.reports = new MatTableDataSource();
-        const userData = response['users'].map((user: any) => ({
-          user_name: user.user_name,
-          total_likes: user.total_likes,
-          total_posts: user.total_posts,
-        }));
-        this.reports.data = userData;
-        this.userNames = userData.map((user: any) => user.user_name);
-        this.postCounts = userData.map((user: any) => user.total_posts);
-        this.cdr.detectChanges();
+    .subscribe(
+      (data) => {
+        console.log('API Response:', data); // Make sure the data is correct
+        this.category.data = data;
         this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error fetching total posts per user', error);
-      }
-    );
-  }
 
-  getUserTotalPosts(): void {
-    this.isLoading = true;
-    this.AS.userTotalPosts().subscribe(
-      (response) => {
-        this.reports = new MatTableDataSource();
-        const userData = response['users']
-          .map((user: any) => ({
-            user_name: user.user_name,
-            total_likes: user.total_likes,
-            total_posts: user.total_posts,
-            badges: user.badges
-          }))
-          .sort((a: any, b: any) => b.total_posts - a.total_posts);
-        this.reports.data = userData;
         if (this.paginator) {
-          this.reports.paginator = this.paginator1;
+          this.category.paginator = this.paginator;
         }
-        this.cdr.detectChanges();
-        this.isLoading = false;
+        
       },
       (error) => {
-        console.error('Error fetching total posts per user', error);
+        console.error('Error fetching data:', error);
       }
     );
   }
 
-  likedpost(): void {
-    this.AS.likedpost().subscribe(
-      (response) => {
-        this.liked = new MatTableDataSource();
-        const posts = response['posts'] || []; 
-        this.title = [];
-        this.likesCount = [];
-        for (let i = 0; i < posts.length; i++) {
-          const post = posts[i];
-          this.liked.data.push({
-            post_id: post.post_id,
-            title: post.title,
-            user_name: post.user_name,
-            likes_count: post.likes_count,
-            created_at: post.created_at
-          });
-          this.title.push(post.title);
-          this.likesCount.push(post.likes_count);
-        }
-        this.cdr.detectChanges();
-      },
-      (error) => {
-        console.error('Error fetching liked posts', error);
-      }
-    );
-  }
-
-  likedposttable(): void {
+  getTopUsers(): void {
     this.isLoading = true;
-    this.AS.likedposttable().subscribe(
-      (response) => {
-        const posts = response['posts'] || [];
-        this.liked.data = posts.map((post: any) => ({
-          post_id: post.post_id,
-          title: post.title,
-          user_name: post.user_name,
-          likes_count: post.likes_count,
-          created_at: post.created_at,
-          badge: post.badge || 'N/A'
-        }));
-        this.liked.paginator = this.paginator2;
-        this.cdr.detectChanges();
+    this.AS.topUsers().subscribe(
+      (data) => {
+        console.log('Top Users API Response:', data);
+  
+        this.users.data = data.sort((a: any, b: any) => b.total_posts - a.total_posts);
         this.isLoading = false;
+  
+        if (this.paginator1) {
+          this.users.paginator = this.paginator1;
+        }
       },
       (error) => {
-        console.error('Error fetching posts for table and chart', error);
+        console.error('Error fetching top users:', error);
+        this.isLoading = false;
       }
     );
   }
 
-  filterPosts() {
-    this.category.data = this.category.data.filter(post => {
-        const postDate = post.created_at ? new Date(post.created_at) : null;
-
-        if (postDate && isNaN(postDate.getTime())) {
-            console.error(`Invalid post date: ${post.created_at}`);
-            return false; // Exclude invalid dates
+  getTopLiked(): void {
+    this.isLoading = true;
+    this.AS.topLiked().subscribe(
+      (data) => {
+        console.log('Top Liked API Response:', data);
+  
+        this.liked.data = data.sort((a: any, b: any) => b.total_posts - a.total_posts);
+        this.isLoading = false;
+  
+        if (this.paginator1) {
+          this.liked.paginator = this.paginator1;
         }
-
-        const fromDate = this.fromDate ? new Date(this.fromDate) : null;
-        const toDate = this.toDate ? new Date(this.toDate) : null;
-
-        if (fromDate && isNaN(fromDate.getTime())) {
-            console.error(`Invalid fromDate: ${this.fromDate}`);
-            return false;
-        }
-
-        if (toDate && isNaN(toDate.getTime())) {
-            console.error(`Invalid toDate: ${this.toDate}`);
-            return false;
-        }
-
-        const fromDateMatch = fromDate ? postDate && postDate >= fromDate : true;
-        const toDateMatch = toDate ? postDate && postDate <= toDate : true;
-
-        return fromDateMatch && toDateMatch;
-    });
-
-    this.cdr.detectChanges();
-}
-
-
-filterCategories(): void {
-  const category = this.category.data || []; 
-  const filteredData = category.filter((category) => {
-      const categoryDate = category.created_at ? new Date(category.created_at) : null;
-
-      const fromDateMatch = this.fromDate
-          ? categoryDate && categoryDate >= new Date(this.fromDate)
-          : true;
-
-      const toDateMatch = this.toDate
-          ? categoryDate && categoryDate <= new Date(this.toDate)
-          : true;
-
-      return fromDateMatch && toDateMatch;
-  });
-
-  this.category.data = filteredData; // Update the filtered data
-  this.cdr.detectChanges(); // Refresh the UI
-}
-
-
-
-// onDateChange(event: Event, type: 'from' | 'to'): void {
-//   const input = event.target as HTMLInputElement;
-//   if (type === 'from') {
-//     this.fromDate = input.value;
-//   } else if (type === 'to') {
-//     this.toDate = input.value;
-//   }
-//   this.getCategories(); // Fetch filtered data whenever the date changes
-// }
-
-  togglePreview(): void {
-    this.previewVisible = !this.previewVisible;
-    this.previewData = this.reports.data;
+      },
+      (error) => {
+        console.error('Error fetching top liked:', error);
+        this.isLoading = false;
+      }
+    );
   }
 
+  // categories posted
   exportToExcel(): void {
     // Make sure category data exists before exporting
-    if (this.category && this.category.data) {
+    if (this.materials && this.materials.data) {
       // Get the current date for the filename
       const currentDate = new Date().toISOString().split('T')[0];
-      const fileName = `Barangay Gordon Heights Most Talked About - ${currentDate}.xlsx`;
+      const fileName = `Barangay Gordon Heights Most Talked-About - ${currentDate}.xlsx`;
 
       // Define styles
       const headerStyle = {
         font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 14 }, // White bold text, larger font size
-        fill: { fgColor: { rgb: '568b67' } }, // Blue background
+        fill: { fgColor: { rgb: '266CA9' } }, // Blue background
         alignment: { horizontal: 'center', vertical: 'center' }, // Center-aligned text (horizontally and vertically)
         border: {
           top: { style: 'thin', color: { rgb: '000000' } },
@@ -309,10 +184,10 @@ filterCategories(): void {
       };
 
       // Convert data to Excel sheet
-      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.category.data);
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.materials.data);
 
       // Add a merged header for "Most Talked About Issues"
-      const headerText = "Most Talked About Issues";
+      const headerText = "Most Talked-About Issues";
       XLSX.utils.sheet_add_aoa(ws, [[headerText]], { origin: 'A1' }); // Add text to cell A1
 
       // Merge cells A1 and B1
@@ -355,7 +230,7 @@ filterCategories(): void {
       }
 
       // Add header titles for "Categories" and "Total Posts" in row 2
-      XLSX.utils.sheet_add_aoa(ws, [['Categories', 'Total Posts']], { origin: 'A2' }); // Add titles to row 2
+      XLSX.utils.sheet_add_aoa(ws, [['Materials', 'Total Posts']], { origin: 'A2' }); // Add titles to row 2
 
       // Apply header styles to the new header row (row 2)
       for (let col = range.s.c; col <= range.e.c; col++) {
@@ -385,33 +260,148 @@ filterCategories(): void {
   }
 
   exportToExcel1(): void {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.reports.data);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Reports');
-    XLSX.writeFile(wb, 'ActiveUsers.xlsx');
+    if (this.users && this.users.data) {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const fileName = `Active Users - ${currentDate}.xlsx`;
+  
+      const headerStyle = {
+        font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 14 },
+        fill: { fgColor: { rgb: '266CA9' } },
+        alignment: { horizontal: 'center', vertical: 'center' },
+        border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
+      };
+  
+      const dataStyle = {
+        font: { color: { rgb: '000000' } },
+        alignment: { horizontal: 'left' },
+        border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
+      };
+  
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+  
+      // Add Title Row
+      XLSX.utils.sheet_add_aoa(ws, [['Active Users Report']], { origin: 'A1' });
+  
+      // Merge A1 to D1 for the title
+      if (!ws['!merges']) ws['!merges'] = [];
+      ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } });
+  
+      // Add Headers in row 2
+      XLSX.utils.sheet_add_aoa(ws, [['Full Name', 'Total Posts', 'Total Likes', 'Badge']], { origin: 'A2' });
+  
+      // Append Data from row 3
+      XLSX.utils.sheet_add_json(ws, this.users.data, { origin: 'A3', skipHeader: true });
+  
+      // Apply styles to title
+      ws['A1'].s = headerStyle;
+  
+      // Apply styles to headers
+      for (let col = 0; col < 4; col++) {
+        const headerCell = XLSX.utils.encode_cell({ r: 1, c: col });
+        if (ws[headerCell]) ws[headerCell].s = headerStyle;
+      }
+  
+      // Apply styles to data
+      const range = XLSX.utils.decode_range(ws['!ref']!);
+      for (let row = 2; row <= range.e.r; row++) {
+        for (let col = 0; col <= range.e.c; col++) {
+          const dataCell = XLSX.utils.encode_cell({ r: row, c: col });
+          if (ws[dataCell]) ws[dataCell].s = dataStyle;
+        }
+      }
+  
+      // Set column widths
+      ws['!cols'] = [{ width: 30 }, { width: 15 }, { width: 15 }, { width: 20 }];
+
+      if (!ws['!rows']) ws['!rows'] = [];
+      ws['!rows'].push({ hpx: 40 });
+  
+      // Create workbook and export
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Active Users');
+      XLSX.writeFile(wb, fileName);
+    } else {
+      console.error('No user data available for export');
+    }
   }
 
   exportToExcel2(): void {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.liked.data);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Reports');
-    XLSX.writeFile(wb, 'MostLiked.xlsx');
-  }
-}
+    if (this.liked && this.liked.data) {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const fileName = `Most Liked Posts - ${currentDate}.xlsx`;
+  
+      const headerStyle = {
+        font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 14 },
+        fill: { fgColor: { rgb: '266CA9' } },
+        alignment: { horizontal: 'center', vertical: 'center' },
+        border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
+      };
+  
+      const dataStyle = {
+        font: { color: { rgb: '000000' } },
+        alignment: { horizontal: 'left' },
+        border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
+      };
+  
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+  
+      // Add Title Row
+      XLSX.utils.sheet_add_aoa(ws, [['Most Liked Posts Report']], { origin: 'A1' });
+  
+      // Merge A1 to D1 for the title
+      if (!ws['!merges']) ws['!merges'] = [];
+      ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } });
+  
+      // Add Headers in row 2
+      XLSX.utils.sheet_add_aoa(ws, [['Full Name', 'Post Title', 'Total Likes', 'Badge']], { origin: 'A2' });
+  
+      // Append Data from row 3
+      XLSX.utils.sheet_add_json(ws, this.liked.data, { origin: 'A3', skipHeader: true });
+  
+      // Apply styles to title
+      ws['A1'].s = headerStyle;
+  
+      // Apply styles to headers
+      for (let col = 0; col < 4; col++) {
+        const headerCell = XLSX.utils.encode_cell({ r: 1, c: col });
+        if (ws[headerCell]) ws[headerCell].s = headerStyle;
+      }
+  
+      // Apply styles to data
+      const range = XLSX.utils.decode_range(ws['!ref']!);
+      for (let row = 2; row <= range.e.r; row++) {
+        for (let col = 0; col <= range.e.c; col++) {
+          const dataCell = XLSX.utils.encode_cell({ r: row, c: col });
+          if (ws[dataCell]) ws[dataCell].s = dataStyle;
+        }
+      }
+  
+      // Set column widths
+      ws['!cols'] = [{ width: 30 }, { width: 40 }, { width: 15 }, { width: 20 }];
 
+      if (!ws['!rows']) ws['!rows'] = [];
+      ws['!rows'].push({ hpx: 40 });
+  
+      // Create workbook and export
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Most Liked');
+      XLSX.writeFile(wb, fileName);
+    } else {
+      console.error('No liked data available for export');
+    }
+  } 
+}
 
 export interface TableElement {
   title: string;
   status: string;
   created_at?: string;
   user_name?: string;
-
   total_posts: string;
   total_likes: string;
-
   likes_count: string;
   badges: string;
-
   category: string;
+  materials: string;
   total: string;
 }

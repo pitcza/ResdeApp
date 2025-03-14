@@ -3,20 +3,30 @@
         <div class="post-header">
             <div class="popup-head">
                 <h1> Your Post </h1>
-                <p class="status" [ngClass]="{
-                    'pending-status': post.status === 'pending',
-                    'approved-status': post.status === 'approved',
-                    'declined-status': post.status === 'declined',
-                  }"> {{ post.status }} </p>
+                <p *ngIf="post.status === 'removed'" class="status removed-status"> 
+                    {{ post.status }} 
+                </p>
             </div>
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
 
         <div class="post-content">
-            <div class="declined-remarks" *ngIf="post.status === 'declined'">
-                <h3> Admin declined your post </h3>
-                <p> <strong>Remarks:</strong> {{ post.remarks }} </p>
+            <div class="declined-remarks" *ngIf="post.status === 'removed'">
+                <h3>Your post has been removed by an admin.</h3>
+                <p><strong>Reason for Removal:</strong> {{ post.remarks }}</p>
+
+                <p class="reasons"><strong>Reported for:</strong></p>
+                <ul>
+                <li *ngFor="let reason of getUniqueReasons()">{{ reason }}</li>
+                </ul>
+
+                <p class="date-removed"><strong>Date Removed:</strong> {{ post.deleted_at | date: 'mediumDate' }} at {{ post.deleted_at | date: 'shortTime' }}</p>
+
+                <p class="deletion-warning">
+                This post will be <strong>permanently deleted after 7 days.</strong>  
+                You may choose to <strong>delete it now</strong> if you prefer.
+                </p>
             </div>
 
             <h4 class="publisher">{{ post.user_name }}</h4>
@@ -32,8 +42,9 @@
 
         <div class="post-footer">
             <div class="buttons">
-                <input class="submit-btn" type="button" value="Edit Post" *ngIf="post.status === 'pending'" (click)="editPost(post.id)">
-                <input class="danger-btn" type="button" value="Delete" (click)="deletePost(post.id, dialogRef)">
+                <input class="submit-btn" type="button" value="Edit Post" *ngIf="post.status === 'posted' || post.status === 'reported'" (click)="editPost(post.id)">
+                <input class="danger-btn" type="button" value="Delete" *ngIf="post.status === 'posted' || post.status === 'reported'" (click)="deletePost(post.id, dialogRef)">
+                <input class="danger-btn" type="button" value="Delete Now" *ngIf="post.status === 'removed' " (click)="deletePost(post.id, dialogRef)">
             </div>
         </div>
     </div>

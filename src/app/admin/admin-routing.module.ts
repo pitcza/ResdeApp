@@ -5,14 +5,16 @@ import { AnnouncementComponent } from './components/announcement/announcement.co
 import { ReportsComponent } from './components/reports/reports.component';
 import { UsersComponent } from './components/users/users.component';
 import { MyBarangayComponent } from './components/my-barangay/my-barangay.component';
+import { AllPostComponent } from './components/all-post/all-post.component';
+import { ReportedPostsComponent } from './components/reported-posts/reported-posts.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'my-barangay', component: MyBarangayComponent},
   { path: 'announcement', component: AnnouncementComponent},
-  { path: 'pendings', loadChildren: () => import('./components/pendings/pendings.module').then(m => m.PendingsModule) },
-  { path: 'all-post', loadChildren: () => import('./components/all-post/all-post.module').then(m => m.AllPostModule) },
+  { path: 'all-post', component: AllPostComponent },
+  { path: 'reported-posts', component: ReportedPostsComponent },
   { path: 'reports', component: ReportsComponent},
   { path: 'users', component: UsersComponent},
 ];

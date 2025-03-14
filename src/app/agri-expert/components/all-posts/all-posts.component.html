@@ -1,1 +1,96 @@
-<router-outlet></router-outlet>
+<div class="content">
+    <div class="head">
+        <h1> All Posts </h1>
+    </div>
+
+    <div class="table-content">
+            <div class="filters">
+                <div class="selects">
+                    <input type="text" placeholder="Search by Name or Materials..." (input)="onSearchChange($event)" class="search-input">
+
+                    <select id="filter-category" (change)="onCategoryChange($event)">
+                        <option selected value=""> All Category </option>
+                        <option value="Reduce">Reduce</option>
+                        <option value="Reuse">Reuse</option>
+                        <option value="Recycle">Recycle</option>
+                        <option value="Gardening">Gardening</option>
+                    </select>
+                    <select id="filter-status" (change)="onStatusChange($event)">
+                        <option selected value="">  All Status </option>
+                        <option value="posted"> Posted </option>
+                        <option value="reported"> Reported </option>
+                    </select>
+                </div>
+            
+                <form>
+                  <div class="date-filter">
+                      <div class="txt_field">
+                        <label for="filter-from-date">From Date</label>
+                        <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
+                      </div>
+                      <div class="txt_field">
+                        <label for="filter-to-date">To Date</label>
+                        <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
+                      </div>
+                  </div>
+                </form>
+              </div>
+
+              <br>
+            
+        <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date Posted</th>
+            <td mat-cell *matCellDef="let element">{{element.created_at | date:'mediumDate'}} {{element.created_at | date:'shortTime'}}</td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{element.fname}} {{element.lname}}</td>
+            </ng-container>
+        
+            <!-- Category Column -->
+            <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let element">{{element.category}}</td>
+            </ng-container>
+        
+            <!-- Title Column -->
+            <ng-container matColumnDef="materials">
+            <th mat-header-cell *matHeaderCellDef>Materials</th>
+            <td mat-cell *matCellDef="let element">{{ formatMaterials(element.materials) }}</td>
+            </ng-container>
+        
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'status ' + element.status">{{element.status}}</td>
+            </ng-container>
+        
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element" class="actions">
+                <button class="delete" (click)="deletePost(element.id)">
+                    <i class='bx bx-trash'></i>
+                    <span class="tooltiptext"> Remove </span>
+                </button>
+                <button class="view" (click)="viewPost(element.id)">
+                    <i class='bx bx-detail'></i>
+                    <span class="tooltiptext"> View </span>
+                </button>
+            </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+        </mat-paginator>
+        
+    </div>
+</div>
