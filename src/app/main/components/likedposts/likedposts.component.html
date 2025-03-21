@@ -37,14 +37,17 @@
   <div *ngIf="!isLoading && items.length > 0" class="slit-screen">
     <!-- Left container -->
     <div class="left-container" *ngIf="selectedItem.title" style="--delay: 0.1s;">
-      <h2 class="title">{{ selectedItem.title }}</h2>
+      <div class="upper">
+        <h2>{{ selectedItem.title }}</h2>
+        <p class="materials">{{ formatMaterials(selectedItem.materials) }}</p>
+      </div>
       <p class="info">
         <span class="author">{{ selectedItem.author }} • </span>
         <span class="category">{{ selectedItem.category }}</span>
         <span class="date"> • {{ selectedItem.post_date | date:'longDate' }} at {{ selectedItem.post_date | date:'shortTime' }}</span>
       </p>
       <p class="description" [innerHTML]="formatContent(selectedItem.description)"></p>
-      <img [src]="selectedItem.image" alt="Image" class="main-image" />
+      <img [src]="selectedItem.image" alt="Image" class="main-image" (error)="onImageError($event)"/>
 
       <a (click)="toggleLike(selectedItem, $event)">
         <span class="heart-btn">
@@ -63,7 +66,7 @@
         [style.--delay]="(i + 1) * 0.2 + 's'"
       >
         <div class="post-image">
-          <img [src]="item.image" alt="Small Image" class="small-image" />
+          <img [src]="item.image" alt="Small Image" class="small-image" (error)="onImageError($event)"/>
         </div>
         <div class="info">
           <p class="title">{{ item.title }}</p>

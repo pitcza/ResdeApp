@@ -1,14 +1,15 @@
 <div class="container">
     <div class="post-container">
         <div class="post-header">
-            <h1> {{ post?.user_name?.split(' ')[0] || 'User' }}'s Post </h1>
+            <h1> {{ post?.category || 'Uncategorized' }} Content </h1>
             <button class="exit-button" (click)="closeDialog()"> &times; </button>
         </div>
 
         <div class="post-content">
             <div class="main-post">
                 <div class="upper">
-                    <h2>{{ post?.title || 'Untitled' }} <span class="category">{{ post?.category || 'Uncategorized' }}</span></h2>
+                    <h2>{{ post?.title || 'Untitled' }}</h2>
+                    <p class="materials">{{ formatMaterials(post?.materials) }}</p>
                 </div>
                 <p class="info">
                     <span class="author">{{ post?.user_name || 'Unknown' }} </span>
@@ -16,7 +17,7 @@
                 </p>
                 <p [innerHTML]="formatContent(post?.content)"></p>
                 <div class="post-img">
-                    <img [src]="post?.image || '../../../../../assets/images/NoImage.png'" alt="post image">
+                    <img [src]="post?.image" alt="post image" (error)="onImageError($event)">
                 </div>
             </div>
         </div>

@@ -70,39 +70,35 @@ export class PostslistComponent implements OnInit {
     this.filteredPosts = filteredPosts;
   }
 
-  // UPLOADING POPUP
   uploadIdea() {
     const dialogRef = this.dialog.open(UploadPostComponent);
     dialogRef.afterClosed().subscribe(() => {
-      this.fetchUserPost(); // Refresh after closing
+      this.fetchUserPost();
     });
   }
 
-  // EDITING POST POPUP
-  editPost(id: number) {
+  editPost(postId: number) {
     const dialogRef = this.dialog.open(EditpostComponent, {
-      data: { id: id }
+      data: { id: postId }
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.fetchUserPost(); // Refresh after closing
+      this.fetchUserPost();
     });
   }
 
-  // VIEWING POST POPUP
   viewPost(id: number) {
     const dialogRef = this.dialog.open(ViewComponent, {
       data: { id: id }  
     });
   
     dialogRef.afterClosed().subscribe(() => {
-      this.fetchUserPost(); // Refresh after closing
+      this.fetchUserPost();
     });
   }
 
   fetchUserPost(): void {
     this.ds.getUserPosts().subscribe(
       (response) => {
-        // Assign the fetched posts to the dataSource
         this.dataSource = response.posts
           .map((post: any) => ({
             id: post.id,
@@ -123,8 +119,6 @@ export class PostslistComponent implements OnInit {
         this.applyFilters();
         this.isLoading = false;
         this.cdr.detectChanges();
-
-        // Immediately filter the data after fetching
         this.filterPosts();
 
         console.log(response);
@@ -160,7 +154,6 @@ export class PostslistComponent implements OnInit {
     this.updatePagination();
   }
 
-  // Pagination logic
   updatePagination() {
     this.totalPages = Math.ceil(this.filteredPosts.length / this.pageSize);
     this.currentPage = Math.min(this.currentPage, this.totalPages) || 1;

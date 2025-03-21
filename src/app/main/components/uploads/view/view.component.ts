@@ -60,14 +60,13 @@ export class ViewComponent implements OnInit {
     return Array.from(new Set(this.post.report_reasons));
   }  
 
-  // EDITING POST POPUP
-  editPost(id: number) {
-    if (this.dialog) {
-      this.dialog.open(EditpostComponent);
-      this.closeDialog();
-    } else {
-      console.error('not found');
-    }
+  editPost(postId: number) {
+    const dialogRef = this.dialog.open(EditpostComponent, {
+      data: { id: postId }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchPost();
+    });
   }
 
   deletePost(id: number, dialogRef: any) {
@@ -85,15 +84,8 @@ export class ViewComponent implements OnInit {
         this.ds.deletePost(id).subscribe(
           () => {
             this.cdr.detectChanges();
-  
-            // Navigate to the post list after deletion
-            this.router.navigate(['main/uploads/postlist']);
-  
-            // Close the dialog after deleting the post
-            if (dialogRef) {
-              dialogRef.close();
-            }
-  
+            this.closeDialog();
+            this.fetchPost();
             Swal.fire({
               title: 'Post Deleted!',
               text: 'The post has been deleted.',
@@ -121,5 +113,17 @@ export class ViewComponent implements OnInit {
     });
   }
   
-  
+  formatMaterials(materials: string): string {
+    try {
+        const parsedMaterials = JSON.parse(materials);
+        return Array.isArray(parsedMaterials) ? parsedMaterials.join(', ') : 'No materials listed.';
+    } catch {
+        return 'No materials listed.';
+    }
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
 }

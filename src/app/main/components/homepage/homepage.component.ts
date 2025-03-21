@@ -344,8 +344,7 @@ export class HomepageComponent implements OnInit {
         });
       }
     );
-  }  
-  
+  } 
 }
 
 export interface TableElement {

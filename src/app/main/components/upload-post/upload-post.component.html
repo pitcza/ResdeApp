@@ -75,6 +75,13 @@
                     </div>
                 </div>
 
+                <div class="input-row">
+                    <!-- Display Image Preview -->
+                    <div *ngIf="imagePreview" class="image-preview-container">
+                      <img [src]="imagePreview" alt="Image Preview" class="image-preview">
+                    </div>
+                </div>
+
                 <div class="buttons">
                     <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
                     <input class="submit-btn" type="submit" value="Post" [disabled]="postForm.invalid || isSubmitting">

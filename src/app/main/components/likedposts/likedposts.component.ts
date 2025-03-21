@@ -13,6 +13,7 @@ export class LikedpostsComponent implements OnInit {
   selectedItem: Item = {
     title: '',
     category: '',
+    materials: '',
     author: '',
     date: '',
     post_date: '',
@@ -48,6 +49,7 @@ export class LikedpostsComponent implements OnInit {
           id: post.id,
           title: post.title || 'Untitled',
           category: post.category || 'Uncategorized',
+          materials: post.materials || 'No materials listed',
           author: post.user_name || 'Unknown',
           post_date: post.created_at || '',
           image: post.image || '../../../../assets/images/default-placeholder.png',
@@ -115,12 +117,27 @@ export class LikedpostsComponent implements OnInit {
       }
     );
   }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
+
+  formatMaterials(materials: string): string {
+    try {
+        const parsedMaterials = JSON.parse(materials);
+        return Array.isArray(parsedMaterials) ? parsedMaterials.join(', ') : 'No materials listed.';
+    } catch {
+        return 'No materials listed.';
+    }
+  }
 }
 
 interface Item {
   id: number;
   title: string;
   category: string;
+  materials: string;
   author: string;
   date: string;
   post_date: string;

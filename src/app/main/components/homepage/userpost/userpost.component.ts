@@ -55,6 +55,20 @@ export class UserpostComponent {
     return content.replace(/\n/g, '<br>');
   }
 
+  formatMaterials(materials: string): string {
+    try {
+        const parsedMaterials = JSON.parse(materials);
+        return Array.isArray(parsedMaterials) ? parsedMaterials.join(', ') : 'No materials listed.';
+    } catch {
+        return 'No materials listed.';
+    }
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
+  
   closeDialog() {
     this.dialogRef.close();
   }

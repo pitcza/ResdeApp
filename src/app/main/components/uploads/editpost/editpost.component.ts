@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-editpost',
@@ -10,148 +10,181 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./editpost.component.scss']
 })
 export class EditpostComponent implements OnInit {
-  postData: any = { title: '', content: '', category: '' }; // Default object structure
-  id: any;
-  ImagePreview: string | ArrayBuffer | null = null;
-  post: any;
-
+  postData!: FormGroup;
+  
   constructor(
     public dialogRef: MatDialogRef<EditpostComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private router: Router,
-    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
     private ds: DataserviceService
   ) {}
 
-  closeDialog() {
-    this.dialogRef.close();
+  ngOnInit() {
+    this.postData = this.fb.group({
+      category: [''],
+      title: [''],
+      content: [''],
+      materials: this.fb.array([]),
+      image: ['']
+    });
+  
+    this.fetchPost();
   }
 
-  ngOnInit(): void {
-    this.id = this.data.id;  
-    this.fetchPostData();
-  }
-
-  fetchPostData() {
-    this.ds.getPost(this.id).subscribe(
-      (data) => {
-        console.log('Fetched Post Data:', data); // Log fetched data
-        if (data && data.post) {
-          // Assign fetched post data to the form model
-          this.postData.title = data.post.title;
-          this.postData.content = data.post.content;
-          this.postData.category = data.post.category;
-          // If there's an image, set the image preview
-          // if (data.post.image) {
-          //   this.ImagePreview = data.post.image; // Assuming image is a URL or base64 data
-          // }
+  fetchPost() {
+    console.log('Received post ID:', this.data.id); // Debugging
+    if (!this.data.id) {
+      console.error('Post ID is undefined!');
+      return;
+    }
+  
+    this.ds.getPost(this.data.id).subscribe((response: any) => {
+      if (response) {
+        this.postData.patchValue({
+          category: response.category,
+          title: response.title,
+          content: response.content
+        });
+  
+        // Load existing image
+        if (response.image) {
+          this.imagePreview = response.image; // Assuming it's a URL
         }
-      },
-      (error) => {
-        console.error('Error fetching post data', error);
+  
+        // Handle materials
+        this.selectedOptions = []; // Reset before populating
+        const materialsArray = this.postData.get('materials') as FormArray;
+        materialsArray.clear(); // Clear existing materials
+  
+        let materialsData = response.materials;
+  
+        if (typeof materialsData === 'string') {
+          try {
+            materialsData = JSON.parse(materialsData); // Convert string to array
+          } catch (error) {
+            console.error('Error parsing materials:', error);
+            materialsData = [];
+          }
+        }
+  
+        if (Array.isArray(materialsData)) {
+          materialsData.forEach((material: string) => {
+            this.selectedOptions.push(material); // Sync with selectedOptions
+            materialsArray.push(this.fb.control(material)); // Add to FormArray
+          });
+        }
+  
+        this.cdr.detectChanges();
       }
-    );
+    }, (error) => {
+      console.error('Error fetching post:', error);
+    });
   }
   
+  selectedFile: File | null = null; // Store selected file separately
+  imagePreview: string | ArrayBuffer | null = null; // Store preview
 
-  // Handles the file selection and previews the image
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
     if (file) {
+      this.selectedFile = file;
       const reader = new FileReader();
       reader.onload = () => {
-        this.ImagePreview = reader.result as string; // Store as string
+        this.imagePreview = reader.result; // Update preview
       };
       reader.readAsDataURL(file);
     }
   }
 
-  // Confirmation before updating post
-  updatePost(): void {
-    if (!this.postData.title || !this.postData.content || !this.postData.category) {
-      Swal.fire({
-        icon: 'error',
-        text: 'Please fill in all required fields.',
-      });
-      return;
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  options: string[] = [
+    'Compost', 'Plastic', 'Rubber', 'Wood', 'Paper', 'Glass', 'Boxes', 
+    'Mixed Waste', 'Cloth', 'Miscellaneous Products', 'Tips & Tricks', 'Issues'
+  ];
+
+  selectedOptions: string[] = [];
+  dropdownOpen: boolean = false;
+
+  get materialsFormArray() {
+    return this.postData.get('materials') as FormArray;
+  }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  toggleOption(option: string) {
+    const index = this.selectedOptions.indexOf(option);
+    if (index > -1) {
+      this.selectedOptions.splice(index, 1);
+      this.removeMaterial(option);
+    } else {
+      this.selectedOptions.push(option);
+      this.addMaterial(option);
     }
-  
-    // Log the post data to check
-    console.log('Post data:', this.postData);
-    
+  }
+
+  addMaterial(material: string) {
+    this.materialsFormArray.push(this.fb.control(material));
+  }
+
+  removeMaterial(material: string) {
+    const index = this.materialsFormArray.value.indexOf(material);
+    if (index > -1) {
+      this.materialsFormArray.removeAt(index);
+    }
+  }
+
+  isSelected(option: string): boolean {
+    return this.selectedOptions.includes(option);
+  }
+
+  onSubmit() {
     Swal.fire({
       title: 'Update Post',
-      text: 'Are you sure you want to update your post?',
-      icon: 'warning',
+      text: 'Are you suer you want to update this post?',
+      icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#4d745a',
-      cancelButtonColor: '#777777',
-      confirmButtonText: 'Yes',
+      confirmButtonColor: '#266CA9',
+      cancelButtonColor: '#7F7F7F',
+      confirmButtonText: 'Update',
       cancelButtonText: 'Cancel',
+      reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        const postId = this.id ? Number(this.id) : null;
+        const formData = new FormData();
   
-        if (postId !== null) {
-          const formData = new FormData();
+        // Append text fields
+        formData.append('category', this.postData.value.category);
+        formData.append('title', this.postData.value.title);
+        formData.append('content', this.postData.value.content);
   
-          // Append text fields to formData
-          formData.append('title', this.postData.title);
-          formData.append('content', this.postData.content);
-          formData.append('category', this.postData.category);
+        // Append materials as an array
+        this.postData.value.materials.forEach((material: string) => {
+          formData.append('materials[]', material);
+        });
   
-          // If there is a new image, convert it to a file and add to FormData
-          if (typeof this.ImagePreview === 'string' && this.ImagePreview) {
-            const file = this.dataURLToFile(this.ImagePreview, 'image.png');
-            formData.append('image', file);
-          }
-  
-          // Log FormData to check the data before sending
-          console.log('FormData:', formData);
-  
-          // Send data to the backend
-          this.ds.updatePost(postId, formData).subscribe(
-            (response) => {
-              Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Post has been updated.',
-                showConfirmButton: false,
-                timer: 5000
-              });
-              this.closeDialog();
-            },
-            (error) => {
-              Swal.fire({
-                icon: 'error',
-                text: 'Failed to update the post. Please try again.',
-              });
-              console.error('Error updating post:', error);
-            }
-          );
-        } else {
-          console.error('Invalid post ID');
+        // Append new image if selected, otherwise retain the existing image
+        if (this.selectedFile) {
+          formData.append('image', this.selectedFile); // New image file
+        } else if (this.imagePreview && typeof this.imagePreview === 'string') {
+          formData.append('existingImage', this.imagePreview); // Keep existing image
         }
+  
+        // Call the API
+        this.ds.updatePost(this.data.id, formData).subscribe(response => {
+          Swal.fire('Updated!', 'Your post has been updated successfully.', 'success');
+          this.closeDialog();
+        }, error => {
+          Swal.fire('Error', 'Failed to update post', 'error');
+        });
       }
     });
-  }
-  
-
-  // Helper function to convert Base64 to File
-  dataURLToFile(dataUrl: string, filename: string): File {
-    const arr = dataUrl.split(',');
-    const mimeMatch = arr[0].match(/:(.*?);/);
-    const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream'; // Default MIME type
-    const bstr = atob(arr[1]);
-    const u8arr = new Uint8Array(bstr.length);
-    
-    for (let i = 0; i < bstr.length; i++) {
-      u8arr[i] = bstr.charCodeAt(i);
-    }
-    
-    return new File([u8arr], filename, { type: mime });
-  }
+  }  
 
   cancelPopup() {
     Swal.fire({

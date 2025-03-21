@@ -29,6 +29,20 @@ export class UploadPostComponent {
     this.dialogRef.close();
   }
 
+  imagePreview: string | ArrayBuffer | null = null;
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.image = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }  
+
   options: string[] = [
     'Compost', 'Plastic', 'Rubber', 'Wood', 'Paper', 'Glass', 'Boxes', 
     'Mixed Waste', 'Cloth', 'Miscellaneous Products', 'Tips & Tricks', 'Issues'
@@ -81,16 +95,30 @@ export class UploadPostComponent {
     });
   }
 
-  // Handle file selection
-  onFileSelected(event: any) {
-    this.image = event.target.files[0];  // Get the file
-    if (this.image) {
-      this.postForm.patchValue({ image: this.image });
+  onSubmit() {
+    if (this.postForm.invalid || this.isSubmitting) {
+      return;
     }
-  }
+  
+    Swal.fire({
+      title: 'Publish Post',
+      text: 'Are you sure you want yo publish this post?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#294285',
+      cancelButtonColor: '#7F7F7F',
+      confirmButtonText: 'Yes, post it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.submitPost();
+      }
+    });
+  }  
 
   // Handle form submission
-  onSubmit() {
+  submitPost() {
     if (this.postForm.invalid || this.isSubmitting) {
       return;
     }

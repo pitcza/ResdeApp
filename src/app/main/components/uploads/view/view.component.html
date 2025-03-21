@@ -2,7 +2,7 @@
     <div class="post-container">
         <div class="post-header">
             <div class="popup-head">
-                <h1> Your Post </h1>
+                <h1> Your Post • {{ post?.category || 'Uncategorized' }} Content </h1>
                 <p *ngIf="post.status === 'removed'" class="status removed-status"> 
                     {{ post.status }} 
                 </p>
@@ -29,13 +29,18 @@
                 </p>
             </div>
 
-            <h4 class="publisher">{{ post.user_name }}</h4>
             <div class="main-post">
-                <h2>{{ post.title }}</h2>
-                <span class="category">{{ post.category }}</span> • <span class="date">{{ post.created_at | date: 'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
+                <div class="upper">
+                    <h2>{{ post.title || 'Untitled' }}</h2>
+                    <p class="materials">{{ formatMaterials(post.materials) }}</p>
+                </div>
+                <p class="info">
+                    <span class="author">{{ post.user_name || 'Unknown' }} </span>
+                    <span class="date"> • {{ post.created_at | date:'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
+                </p>
                 <p [innerHTML]="formatContent(post.content)"></p>
                 <div class="post-img">
-                    <img [src]="post.image || '../../../../../assets/images/NoImage.png'" alt="post image">
+                    <img [src]="post.image" alt="post image" (error)="onImageError($event)">
                 </div>
             </div>
         </div>

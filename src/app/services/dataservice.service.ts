@@ -31,8 +31,8 @@ export class DataserviceService {
           return this.http.delete<any>(this.url + endpoint, { headers });
       default:
           throw new Error('Invalid method');
+    }
   }
-}
 
   getUser(): Observable<any> {
     return this.User('user')
@@ -65,7 +65,7 @@ export class DataserviceService {
     return this.User('getUserPosts')
   }
 
-  // view post - sira pa
+  // view post
   getPost(postId: number): Observable<any> {
     return this.User(`post/${postId}`, 'GET');
   }

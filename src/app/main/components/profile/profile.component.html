@@ -216,7 +216,7 @@
                                 </a>
                                 <div class="category-time">
                                     <span class="post-category">{{ element.category }}</span>
-                                    <span class="published-time">{{ element.date | date: 'mediumDate' }}</span>
+                                    <span class="published-time">{{ element.date | date: 'mediumDate' }} at {{ element.date | date: 'shortTime' }}</span>
                                 </div>
                             </mat-card-content>
                             <mat-card-actions class="actions" id="uploads-actions">
