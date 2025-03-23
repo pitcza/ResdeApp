@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../services/dataservice.service';
@@ -33,15 +31,77 @@ export class UploadPostComponent {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
+    if (!file) return;
+  
+    const maxImageSize = 6 * 1024 * 1024;
+    const maxVideoSize = 6 * 1024 * 1024;
+    const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    const allowedVideoTypes = ['video/mp4', 'video/quicktime'];
+  
+    if (file.type.startsWith('image/')) {
+      if (!allowedImageTypes.includes(file.type)) {
+        Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Only PNG, JPG, JPEG, and WEBP images are allowed.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+      if (file.size > maxImageSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'Image file size should not exceed 5MB.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+  
       this.image = file;
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result;
       };
       reader.readAsDataURL(file);
+    } 
+    else if (file.type.startsWith('video/')) {
+      if (!allowedVideoTypes.includes(file.type)) {
+        Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Only MP4 and MOV videos are allowed.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+      if (file.size > maxVideoSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'Video file size should not exceed 5MB.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+  
+      this.image = file;
+      this.imagePreview = URL.createObjectURL(file);
+    } 
+    else {
+      Swal.fire({
+        title: 'Invalid File',
+        text: 'Only images (PNG, JPG, JPEG, WEBP) and videos (MP4, MOV) are allowed.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+        confirmButtonColor: '#7F7F7F'
+      });
     }
-  }  
+  }
 
   options: string[] = [
     'Compost', 'Plastic', 'Rubber', 'Wood', 'Paper', 'Glass', 'Boxes', 
@@ -89,8 +149,8 @@ export class UploadPostComponent {
     this.postForm = this.fb.group({
       category: ['', Validators.required],
       materials: this.fb.array([], Validators.required),
-      title: ['', Validators.required],
-      content: ['', Validators.required],
+      title: ['', [Validators.required, Validators.maxLength(255)]],
+      content: ['', [Validators.required, Validators.maxLength(10000)]],
       image: [null]
     });
   }
@@ -124,21 +184,21 @@ export class UploadPostComponent {
     }
   
     this.isSubmitting = true;
-
     const formData = new FormData();
+  
     formData.append('title', this.postForm.get('title')!.value);
     formData.append('category', this.postForm.get('category')!.value);
     formData.append('content', this.postForm.get('content')!.value);
-
+  
     const selectedMaterials = this.materialsFormArray.value;
     selectedMaterials.forEach((material: string) => {
       formData.append('materials[]', material);
     });
-
+  
     if (this.image) {
       formData.append('image', this.image);
     }
-
+  
     this.dataService.createPost(formData).subscribe(
       (response) => {
         console.log('Post created successfully', response);
@@ -157,24 +217,16 @@ export class UploadPostComponent {
       },
       (error) => {
         console.error('Error creating post', error);
-    
-        let errorMessage = 'Please Fill up all fields.';
-    
-        // Check for specific error conditions
-        if (error && error.error) {
-          if (error.error.missingImage) {
-            errorMessage = 'The image is missing. Please upload an image.';
-          } else if (error.error.missingContent) {
-            errorMessage = 'A description is required.';
-          } else if (error.error.missingCategory) {
-            errorMessage = 'Category is required.';
-          }
+        let errorMessage = 'Please fill up all fields.';
+  
+        if (error?.error?.missingImage) {
+          errorMessage = 'An image or video is required.';
+        } else if (error?.error?.missingContent) {
+          errorMessage = 'A description is required.';
+        } else if (error?.error?.missingCategory) {
+          errorMessage = 'Category is required.';
         }
-
-        // if (error?.error?.message) {
-        //   errorMessage = error.error.message;
-        // }
-    
+  
         Swal.fire({
           title: 'Error',
           text: errorMessage,
@@ -182,7 +234,7 @@ export class UploadPostComponent {
           confirmButtonText: 'Close',
           confirmButtonColor: "#7f7f7f"
         });
-
+  
         this.isSubmitting = false;
       }
     );

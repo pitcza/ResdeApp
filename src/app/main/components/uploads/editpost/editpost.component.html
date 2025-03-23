@@ -60,17 +60,25 @@
   
         <div class="input-row">
           <div class="input-field-short">
-            <label class="up-labelline"> Upload Photo </label>
-            <input class="file-field" type="file" id="file" accept="image/*" formControlName="image" (change)="onFileSelected($event)">
+            <label class="up-labelline"> Upload Photo or Video </label>
+            <input class="file-field" type="file" id="file" accept="image/*,video/*" formControlName="image" (change)="onFileSelected($event)">
           </div>
         </div>
 
         <div class="input-row">
-          <!-- Display Image Preview -->
           <div *ngIf="imagePreview" class="image-preview-container">
-            <img [src]="imagePreview" alt="Image Preview" class="image-preview">
+            <ng-container *ngIf="isVideo; else imageBlock">
+              <video controls>
+                <source [src]="imagePreview" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </ng-container>
+            <ng-template #imageBlock>
+              <img [src]="imagePreview" alt="Image Preview" class="image-preview">
+            </ng-template>
           </div>
         </div>
+              
   
         <div class="buttons">
           <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">

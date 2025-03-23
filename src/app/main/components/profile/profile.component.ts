@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { AuthserviceService } from '../../../services/authservice.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataserviceService } from '../../../services/dataservice.service';
@@ -497,6 +497,7 @@ export class ProfileComponent implements OnInit{
             category: post.category,
             date: post.created_at,
             image: post.image,
+            image_type: post.image_type,
             status: post.status,
             description: post.content,
             total_likes: post.total_likes ?? 0 
@@ -609,10 +610,32 @@ export class ProfileComponent implements OnInit{
       }
     });
   }
+
+  // for video preview
+  @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
+      
+  captureFirstFrame(video: HTMLVideoElement, post: any) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+
+    video.currentTime = 0.1;
+    video.addEventListener('seeked', function onSeeked() {
+      video.removeEventListener('seeked', onSeeked);
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      post.previewImage = canvas.toDataURL('image/png');
+    });
+  }
 }
 
 export interface TableElement {
   image: string;
+  image_type?: string;
   created_at?: string;
   category?: string;
   title: string;

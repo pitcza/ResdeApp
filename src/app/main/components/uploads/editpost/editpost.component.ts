@@ -47,9 +47,10 @@ export class EditpostComponent implements OnInit {
           content: response.content
         });
   
-        // Load existing image
+        // Handle existing media (image or video)
         if (response.image) {
-          this.imagePreview = response.image; // Assuming it's a URL
+          this.imagePreview = response.image; // Store URL
+          this.isVideo = response.image.endsWith('.mp4') || response.image.includes('video');
         }
   
         // Handle materials
@@ -70,8 +71,8 @@ export class EditpostComponent implements OnInit {
   
         if (Array.isArray(materialsData)) {
           materialsData.forEach((material: string) => {
-            this.selectedOptions.push(material); // Sync with selectedOptions
-            materialsArray.push(this.fb.control(material)); // Add to FormArray
+            this.selectedOptions.push(material);
+            materialsArray.push(this.fb.control(material));
           });
         }
   
@@ -80,21 +81,85 @@ export class EditpostComponent implements OnInit {
     }, (error) => {
       console.error('Error fetching post:', error);
     });
-  }
+  }  
   
-  selectedFile: File | null = null; // Store selected file separately
-  imagePreview: string | ArrayBuffer | null = null; // Store preview
+  selectedFile: File | null = null; // Store selected file
+  imagePreview: string | ArrayBuffer | null = null; // Preview URL
+  isVideo: boolean = false; // To determine if file is a video
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result; // Update preview
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+  
+    const maxImageSize = 6 * 1024 * 1024; // 6MB
+    const maxVideoSize = 6 * 1024 * 1024; // 6MB
+    const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    const allowedVideoTypes = ['video/mp4', 'video/quicktime'];
+  
+    if (file.type.startsWith('image/')) {
+      if (!allowedImageTypes.includes(file.type)) {
+        Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Only PNG, JPG, JPEG, and WEBP images are allowed.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+      if (file.size > maxImageSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'Image file size should not exceed 5MB.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+    } 
+    else if (file.type.startsWith('video/')) {
+      if (!allowedVideoTypes.includes(file.type)) {
+        Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Only MP4 and MOV videos are allowed.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+      if (file.size > maxVideoSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'Video file size should not exceed 5MB.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+    } 
+    else {
+      Swal.fire({
+        title: 'Invalid File',
+        text: 'Only images (PNG, JPG, JPEG, WEBP) and videos (MP4, MOV) are allowed.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+        confirmButtonColor: '#7F7F7F'
+      });
+      return;
     }
+  
+    this.selectedFile = file;
+    this.isVideo = file.type.startsWith('video/');
+    
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;  
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
   }
 
   closeDialog() {

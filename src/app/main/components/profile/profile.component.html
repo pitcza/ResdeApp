@@ -207,7 +207,24 @@
                     <ng-container *ngFor="let element of paginatedPosts">
                         <div class="post-box" *ngIf="element.status === 'posted' || element.status === 'reported'">
                             <div mat-card-header class="post-img">
-                                <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
+                                <!-- <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)"> -->
+                                <ng-container *ngIf="element.image_type === 'image'; else videoTemplate">
+                                    <img alt="uploaded image" [src]="element.image || '../../../../assets/images/NoImage.png'" (error)="onImageError($event)" (click)="viewPost(element.id)">
+                                </ng-container>
+                                  
+                                <ng-template #videoTemplate>
+                                    <ng-container *ngIf="element.image; else noVideoTemplate">
+                                      <video controls #videoElement [poster]="element.previewImage || '../../../../assets/images/NoImage.png'" (loadedmetadata)="captureFirstFrame(videoElement, element)">
+                                        <source [src]="element.image" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                      </video>
+                                    </ng-container>
+                                </ng-template>
+
+                                <ng-template #noVideoTemplate>
+                                    <img alt="No video available" src="../../../../assets/images/NoImage.png">
+                                </ng-template>
+                                
                                 <span class="status approved-status">{{ element.total_likes }} Like/s</span>
                             </div>
                             <mat-card-content class="post-text">

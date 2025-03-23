@@ -17,7 +17,18 @@
                 </p>
                 <p [innerHTML]="formatContent(post?.content)"></p>
                 <div class="post-img">
-                    <img [src]="post?.image" alt="post image" (error)="onImageError($event)">
+                    <ng-container *ngIf="post.image_type === 'image' && post.image; else videoTemplate">
+                        <img alt="uploaded image" [src]="post.image" (error)="onImageError($event)">
+                    </ng-container>
+                      
+                    <ng-template #videoTemplate>
+                        <ng-container *ngIf="post.image">
+                          <video controls #videoElement [poster]="post.previewImage" (loadedmetadata)="captureFirstFrame(videoElement, post)">
+                            <source [src]="post.image" type="video/mp4">
+                            Your browser does not support the video tag.
+                          </video>
+                        </ng-container>
+                    </ng-template>
                 </div>
             </div>
         </div>

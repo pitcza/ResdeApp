@@ -27,6 +27,9 @@
                         <div *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched" class="error">
                             Title is required.
                         </div>
+                        <small *ngIf="255 - (postForm.get('title')?.value?.length || 0) <= 5" [ngStyle]="{'color': (postForm.get('title')?.value?.length || 0) > 255 ? 'red' : 'inherit'}">
+                            {{ postForm.get('title')?.value?.length || 0 }}/255
+                        </small>
                     </div>                                            
                 </div>
 
@@ -62,23 +65,26 @@
                         <div *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched" class="error">
                             Description is required.
                         </div>
+                        <small *ngIf="10000 - (postForm.get('content')?.value?.length || 0) <= 5" [ngStyle]="{'color': (postForm.get('content')?.value?.length || 0) > 10000 ? 'red' : 'inherit'}">
+                            {{ postForm.get('content')?.value?.length || 0 }}/10,000
+                        </small>
                     </div>
                 </div>
     
                 <div class="input-row">
                     <div class="input-field-short">
-                        <label class="up-labelline"> Upload Photo </label>
-                        <input class="file-field" type="file" (change)="onFileSelected($event)">
+                        <label class="up-labelline"> Upload Photo or Video </label>
+                        <input class="file-field" type="file" (change)="onFileSelected($event)" accept="image/*,video/*">
                         <div *ngIf="(!image && postForm.get('image')?.invalid) && postForm.get('image')?.touched" class="error">
-                            Image is required.
-                          </div>
+                            Image or Video is required.
+                        </div>
                     </div>
                 </div>
 
                 <div class="input-row">
-                    <!-- Display Image Preview -->
-                    <div *ngIf="imagePreview" class="image-preview-container">
-                      <img [src]="imagePreview" alt="Image Preview" class="image-preview">
+                    <div *ngIf="imagePreview" class="media-preview-container">
+                        <img *ngIf="image && image.type?.startsWith('image/')" [src]="imagePreview" alt="Image Preview" class="image-preview">
+                        <video *ngIf="image && image.type?.startsWith('video/')" [src]="imagePreview" controls class="video-preview"></video>
                     </div>
                 </div>
 

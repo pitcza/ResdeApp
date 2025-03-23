@@ -58,7 +58,23 @@
     <ng-container *ngIf="!isLoading">
       <mat-card *ngFor="let element of filteredDataSource.data" class="post-box">
         <div mat-card-header class="post-img">
-          <img [src]="element.image" (error)="onImageError($event)" alt="uploaded image" (click)="viewPost(element.id)">
+          <ng-container *ngIf="element.image_type === 'image'; else videoTemplate">
+            <img alt="uploaded image" [src]="element.image || '../../../../assets/images/NoImage.png'" (error)="onImageError($event)">
+          </ng-container>
+            
+          <ng-template #videoTemplate>
+              <ng-container *ngIf="element.image; else noVideoTemplate">
+                <video controls #videoElement [poster]="element.previewImage || '../../../../assets/images/NoImage.png'" (loadedmetadata)="captureFirstFrame(videoElement, element)">
+                  <source [src]="element.image" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </ng-container>
+          </ng-template>
+            
+          <ng-template #noVideoTemplate>
+              <img alt="No video available" src="../../../../assets/images/NoImage.png">
+          </ng-template>
+
           <span class="status" [ngClass]="{'posted-status': element.status === 'posted' || 'reported', 'removed-status': element.status === 'removed'}">
             {{ element.status === 'posted' || element.status === 'reported' ? element.total_likes + ' Like/s' : (element.status === 'removed' ? 'Removed' : '') }}
           </span>

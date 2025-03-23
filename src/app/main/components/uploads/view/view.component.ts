@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
@@ -11,17 +11,35 @@ import { EditpostComponent } from '../editpost/editpost.component';
   styleUrls: ['./view.component.scss']
 })
 export class ViewComponent implements OnInit {
-  id!: number;
+  @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
+  
+  captureFirstFrame(video: HTMLVideoElement, post: any) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+
+    video.currentTime = 0.1;
+    video.addEventListener('seeked', function onSeeked() {
+      video.removeEventListener('seeked', onSeeked);
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      post.previewImage = canvas.toDataURL('image/png');
+    });
+  }
+
   post: any;
+  id!: number;
 
   constructor(
     public dialogRef: MatDialogRef<ViewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private router: Router,
     private ds: DataserviceService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
   ) {
     this.id = data?.id;
   }

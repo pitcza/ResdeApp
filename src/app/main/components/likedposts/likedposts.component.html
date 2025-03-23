@@ -47,7 +47,18 @@
         <span class="date"> • {{ selectedItem.post_date | date:'longDate' }} at {{ selectedItem.post_date | date:'shortTime' }}</span>
       </p>
       <p class="description" [innerHTML]="formatContent(selectedItem.description)"></p>
-      <img [src]="selectedItem.image" alt="Image" class="main-image" (error)="onImageError($event)"/>
+      <!-- <img [src]="selectedItem.image" alt="Image" class="main-image" (error)="onImageError($event)"/> -->
+
+      <ng-container *ngIf="selectedItem.image_type === 'image'; else videoTemplate">
+        <img alt="uploaded image" [src]="selectedItem.image || '../../../../assets/images/NoImage.png'" (error)="onImageError($event)">
+      </ng-container>
+      
+      <ng-template #videoTemplate>
+          <video controls #videoElement [poster]="'../../../../assets/images/NoImage.png'" (loadedmetadata)="captureFirstFrame(videoElement, selectedItem)">
+              <source [src]="selectedItem.image" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+      </ng-template>
 
       <a (click)="toggleLike(selectedItem, $event)">
         <span class="heart-btn">
@@ -66,7 +77,18 @@
         [style.--delay]="(i + 1) * 0.2 + 's'"
       >
         <div class="post-image">
-          <img [src]="item.image" alt="Small Image" class="small-image" (error)="onImageError($event)"/>
+          <!-- <img [src]="item.image" alt="Small Image" class="small-image" (error)="onImageError($event)"/> -->
+
+          <ng-container *ngIf="item.image_type === 'image'; else videoTemplate">
+            <img alt="uploaded image" [src]="item.image || '../../../../assets/images/NoImage.png'" (error)="onImageError($event)">
+          </ng-container>
+          
+          <ng-template #videoTemplate>
+            <video controls #videoElement [poster]="'../../../../assets/images/NoImage.png'" (loadedmetadata)="captureFirstFrame(videoElement, item)">
+                <source [src]="item.image" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+          </ng-template>
         </div>
         <div class="info">
           <p class="title">{{ item.title }}</p>

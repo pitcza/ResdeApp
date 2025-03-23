@@ -66,7 +66,7 @@
     }
   }
 
-  img {
+  img, video {
     width: 100%;
     height: auto;
     margin-top: 10px;
@@ -110,7 +110,7 @@
       width: 120px;
       background-color: #929292;
   
-      img {
+      img, video {
         height: 100%;
         width: 100%;
         object-fit: cover;

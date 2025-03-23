@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import Swal from 'sweetalert2';
 import { DataserviceService } from '../../../../services/dataservice.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,26 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './postslist.component.scss'
 })
 export class PostslistComponent implements OnInit {
+  @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
+  
+  captureFirstFrame(video: HTMLVideoElement, element: any) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+
+    video.currentTime = 0.1; // Seek to a very early frame
+    video.addEventListener('seeked', function onSeeked() {
+      video.removeEventListener('seeked', onSeeked); // Remove listener after execution
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      element.previewImage = canvas.toDataURL('image/png'); // Save first frame as poster
+    });
+  }
+  
   displayedColumns: string[] = ['image', 'date', 'category', 'title', 'status', 'action'];
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   dataSource: any [] = [];
@@ -106,6 +126,7 @@ export class PostslistComponent implements OnInit {
             category: post.category,
             date: post.created_at,
             image: post.image,
+            image_type: post.image_type,
             status: post.status,
             description: post.content,
             total_likes: post.total_likes
@@ -252,6 +273,8 @@ export class PostslistComponent implements OnInit {
 
 export interface TableElement {
   image: string;
+  image_type?: string;
+  previewImage?: string;
   created_at?: string;
   category?: string;
   title: string;

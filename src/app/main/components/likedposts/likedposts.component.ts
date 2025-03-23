@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { DataserviceService } from '../../../services/dataservice.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class LikedpostsComponent implements OnInit {
     date: '',
     post_date: '',
     image: '',
+    image_type: '',
     description: '',
     id: 0,
     total_likes: 0,
@@ -26,6 +27,26 @@ export class LikedpostsComponent implements OnInit {
   isLoading = true;
   pageSize = 5;
   currentPage = 1;
+
+  @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
+      
+  captureFirstFrame(video: HTMLVideoElement, post: any) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+
+    video.currentTime = 0.1;
+    video.addEventListener('seeked', function onSeeked() {
+      video.removeEventListener('seeked', onSeeked);
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      post.previewImage = canvas.toDataURL('image/png');
+    });
+  }
 
   constructor(private ds: DataserviceService) {}
 
@@ -53,6 +74,7 @@ export class LikedpostsComponent implements OnInit {
           author: post.user_name || 'Unknown',
           post_date: post.created_at || '',
           image: post.image || '../../../../assets/images/default-placeholder.png',
+          image_type: post.image_type || 'image', // Determine file type
           description: post.content || '',
           total_likes: post.total_likes,
           date: post.liked_at || '',
@@ -70,7 +92,7 @@ export class LikedpostsComponent implements OnInit {
         this.isLoading = false;
       }
     });
-  }  
+  }   
 
   updatePaginatedItems(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
@@ -142,6 +164,7 @@ interface Item {
   date: string;
   post_date: string;
   image: string;
+  image_type: string;
   description: string;
   total_likes: number;
   liked: boolean; 

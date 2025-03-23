@@ -85,7 +85,22 @@
           </div> 
 
           <div class="post-img" (click)="viewPost(post.id)">
-            <img alt="uploaded image" [src]="post.image || '../../../../assets/images/NoImage.png'" (error)="onImageError($event)">
+            <ng-container *ngIf="post.image_type === 'image'; else videoTemplate">
+              <img alt="uploaded image" [src]="post.image || '../../../../assets/images/NoImage.png'" (error)="onImageError($event)">
+            </ng-container>
+            
+            <ng-template #videoTemplate>
+              <ng-container *ngIf="post.image; else noVideoTemplate">
+                <video controls #videoElement [poster]="post.previewImage || '../../../../assets/images/NoImage.png'" (loadedmetadata)="captureFirstFrame(videoElement, post)">
+                  <source [src]="post.image" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </ng-container>
+            </ng-template>
+            
+            <ng-template #noVideoTemplate>
+              <img alt="No video available" src="../../../../assets/images/NoImage.png">
+            </ng-template>
             <span class="category">{{ post.category }}</span>
           </div>
     

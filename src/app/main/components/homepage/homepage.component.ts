@@ -1,13 +1,12 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
-import { DataserviceService } from '../../../services/dataservice.service';
-import { UserpostComponent } from './userpost/userpost.component';
+import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ViewAnnouncemComponent } from './view-announcem/view-announcem.component';
-import { UploadPostComponent } from '../upload-post/upload-post.component';
 
 import Swal from 'sweetalert2';
+import { DataserviceService } from '../../../services/dataservice.service';
+import { ViewAnnouncemComponent } from './view-announcem/view-announcem.component';
+import { UserpostComponent } from './userpost/userpost.component';
+import { UploadPostComponent } from '../upload-post/upload-post.component';
 import { EditpostComponent } from '../uploads/editpost/editpost.component';
-
 
 @Component({
   selector: 'app-homepage',
@@ -15,6 +14,24 @@ import { EditpostComponent } from '../uploads/editpost/editpost.component';
   styleUrl: './homepage.component.scss'
 })
 export class HomepageComponent implements OnInit {
+  @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
+
+  captureFirstFrame(video: HTMLVideoElement, post: any) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    video.currentTime = 0.1;
+    video.addEventListener('seeked', function onSeeked() {
+      video.removeEventListener('seeked', onSeeked);
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      post.previewImage = canvas.toDataURL('image/png');
+    });
+  }
 
   posts: any[] = [];
   isLoading = true;
@@ -24,11 +41,14 @@ export class HomepageComponent implements OnInit {
 
   filteredPosts: any[] = [];
   searchText: string = '';
-
   currentPage = 1;
   itemsPerPage = 10;
 
-  constructor(private ds: DataserviceService, private dialog: MatDialog, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private ds: DataserviceService, 
+    private dialog: MatDialog, 
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.loadPosts();
@@ -98,18 +118,17 @@ export class HomepageComponent implements OnInit {
   }
 
   viewAnnouncem(id: number) {
-      const announcementPost = this.announcements.find(announcement => announcement.id === id); // Correct comparison
+    const announcementPost = this.announcements.find(announcement => announcement.id === id); // Correct comparison
 
-      if (announcementPost) {
-          this.dialog.open(ViewAnnouncemComponent, {
-            data: announcementPost
-          });
-      } else {
-          console.error('Announcement not found');
-      }
+    if (announcementPost) {
+        this.dialog.open(ViewAnnouncemComponent, {
+          data: announcementPost
+        });
+    } else {
+        console.error('Announcement not found');
+    }
   }
 
-  // UPLOADING POPUP
   uploadIdea() {
     if (this.dialog) {
       this.dialog.open(UploadPostComponent)
@@ -267,7 +286,6 @@ export class HomepageComponent implements OnInit {
       }
     });
   }
-  
 
   // REPORTING POST
   showReportModal = false;
