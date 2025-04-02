@@ -1,15 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
 import { AdminDataService } from '../../../../services/admin-data.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-view-post',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: false,
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
@@ -25,36 +22,44 @@ export class ViewComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.data.id;
-    this.fetchPostDetails(this.id);
+    this.fetchPostDetails();
   }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
-  fetchPostDetails(id: number): void {
-    this.as.getPostById(id).subscribe({
-      next: (response) => {
-        if (response.post) {
-          this.post = response.post;
-          this.post.image = response.image; // Assign full image URL
-          this.post.total_likes = response.total_likes;
-          this.post.user_name = `${response.fname} ${response.lname}`;
-        } else {
-          console.error("Invalid response format:", response);
+  captureFirstFrame(video: HTMLVideoElement, post: any) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+
+    video.currentTime = 0.1;
+    video.addEventListener('seeked', function onSeeked() {
+      video.removeEventListener('seeked', onSeeked);
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      post.previewImage = canvas.toDataURL('image/png');
+    });
+  }
+
+  fetchPostDetails(): void {
+    this.as.getPostById(this.id).subscribe(
+      (response) => {
+        this.post = response;
+
+        if (typeof this.post.report_reasons === 'string') {
+          this.post.report_reasons = JSON.parse(this.post.report_reasons);
         }
       },
-      error: (error) => {
+      (error) => {
         console.error('Error fetching post:', error);
-        Swal.fire({
-          title: "Error!",
-          text: "Failed to fetch post details.",
-          icon: "error",
-          confirmButtonText: 'Close',
-          confirmButtonColor: "#777777"
-        });
       }
-    });
+    );
   }
 
   formatContent(content: string | null): string {
@@ -62,6 +67,24 @@ export class ViewComponent implements OnInit{
       return 'N/A';
     }
     return content.replace(/\n/g, '<br>');
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../../../assets/images/NoImage.png';
+  }
+
+  formatMaterials(materials: string): string {
+    try {
+        const parsedMaterials = JSON.parse(materials);
+        return Array.isArray(parsedMaterials) ? parsedMaterials.join(', ') : 'No materials listed.';
+    } catch {
+        return 'No materials listed.';
+    }
+  }
+
+  getUniqueReasons(): string[] {
+    return Array.from(new Set(this.post.report_reasons));
   }
 
   deletePost(id: number): void {

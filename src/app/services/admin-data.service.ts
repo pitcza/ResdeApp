@@ -87,7 +87,7 @@ export class AdminDataService {
   
   // view post by id
   getPostById(id: number): Observable<any> {
-    return this.Admin(`userpost/${id}`);
+    return this.Admin(`userpost/${id}`, 'GET');
   }
 
   // remove post + removal remarks

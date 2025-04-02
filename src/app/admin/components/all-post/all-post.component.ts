@@ -14,7 +14,7 @@ import { ViewComponent } from './view/view.component';
 })
 
 export class AllPostComponent implements OnInit , AfterViewInit{
-  displayedColumns: string[] = ['date', 'name', 'category', 'materials', 'status', 'action'];
+  displayedColumns: string[] = ['date', 'name', 'category', 'title', 'status', 'action'];
   dataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   categoryFilter: string = '';
@@ -107,8 +107,8 @@ export class AllPostComponent implements OnInit , AfterViewInit{
       // Search Filter (Matches name or title)
       const fnameMatch = post.fname?.toLowerCase().includes(searchLower);
       const lnameMatch = post.lname?.toLowerCase().includes(searchLower);
-      const materialsMatch = post.materials?.toLowerCase().includes(searchLower);
-      const searchMatch = !this.searchQuery || fnameMatch || lnameMatch || materialsMatch ;
+      const titleMatch = post.title?.toLowerCase().includes(searchLower);
+      const searchMatch = !this.searchQuery || fnameMatch || lnameMatch || titleMatch ;
   
       return categoryMatch && statusMatch && fromDateMatch && toDateMatch && searchMatch;
     });
@@ -194,7 +194,7 @@ export class AllPostComponent implements OnInit , AfterViewInit{
 export interface TableElement {
   created_at?: string;
   category?: string;
-  materials?: string;
+  title: string;
   status?: string;
   id: number;
   fname?: string;

@@ -2,7 +2,7 @@
     <div class="post-container">
         <div class="post-header">
             <div class="popup-head">
-                <h1> {{ post.user_name.split(' ')[0] }}'s Post </h1>
+                <h1> {{ post.category }} Content </h1>
                 <p *ngIf="post.status === 'reported' || post.status === 'removed'" class="status red-status"> 
                     {{ post.status }} 
                 </p>
@@ -11,23 +11,45 @@
         </div>
 
         <div class="post-content">
-            <div class="declined-remarks" *ngIf="post.status === 'declined'">
-                <h3> Declined Post. </h3>
-                <p> <strong>Remarks:</strong> {{ post.remarks }} </p>
+            <div class="declined-remarks" *ngIf="post.status === 'removed'">
+                <h3>Post has been removed by an admin.</h3>
+                <p><strong>Reason for Removal:</strong> {{ post.remarks }}</p>
+
+                <p class="reasons"><strong>Reported for:</strong></p>
+                <ul>
+                <li *ngFor="let reason of getUniqueReasons()">{{ reason }}</li>
+                </ul>
+
+                <p class="date-removed"><strong>Date Removed:</strong> {{ post.deleted_at | date: 'mediumDate' }} at {{ post.deleted_at | date: 'shortTime' }}</p>
+
+                <p class="deletion-warning">
+                This post will be <strong>permanently deleted after 7 days.</strong>  
+                </p>
             </div>
 
             <div class="main-post">
                 <div class="upper">
-                    <h2>{{ post.title }} <span class="category">{{ post.category }}</span></h2>
+                    <h2>{{ post.title || 'Untitled' }}</h2>
+                    <p class="materials">{{ formatMaterials(post?.materials) }}</p>
                 </div>
                 <p class="info">
                     <span class="author">{{ post.user_name }} </span>
-                    <!-- <p class="category">{{ data.category }}</p> -->
                     <span class="date"> • {{ post.created_at | date:'longDate' }} at {{ post.created_at | date: 'shortTime' }}</span>
                 </p>
                 <p [innerHTML]="formatContent(post.content)"></p>
                 <div class="post-img">
-                    <img [src]="post.image || '../../../../../assets/images/NoImage.png'" alt="post image">
+                    <ng-container *ngIf="post.image_type === 'image' && post.image; else videoTemplate">
+                        <img alt="uploaded image" [src]="post.image" (error)="onImageError($event)">
+                    </ng-container>
+                      
+                    <ng-template #videoTemplate>
+                        <ng-container *ngIf="post.image">
+                          <video controls #videoElement [poster]="post.previewImage" (loadedmetadata)="captureFirstFrame(videoElement, post)">
+                            <source [src]="post.image" type="video/mp4">
+                            Your browser does not support the video tag.
+                          </video>
+                        </ng-container>
+                    </ng-template>
                 </div>
             </div>
         </div>
