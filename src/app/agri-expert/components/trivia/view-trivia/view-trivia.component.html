@@ -39,8 +39,16 @@
               </td>
             </tr>
             <tr>
-              <td><strong>Created At:</strong></td>
-              <td>{{ triviaData.created_at | date:'medium' }}</td>
+              <td><strong>Total Correct Answers:</strong></td>
+              <td class="green">{{ triviaData.correct_answers }}</td>
+            </tr>
+            <tr>
+              <td><strong>Total Wrong Answers:</strong></td>
+              <td class="red">{{ triviaData.wrong_answers }}</td>
+            </tr>
+            <tr>
+              <td><strong>Date Created:</strong></td>
+              <td>{{ triviaData.created_at | date:'mediumDate' }} at {{ triviaData.created_at | date:'shortTime' }}</td>
             </tr>
           </tbody>
         </table>

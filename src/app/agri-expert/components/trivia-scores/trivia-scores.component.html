@@ -9,7 +9,7 @@
       <div class="data-search">
         <input 
           type="text" 
-          placeholder="Search by Name, Phone#, or Email" 
+          placeholder="Search by Name, Phone #, or Email..."
           [(ngModel)]="searchText" 
           (input)="applyFilters()"
           class="search-input"
@@ -34,9 +34,19 @@
         </ng-container>
 
         <!-- Score Column -->
-        <ng-container matColumnDef="score">
-          <th mat-header-cell *matHeaderCellDef>Score</th>
-          <td mat-cell *matCellDef="let score">{{ score.correct }}</td>
+        <ng-container matColumnDef="correct">
+          <th mat-header-cell *matHeaderCellDef>Correct Answers</th>
+          <td mat-cell *matCellDef="let score" class="green">{{ score.correct }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="wrong">
+          <th mat-header-cell *matHeaderCellDef>Wrong Answers</th>
+          <td mat-cell *matCellDef="let score" class="red">{{ score.wrong }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total Answers</th>
+          <td mat-cell *matCellDef="let score">{{ score.total }}</td>
         </ng-container>
 
         <!-- Phone Number Column -->

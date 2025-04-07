@@ -36,14 +36,18 @@ export class ViewTriviaComponent implements OnInit {
     this.as.getQuestionById(this.id).subscribe(
       (data) => {
         console.log('Fetched Post Data:', data);
-        this.triviaData = data; // Fix: Directly assigning data instead of data.triviaData
+        this.triviaData = {
+          ...data.question,
+          correct_answers: data.correct_answers,
+          wrong_answers: data.wrong_answers
+        };
       },
       (error) => {
         console.error('Error fetching post data', error);
       }
     );
   }
-
+  
   deletequest(id: number): void {
     Swal.fire({
       title: 'Delete Trivia Quiz',

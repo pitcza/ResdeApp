@@ -40,6 +40,18 @@ table {
   tr:hover {
     background-color: #f9f9f9;
   }
+
+  .green {
+    background-color: #89d1a150;
+    color: var(--extra-hover);
+    font-weight: 600;
+  }
+
+  .red {
+    background-color: #d1898950;
+    color: var(--red-hover);
+    font-weight: 600;
+  }
 }
 
 .data-search{

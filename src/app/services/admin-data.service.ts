@@ -215,8 +215,7 @@ export class AdminDataService {
     return this.Admin(`trivia/question/${id}`, 'DELETE')
   }
 
-  // wala pa
   userScores(): Observable<any>{
-    return this.Admin('trivia/alluser/scores')
+    return this.Admin('trivia/alluser/correctscores')
   }
 }
