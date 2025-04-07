@@ -1,174 +1,272 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { EditpostComponent } from '../../../../main/components/uploads/editpost/editpost.component';
 import { DataserviceService } from '../../../../services/dataservice.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-agriedit',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  standalone: false,
   templateUrl: './agriedit.component.html',
   styleUrl: './agriedit.component.scss'
 })
 export class AgrieditComponent {
-  postData: any = { title: '', content: '', category: '' }; // Default object structure
-    id: any;
-    ImagePreview: string | ArrayBuffer | null = null;
-    post: any;
+  postData!: FormGroup;
   
-    constructor(
-      public dialogRef: MatDialogRef<EditpostComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private ds: DataserviceService
-    ) {}
+  constructor(
+    public dialogRef: MatDialogRef<AgrieditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private ds: DataserviceService
+  ) {}
+
+  ngOnInit() {
+    this.postData = this.fb.group({
+      category: [''],
+      title: [''],
+      content: [''],
+      materials: this.fb.array([]),
+      image: ['']
+    });
   
-    closeDialog() {
-      this.dialogRef.close();
+    this.fetchPost();
+  }
+
+  fetchPost() {
+    console.log('Received post ID:', this.data.id); // Debugging
+    if (!this.data.id) {
+      console.error('Post ID is undefined!');
+      return;
     }
   
-    ngOnInit(): void {
-      this.id = this.data.id;  
-      this.fetchPostData();
-    }
+    this.ds.getPost(this.data.id).subscribe((response: any) => {
+      if (response) {
+        this.postData.patchValue({
+          category: response.category,
+          title: response.title,
+          content: response.content
+        });
   
-    fetchPostData() {
-      this.ds.getPost(this.id).subscribe(
-        (data) => {
-          console.log('Fetched Post Data:', data); // Add this line to inspect the data
-          this.post = data.post; // Accessing 'post' within the response
-    
-          // Ensure form is populated with fetched data
-          this.postData = { 
-            title: this.post.title || '', 
-            content: this.post.content || '', 
-            category: this.post.category || '' 
-          };
-    
-          // Handle image preview if an image exists
-          if (this.post.image) {
-            this.ImagePreview = this.post.image;
-          }
-        },
-        (error) => {
-          console.error('Error fetching post data', error);
+        // Handle existing media (image or video)
+        if (response.image) {
+          this.imagePreview = response.image; // Store URL
+          this.isVideo = response.image.endsWith('.mp4') || response.image.includes('video');
         }
-      );
-    }
   
-    // Handles the file selection and previews the image
-    onFileSelected(event: Event): void {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.ImagePreview = reader.result as string; // Store as string
-        };
-        reader.readAsDataURL(file);
+        // Handle materials
+        this.selectedOptions = []; // Reset before populating
+        const materialsArray = this.postData.get('materials') as FormArray;
+        materialsArray.clear(); // Clear existing materials
+  
+        let materialsData = response.materials;
+  
+        if (typeof materialsData === 'string') {
+          try {
+            materialsData = JSON.parse(materialsData); // Convert string to array
+          } catch (error) {
+            console.error('Error parsing materials:', error);
+            materialsData = [];
+          }
+        }
+  
+        if (Array.isArray(materialsData)) {
+          materialsData.forEach((material: string) => {
+            this.selectedOptions.push(material);
+            materialsArray.push(this.fb.control(material));
+          });
+        }
+  
+        this.cdr.detectChanges();
       }
-    }
+    }, (error) => {
+      console.error('Error fetching post:', error);
+    });
+  }  
   
-    // Confirmation before updating post
-    updatePost(): void {
-      if (!this.postData.title || !this.postData.content || !this.postData.category) {
+  selectedFile: File | null = null; // Store selected file
+  imagePreview: string | ArrayBuffer | null = null; // Preview URL
+  isVideo: boolean = false; // To determine if file is a video
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const maxImageSize = 6 * 1024 * 1024; // 6MB
+    const maxVideoSize = 6 * 1024 * 1024; // 6MB
+    const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    const allowedVideoTypes = ['video/mp4', 'video/quicktime'];
+  
+    if (file.type.startsWith('image/')) {
+      if (!allowedImageTypes.includes(file.type)) {
         Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Only PNG, JPG, JPEG, and WEBP images are allowed.',
           icon: 'error',
-          text: 'Please fill in all required fields.',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
         });
         return;
       }
-    
-      // Log the post data to check
-      console.log('Post data:', this.postData);
-      
-      Swal.fire({
-        title: 'Update Post',
-        text: 'Are you sure you want to update your post?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4d745a',
-        cancelButtonColor: '#777777',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'Cancel',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const postId = this.id ? Number(this.id) : null;
-    
-          if (postId !== null) {
-            const formData = new FormData();
-    
-            // Append text fields to formData
-            formData.append('title', this.postData.title);
-            formData.append('content', this.postData.content);
-            formData.append('category', this.postData.category);
-    
-            // If there is a new image, convert it to a file and add to FormData
-            if (typeof this.ImagePreview === 'string' && this.ImagePreview) {
-              const file = this.dataURLToFile(this.ImagePreview, 'image.png');
-              formData.append('image', file);
-            }
-    
-            // Log FormData to check the data before sending
-            console.log('FormData:', formData);
-    
-            // Send data to the backend
-            this.ds.updatePost(postId, formData).subscribe(
-              (response) => {
-                Swal.fire({
-                  icon: 'success',
-                  text: 'Post has been updated.',
-                });
-              },
-              (error) => {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Failed to update the post. Please try again.',
-                });
-                console.error('Error updating post:', error);
-              }
-            );
-          } else {
-            console.error('Invalid post ID');
-          }
-        }
-      });
-    }
-    
-  
-    // Helper function to convert Base64 to File
-    dataURLToFile(dataUrl: string, filename: string): File {
-      const arr = dataUrl.split(',');
-      const mimeMatch = arr[0].match(/:(.*?);/);
-      const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream'; // Default MIME type
-      const bstr = atob(arr[1]);
-      const u8arr = new Uint8Array(bstr.length);
-      
-      for (let i = 0; i < bstr.length; i++) {
-        u8arr[i] = bstr.charCodeAt(i);
+      if (file.size > maxImageSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'Image file size should not exceed 5MB.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
       }
-      
-      return new File([u8arr], filename, { type: mime });
+    } 
+    else if (file.type.startsWith('video/')) {
+      if (!allowedVideoTypes.includes(file.type)) {
+        Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Only MP4 and MOV videos are allowed.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+      if (file.size > maxVideoSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'Video file size should not exceed 5MB.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#7F7F7F'
+        });
+        return;
+      }
+    } 
+    else {
+      Swal.fire({
+        title: 'Invalid File',
+        text: 'Only images (PNG, JPG, JPEG, WEBP) and videos (MP4, MOV) are allowed.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+        confirmButtonColor: '#7F7F7F'
+      });
+      return;
     }
   
-    cancelPopup() {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you want to discard your changes?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4d745a',
-        cancelButtonColor: '#777777',
-        confirmButtonText: 'Yes, close it!',
-        cancelButtonText: 'No, keep editing',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.closeDialog();
-        }
-      });
+    this.selectedFile = file;
+    this.isVideo = file.type.startsWith('video/');
+    
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;  
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  options: string[] = [
+    'Compost', 'Plastic', 'Rubber', 'Wood', 'Paper', 'Glass', 'Boxes', 
+    'Mixed Waste', 'Cloth', 'Miscellaneous Products', 'Tips & Tricks', 'Issues'
+  ];
+
+  selectedOptions: string[] = [];
+  dropdownOpen: boolean = false;
+
+  get materialsFormArray() {
+    return this.postData.get('materials') as FormArray;
+  }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  toggleOption(option: string) {
+    const index = this.selectedOptions.indexOf(option);
+    if (index > -1) {
+      this.selectedOptions.splice(index, 1);
+      this.removeMaterial(option);
+    } else {
+      this.selectedOptions.push(option);
+      this.addMaterial(option);
     }
+  }
+
+  addMaterial(material: string) {
+    this.materialsFormArray.push(this.fb.control(material));
+  }
+
+  removeMaterial(material: string) {
+    const index = this.materialsFormArray.value.indexOf(material);
+    if (index > -1) {
+      this.materialsFormArray.removeAt(index);
+    }
+  }
+
+  isSelected(option: string): boolean {
+    return this.selectedOptions.includes(option);
+  }
+
+  onSubmit() {
+    Swal.fire({
+      title: 'Update Post',
+      text: 'Are you suer you want to update this post?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#266CA9',
+      cancelButtonColor: '#7F7F7F',
+      confirmButtonText: 'Update',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const formData = new FormData();
+  
+        // Append text fields
+        formData.append('category', this.postData.value.category);
+        formData.append('title', this.postData.value.title);
+        formData.append('content', this.postData.value.content);
+  
+        // Append materials as an array
+        this.postData.value.materials.forEach((material: string) => {
+          formData.append('materials[]', material);
+        });
+  
+        // Append new image if selected, otherwise retain the existing image
+        if (this.selectedFile) {
+          formData.append('image', this.selectedFile); // New image file
+        } else if (this.imagePreview && typeof this.imagePreview === 'string') {
+          formData.append('existingImage', this.imagePreview); // Keep existing image
+        }
+  
+        // Call the API
+        this.ds.updatePost(this.data.id, formData).subscribe(response => {
+          Swal.fire('Updated!', 'Your post has been updated successfully.', 'success');
+          this.closeDialog();
+        }, error => {
+          Swal.fire('Error', 'Failed to update post', 'error');
+        });
+      }
+    });
+  }  
+
+  cancelPopup() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to discard your changes?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4d745a',
+      cancelButtonColor: '#777777',
+      confirmButtonText: 'Yes, close it!',
+      cancelButtonText: 'No, keep editing',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeDialog();
+      }
+    });
+  }
 }

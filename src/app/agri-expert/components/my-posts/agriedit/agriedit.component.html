@@ -1,66 +1,89 @@
-
 <div class="container">
-    <div class="form-container">
-      <div class="form-header">
-          <h1> Edit Post </h1>
-          <button class="exit-button" (click)="closeDialog()"> &times; </button>
-      </div>
+  <div class="form-container">
+    <div class="form-header">
+        <h1> Edit Post </h1>
+        <button class="exit-button" (click)="closeDialog()"> &times; </button>
+    </div>
+
+    <div class="form-content">
+        <!-- Form with validation check -->
+      <form [formGroup]="postData" (ngSubmit)="onSubmit()">
+        <div class="input-row">
+          <div class="input-field-shorter">
+            <label class="labelline"> Category </label>
+            <select class="txt-field" name="category" formControlName="category" required>
+              <option value="Reduce">Reduce</option>
+              <option value="Reuse">Reuse</option>
+              <option value="Recycle">Recycle</option>
+              <option value="Gardening">Gardening</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label class="labelline"> Title </label>
+            <input class="txt-field" type="text" name="title" formControlName="title" required>
+          </div>
+        </div>
+
+        <div class="input-row materials">
+          <div class="input-field">
+              <label class="up-labelline">Materials</label>
+              <div class="multi-select-box" (click)="toggleDropdown()">
+                <div class="selected-options">
+                  <span *ngFor="let option of selectedOptions" class="selected-item">
+                    {{ option }} <span class="remove" (click)="toggleOption(option)">
+                      <i class='bx bx-x'></i>
+                    </span>
+                  </span>
+                </div>
+                <div class="dropdown-icon"><i class='bx bxs-down-arrow'></i></div>
+              </div>
+            
+              <div class="dropdown-menu" *ngIf="dropdownOpen">
+                <div *ngFor="let option of options" (click)="toggleOption(option)" class="dropdown-item">
+                  <span [class.checked]="isSelected(option)">
+                      <i *ngIf="!isSelected(option)" class='bx bx-check-square'></i>
+                      <i *ngIf="isSelected(option)" class='bx bxs-check-square'></i>
+                  </span>
+                  {{ option }}
+                </div>
+              </div>
+          </div>                      
+        </div>        
   
-      <div class="form-content">
-          <!-- Form with validation check -->
-        <form *ngIf="postData" (ngSubmit)="updatePost()">
-          <div class="input-row">
-            <div class="input-field-shorter">
-              <label class="labelline"> Category </label>
-              <select class="txt-field" [(ngModel)]="postData.category" name="category" required>
-                <option selected value=""> All Category </option>
-                <option value="Compost">Compost</option>
-                <option value="Plastic">Plastic</option>
-                <option value="Rubber">Rubber</option>
-                <option value="Wood">Wood</option>
-                <option value="Paper">Paper</option>
-                <option value="Glass">Glass</option>
-                <option value="Boxes">Boxes</option>
-                <option value="Mixed Waste">Mixed Waste</option>
-                <option value="Cloth">Cloth</option>
-                <option value="Issues">Issues</option>
-                <option value="Miscellaneous Products">Miscellaneous Products</option>
-                <option value="Tips & tricks">Tips & tricks</option>
-              </select>
-            </div>
-            <div class="input-field">
-              <label class="labelline"> Title </label>
-              <input class="txt-field" type="text" [(ngModel)]="postData.title" name="title" required>
-            </div>
+        <div class="input-row">
+          <div class="input-field">
+            <label class="labelline"> Description </label>
+            <textarea class="txtarea-field" name="content" formControlName="content" placeholder="Description of your post idea..." required></textarea>
           </div>
-    
-          <div class="input-row">
-            <div class="input-field">
-              <label class="labelline"> Description </label>
-              <textarea class="txtarea-field" [(ngModel)]="postData.content" name="content" placeholder="Description of your post idea..." required></textarea>
-            </div>
+        </div>
+  
+        <div class="input-row">
+          <div class="input-field-short">
+            <label class="up-labelline"> Upload Photo or Video </label>
+            <input class="file-field" type="file" id="file" accept="image/*,video/*" formControlName="image" (change)="onFileSelected($event)">
           </div>
-    
-          <div class="input-row">
-            <div class="input-field-short">
-              <label class="up-labelline"> Upload Photo </label>
-              <input class="file-field" type="file" id="file" accept="image/*" (change)="onFileSelected($event)" name="image">
-            </div>
-            <div class="input-field">
-              <div class="preview">
-                <h2>{{ ImagePreview ? 'Image Preview' : 'Choose Image File to Preview' }}</h2>
-              </div>
-              <div class="image-preview" *ngIf="ImagePreview">
-                <img [src]="ImagePreview" alt="Image Preview">
-              </div>
-            </div>
+        </div>
+
+        <div class="input-row">
+          <div *ngIf="imagePreview" class="image-preview-container">
+            <ng-container *ngIf="isVideo; else imageBlock">
+              <video controls>
+                <source [src]="imagePreview" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </ng-container>
+            <ng-template #imageBlock>
+              <img [src]="imagePreview" alt="Image Preview" class="image-preview">
+            </ng-template>
           </div>
-    
-          <div class="buttons">
-            <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
-            <input class="submit-btn" type="submit" value="Update">
-          </div>
-        </form>
-      </div>
+        </div>
+              
+  
+        <div class="buttons">
+          <input class="cancel-btn" type="button" value="Cancel" (click)="cancelPopup()">
+          <input class="submit-btn" type="submit" value="Update">
+        </div>
+      </form>
     </div>
   </div>
+</div>

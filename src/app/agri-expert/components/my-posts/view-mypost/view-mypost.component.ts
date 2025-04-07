@@ -2,21 +2,22 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
-import { AdminDataService } from '../../../services/admin-data.service';
+import { AdminDataService } from '../../../../services/admin-data.service';
+import { DataserviceService } from '../../../../services/dataservice.service';
 
 @Component({
-  selector: 'app-view-post',
-  standalone: false,
-  templateUrl: './view.component.html',
-  styleUrls: ['./view.component.scss']
+  selector: 'app-view-mypost',
+  templateUrl: './view-mypost.component.html',
+  styleUrl: './view-mypost.component.scss'
 })
-export class ViewComponent implements OnInit{
+export class ViewMypostComponent implements OnInit{
   id!: number;
   post: any;
 
   constructor(
     private as: AdminDataService,
-    public dialogRef: MatDialogRef<ViewComponent>,
+    public dialogRef: MatDialogRef<ViewMypostComponent>,
+    private ds: DataserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
@@ -87,45 +88,26 @@ export class ViewComponent implements OnInit{
     return Array.from(new Set(this.post.report_reasons));
   }
 
-  removePost(id: number): void {
+  deletePost(id: number): void {
     Swal.fire({
-      title: 'Remove User Post',
-      text: 'Are you sure you want to remove this post?',
+      title: 'Delete Post',
+      text: 'Are you sure you want to delete your post? This action cannot be undone.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#CC4646',
       cancelButtonColor: '#7F7F7F',
-      confirmButtonText: 'Remove',
+      confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Removal Remarks',
-          input: 'text',
-          inputPlaceholder: 'Enter your reason for removing this post',
-          showCancelButton: true,
-          confirmButtonColor: '#CC4646',
-          cancelButtonColor: '#7F7F7F',   
-          confirmButtonText: 'Submit',
-          cancelButtonText: 'Cancel',
-          inputValidator: (value) => {
-            if (!value || value.trim().length === 0) {
-              return 'Remarks are required.';
-            }
-            return null;
-          }
-        }).then((inputResult) => {
-          if (inputResult.isConfirmed) {
-            // Send delete request with remarks
-            this.as.deletePost(id, inputResult.value).subscribe({
-              next: (response) => {
-                Swal.fire('Removed!', 'The post has been marked for deletion.', 'success');
-                this.closeDialog();
-              },
-              error: (error) => {
-                Swal.fire('Error!', 'Failed to delete post. Please try again.', 'error');
-              }
-            });
+        // Send delete request without remarks
+        this.ds.deletePost(id).subscribe({
+          next: (response) => {
+            Swal.fire('Deleted!', 'Your post has been permanently deleted.', 'success');
+            this.closeDialog();
+          },
+          error: (error) => {
+            Swal.fire('Error!', 'Failed to delete post. Please try again.', 'error');
           }
         });
       }

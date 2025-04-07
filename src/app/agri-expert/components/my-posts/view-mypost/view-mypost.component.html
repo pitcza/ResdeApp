@@ -27,14 +27,6 @@
                 </p>
             </div>
 
-            <div class="declined-remarks" *ngIf="post.status === 'reported'">
-                <h3>{{ post.report_remarks }}</h3>
-                <p class="reasons"><strong>Reported for:</strong></p>
-                <ul>
-                <li *ngFor="let reason of getUniqueReasons()">{{ reason }}</li>
-                </ul>
-            </div>
-
             <div class="main-post">
                 <div class="upper">
                     <h2>{{ post.title || 'Untitled' }}</h2>
@@ -64,7 +56,7 @@
 
         <div class="post-footer">
             <div class="buttons" *ngIf="post.status === 'posted' || post.status === 'reported'"> 
-                <input class="danger-btn" type="button" value="Remove Post" (click)="deletePost(data.id)">
+                <input class="danger-btn" type="button" value="Delete Post" (click)="deletePost(data.id)">
             </div>
         </div>
     </div>

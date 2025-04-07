@@ -3,9 +3,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { DataserviceService } from '../../../services/dataservice.service';
-import { ViewComponent } from '../view/view.component';
 import { AgrieditComponent } from './agriedit/agriedit.component';
 import { UploadComponent } from './upload/upload.component';
+import { ViewMypostComponent } from './view-mypost/view-mypost.component';
 
 @Component({
   selector: 'app-my-posts',
@@ -63,7 +63,7 @@ export class MyPostsComponent implements OnInit {
   // VIEWING POST POPUP
   viewPost(id: number, context: string) {
     if (this.dialog) {
-      this.dialog.open(ViewComponent, {
+      this.dialog.open(ViewMypostComponent, {
         data: { id: id, context: context }
       });
     } else {

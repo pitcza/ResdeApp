@@ -16,6 +16,8 @@ import { CreatetriviaComponent } from './components/trivia/createtrivia/createtr
 import { EditTriviaComponent } from './components/trivia/edit-trivia/edit-trivia.component';
 import { ViewTriviaComponent } from './components/trivia/view-trivia/view-trivia.component';
 import { ReportedPostsComponent } from './components/reported-posts/reported-posts.component';
+import { AgrieditComponent } from './components/my-posts/agriedit/agriedit.component';
+import { ViewMypostComponent } from './components/my-posts/view-mypost/view-mypost.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { ReportedPostsComponent } from './components/reported-posts/reported-pos
     ViewTriviaComponent,
     MyPostsComponent,
     UploadComponent,
-    ReportedPostsComponent
+    AgrieditComponent,
+    ReportedPostsComponent,
+    ViewMypostComponent
   ],
   imports: [
     CommonModule,

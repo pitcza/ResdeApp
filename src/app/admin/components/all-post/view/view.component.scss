@@ -85,9 +85,15 @@
         color: var(--red-btn);
         font-style: italic;
     }
-    P {
+    p, li {
         font-style: italic;
         color: var(--red-btn);
+    }
+
+    .reasons,
+    .date-removed,
+    .deletion-warning {
+        margin-top: 5px;
     }
 }
 
