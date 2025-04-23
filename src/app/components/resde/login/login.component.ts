@@ -96,6 +96,11 @@ export class LoginComponent {
               this.showSuccessAlert();
             });
             break;
+          case 'sangukab' :
+            this.router.navigate(['/agri-admin']).then(() => {
+              this.showSuccessAlert();
+            });
+            break;
           default:
             this.router.navigate(['/main']).then(() => {
               this.showSuccessAlert();

@@ -106,7 +106,7 @@ export class AnnouncementComponent implements OnInit, AfterViewInit {
         console.error('Error fetching posts:', error);
         this.isLoading = false;
       }
-    );
+    ); 
   }
 
   viewAnnounce(id: number) {

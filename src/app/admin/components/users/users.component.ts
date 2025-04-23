@@ -42,7 +42,7 @@ export class UsersComponent implements AfterViewInit, OnInit {
   fetchUsers(): void {
     this.as.getUsers().subscribe(
       (response) => {
-        const excludedEmails = ['admin@gmail.com', 'agri@gmail.com'];  // Emails to exclude intable display
+        const excludedEmails = ['admin@gmail.com', 'Environment@gmail.com', 'SkAdmin@gmail.com'];  // Emails to exclude intable display
         //Filter out users whose fname is 'User' or 'Agriculural'
 
         const badgePriority: Record<string, number> = {
