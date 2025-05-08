@@ -18,7 +18,6 @@
     }
 }
 
-
 .all-posts {
     display: grid;
     justify-content: center;
@@ -312,5 +311,23 @@
         &:hover {
             background-color: var(--primary-hover);
         }
+    }
+}
+
+@media (max-width: 630px) {
+    .head {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .all-posts {
+        display: grid;
+        justify-content: center;
+        align-items: stretch;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 30px;
+        margin-top: 30px;
     }
 }
