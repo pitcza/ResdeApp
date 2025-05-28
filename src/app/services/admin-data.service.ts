@@ -167,7 +167,7 @@ export class AdminDataService {
   }
 
   updateBarangayPost(id: number, formData: FormData): Observable<any> {
-    return this.Admin(`barangay-posts/${id}`, 'PUT', formData);
+    return this.Admin(`barangay-posts/${id}`, 'POST', formData);
   }
 
   deleteBarangayPost(id: number): Observable<any> {

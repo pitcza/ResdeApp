@@ -107,7 +107,43 @@ export class EditPostComponent implements OnInit {
     this.imagePreviews.splice(index, 1);
   }
 
-  submitPost(): void {
+//   submitPost(): void {
+//     if (this.postForm.invalid) {
+//         console.error("❌ Form is invalid. Please check your inputs.");
+//         return;
+//     }
+
+//     const formData = new FormData();
+//     formData.append('caption', this.postForm.value.caption);
+
+//     // ✅ Append new files correctly
+//     this.selectedFiles.forEach((file) => {
+//         formData.append('images[]', file);
+//     });
+
+//     // ✅ Append removed images correctly
+//     this.removedImages.forEach((img) => {
+//         formData.append('removedImages[]', img);
+//     });
+
+//     // ✅ Send request to update the post
+//     this.adminService.updateBarangayPost(this.postId, formData).subscribe(
+//       (response) => {
+//           console.log("✅ Post updated successfully:", response);
+          
+//           // ✅ Update local UI state
+//           this.imagePreviews = response.post.images; // Update image previews
+//           this.postForm.patchValue({ caption: response.post.caption }); // Update caption
+
+//           this.dialogRef.close(true); // ✅ Close modal after update
+//       },
+//       (error) => {
+//           console.error("❌ Error updating post:", error);
+//       }
+//     );
+// }
+
+submitPost(): void {
     if (this.postForm.invalid) {
         console.error("❌ Form is invalid. Please check your inputs.");
         return;
@@ -115,34 +151,36 @@ export class EditPostComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('caption', this.postForm.value.caption);
+    
+    formData.append('_method', 'PUT');
 
-    // ✅ Append new files correctly
     this.selectedFiles.forEach((file) => {
         formData.append('images[]', file);
     });
 
-    // ✅ Append removed images correctly
     this.removedImages.forEach((img) => {
         formData.append('removedImages[]', img);
     });
 
-    // ✅ Send request to update the post
     this.adminService.updateBarangayPost(this.postId, formData).subscribe(
-      (response) => {
-          console.log("✅ Post updated successfully:", response);
-          
-          // ✅ Update local UI state
-          this.imagePreviews = response.post.images; // Update image previews
-          this.postForm.patchValue({ caption: response.post.caption }); // Update caption
+        (response) => {
+            console.log("✅ Post updated successfully:", response);
+            
+            if (response.post.image_urls) {
+                this.imagePreviews = response.post.image_urls;
+            }
+            this.postForm.patchValue({ caption: response.post.caption });
 
-          this.dialogRef.close(true); // ✅ Close modal after update
-      },
-      (error) => {
-          console.error("❌ Error updating post:", error);
-      }
+            this.selectedFiles = [];
+            this.removedImages = [];
+
+            this.dialogRef.close(true);
+        },
+        (error) => {
+            console.error("❌ Error updating post:", error);
+        }
     );
 }
-
 
   closeDialog() {
     this.dialogRef.close();
