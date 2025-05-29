@@ -33,6 +33,10 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   posts: any[] = [];
   isLoading = true;
   loaders = Array(5).fill(null);
@@ -150,14 +154,16 @@ export class HomepageComponent implements OnInit {
   loadPosts(): void {
     this.ds.getAllPosts().subscribe(
       (response) => {
-        console.log("API Response:", response); // Debugging
+        console.log("API Response:", response);
 
       if (response && typeof response === 'object') {
-        this.posts = Object.values(response); // Convert object to array
+        this.posts = Object.values(response); 
       } else {
         console.error("Unexpected API response format:", response);
         this.posts = [];
       }
+
+      this.posts = this.sortPostsByPriorityUsers(this.posts);
 
       this.filteredPosts = [...this.posts];
       this.isLoading = false;
@@ -167,6 +173,32 @@ export class HomepageComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  getUserPriority(post: any): number {
+  if (post.fname === 'Chan' && post.lname === 'Amistad') {
+    return 1; 
+  }
+  if (post.fname === 'Environmental' && post.lname === 'Admin') {
+    return 2; 
+  }
+  if (post.fname === 'Sk' && post.lname === 'Admin') {
+    return 3; 
+  }
+  return 999; 
+}
+
+isPriorityUser(post: any): boolean {
+  return this.getUserPriority(post) < 999;
+}
+
+sortPostsByPriorityUsers(posts: any[]): any[] {
+  return posts.sort((a, b) => {
+    const aPriority = this.getUserPriority(a);
+    const bPriority = this.getUserPriority(b);
+    
+    return aPriority - bPriority;
+    });
   }
 
   get paginatedPosts(): any[] {
@@ -235,16 +267,47 @@ export class HomepageComponent implements OnInit {
   }
   
   // dropdown
-  menuVisiblePostId: number | null = null; // Track which post's menu is open
+  // menuVisiblePostId: number | null = null; // Track which post's menu is open
 
-  toggleMenu(event: Event, postId: number) {
-    event.stopPropagation(); // Prevent auto-closing immediately
+  // toggleMenu(event: Event, postId: number) {
+  //   event.stopPropagation(); // Prevent auto-closing immediately
+  //   this.menuVisiblePostId = this.menuVisiblePostId === postId ? null : postId;
+  // }
+
+  // @HostListener('document:click')
+  // closeMenu() {
+  //   this.menuVisiblePostId = null;
+  // }
+
+  menuVisiblePostId: number | null = null; 
+  fname: string = '';
+  lname: string = ''; 
+
+  toggleMenu(event: Event, postId: number, post: any) {
+    event.stopPropagation();
+    
+    if (this.isPostAuthorDisabled(post)) {
+      return;
+    }
+    
     this.menuVisiblePostId = this.menuVisiblePostId === postId ? null : postId;
   }
 
   @HostListener('document:click')
   closeMenu() {
     this.menuVisiblePostId = null;
+  }
+
+  isPostAuthorDisabled(post: any): boolean {
+    const disabledUsers = [
+      { fname: 'Sk', lname: 'Admin' },
+      { fname: 'Environmental', lname: 'Admin' },
+      { fname: 'Chan', lname: 'Amistad' }
+    ];
+    
+    return disabledUsers.some(user => 
+      user.fname === post.fname && user.lname === post.lname
+    );
   }
 
   // report and delete 

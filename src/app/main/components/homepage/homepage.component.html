@@ -61,12 +61,12 @@
         <!-- Dynamically render posts once loaded -->
         <ng-container *ngIf="!isLoading && filteredPosts.length > 0">
         <div *ngFor="let post of paginatedPosts" class="post-box">
-          <div class="menu-dropdown" (click)="toggleMenu($event, post.id)">
+          <!-- <div class="menu-dropdown" (click)="toggleMenu($event, post.id)">
             <button class="dropdown-toggle">
                 <i class='bx bx-dots-horizontal-rounded'></i>
             </button>
         
-            <div class="dropdown-menu" *ngIf="menuVisiblePostId === post.id">
+            <div class="dropdown-menu" *ngIf="menuVisiblePostId === post.id && !isUserDisabled()">
               <div class="menu update" *ngIf="post.user_id === loggedInUserId" (click)="editPost(post.id)">
                 <i class='bx bx-edit'></i>
                 <a>Edit Post</a>
@@ -76,13 +76,36 @@
                 <a>Delete Post</a>
               </div>
           
+              <div class="menu danger" *ngIf="post.user_id !== loggedInUserId" (click)="openReportModal(post.id)">
+                <i class='bx bxs-message-alt-error'></i>
+                <a>Report Post</a>
+              </div>
+            </div>
+          </div>  -->
+          
+          <div class="menu-dropdown" (click)="toggleMenu($event, post.id, post)">
+            <button class="dropdown-toggle" *ngIf="!isPostAuthorDisabled(post)">
+                <i class='bx bx-dots-horizontal-rounded'></i>
+            </button>
+
+            <div class="dropdown-menu" *ngIf="menuVisiblePostId === post.id && !isPostAuthorDisabled(post)">
+              <div class="menu update" *ngIf="post.user_id === loggedInUserId" (click)="editPost(post.id)">
+                <i class='bx bx-edit'></i>
+                <a>Edit Post</a>
+              </div>
+              <div class="menu danger" *ngIf="post.user_id === loggedInUserId" (click)="deletePost(post.id)">
+                <i class='bx bxs-trash'></i>
+                <a>Delete Post</a>
+              </div>
+
               <!-- if yung post is hindi kay user na nakalog in -->
               <div class="menu danger" *ngIf="post.user_id !== loggedInUserId" (click)="openReportModal(post.id)">
                 <i class='bx bxs-message-alt-error'></i>
                 <a>Report Post</a>
               </div>
             </div>
-          </div> 
+          </div>
+
 
           <div class="post-img" (click)="viewPost(post.id)">
             <ng-container *ngIf="post.image_type === 'image'; else videoTemplate">
@@ -134,8 +157,8 @@
       <!-- Pagination Controls -->
       <div class="pagination" *ngIf="totalPages > 1">
         <span> Page {{ currentPage }} of {{ totalPages }} </span>
-        <button class="paginator-btn" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
-        <button class="paginator-btn" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+        <button class="paginator-btn" (click)="prevPage(); scrollToTop()" [disabled]="currentPage === 1">Previous</button>
+        <button class="paginator-btn" (click)="nextPage(); scrollToTop()" [disabled]="currentPage >= totalPages">Next</button>
       </div>
     </div>
     
