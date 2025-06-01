@@ -8,6 +8,29 @@ import Swal from 'sweetalert2';
   styleUrl: './agri-expert.component.scss'
 })
 export class AgriExpertComponent {
+  name: string = '';
+
+  ngOnInit(): void {
+    this.updateNameFromSessionStorage();
+  }
+
+  updateNameFromSessionStorage(): void {
+    if (typeof sessionStorage !== 'undefined') {
+      this.name = sessionStorage.getItem('name') || '';
+    } else {
+      this.name = '';
+    }
+  }
+  
+  updateUsername(newName: string): void {
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('name', newName);
+      this.updateNameFromSessionStorage();
+    } else {
+      console.warn('sessionStorage is not available.');
+    }
+  }
+
   constructor(
     private router: Router,
   ) {
