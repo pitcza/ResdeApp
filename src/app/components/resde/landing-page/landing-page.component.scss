@@ -112,6 +112,19 @@
     .route-btn:hover:after {
         background-color: var(--extra-green);
     }
+
+    .totalVisits {
+        margin-top: 9%;
+        margin-bottom: -9%;
+
+        h1 {
+            color: white;
+
+            span {
+                color: var(--secondary-green);
+            }
+        }
+    }
 }
 
 .right {
@@ -477,7 +490,7 @@ footer {
     }
 }
 
-@media (min-width: 1441px) and (max-width: 1680px) {
+@media (min-width: 1440px) and (max-width: 1680px) {
     .left {
         p { font-size: 18px; }
     }
@@ -774,8 +787,14 @@ footer {
         .left {
             padding: 0;
             margin-left: 0;
-            margin-top: 10px;
+            margin-top: 88px;
             p { font-size: 12px; }
+
+            .totalVisits {
+                h1 {
+                    font-size: 25px;
+                }
+            }
         }
 
         .right {

@@ -115,4 +115,12 @@ export class DataserviceService {
   getBarangayPostById(id: number): Observable<any> {
     return this.User(`barangay-posts/${id}`, 'GET');
   }
+
+  VisitCount(): Observable<any> {
+    return this.User('landingpagevisit', 'POST')
+  }
+
+  getVisitCount(): Observable<any> {
+    return this.User('totalvisits', 'GET')
+  }
 }

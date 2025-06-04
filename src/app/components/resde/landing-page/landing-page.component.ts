@@ -4,6 +4,8 @@ import { DataserviceService } from '../../../services/dataservice.service';
 import { ClickableRsComponent } from './clickable-rs/clickable-rs.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../services/admin-data.service';
+import { HttpClient } from '@angular/common/http';
+import { response } from 'express';
 
 @Component({
   selector: 'app-landing-page',
@@ -19,11 +21,14 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
   landingPhotos: string[] = []; // Store fetched images
   photoContent: string[] = []; // Store fetched contents
   defaultImage = '../../../../assets/images/NoImage.png';
+  totalVisit: any;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private dialog: MatDialog,
-    private adminPhotos: AdminDataService
+    private adminPhotos: AdminDataService,
+    private http: HttpClient,
+    private DS: DataserviceService
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +36,8 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
       this.checkElementsInView();
       this.fetchLatestPhotos(); // Fetch images from API
     }
+     this.incrementVisitCount();
+     this.getTotalVisit();
   }
 
   ngAfterViewInit(): void {
@@ -49,6 +56,54 @@ export class LandingPageComponent implements AfterViewInit, OnInit {
         }
       }, 300); // Delay execution to allow images to load
     }
+  }
+
+  // incrementVisitCount(): void {
+  //   this.DS.VisitCount().subscribe({
+  //     next: (response) => console.log('Visit incremented:', response),
+  //     error: (err) => console.error('Error incrementing visit:', err),
+  //   });
+  // }
+
+  incrementVisitCount(): void {
+    const visited = sessionStorage.getItem('landingPageVisited');
+
+    if (!visited) {
+      this.DS.VisitCount().subscribe({
+        next: (response) => {
+          console.log('Visit incremented:', response);
+          sessionStorage.setItem('landingPageVisited', 'true');
+        },
+        error: (err) => console.error('Error visit:', err),
+      });
+    } else {
+      // console.log('Nabisita na to ni user renze ');
+    }
+  }
+
+  // getTotalVisit(): void {
+  //   this.DS.getVisitCount().subscribe(
+  //     (response) => {
+  //       this.totalVisit = response.total_visits;
+  //       // console.log('Data: ', response);
+  //     }
+  //   );
+  // }
+
+  getTotalVisit(): void {
+    this.DS.getVisitCount().subscribe((response) => {
+      const targetValue = response.total_visits; 
+      this.totalVisit = 0; 
+
+      const increment = Math.ceil(targetValue / 85); 
+      const interval = setInterval(() => {
+        if (this.totalVisit < targetValue) {
+          this.totalVisit = Math.min(this.totalVisit + increment, targetValue);
+        } else {
+          clearInterval(interval); 
+        }
+      }, 10); 
+    });
   }
 
   fetchLatestPhotos(): void {

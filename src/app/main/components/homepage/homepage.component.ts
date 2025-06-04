@@ -358,7 +358,7 @@ sortPostsByPriorityUsers(posts: any[]): any[] {
   reportReasons = [
     "Inappropriate Content",
     "Spam",
-    "Unrelated to 3Rs & Gardening",
+    "Unrelated to 3Rs",
     "Unnecessary or Off-Topic Photo/Video",
     "Fake Information",
     "Unauthorized Advertisement",
