@@ -1,0 +1,99 @@
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: white;
+    margin-right: 20px;
+    margin-top: 25px;
+    float: right;
+}
+
+.card-header {
+    h2 {
+        font-family: 'Poppins';
+        font-size: 20px;
+        font-weight: 700;
+        color: black;
+        p {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 50%;
+        }
+    }
+
+    a {
+        background: var(--primary-green);
+        border-radius: 5px;
+        color: white;
+        font-size: .8rem;
+        padding: .5rem 1rem;
+        transition: all 0.3s ease-in-out;
+    }
+
+    a:hover {
+        background-color: var(--dark-green);
+    }
+}
+
+table {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+    th {
+        background-color: var(--primary-green);
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-size: 16px;
+        padding-top: 5px;
+    }
+
+    th, td {
+        font-family: 'Poppins';
+        text-align: center;
+        border-bottom-style: dashed;
+    }
+
+    td { font-size: 14px; }
+    tr { transition: all 0.3s ease; } 
+    tr:hover { background-color: var(--white-hover); }
+
+    .status {
+        &.posted {
+            background-color: #d6e3ee7a;
+            color: var(--primary-green);
+        }
+        &.reported {
+            background-color: #e8c2c290;
+            color: var(--red-btn);
+        }
+    }
+}
+
+table { 
+    td:nth-child(6) {
+        min-width: 50px;
+        max-width: 50px;
+    }
+}
+
+.search-input {
+    width: 250px; 
+    padding: 5px 12px;
+    border: 2px solid var(--primary-green);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: var(--dark-green);
+    }
+
+    &::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+    }
+}

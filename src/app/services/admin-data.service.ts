@@ -218,4 +218,8 @@ export class AdminDataService {
   userScores(): Observable<any>{
     return this.Admin('trivia/alluser/correctscores')
   }
+
+  getLogs(): Observable<any>{
+    return this.Admin('logs')
+  }
 }

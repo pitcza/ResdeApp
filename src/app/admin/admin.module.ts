@@ -19,6 +19,7 @@ import { ViewPostComponent } from './components/my-barangay/view-post/view-post.
 import { EditPostComponent } from './components/my-barangay/edit-post/edit-post.component';
 import { ReportedPostsComponent } from './components/reported-posts/reported-posts.component';
 import { ViewComponent } from './components/all-post/view/view.component';
+import { LogsComponent } from './components/logs/logs.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ViewComponent } from './components/all-post/view/view.component';
     CreatePostComponent,
     ViewPostComponent,
     ViewComponent,
-    ReportedPostsComponent
+    ReportedPostsComponent,
+    LogsComponent
   ],
   imports: [
     CommonModule,

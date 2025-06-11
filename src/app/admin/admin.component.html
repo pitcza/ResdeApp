@@ -62,12 +62,18 @@
           </li>
           <li class="sidebarTab">
             <a class="tablink" routerLink="reports" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
-              <span class="tab-link-icon"> <i class='bx bx-task'></i> </span>
+              <span class="tab-link-icon"> <i class='bx bxs-report'></i>  </span>
               <span class="tab-link-name"> Reports </span>
             </a>
           </li>
+          <li class="sidebarTab">
+            <a class="tablink" routerLink="logs" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">
+              <span class="tab-link-icon"> <i class='bx bx-task'></i> </span>
+              <span class="tab-link-name"> Logs </span>
+            </a>
+          </li>
         </ul>
-  
+
         <div class="logoutbtn">
           <div class="logout" (click)="logoutPopup()">
             <span> <i class='bx bx-log-out-circle'></i> 
