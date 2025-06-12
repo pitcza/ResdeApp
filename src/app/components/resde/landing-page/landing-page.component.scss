@@ -9,15 +9,19 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
+    position: relative;
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); // 70% black
+        z-index: 0;
+        pointer-events: none;
+    }
 }
 
 .left, .right {
@@ -26,6 +30,7 @@
     align-items: center;
     opacity: 0;
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    z-index: 1;
 }
 
 .left {
@@ -509,7 +514,11 @@ footer {
     }
 
     .right {
-        height: 600px;
+        height: 750px;
+
+        h2 {
+            margin-top: -180px;
+        }
 
         .gallery-container {
             max-width: 500px;
@@ -565,10 +574,14 @@ footer {
     .left {
         padding: 30px 10px 50px 10px;
         .re { margin-left: -10px;
-            h1 { font-size: 160px; line-height: 160px; }
-            .the3 { h2 { font-size: 35px; line-height: 45px; } }
+            h1 { font-size: 120px; line-height: 120px; }
+            .the3 { h2 { font-size: 25px; line-height: 35px; } }
         }
         p { font-size: 14px; }
+
+        .totalVisits {
+            h1 { font-size: 20px; padding-bottom: 30px; }
+        }
     }
 
     .right {
@@ -580,7 +593,7 @@ footer {
         }
 
         .gallery-container {
-            max-width: 500px;
+            max-width: 350px;
 
             .gallery-item {
                 height: 200px;
@@ -638,8 +651,8 @@ footer {
 @media (max-width: 900px) {
     .left {
         .re {
-            h1 { font-size: 130px; line-height: 130px; }
-            .the3 { h2 { font-size: 30px; line-height: 35px; } }
+            h1 { font-size: 120px; line-height: 120px; }
+            .the3 { h2 { font-size: 25px; line-height: 35px; } }
         }
         p { font-size: 14px; }
     }
@@ -674,7 +687,6 @@ footer {
 
             .re { 
                 margin-left: -8px;
-
                 h1 { 
                     font-size: 120px; 
                     line-height: 120px; 
@@ -688,11 +700,14 @@ footer {
 
         .right {
             order: 1;
-            width: 100%;
-            margin-bottom: -90px;
-            justify-content: right;
+            width: auto;
+            margin-bottom: 0;
+            margin-left: 0;
+            justify-content: center;
 
-            img { width: 70%; }
+            .gallery-controls {
+                width: 80%;
+            }
         }
     }
 
@@ -726,20 +741,8 @@ footer {
         .left {
             margin-top: -10px;
         }
-
         .right {
-            margin-bottom: 0;
-            justify-content: center;
-
-            .web { display: none; }
-            .mobile { display: flex; }
-        
-            img {
-                width: 90%;
-                height: auto;
-                opacity: 1;
-                transform: translateX(0);
-            }
+            margin-bottom: -90px;
         }
     }
 
@@ -775,10 +778,6 @@ footer {
 }
 
 @media (max-width: 500px) {
-    .overlay {
-        height: 107%;
-    }
-
     .spit-screen {
         display: flex;
         flex-direction: column;
@@ -792,7 +791,7 @@ footer {
 
             .totalVisits {
                 h1 {
-                    font-size: 25px;
+                    font-size: 18px;
                 }
             }
         }
@@ -828,10 +827,17 @@ footer {
                     height: 200px;
                     width: 330px;
                 }
+
+                .content-text {
+                    bottom: 10px;
+                    left: 10px;
+                    font-size: 14px;
+                    padding: 5px;
+                }
             }
     
             .gallery-controls {
-                width: 120%;
+                width: 100%;
 
                 button {
                     font-size: 26px;
@@ -890,7 +896,7 @@ footer {
             gap: 10px;
 
             .company {
-                width: 120px;
+                width: 110px;
                 height: 80px;
             }
 
