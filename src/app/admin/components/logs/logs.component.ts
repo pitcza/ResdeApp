@@ -82,7 +82,6 @@ export class LogsComponent implements OnInit, AfterViewInit {
     );
   }
 
-
   ngAfterViewInit() {
     this.filteredDataSource.paginator = this.paginator;
     

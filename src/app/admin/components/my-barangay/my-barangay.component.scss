@@ -261,6 +261,7 @@
     justify-content: flex-start; 
     padding: 10px 0;
 }
+
 .search-input {
     width: 330px; 
     padding: 7px 12px;
@@ -319,6 +320,11 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
     }
 
     .all-posts {
@@ -329,5 +335,22 @@
         grid-template-rows: auto;
         gap: 30px;
         margin-top: 30px;
+    }
+
+    .search-input {
+        width: 280px; 
+        padding: 7px 12px;
+    }
+
+    .head {
+        .route-btn {
+            margin-top: -5px;
+            padding-top: 2px;
+            padding-left: 15px;
+            padding-right: 15px;
+            width: auto;
+            i { padding-right: 2px; }
+            a { font-size: 14px; }
+        }
     }
 }

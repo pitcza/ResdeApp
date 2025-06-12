@@ -340,4 +340,33 @@
             }
         }
     }
+
+    .post-content {
+        .input-fields-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+        }
+    }
+
+    .bottom {
+        display: flex;
+        justify-content: end;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 40px;
+
+        .left {
+            width: auto;
+            padding: 0 20px;
+        }
+    }
+
+    .buttons {
+        gap: 15px;
+        margin-top: 10px;
+    }
 }

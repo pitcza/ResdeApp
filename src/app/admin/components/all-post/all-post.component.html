@@ -8,39 +8,39 @@
             <a routerLink="../dashboard"> Dashboard <span> <i class='bx bxs-home'></i> </span> </a>
         </div>
 
-            <div class="filters">
-                <div class="selects">
-                    <input type="text" placeholder="Search by Name or Materials..." (input)="onSearchChange($event)" class="search-input">
+        <div class="filters">
+            <div class="selects">
+                <input type="text" placeholder="Search by Name or Materials..." (input)="onSearchChange($event)" class="search-input">
 
-                    <select id="filter-category" (change)="onCategoryChange($event)">
-                        <option selected value=""> All Category </option>
-                        <option value="Reduce">Reduce</option>
-                        <option value="Reuse">Reuse</option>
-                        <option value="Recycle">Recycle</option>
-                        <!-- <option value="Gardening">Gardening</option> -->
-                    </select>
-                    <select id="filter-status" (change)="onStatusChange($event)">
-                        <option selected value="">  All Status </option>
-                        <option value="posted"> Posted </option>
-                        <option value="reported"> Reported </option>
-                    </select>
+                <select id="filter-category" (change)="onCategoryChange($event)">
+                    <option selected value=""> All Category </option>
+                    <option value="Reduce">Reduce</option>
+                    <option value="Reuse">Reuse</option>
+                    <option value="Recycle">Recycle</option>
+                    <!-- <option value="Gardening">Gardening</option> -->
+                </select>
+                <select id="filter-status" (change)="onStatusChange($event)">
+                    <option selected value="">  All Status </option>
+                    <option value="posted"> Posted </option>
+                    <option value="reported"> Reported </option>
+                </select>
+            </div>
+        
+            <form>
+                <div class="date-filter">
+                    <div class="txt_field">
+                    <label for="filter-from-date">From Date</label>
+                    <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
+                    </div>
+                    <div class="txt_field">
+                    <label for="filter-to-date">To Date</label>
+                    <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
+                    </div>
                 </div>
-            
-                <form>
-                  <div class="date-filter">
-                      <div class="txt_field">
-                        <label for="filter-from-date">From Date</label>
-                        <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
-                      </div>
-                      <div class="txt_field">
-                        <label for="filter-to-date">To Date</label>
-                        <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
-                      </div>
-                  </div>
-                </form>
-              </div>
+            </form>
+        </div>
 
-              <br>
+        <br>
             
         <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
             <!-- Date Column -->

@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class CreatetriviaComponent implements OnInit {
   triviaForm: FormGroup;
-  categories: string[] = ['Reduce', 'Reuse', 'Recycle', 'Gardening'];
+  categories: string[] = ['Reduce', 'Reuse', 'Recycle'];
   successMessage: string = '';
   errorMessage: string = '';
 

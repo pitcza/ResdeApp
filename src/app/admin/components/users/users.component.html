@@ -6,21 +6,21 @@
     <div class="table-content">
       <div class="header-actions">
         <div class="search-container">
-            <input
-                type="text"
-                [(ngModel)]="searchQuery"
-                (input)="applyFilter()"
-                placeholder="Search by Name, Email, Phone, or Age..."
-                class="search-input"
-            />
+          <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              (input)="applyFilter()"
+              placeholder="Search by Name, Email, Phone, or Age..."
+              class="search-input"
+          />
         </div>
 
         <div class="card-header">
-            <a routerLink="../../admin/dashboard"> Dashboard <span> <i class='bx bxs-home'></i> </span> </a>
+          <a routerLink="../../admin/dashboard"> Dashboard <span> <i class='bx bxs-home'></i> </span> </a>
         </div>
-    </div>
+      </div>
 
-          <br>
+        <br>
 
         <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
             

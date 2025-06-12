@@ -14,7 +14,7 @@ import { ViewComponent } from './view/view.component';
 })
 
 export class AllPostComponent implements OnInit , AfterViewInit{
-  displayedColumns: string[] = ['date', 'name', 'category', 'title', 'status'];
+  displayedColumns: string[] = ['date', 'name', 'category', 'title', 'status', 'action'];
   dataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   filteredDataSource: MatTableDataSource<TableElement> = new MatTableDataSource();
   categoryFilter: string = '';

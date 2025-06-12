@@ -59,7 +59,6 @@ export class RegisterComponent {
         timer: 3000
       });
   
-      // Remove the flag so it doesn’t show on every reload
       localStorage.removeItem('registrationCanceled');
     }
   }
@@ -67,25 +66,21 @@ export class RegisterComponent {
   @HostListener('window:beforeunload', ['$event'])
   handleRefresh(event: Event) {
     if (this.isPopupVisible) {
-      // Preventing the page from unloading if user is in the process of registering
       event.preventDefault();
       event.returnValue = true;
 
-      // Listen for the page unload event after the user confirms leaving
       window.onunload = () => {
-        // Send the cancel request only if the page is unloaded (not if reload is canceled)
-        // ganito for dev?? sana gumana sa site, mawawala data sa database if nirefresh or leave page nang ndi ineenter code hehe
-        // fetch('https://api.resit.site/api/cancel-due-refresh'
-        fetch('http://127.0.0.1:8000/api/cancel-due-refresh', {
+        // fetch('http://127.0.0.1:8000/api/cancel-due-refresh', {
+        fetch('https://api.resit.site/api/cancel-due-refresh', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: this.registerData.email }),
-          keepalive: true // Ensure the request completes before the page is unloaded
+          keepalive: true
         })
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data);
-          localStorage.setItem('registrationCanceled', 'true'); // Set flag before page is unloaded
+          localStorage.setItem('registrationCanceled', 'true');
         })
         .catch(error => console.error('Error:', error));
       };
@@ -106,7 +101,7 @@ export class RegisterComponent {
       }
   
       this.registerData.age = age;
-      this.updateEmailLabel(); // Update email label after calculating age
+      this.updateEmailLabel();
     } else {
       this.registerData.age = null;
     }
@@ -126,7 +121,7 @@ export class RegisterComponent {
     }
   }
 
-  emailLabel: string = "Email"; // Default label
+  emailLabel: string = "Email";
   isMinor: boolean = false;
 
   updateEmailLabel() {
@@ -229,7 +224,6 @@ export class RegisterComponent {
   confirmPasswordVisible = false;
   isPopupVisible = false;
 
-  // method to toggle the password visibility
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
   }
@@ -244,7 +238,6 @@ export class RegisterComponent {
     const input = event.target as HTMLInputElement;
     let currentValue = input.value;
 
-    // Allow only numbers and '+'
     currentValue = currentValue.replace(/[^0-9+]/g, '');
 
     // Ensure the input starts with '+63 '
@@ -576,7 +569,6 @@ export class RegisterComponent {
     );
   }
 
-
   // Function to resend the verification email
   resendVerificationEmail() {
     Swal.fire({
@@ -614,7 +606,6 @@ export class RegisterComponent {
     );
   }
 
-
   getMailProviderUrl(email: string): string {
     const domain = email.split('@')[1];
     
@@ -643,7 +634,6 @@ export class RegisterComponent {
       cancelButtonColor: '#7f7f7f',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Call the AuthserviceService to delete the data
         this.as.cancelRegistration(this.registerData.email).subscribe(
           () => {
             Swal.fire({

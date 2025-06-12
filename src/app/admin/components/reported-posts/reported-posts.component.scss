@@ -220,3 +220,35 @@ table { // fixed width
         color: rgba(0, 0, 0, 0.5);
     }
 }
+
+@media (max-width: 500px) {
+    .content {
+        padding: 30px;
+    }
+
+    .filters {
+        .selects {
+            display: flex;
+            align-items: stretch;
+            flex-direction: column;
+        }
+    }
+
+    .date-filter {
+        width: 100%;
+        flex-wrap: wrap;
+    
+        .txt_field {
+            margin-bottom: 0.2rem;
+            width: 100%;
+        }
+    
+        label {
+            width: 75px;
+        }
+
+        input {
+            padding-left: 73px;
+        }
+    }
+}

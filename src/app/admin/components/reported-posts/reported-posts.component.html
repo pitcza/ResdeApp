@@ -4,26 +4,26 @@
     </div>
 
     <div class="table-content">
-            <div class="filters">
-                <div class="selects">
-                    <input type="text" placeholder="Search by Name, Reasons, or Remarks..." (input)="onSearchChange($event)" class="search-input">
+        <div class="filters">
+            <div class="selects">
+                <input type="text" placeholder="Search by Name, Reasons, or Remarks..." (input)="onSearchChange($event)" class="search-input">
+            </div>
+        
+            <form>
+                <div class="date-filter">
+                    <div class="txt_field">
+                    <label for="filter-from-date">From Date</label>
+                    <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
+                    </div>
+                    <div class="txt_field">
+                    <label for="filter-to-date">To Date</label>
+                    <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
+                    </div>
                 </div>
-            
-                <form>
-                  <div class="date-filter">
-                      <div class="txt_field">
-                        <label for="filter-from-date">From Date</label>
-                        <input type="date" id="filter-from-date" (change)="onDateChange($event, 'from')" />
-                      </div>
-                      <div class="txt_field">
-                        <label for="filter-to-date">To Date</label>
-                        <input type="date" id="filter-to-date" (change)="onDateChange($event, 'to')" />
-                      </div>
-                  </div>
-                </form>
-              </div>
+            </form>
+        </div>
 
-              <br>
+        <br>
             
         <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="date">
