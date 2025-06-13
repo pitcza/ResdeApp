@@ -18,45 +18,6 @@
     }
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    background-color: white;
-    margin-right: 20px;
-    margin-top: 25px;
-    float: right;
-}
-
-.card-header {
-    h2 {
-        font-family: 'Poppins';
-        font-size: 20px;
-        font-weight: 700;
-        color: black;
-        p {
-            font-size: 12px;
-            font-weight: 400;
-            opacity: 50%;
-        }
-    }
-
-    a {
-        background: var(--primary-green);
-        border-radius: 5px;
-        color: white;
-        font-size: .8rem;
-        padding: .5rem 1rem;
-        transition: all 0.3s ease-in-out;
-    }
-
-    a:hover {
-        background-color: var(--dark-green);
-    }
-}
-
 table {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -161,47 +122,6 @@ table { // fixed width
     }
 }
 
-@media (max-width: 500px) {
-    .content {
-        padding: 30px;
-    }
-
-    .date-filter {
-        width: 100%;
-        flex-wrap: wrap;
-    
-        .txt_field {
-            margin-bottom: 0.2rem;
-            width: 100%;
-        }
-    
-        label {
-            width: 65px;
-        }
-
-        input {
-            display: flex;
-            justify-content: flex-end;
-            border: none;
-            padding-left: 73px;
-            font-size: 13px;
-            color: black;
-            width: 100%;
-            outline: none;
-        }
-    }
-
-    .post-heading {
-        span {
-            padding-bottom: 10px;
-        }
-        
-        h3 {
-            font-size: 30px;
-        }
-    }
-}
-
 .search-input {
     width: 300px; 
     padding: 5px 12px;
@@ -224,6 +144,14 @@ table { // fixed width
 @media (max-width: 500px) {
     .content {
         padding: 30px;
+    }
+
+    table {
+        td:nth-child(1),
+        td:nth-child(6) {
+            min-width: 130px;
+            max-width: 130px;
+        }
     }
 
     .filters {
@@ -250,5 +178,9 @@ table { // fixed width
         input {
             padding-left: 73px;
         }
+    }
+
+    .search-input {
+        width: 100%;
     }
 }

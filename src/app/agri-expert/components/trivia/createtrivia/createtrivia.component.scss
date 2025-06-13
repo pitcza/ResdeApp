@@ -186,9 +186,11 @@ form {
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
         }
 
         .removebtn {
+            position: absolute;
             display: flex;
             font-size: 30px;
             color: var(--gray-btn);
@@ -196,8 +198,8 @@ form {
             outline: none;
             border: none;
             border-radius: 5px;
-            top: 0;
-            right: 0;
+            top: 20%;
+            right: 1%;
             cursor: pointer;
 
             &:hover {
@@ -279,15 +281,6 @@ form {
 
     .post-content {
         height: 100vh;
-
-        .publisher {
-            font-size: 16px;
-        }
-    
-        .main-post {
-            h2 { font-size: 20px; }
-            p { font-size: 14px; }
-        }
     }
 }
 
@@ -295,8 +288,14 @@ form {
     .post-header {
         .popup-head {
             h1 {
-                font-size: 22px;
+                font-size: 18px;
             }
+        }
+    }
+
+    form {
+        .input-row {
+            flex-direction: column;
         }
     }
 }

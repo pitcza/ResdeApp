@@ -76,12 +76,7 @@ table {
     }
 }
 
-table { // fixed width
-    // td:nth-child(5) {
-    //     min-width: 50px;
-    //     max-width: 50px;
-    // }
-
+table {
     td:nth-child(6) {
         min-width: 50px;
         max-width: 50px;
@@ -107,7 +102,7 @@ table { // fixed width
         padding-right: 10px;
         border-radius: 4px;
         display: flex;
-        align-items: center; /* Align label and input vertically */
+        align-items: center;
         justify-content: flex-end;
     }
 
@@ -196,6 +191,10 @@ table { // fixed width
         }
     }
 
+    .search-input {
+        width: 100%;
+    }
+
     .date-filter {
         width: 100%;
         flex-wrap: wrap;
@@ -214,10 +213,15 @@ table { // fixed width
         }
     }
 
-    // table td:nth-child(2), 
-    // table th:nth-child(2),
     table td:nth-child(4), 
     table th:nth-child(4) {
         display: none;
+    }
+
+    table {
+        td:nth-child(1) {
+            min-width: 130px;
+            max-width: 130px;
+        }
     }
 }

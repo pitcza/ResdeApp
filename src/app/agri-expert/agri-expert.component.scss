@@ -285,16 +285,9 @@
         display: none;
     }
     
-    .sidebarTabs {
-        .sidebarTab {
-            .tab-link-icon {
-                display: contents;
-            }
-        
-            a {
-                padding: 11px 15px 10px 15px;
-            }
-        }
+    .tab-link-icon {
+        padding-left: 10px;
+        display: contents;
     }
     
     .logoutbtn {
@@ -358,6 +351,7 @@
             display: block;
             i { p { display: flex; } }
         }
+
         img { display: none; }
     }
 

@@ -76,7 +76,7 @@
       </div>
 
       <div class="logout" (click)="logoutPopup()">
-        <span> <i class='bx bx-log-out-circle'></i> <span class="logout-tooltip"> Logout </span>
+        <span> <i class='bx bx-log-out-circle'> <p> Logout </p> </i>
             <app-logout *ngIf="showPopup" (closedPopup)="closePopup()" (leaveClicked)="logout()"></app-logout>
         </span>
       </div>
@@ -86,6 +86,5 @@
     <!-- MAIN BODY CONTENT -->
     <div class="body-content">
       <div class="admin-container"> <router-outlet></router-outlet> </div>
-      <!-- <div class="admin-container"> hehe wait </div> -->
     </div>
 </div>

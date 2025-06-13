@@ -212,6 +212,13 @@ table { // fixed width
             font-size: 30px;
         }
     }
+
+    table {
+        td:nth-child(1) {
+            min-width: 130px;
+            max-width: 130px;
+        }
+    }
 }
 
 @media (max-width: 768px) {

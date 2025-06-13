@@ -137,4 +137,11 @@ table {
     table th:nth-child(3) {
         display: none;
     }
+
+    table {
+        td:nth-child(4) {
+            min-width: 230px;
+            max-width: 230px;
+        }
+    }
 }

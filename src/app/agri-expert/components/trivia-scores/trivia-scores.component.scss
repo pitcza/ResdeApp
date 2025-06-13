@@ -60,6 +60,7 @@ table {
   justify-content: flex-start; 
   padding: 10px 0;
 }
+
 .search-input {
   width: 300px; 
   padding: 8px 12px;
@@ -77,4 +78,12 @@ table {
   &::placeholder {
       color: rgba(0, 0, 0, 0.5);
   }
+}
+
+@media (max-width: 500px) {
+  .table-head {
+    display: flex;
+    flex-direction: column;
+  }
+  .search-input { width: 100%; }
 }
